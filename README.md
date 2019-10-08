@@ -1,7 +1,4 @@
-# SecexLog_M1_FrontEnd_PreState
+###SecexLog
 
-Repository to store all the Milestone 1 front end code of the Secex Log project
-
-### Regras gerais
-
-- Submeter códigos de forma livre
+## Sprint 01
+- 29/11
