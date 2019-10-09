@@ -1,0 +1,23 @@
+.RangeExample {
+  max-width: 550px;
+  background-color: #ffff;
+  border: 1px solid #b0b0b0;
+  border-radius: 20px;
+}
+
+.Selectable
+  .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+  background-color: #f5edff !important;
+  color: #afafaf;
+  border-radius: 0 !important;
+}
+.Selectable .DayPicker-Day {
+  color: #afafaf;
+  border-radius: 100% !important;
+}
+.Selectable .DayPicker-Day--start {
+  border-radius: 100% !important;
+}
+.Selectable .DayPicker-Day--end {
+  border-radius: 100% !important;
+}
