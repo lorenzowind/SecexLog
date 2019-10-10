@@ -7,7 +7,7 @@ import CrudCidade from "./pages/CRUD/Cidade/index";
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/cidade" component={CrudCidade} />
+      <Route path="/cadastro" component={CrudCidade} />
     </Switch>
   </BrowserRouter>
 );

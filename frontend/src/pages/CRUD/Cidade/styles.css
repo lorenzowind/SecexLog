@@ -1,19 +1,23 @@
 .cadastro {
-  max-width: 750px;
+  max-width: 1200px;
   margin: 89px auto 0;
   padding: 0 20px;
 }
 
 .body form h2 {
   margin-top: 30px;
-  margin-bottom: 8px;
+  margin-bottom: 15px;
+  font-size: 18px;
 }
 
 .body form input#text {
   height: 38px;
   width: 342px;
   margin-right: 88px;
-  border-radius: 100px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  padding: 20px;
   border: 1px solid #b0b0b0;
 }
 
@@ -29,19 +33,10 @@
   align-items: center;
 }
 
-.escolha-cidade input#name {
+.select {
   height: 38px;
   width: 342px;
-  margin-right: 88px;
-  border-radius: 100px;
-  border: 1px solid #b0b0b0;
-}
-
-.escolha-cidade input#option {
-  width: 1.125em;
-  height: 1.125em;
-  margin-right: 10px;
-  font-size: 11px;
+  border: none;
 }
 
 .interdicao-switch {
@@ -115,9 +110,119 @@ textarea {
   height: 60px;
   resize: none;
   border-radius: 17px;
+  padding: 20px;
 }
 
 legend {
   font-size: 9px;
   margin-bottom: 10px;
+}
+
+h2#h2-cidade {
+  margin-bottom: 0;
+}
+
+.cidade-trajeto input#cidade {
+  height: 38px;
+  width: 171px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  padding: 20px;
+  border: 1px solid #b0b0b0;
+}
+
+.cidade-trajeto img {
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  position: relative;
+  top: 20px;
+}
+
+.dia-hora input#dia,
+input#hora {
+  height: 38px;
+  width: 150px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  padding: 20px;
+  border: 1px solid #b0b0b0;
+}
+
+h2#h2-dia-hora {
+  margin-bottom: 0;
+}
+
+.dia-hora input#hora {
+  margin-left: 30px;
+  margin-right: 30px;
+}
+
+.dia-hora button {
+  background: #f1f1f1;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  top: 10px;
+}
+
+.dia-hora img {
+  height: 45px;
+}
+
+.dados-trecho {
+  display: flex;
+  align-content: center;
+}
+
+.dados-trecho input {
+  height: 38px;
+  width: 200px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  margin-right: 40px;
+  padding: 20px;
+  border: 1px solid #b0b0b0;
+}
+
+.dados-prestador {
+  display: flex;
+}
+
+.dados-prestador input#cell,
+input#email {
+  height: 38px;
+  width: 200px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  margin-right: 40px;
+  padding: 20px;
+  border: 1px solid #b0b0b0;
+}
+
+.footer {
+  float: right;
+}
+
+.footer img {
+  height: 45px;
+}
+
+.footer button {
+  height: 69px;
+  width: 172px;
+  background: url("../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar.png");
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.footer button:hover {
+  background: url("../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar1.png");
+  transition: 0.2s;
 }
