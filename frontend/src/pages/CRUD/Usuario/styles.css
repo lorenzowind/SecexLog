@@ -1,6 +1,6 @@
 .body {
-  max-width: 1200px;
-  margin: 89px auto 0;
+  max-width: 1000px;
+  margin: 89px 60px;
   padding: 0 20px;
 }
 
@@ -19,6 +19,19 @@
   border-radius: 50px;
   padding: 20px;
   border: 1px solid #b0b0b0;
+}
+
+.searchUser {
+  display: flex;
+}
+
+.searchUser img {
+  height: 25px;
+  width: 25px;
+  position: relative;
+  right: 70px;
+  top: 7px;
+  cursor: pointer;
 }
 
 .addUser {
@@ -40,20 +53,33 @@
 }
 
 .tableUser {
-  max-width: 550px;
+  max-width: 800px;
   height: 200px;
   background-color: #ffff;
   border: 1px solid #b0b0b0;
   border-radius: 20px;
+  overflow: hidden;
+}
+
+.tableUser input:disabled {
+  width: 70px;
+  background-color: #ffff;
+  border: none;
 }
 
 .tableUser table {
-  margin-top: 10px;
+  margin: 10px;
   max-height: 190px;
 }
 
 .tableUser table th {
   width: 500px;
+}
+
+.tableUser img {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
 }
 
 .popUp {
@@ -71,15 +97,38 @@
   margin-left: 20px;
 }
 
-.popUp input {
+.title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title h2 {
+  position: relative;
+  right: 20px;
+}
+
+.title img {
+  height: 20px;
+  width: 20px;
+  position: relative;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.popUp input,
+select {
   height: 38px;
   width: 260px;
   margin-right: 88px;
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   border-radius: 50px;
-  padding: 20px;
   border: 1px solid #b0b0b0;
+}
+
+.popUp input {
+  padding: 20px;
 }
 
 .popUp h2 {

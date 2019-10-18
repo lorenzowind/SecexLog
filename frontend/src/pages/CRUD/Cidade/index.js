@@ -15,6 +15,7 @@ import "./styles.css";
 
 import Ir from "../../../assets/6_Cadastro_de_Cidade_Trejetos/ir.png";
 import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
+import Notif from "../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
 //import Triangulo from "../../../assets/6_Cadastro_de_Cidade_Trejetos/poligono.png";
 
 const animatedComponents = makeAnimated();
@@ -178,6 +179,7 @@ export default class CrudCidade extends Component {
                 <Select
                   className="select"
                   closeMenuOnSelect={false}
+                  placeholder=""
                   components={animatedComponents}
                   isMulti
                   options={options}
@@ -209,7 +211,7 @@ export default class CrudCidade extends Component {
                     <input type="checkbox" />
                     <span className="slider round"></span>
                   </label>
-                  <img src={""} alt="" />
+                  <img src={Notif} alt="" />
                 </div>
                 <legend>Observação</legend>
                 <textarea
@@ -234,6 +236,7 @@ export default class CrudCidade extends Component {
                   options={options}
                   isSearchable={true}
                   className="selectCidade"
+                  placeholder=""
                   onChange={this.handleCidadeTrajetoInit}
                 />
                 <img src={Ir} alt="" />
@@ -241,6 +244,7 @@ export default class CrudCidade extends Component {
                   options={options}
                   isSearchable={true}
                   className="selectCidade"
+                  placeholder=""
                   onChange={this.handleCidadeTrajetoEnd}
                 />
               </div>
@@ -480,7 +484,7 @@ export default class CrudCidade extends Component {
                 <br />
                 <input
                   type="radio"
-                  id="option"
+                  id="option1"
                   name="opcao-modal"
                   value="contratado"
                   onChange={this.onChange}

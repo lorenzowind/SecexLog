@@ -1,6 +1,6 @@
 .cadastro {
-  max-width: 1200px;
-  margin: 89px auto 0;
+  width: 1000px;
+  margin: 89px 0;
   padding: 0 20px;
 }
 
@@ -19,6 +19,14 @@
   border-radius: 50px;
   padding: 20px;
   border: 1px solid #b0b0b0;
+}
+
+.opcao-modal input#option1 {
+  width: 1.6em;
+  height: 1.6em;
+  margin-right: 10px;
+  font-size: 11px;
+  margin-left: 20px;
 }
 
 .body form input#option {
@@ -50,7 +58,7 @@
   width: 31px;
   height: 14px;
   margin-left: 20px;
-  top: 15px;
+  top: 10px;
 }
 
 .switch input {
@@ -120,6 +128,12 @@ legend {
 
 h2#h2-cidade {
   margin-bottom: 20px;
+}
+
+.interdicao img {
+  position: relative;
+  top: 10px;
+  left: 20px;
 }
 
 .cidade-trajeto {
@@ -204,6 +218,10 @@ input#email {
   border: 1px solid #b0b0b0;
 }
 
+.opcao-modal {
+  display: flex;
+}
+
 .footer {
   float: right;
 }
@@ -227,28 +245,4 @@ input#email {
 .footer button:hover {
   background: url("../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar1.png");
   transition: 0.2s;
-}
-
-.RangeExample {
-  max-width: 550px;
-  background-color: #ffff;
-  border: 1px solid #b0b0b0;
-  border-radius: 20px;
-}
-
-.Selectable
-  .DayPicker-Day--selected:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
-  background-color: #f5edff !important;
-  color: #afafaf;
-  border-radius: 0 !important;
-}
-.Selectable .DayPicker-Day {
-  color: #afafaf;
-  border-radius: 100% !important;
-}
-.Selectable .DayPicker-Day--start {
-  border-radius: 100% !important;
-}
-.Selectable .DayPicker-Day--end {
-  border-radius: 100% !important;
 }
