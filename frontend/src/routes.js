@@ -8,8 +8,8 @@ import MenuLateral from "./pages/Menu/MenuLateral/index";
 const Routes = () => (
   <BrowserRouter>
     <Switch>
-      <Route path="/secex" component={TelaInicial}/>
-      <Route path="/menu" component={MenuLateral}/>
+      <Route path="/secex" component={TelaInicial} />
+      <Route path="/menu" component={MenuLateral} />
     </Switch>
   </BrowserRouter>
 );
