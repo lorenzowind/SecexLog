@@ -10,6 +10,13 @@
   font-size: 18px;
 }
 
+.body h4 {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: normal;
+}
+
 .body input#text {
   height: 38px;
   width: 171px;
@@ -159,4 +166,18 @@ select {
 .popUp button:hover {
   background: url("../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar1.png");
   transition: 0.2s;
+}
+
+.btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btns img {
+  height: 40px;
+  width: 40px;
+  margin-top: 25px;
+  position: relative;
+  right: 20px;
+  cursor: pointer;
 }

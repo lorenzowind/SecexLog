@@ -5,6 +5,7 @@ import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Seach from "../../../assets/Cadastro de usuário/pesquisar.png";
 import Edit from "../../../assets/Cadastro de usuário/editar.png";
 import Close from "../../../assets/Cadastro de usuário/sair_secex.png";
+import Trash from "../../../assets/Cadastro de usuário/lixeira.png";
 
 import "./styles.css";
 
@@ -29,7 +30,6 @@ export default class CrudUsuario extends Component {
       senha: "",
 
       search: "",
-      resSearch: [],
 
       row: [],
       popUp: [],
@@ -49,8 +49,41 @@ export default class CrudUsuario extends Component {
     this.loadData();
   }
 
+  //Métodos CRUD
+
+  //POST (CREATE usuário)
+  handleSubmit = async ev => {
+    ev.preventDefault();
+
+    const isValid = this.validate();
+
+    const state = {
+      nome: this.state.nome,
+      login: this.state.login,
+      email: this.state.email,
+      cargo: this.state.cargo,
+      senha: this.state.senha
+    };
+
+    if (isValid) {
+      // eslint-disable-next-line
+      const post = await api.post("/users", state).catch(err => {
+        alert(err);
+        window.location.reload(false);
+      });
+
+      this.createRow(state);
+
+      this.setState({ popUp: [], popUpStats: false });
+    }
+  };
+
+  //GET (READ dados na tabela)
   loadData = async () => {
-    const res = await api.get("/users");
+    const res = await api.get("/users").catch(err => {
+      alert(err);
+      window.location.reload(false);
+    });
     const row = this.state.row;
 
     for (var i = 0; i < res.data.length; i++) {
@@ -60,6 +93,157 @@ export default class CrudUsuario extends Component {
     this.setState({ row: row });
   };
 
+  //GET (READ dados de busca)
+  handleSearch = async () => {
+    const res = await api.get(`/users/${this.state.search}`);
+
+    if (!res.data || res.data.length <= 0) {
+      alert("Usuário não encontrado");
+      return;
+    }
+
+    var nome = null;
+
+    !isNaN(parseInt(this.state.search, 10))
+      ? (nome = res.data.nome)
+      : (nome = res.data[0].nome);
+
+    var row = this.state.row;
+
+    for (var i = 0; i < row.length; i++) {
+      if (nome === row[i].nome) {
+        const aux = row[i];
+        row[i] = row[0];
+        row[0] = aux;
+
+        this.setState({ row: row });
+        return;
+      }
+    }
+  };
+
+  //PUT (UPDATE usuário)
+  handleEditSubmit = async ev => {
+    ev.preventDefault();
+
+    var state = {};
+
+    if (
+      this.state.nome !== this.state.editNome ||
+      this.state.login !== this.state.editLogin ||
+      this.state.email !== this.state.editEmail ||
+      this.state.cargo !== this.state.editCargo ||
+      this.state.senha !== this.state.editSenha
+    ) {
+      state = {
+        nome: this.state.nome,
+        login: this.state.login,
+        email: this.state.email,
+        cargo: this.state.cargo,
+        senha: this.state.senha
+      };
+    } else {
+      state = {
+        nome: this.state.editNome,
+        login: this.state.editLogin,
+        email: this.state.editEmail,
+        cargo: this.state.editCargo,
+        senha: this.state.editSenha
+      };
+    }
+
+    const isValid = this.validateEdit();
+
+    if (isValid) {
+      for (var i = 0; i < this.state.row.length; i++) {
+        if (this.state.row[i].login === editedlogin) {
+          const row = this.state.row;
+
+          row[i].nome = state.nome;
+          row[i].login = state.login;
+          row[i].email = state.email;
+          row[i].cargo = state.cargo;
+          row[i].senha = state.senha;
+
+          this.setState({ row: row });
+        }
+      }
+
+      const res = await api.get("/users").catch(err => {
+        alert(err);
+        window.location.reload(false);
+      });
+
+      // eslint-disable-next-line
+      for (var i = 0; i < this.state.row.length; i++) {
+        if (res.data[i].login === editedlogin) {
+          // eslint-disable-next-line
+          const put = await api
+            .put(`/users/${res.data[i].id}`, state)
+            .catch(err => {
+              alert(err);
+              window.location.reload(false);
+            });
+        }
+      }
+
+      this.setState({ editPopUp: [], popUpStats: false });
+    }
+  };
+
+  //DELETE (DELETE usuário)
+  handleDelete = async ev => {
+    ev.preventDefault();
+
+    // eslint-disable-next-line
+    var state = null;
+
+    if (
+      this.state.nome !== this.state.editNome ||
+      this.state.login !== this.state.editLogin ||
+      this.state.email !== this.state.editEmail ||
+      this.state.cargo !== this.state.editCargo ||
+      this.state.senha !== this.state.editSenha
+    ) {
+      state = {
+        nome: this.state.nome,
+        login: this.state.login,
+        email: this.state.email,
+        cargo: this.state.cargo,
+        senha: this.state.senha
+      };
+    } else {
+      state = {
+        nome: this.state.editNome,
+        login: this.state.editLogin,
+        email: this.state.editEmail,
+        cargo: this.state.editCargo,
+        senha: this.state.editSenha
+      };
+    }
+
+    const res = await api.get("/users").catch(err => {
+      alert(err);
+      window.location.reload(false);
+    });
+
+    // eslint-disable-next-line
+    for (var i = 0; i < this.state.row.length; i++) {
+      if (res.data[i].login === editedlogin) {
+        // eslint-disable-next-line
+        const del = await api.delete(`/users/${res.data[i].id}`).catch(err => {
+          alert(err);
+          window.location.reload(false);
+        });
+      }
+    }
+    this.setState({ editPopUp: [], popUpStats: false });
+    window.location.reload(false);
+  };
+
+  //FIM Métodos CRUD
+
+  //PopUps
   createPopUp = () => {
     let popUp = this.state.popUp;
 
@@ -82,14 +266,13 @@ export default class CrudUsuario extends Component {
     this.setState({ popUp: popUp, popUpStats: true });
   };
 
+  //PopUps
   editPopUp = c => {
-    console.log(c);
     const editNome = c.nome;
     const editLogin = c.login;
     const editEmail = c.email;
     const editCargo = c.cargo;
     const editSenha = c.senha;
-
     for (var cont = 0; cont < this.state.row.length; cont++) {
       if (this.state.row[cont].login === editLogin) {
         editedlogin = this.state.row[cont].login;
@@ -144,8 +327,6 @@ export default class CrudUsuario extends Component {
     let loginError = "";
     let emailError = "";
     let passwordError = "";
-
-    console.log(this.state.nome);
 
     if (
       !this.state.nome ||
@@ -263,124 +444,12 @@ export default class CrudUsuario extends Component {
     return true;
   };
 
-  handleSubmit = async ev => {
-    ev.preventDefault();
-
-    const isValid = this.validate();
-
-    const state = {
-      nome: this.state.nome,
-      login: this.state.login,
-      email: this.state.email,
-      cargo: this.state.cargo,
-      senha: this.state.senha
-    };
-
-    if (isValid) {
-      const res = await api.post("/users", state);
-
-      console.log(res);
-
-      this.createRow(state);
-
-      this.setState({ popUp: [], popUpStats: false });
-
-      console.log(this.state);
-    }
-  };
-
-  handleEditSubmit = async ev => {
-    ev.preventDefault();
-
-    var state = {};
-
-    if (
-      this.state.nome !== this.state.editNome ||
-      this.state.login !== this.state.editLogin ||
-      this.state.email !== this.state.editEmail ||
-      this.state.cargo !== this.state.editCargo ||
-      this.state.senha !== this.state.editSenha
-    ) {
-      state = {
-        nome: this.state.nome,
-        login: this.state.login,
-        email: this.state.email,
-        cargo: this.state.cargo,
-        senha: this.state.senha
-      };
-    } else {
-      state = {
-        nome: this.state.editNome,
-        login: this.state.editLogin,
-        email: this.state.editEmail,
-        cargo: this.state.editCargo,
-        senha: this.state.editSenha
-      };
-    }
-
-    const isValid = this.validateEdit();
-
-    if (isValid) {
-      for (var i = 0; i < this.state.row.length; i++) {
-        if (this.state.row[i].login === editedlogin) {
-          const row = this.state.row;
-
-          row[i].nome = state.nome;
-          row[i].login = state.login;
-          row[i].email = state.email;
-          row[i].cargo = state.cargo;
-          row[i].senha = state.senha;
-
-          console.log(row[i].nome);
-
-          this.setState({ row: row });
-        }
-      }
-
-      const res = await api.get("/users");
-
-      console.log(state);
-
-      // eslint-disable-next-line
-      for (var i = 0; i < this.state.row.length; i++) {
-        if (res.data[i].login === editedlogin) {
-          console.log(res.data[i].id);
-          const put = await api.put(`/users/${res.data[i].id}`, state);
-          console.log(put);
-        }
-      }
-
-      this.setState({ editPopUp: [], popUpStats: false });
-    }
-  };
-
   createRow = state => {
     let row = this.state.row;
 
     row.push(state);
 
     this.setState({ row: row });
-  };
-
-  handleSearch = () => {
-    for (var i = 0; i < this.state.row.length; i++) {
-      if (this.state.search === this.state.row[i].nome) {
-        let resSearch = this.state.resSearch;
-        let result = this.state.row[i];
-        let row = this.state.row;
-        let length = this.state.row.length;
-
-        for (var j = i; j < length - 1; j++) row[j] = row[j + 1];
-
-        row.length = j;
-
-        resSearch.push(result);
-
-        this.setState({ resSearch: resSearch, row: row });
-        return;
-      }
-    }
-    alert("Usuário não encontrado");
   };
 
   handleClose = ev => {
@@ -400,6 +469,11 @@ export default class CrudUsuario extends Component {
             id="text"
             name="search"
             onChange={this.handleChange}
+            onKeyDown={e => {
+              if (e.key === "Enter") {
+                this.handleSearch();
+              }
+            }}
             disabled={this.state.popUpStats}
           />
           <img src={Seach} alt="" onClick={this.handleSearch} />
@@ -424,29 +498,6 @@ export default class CrudUsuario extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.resSearch.map((c, i) => (
-                <tr key={i}>
-                  <td>{c.nome}</td>
-                  <td>{c.login}</td>
-                  <td>{c.email}</td>
-                  <td>{c.cargo}</td>
-                  <td>
-                    <input type="password" value={c.senha} disabled={true} />
-                  </td>
-                  <td>
-                    <img
-                      src={Edit}
-                      alt=""
-                      onClick={
-                        (e = () => {
-                          const content = c;
-                          this.editPopUp(content);
-                        })
-                      }
-                    />
-                  </td>
-                </tr>
-              ))}
               {this.state.row.map((c, i) => (
                 <tr key={i}>
                   <td>{c.nome}</td>
@@ -482,7 +533,7 @@ export default class CrudUsuario extends Component {
                 <img src={Close} alt="" onClick={this.handleClose} />
               </div>
 
-              <h3>{c.nome}</h3>
+              <h4>{c.nome}</h4>
               <input
                 type="text"
                 name="nome"
@@ -490,7 +541,7 @@ export default class CrudUsuario extends Component {
                 required
               />
 
-              <h3>{c.login}</h3>
+              <h4>{c.login}</h4>
               <input
                 type="text"
                 name="login"
@@ -498,15 +549,7 @@ export default class CrudUsuario extends Component {
                 required
               />
 
-              <h3>{c.email}</h3>
-              <input
-                type="email"
-                name="email"
-                onChange={this.handleChange}
-                required
-              />
-
-              <h3>{c.cargo}</h3>
+              <h4>{c.cargo}</h4>
               <select
                 name="cargo"
                 onChange={this.handleChange}
@@ -518,7 +561,15 @@ export default class CrudUsuario extends Component {
                 <option value="User">User</option>
               </select>
 
-              <h3>{c.senha}</h3>
+              <h4>{c.email}</h4>
+              <input
+                type="email"
+                name="email"
+                onChange={this.handleChange}
+                required
+              />
+
+              <h4>{c.senha}</h4>
               <input
                 type="password"
                 name="senha"
@@ -538,7 +589,7 @@ export default class CrudUsuario extends Component {
                 <img src={Close} alt="" onClick={this.handleClose} />
               </div>
 
-              <h3>{c.nome}</h3>
+              <h4>{c.nome}</h4>
               <input
                 type="text"
                 name="nome"
@@ -547,7 +598,7 @@ export default class CrudUsuario extends Component {
                 required
               />
 
-              <h3>{c.login}</h3>
+              <h4>{c.login}</h4>
               <input
                 type="text"
                 name="login"
@@ -556,16 +607,7 @@ export default class CrudUsuario extends Component {
                 required
               />
 
-              <h3>{c.email}</h3>
-              <input
-                type="email"
-                name="email"
-                onChange={this.handleChange}
-                defaultValue={this.state.editEmail}
-                required
-              />
-
-              <h3>{c.cargo}</h3>
+              <h4>{c.cargo}</h4>
               <select
                 name="cargo"
                 onChange={this.handleChange}
@@ -576,7 +618,16 @@ export default class CrudUsuario extends Component {
                 <option value="User">User</option>
               </select>
 
-              <h3>{c.senha}</h3>
+              <h4>{c.email}</h4>
+              <input
+                type="email"
+                name="email"
+                onChange={this.handleChange}
+                defaultValue={this.state.editEmail}
+                required
+              />
+
+              <h4>{c.senha}</h4>
               <input
                 type="password"
                 name="senha"
@@ -585,7 +636,10 @@ export default class CrudUsuario extends Component {
                 required
               />
 
-              <button onClick={this.handleEditSubmit} />
+              <div className="btns">
+                <img src={Trash} alt="Deletar" onClick={this.handleDelete} />
+                <button onClick={this.handleEditSubmit} />
+              </div>
             </div>
           </div>
         ))}

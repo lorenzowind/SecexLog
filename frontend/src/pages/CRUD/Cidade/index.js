@@ -4,6 +4,9 @@ import HeaderTrajeto from "../components/HeaderTrajeto/index";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Calendar from "../components/Calendar/Calendar";
+import Expand from "react-expand-animated";
+import api from "../../../services/api";
+
 import "moment/locale/pt-br";
 
 import "react-day-picker/lib/style.css";
@@ -16,7 +19,7 @@ import "./styles.css";
 import Ir from "../../../assets/6_Cadastro_de_Cidade_Trejetos/ir.png";
 import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Notif from "../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
-//import Triangulo from "../../../assets/6_Cadastro_de_Cidade_Trejetos/poligono.png";
+import Triangulo from "../../../assets/6_Cadastro_de_Cidade_Trejetos/triangulo.png";
 
 const animatedComponents = makeAnimated();
 
@@ -69,9 +72,104 @@ export default class CrudCidade extends Component {
 
       dia: "",
       hora: "",
-      itemArray: []
+      itemArray: [],
+
+      openaviao: false,
+      opentaxiaereo: false,
+      openbarco: false,
+      openvoadeira: false,
+      openrabeta: false,
+      openmototaxi: false,
+      opentaxi: false,
+      openonibus: false,
+      openlancha: false
     };
   }
+
+  componentDidMount() {
+    this.loadOpcoes();
+    this.loadModais();
+  }
+
+  //Métodos CRUD
+
+  //POST (Create)
+  onSubmit = async ev => {
+    ev.preventDefault();
+
+    const state = {
+      nomeCidade: this.state.nomeCidade,
+      opCidadeBase: this.state.opCidadeBase,
+      opCidadeAuditada: this.state.opCidadeAuditada,
+      cidadesRelacionadas: this.state.cidadesRelacionadas,
+      dataFeriado: this.state.dataFeriado,
+      initDataCheia: this.state.initDataCheia,
+      endDataCheia: this.state.endDataCheia,
+      obsInterdicao: this.state.obsInterdicao,
+      obsCidade: this.state.obsCidade,
+      cidadeTrajetoInit: this.state.cidadeTrajetoInit.value,
+      cidadeTrajetoEnd: this.state.cidadeTrajetoEnd.value,
+      opAviao: this.state.opAviao,
+      opTaxiAereo: this.state.opTaxiAereo,
+      opBarco: this.state.opBarco,
+      opVoadeira: this.state.opVoadeira,
+      opRabeta: this.state.opRabeta,
+      opMotoTaxi: this.state.opMotoTaxi,
+      opTaxi: this.state.opTaxi,
+      opOnibus: this.state.opOnibus,
+      opLancha: this.state.opLancha,
+      nomePrestador: this.state.nomePrestador,
+      diasEmbarque: this.state.diasEmbarque,
+      horasEmbarque: this.state.horasEmbarque,
+      duracaoTrecho: this.state.nomeCidade,
+      kmTrecho: this.state.kmTrecho,
+      valorTrecho: this.state.valorTrecho,
+      localEmbarque: this.state.localEmbarque,
+      localDesembarque: this.state.localDesembarque,
+      telefone: this.state.telefone,
+      email: this.state.email,
+      from: this.state.from,
+      to: this.state.to
+    };
+
+    const isValid = this.validations(state);
+
+    if (isValid) console.log(JSON.parse(JSON.stringify(state)));
+    else console.log(isValid);
+  };
+
+  //GET (Read)
+  loadOpcoes = async () => {
+    /*
+    const res = await api.get("").catch(err => {
+      alert(err);
+      window.location.reload(false);
+    }); 
+    continuação...
+    */
+  };
+
+  loadModais = async () => {
+    /*
+    const res = await api.get("").catch(err => {
+      alert(err);
+      window.location.reload(false);
+    }); 
+    continuação...
+    */
+  };
+
+  loadPrestador = async () => {
+    /*
+    const res = await api.get("").catch(err => {
+      alert(err);
+      window.location.reload(false);
+    }); 
+    continuação...
+    */
+  };
+
+  //Fim Métodos CRUD
 
   onChange = ev => {
     const state = Object.assign({}, this.state);
@@ -129,12 +227,122 @@ export default class CrudCidade extends Component {
     console.log(this.state.diasEmbarque);
   };
 
-  onSubmit = ev => {
+  toggle = ev => {
     ev.preventDefault();
-    console.log(JSON.parse(JSON.stringify(this.state)));
+    const name = ev.target.name;
+
+    if (name === "aviao")
+      this.setState(prevState => ({ openaviao: !prevState.openaviao }));
+    else if (name === "taxiaereo")
+      this.setState(prevState => ({ opentaxiaereo: !prevState.opentaxiaereo }));
+    else if (name === "barco")
+      this.setState(prevState => ({ openbarco: !prevState.openbarco }));
+    else if (name === "voadeira")
+      this.setState(prevState => ({ openvoadeira: !prevState.openvoadeira }));
+    else if (name === "rabeta")
+      this.setState(prevState => ({ openrabeta: !prevState.openrabeta }));
+    else if (name === "mototaxi")
+      this.setState(prevState => ({ openmototaxi: !prevState.openmototaxi }));
+    else if (name === "taxi")
+      this.setState(prevState => ({ opentaxi: !prevState.opentaxi }));
+    else if (name === "onibus")
+      this.setState(prevState => ({ openonibus: !prevState.openonibus }));
+    else if (name === "lancha")
+      this.setState(prevState => ({ openlancha: !prevState.openlancha }));
+  };
+
+  validations = state => {
+    let cidadeError = "";
+    let prestadorError = "";
+    let diasEmbarqueError = "";
+    let horasEmbarqueError = "";
+    let telefoneError = "";
+    let emailError = "";
+
+    if (!state) {
+      cidadeError = "Por favor, preencha todos os campos";
+      alert(cidadeError);
+      return false;
+    }
+
+    if (
+      state.nomeCidade.includes("_") ||
+      state.nomeCidade.includes("@") ||
+      state.nomeCidade.includes("-")
+    ) {
+      cidadeError = "Cidade não pode conter caracteres especiais";
+    }
+
+    if (
+      state.nomePrestador.includes("_") ||
+      state.nomePrestador.includes("@") ||
+      state.nomePrestador.includes("-")
+    ) {
+      prestadorError = "Prestador não pode conter caracteres especiais";
+    }
+
+    if (state.diasEmbarque.includes("@")) {
+      diasEmbarqueError =
+        "Informe o dia da semana no formato correspondente (Ex. quarta-feira)";
+    }
+
+    if (!state.horasEmbarque.includes(":")) {
+      horasEmbarqueError = "Informe as horas no formato correspondente (00:00)";
+    }
+
+    if (
+      state.telefone.includes("_") ||
+      state.telefone.includes("@") ||
+      state.telefone.includes("-")
+    ) {
+      telefoneError =
+        "Informe o telefone no formato correspondente ((ddd) 9xxxx-xxxx)";
+    }
+
+    if (!state.email.includes("@")) {
+      emailError = "Informe um email válido";
+    }
+
+    if (cidadeError) {
+      alert(cidadeError);
+      return false;
+    }
+
+    if (prestadorError) {
+      alert(prestadorError);
+      return false;
+    }
+
+    if (diasEmbarqueError) {
+      alert(diasEmbarqueError);
+      return false;
+    }
+
+    if (horasEmbarqueError) {
+      alert(horasEmbarqueError);
+      return false;
+    }
+
+    if (telefoneError) {
+      alert(telefoneError);
+      return false;
+    }
+
+    if (emailError) {
+      alert(emailError);
+      return false;
+    }
+
+    return true;
   };
 
   render() {
+    const expandedDivStyle = {
+      width: "100%",
+      height: "200px",
+      overflowY: "scroll"
+    };
+
     return (
       <div className="body">
         <div className="cadastro">
@@ -351,15 +559,142 @@ export default class CrudCidade extends Component {
                 Lancha a jato
               </div>
 
-              <div className="taxi-aereo"></div>
-              <div className="barco"></div>
-              <div className="taxi"></div>
-              <div className="onibus"></div>
-              <div className="lancha"></div>
-              <div className="aviao"></div>
-              <div className="rabeta"></div>
-              <div className="moto-taxi"></div>
-              <div className="voadeira"></div>
+              <div className="expandedDiv">
+                <div className="taxi-aereo">
+                  <img
+                    name="taxiaereo"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="taxiaereo" onClick={this.toggle}>
+                    Taxi-Aéreo
+                  </button>
+                  <Expand open={this.state.opentaxiaereo}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="barco">
+                  <img
+                    name="barco"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="barco" onClick={this.toggle}>
+                    Barco
+                  </button>
+                  <Expand open={this.state.openbarco}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="taxi">
+                  <img
+                    name="taxi"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="taxi" onClick={this.toggle}>
+                    Taxi (Carro)
+                  </button>
+                  <Expand open={this.state.opentaxi}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="onibus">
+                  <img
+                    name="onibus"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="onibus" onClick={this.toggle}>
+                    Ônibus
+                  </button>
+                  <Expand open={this.state.openonibus}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="lancha">
+                  <img
+                    name="lancha"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="lancha" onClick={this.toggle}>
+                    Lancha a jato
+                  </button>
+                  <Expand open={this.state.openlancha}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="aviao">
+                  <img
+                    name="aviao"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="aviao" onClick={this.toggle}>
+                    Avião
+                  </button>
+                  <Expand open={this.state.openaviao}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="rabeta">
+                  <img
+                    name="rabeta"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="rabeta" onClick={this.toggle}>
+                    Rabeta
+                  </button>
+                  <Expand open={this.state.openrabeta}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="moto-taxi">
+                  <img
+                    name="mototaxi"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="mototaxi" onClick={this.toggle}>
+                    Moto-Taxi
+                  </button>
+                  <Expand open={this.state.openmototaxi}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+
+                <div className="voadeira">
+                  <img
+                    name="voadeira"
+                    src={Triangulo}
+                    alt=""
+                    onClick={this.toggle}
+                  />
+                  <button name="voadeira" onClick={this.toggle}>
+                    Voadeira
+                  </button>
+                  <Expand open={this.state.openvoadeira}>
+                    <div style={expandedDivStyle}>Hello</div>
+                  </Expand>
+                </div>
+              </div>
 
               <h2>Nome do Prestador de Servico</h2>
               <input
@@ -374,15 +709,13 @@ export default class CrudCidade extends Component {
                 <input
                   type="text"
                   id="dia"
-                  name="dia"
-                  value={this.state.dia}
+                  name="diasEmbarque"
                   onChange={this.onChange}
                 />
                 <input
                   type="text"
                   id="hora"
-                  name="hora"
-                  value={this.state.hora}
+                  name="horasEmbarque"
                   onChange={this.onChange}
                 />
                 <button onClick={this.addMoreOptions}>

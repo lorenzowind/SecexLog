@@ -8487,6 +8487,11 @@ react-error-overlay@^6.0.3:
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.3.tgz#c378c4b0a21e88b2e159a3e62b2f531fd63bf60d"
   integrity sha512-bOUvMWFQVk5oz8Ded9Xb7WVdEi3QGLC8tH7HmYP0Fdp4Bn3qw0tRFmr5TW6mvahzvmrK4a6bqWGfCevBflP+Xw==
 
+react-expand-animated@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-expand-animated/-/react-expand-animated-1.0.0.tgz#bfb621089b7e3398753e65a79bf328a23828ab69"
+  integrity sha512-hpK0yDx0TUkvyywmmhqR7ahnAc6jcG9lW+ghY6d0ohJxXYq/pBGvVZYhQMz3SF8P3E7Hy7Fjxmi/4+z3CrKpOA==
+
 react-input-autosize@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.2.2.tgz#fcaa7020568ec206bc04be36f4eb68e647c4d8c2"
