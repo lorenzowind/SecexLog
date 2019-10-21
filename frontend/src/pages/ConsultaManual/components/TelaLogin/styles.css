@@ -1,0 +1,127 @@
+.tela-login {
+    width: 419px;
+    height: 310px;
+    border: 1px solid black;
+    background: white;
+    margin: 0 auto;
+    left: 68%;
+    top: 10%;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    position: absolute;
+    display: none;
+}
+
+.icone_sair_login {
+    position: absolute;
+    top: 40px;
+    left: 373px;
+}
+
+.icone_sair_login:hover {
+    cursor: pointer;
+}
+
+input[name=usuario] {
+    box-sizing: border-box;
+    border: 1px solid gray;
+    border-radius: 30px;
+    font-size: 18px;
+    color: gray;
+    padding: 12px 20px 12px 65px;
+    width: 324px;
+    height: 52px;
+    background-position: 20px 6px; 
+    background-repeat: no-repeat;  
+    background-image: url("../../../../assets/ConsultaManual/icone_usuario.png");  
+}
+
+input[name=senha] {
+    box-sizing: border-box;
+    border: 1px solid gray;
+    border-radius: 30px;
+    font-size: 18px;
+    color: gray;
+    padding: 12px 20px 12px 65px;
+    width: 324px;
+    height: 52px;
+    background-position: 20px 6px; 
+    background-repeat: no-repeat;  
+    background-image: url("../../../../assets/ConsultaManual/icone_senha.png");  
+}
+
+input[name=usuario]:focus {
+    outline: 0px;
+}
+
+input[name=senha]:focus {
+    outline: 0px;
+}
+
+.usuario {
+    position: absolute;
+    top: 98px;
+    left: 47px;
+}
+
+.senha {
+    position: absolute;
+    top: 184px;
+    left: 47px;
+}
+
+.esqueceu-senha {
+    position: absolute;
+    top: 265px;
+    left: 75px;
+}
+
+h1[id="esqueceu-senha"] {
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.botao_login {
+    position: absolute;
+    top: 270px;
+    left: 233px;
+}
+
+input[name=login] {
+    background-image: url("../../../../assets/ConsultaManual/botao_login0.png");
+    background-repeat: no-repeat;
+    padding: 20px 40px 0px 100px;
+    border: 0px;
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
+}
+
+input[name=login]:hover {
+    cursor: pointer;
+}
+
+input[name=login]:focus {
+    outline: 0px;
+}
+
+input[name=login]:active {
+    background-image: url("../../../../assets/ConsultaManual/botao_login1.png");
+}
+
+.erro {
+    padding-top: 45px;
+    padding-left: 75px;
+    display: none;
+}
+
+h1[id="erro"] {
+    color: #ff2d2d;
+    font-size: 16px;
+}
+
+
+

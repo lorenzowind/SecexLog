@@ -1,0 +1,35 @@
+.de-sua-opiniao {
+    padding-top: 30px;
+    padding-left: 1422px;
+    display: table-cell;
+}
+
+.login {
+    padding-top: 30px;
+    padding-left: 85px;
+    display: table-cell;
+}
+
+h1[id="de_sua_opiniao"] {
+    font-size: 20px;
+    color: gray;
+}
+
+h1[id="login"] {
+    font-size: 20px;
+    color: gray;
+}
+
+h1[id="login"]:hover {
+    cursor: pointer;
+}
+
+h1[id="de_sua_opiniao"]:hover {
+    cursor: pointer;
+}
+
+.logo_tce {
+    position: absolute;
+    top: 24px;
+    left: 1759px;
+}
