@@ -17,9 +17,11 @@ export default class Tela_login extends React.Component {
         var usuario = document.getElementsByClassName('usuario');
         var senha = document.getElementsByClassName('senha');
         var el = document.getElementsByClassName('erro');
-        /*usuario admin teste
-            - usuario: admin
-            - senha: 123*/
+        
+        //usuario admin teste
+        //- usuario: admin
+        //- senha: 123
+    
         if(usuario[0].firstChild.value !== "admin"
         || senha[0].firstChild.value !== "123"){
             el[0].style.display = 'block';

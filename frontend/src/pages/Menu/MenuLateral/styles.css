@@ -1,18 +1,22 @@
 .menu-aberto {
-    position: absolute;
-    top: 0px;
+    position: fixed;
     left: 0px;
-    width: 399px;
-    height: 1079px;
+    width: 400px;
+    height: 100%;
     box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
     border: solid 1px #707070;
     background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
+    display: none;
 }
 
 .secex_logo {
     position: absolute;
     top: 34px;
     left: 96px;
+}
+
+.secex_logo:hover {
+    cursor: pointer;
 }
 
 .icone_cadastro {
@@ -73,7 +77,7 @@ h1[id="logistica"] {
 
 .icone_calendario {
     position: absolute;
-    top: 360px;
+    top: 330px;
     left: 20px;
 }
 
@@ -84,13 +88,13 @@ h1[id="calendario"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 345px;
+    top: 315px;
     left: 75px;
 }
 
 .icone_historico {
     position: absolute;
-    top: 610px;
+    top: 560px;
     left: 20px;
 }
 
@@ -101,13 +105,13 @@ h1[id="historico"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 595px;
+    top: 545px;
     left: 80px;
 }
 
 .icone_backup {
     position: absolute;
-    top: 680px;
+    top: 630px;
     left: 20px;
 }
 
@@ -118,13 +122,13 @@ h1[id="backup"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 660px;
+    top: 610px;
     left: 80px;
 }
 
 .icone_relatorio {
     position: absolute;
-    top: 750px;
+    top: 700px;
     left: 28px;
 }
 
@@ -135,13 +139,13 @@ h1[id="relatorio"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 735px;
+    top: 685px;
     left: 80px;
 }
 
 .icone_opiniao {
     position: absolute;
-    top: 900px;
+    top: 820px;
     left: 28px;
 }
 
@@ -152,13 +156,13 @@ h1[id="opiniao_menu"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 880px;
+    top: 800px;
     left: 85px;
 }
 
 .icone_ajuda {
     position: absolute;
-    top: 970px;
+    top: 900px;
     left: 28px;
 }
 
@@ -169,6 +173,26 @@ h1[id="ajuda"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 950px;
+    top: 880px;
     left: 85px;
+}
+
+.menu-fechado {
+    position: fixed;
+    left: 0px;
+    width: 70px;
+    height: 100%;
+    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+    border: solid 1px #707070;
+    background-image: linear-gradient(to bottom, #292eec, #6ae8e5);   
+}
+
+.icone_abrir {
+    position: absolute;
+    top: 30px;
+    left: 15px;
+}
+
+.icone_abrir:hover {
+    cursor: pointer;
 }

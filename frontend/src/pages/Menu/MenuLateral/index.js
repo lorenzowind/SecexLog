@@ -9,18 +9,34 @@ import icone_backup from "../../../assets/Menu/icone_backup.png";
 import icone_relatorio from "../../../assets/Menu/icone_relatorio.png";
 import icone_opiniao from "../../../assets/Menu/icone_opiniao.png";
 import icone_ajuda from "../../../assets/Menu/icone_ajuda.png";
+import icone_abrir from "../../../assets/Menu/icone_abrir.png";
 
 import "./styles.css";
 
 export default class MenuLateral extends React.Component {
+
+    evento_abrirMenu() {
+        var el_1 = document.getElementsByClassName('menu-aberto');
+        var el_2 = document.getElementsByClassName('menu-fechado');
+        el_1[0].style.display = 'block';
+        el_2[0].style.display = 'none';
+    }
+
+    evento_fecharMenu() {
+        var el_1 = document.getElementsByClassName('menu-aberto');
+        var el_2 = document.getElementsByClassName('menu-fechado');
+        el_1[0].style.display = 'none';
+        el_2[0].style.display = 'block';
+    }
+
     render() {
         return(
             <div className="menu-lateral">
-                
+
                 <div className="menu-aberto">
                     
                     <div className="secex_logo">
-                        <img src={secex_logo} alt=""/>
+                        <img src={secex_logo} alt="" onClick={this.evento_fecharMenu}/>
                     </div>
 
                     <div className="icone_cadastro">
@@ -77,7 +93,11 @@ export default class MenuLateral extends React.Component {
                 </div>
                 
                 <div className="menu-fechado">
-                
+
+                    <div className="icone_abrir">
+                        <img src={icone_abrir} alt="" onClick={this.evento_abrirMenu}/>
+                    </div>
+
                 </div>
             
             </div> 
