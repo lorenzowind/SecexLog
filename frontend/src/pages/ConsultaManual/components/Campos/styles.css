@@ -1,0 +1,93 @@
+.trajeto {
+    display: table-cell;
+    justify-content: center;
+    padding-left: 409px;
+    cursor: default;
+}
+
+h1[id="trajeto"] {
+    font-size: 20px;
+}
+
+.cidade-saida {
+    padding-top: 25px;
+    padding-left: 30px;
+    display: table-cell;
+    justify-content: center;
+}
+
+.cidade-destino {
+    padding-top: 25px;      
+    padding-left: 20px;
+    display: table-cell;
+    justify-content: center;
+}
+
+input[name=cidade-saida] {
+    box-sizing: border-box;
+    border: 1px solid gray;
+    border-radius: 30px;
+    font-size: 18px;
+    color: gray;
+    padding: 12px 20px 12px 55px;
+    width: 331px;
+    height: 55px;
+    background-position: 20px 9px; 
+    background-repeat: no-repeat;  
+    background-image: url("../../../../assets/ConsultaManual/icone_cidade_saida.png");  
+}
+
+input[name=cidade-saida]:focus {
+    outline: 0px;
+}
+
+input[name=cidade-destino] {
+    box-sizing: border-box;
+    border: 1px solid gray;
+    border-radius: 30px;
+    font-size: 18px;
+    color: gray;
+    padding: 12px 20px 12px 55px;
+    width: 331px;
+    height: 55px;
+    background-position: 20px 9px; 
+    background-repeat: no-repeat;  
+    background-image: url("../../../../assets/ConsultaManual/icone_cidade_destino.png");
+}
+
+input[name=cidade-destino]:focus {
+    outline: 0px;
+}
+
+.ida { 
+    padding-top: 25px;
+    padding-left: 25px;
+    display: table-cell;
+    justify-content: center;
+    align-items: center;
+}
+
+input[name=ida]:hover {
+    cursor: pointer;
+}
+
+input[name=ida] {
+    border: 1px solid gray;
+    color: gray;
+    font-size: 18px;
+    border-radius: 30px;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    padding-left: 20px;
+    width: 180px;
+    height: 55px; 
+    background-position: 140px 9px; 
+    background-repeat: no-repeat;
+    background-image: url("../../../../assets/ConsultaManual/botao_calendario_adicionar.png");
+}
+
+input[name=ida]:focus {
+    outline: 0px;
+}
+
+
