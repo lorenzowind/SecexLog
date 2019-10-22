@@ -31,7 +31,7 @@ input[name=cidade-saida] {
     color: gray;
     padding: 12px 20px 12px 55px;
     width: 331px;
-    height: 55px;
+    height: 57px;
     background-position: 20px 9px; 
     background-repeat: no-repeat;  
     background-image: url("../../../../assets/ConsultaManual/icone_cidade_saida.png");  
@@ -49,7 +49,7 @@ input[name=cidade-destino] {
     color: gray;
     padding: 12px 20px 12px 55px;
     width: 331px;
-    height: 55px;
+    height: 57px;
     background-position: 20px 9px; 
     background-repeat: no-repeat;  
     background-image: url("../../../../assets/ConsultaManual/icone_cidade_destino.png");
@@ -79,9 +79,9 @@ input[name=ida] {
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
     padding-left: 20px;
-    width: 180px;
-    height: 55px; 
-    background-position: 140px 9px; 
+    width: 209px;
+    height: 57px; 
+    background-position: 147px 11px; 
     background-repeat: no-repeat;
     background-image: url("../../../../assets/ConsultaManual/botao_calendario_adicionar.png");
 }

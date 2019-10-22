@@ -1,17 +1,18 @@
 .de-sua-opiniao {
-    padding-top: 30px;
-    padding-left: 1422px;
+    padding-top: 50px;
+    padding-left: 1500px;
     display: table-cell;
 }
 
 .login {
-    padding-top: 30px;
-    padding-left: 85px;
+    padding-top: 50px;
+    padding-left: 55px;
     display: table-cell;
 }
 
 h1[id="de_sua_opiniao"] {
     font-size: 20px;
+    width: 150px;
     color: gray;
 }
 
@@ -29,7 +30,6 @@ h1[id="de_sua_opiniao"]:hover {
 }
 
 .logo_tce {
-    position: absolute;
-    top: 24px;
-    left: 1759px;
+    padding-top: 20px;
+    padding-left: 80px;
 }

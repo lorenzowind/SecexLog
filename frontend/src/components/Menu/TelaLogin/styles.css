@@ -74,18 +74,18 @@ input[name="senha"]:focus {
 
 .esqueceu-senha {
   position: absolute;
-  top: 265px;
-  left: 75px;
+  top: 270px;
+  left: 60px;
 }
 
 h1[id="esqueceu-senha"] {
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .botao_login {
   position: absolute;
-  top: 270px;
+  top: 263px;
   left: 233px;
 }
 

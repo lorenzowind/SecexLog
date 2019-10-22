@@ -1,6 +1,6 @@
 .tela-opiniao {
-  width: 850px;
-  height: 550px;
+  width: 875px;
+  height: 576px;
   border: 1px solid black;
   background: white;
   margin: 0 auto;
@@ -46,9 +46,9 @@ h1[id="opiniao"] {
 
 h1[id="assunto"] {
   border: 1px solid gray;
-  width: 350px;
-  height: 50px;
-  padding-left: 25px;
+  width: 370px;
+  height: 60px;
+  padding-left: 37px;
   border-radius: 30px;
   padding-top: 20px;
   font-size: 20px;
@@ -60,8 +60,8 @@ h1[id="assunto"]:hover {
 
 .selecione_assunto {
   border: 1px solid gray;
-  width: 375px;
-  height: 200px;
+  width: 371px;
+  height: 193px;
   border-radius: 30px;
   position: absolute;
   top: 250px;
@@ -71,9 +71,10 @@ h1[id="assunto"]:hover {
 h1[id="selecione_assunto"] {
   border: 0px;
   width: 300px;
-  padding-top: 10px;
-  height: 20px;
-  padding-left: 50px;
+  padding-top: 20px;
+  padding-block-end: 25px;
+  height: 27px;
+  padding-left: 60px;
   border-radius: 30px;
   font-size: 20px;
 }
@@ -107,8 +108,8 @@ input[name="enviar"]:hover {
 
 .texto_opiniao {
   position: absolute;
-  top: 260px;
-  left: 90px;
+  top: 241px;
+  left: 144px;
   display: flex;
   justify-content: center;
   display: none;
@@ -124,7 +125,7 @@ textarea {
   padding-right: 30px;
   padding-top: 20px;
   width: 606px;
-  height: 160px;
+  height: 191px;
 }
 
 textarea:focus {
