@@ -1,198 +1,169 @@
 .menu-aberto {
-    position: fixed;
-    left: 0px;
-    width: 400px;
-    height: 100%;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
-    border: solid 1px #707070;
-    background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
-    display: none;
+  position: fixed;
+  left: 0;
+  width: 250px;
+  height: 100%;
+  margin-right: 130px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+  border: solid 1px #707070;
+  background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
 }
 
 .secex_logo {
-    position: absolute;
-    top: 34px;
-    left: 96px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .secex_logo:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .icone_cadastro {
-    position: absolute;
-    top: 150px;
-    left: 20px;
+  margin-top: 60px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="cadastro"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 135px;
-    left: 80px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 5px;
+  margin-left: 15px;
 }
 
 .icone_configuracao {
-    position: absolute;
-    top: 210px;
-    left: 20px;
+  margin-top: 30px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="configuracao"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 200px;
-    left: 80px;
-}
-
-h1[id="fonte"] {
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    font-size: 18px;
-    top: 250px;
-    left: 75px;
-}
-
-h1[id="logistica"] {
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    font-size: 18px;
-    top: 275px;
-    left: 75px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 10px;
+  margin-left: 15px;
 }
 
 .icone_calendario {
-    position: absolute;
-    top: 330px;
-    left: 20px;
+  margin-top: 30px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="calendario"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 315px;
-    left: 75px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 10px;
+  margin-left: 15px;
 }
 
 .icone_historico {
-    position: absolute;
-    top: 560px;
-    left: 20px;
+  margin-top: 30px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="historico"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 545px;
-    left: 80px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 7px;
+  margin-left: 15px;
 }
 
 .icone_backup {
-    position: absolute;
-    top: 630px;
-    left: 20px;
+  margin-top: 30px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="backup"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 610px;
-    left: 80px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 7px;
+  margin-left: 15px;
 }
 
 .icone_relatorio {
-    position: absolute;
-    top: 700px;
-    left: 28px;
+  margin-top: 30px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="relatorio"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 685px;
-    left: 80px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 12px;
+  margin-left: 15px;
 }
 
 .icone_opiniao {
-    position: absolute;
-    top: 820px;
-    left: 28px;
+  margin-top: 120px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="opiniao_menu"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 800px;
-    left: 85px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 12px;
+  margin-left: 15px;
 }
 
 .icone_ajuda {
-    position: absolute;
-    top: 900px;
-    left: 28px;
+  margin-top: 10px;
+  margin-left: 25px;
+  display: flex;
 }
 
 h1[id="ajuda"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 880px;
-    left: 85px;
+  font-size: 18px;
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  margin-top: 10px;
+  margin-left: 15px;
 }
 
 .menu-fechado {
-    position: fixed;
-    left: 0px;
-    width: 70px;
-    height: 100%;
-    box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
-    border: solid 1px #707070;
-    background-image: linear-gradient(to bottom, #292eec, #6ae8e5);   
+  position: fixed;
+  left: 0px;
+  width: 70px;
+  height: 100%;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
+  border: solid 1px #707070;
+  background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
 }
 
 .icone_abrir {
-    position: absolute;
-    top: 30px;
-    left: 15px;
+  position: absolute;
+  top: 30px;
+  left: 15px;
 }
 
 .icone_abrir:hover {
-    cursor: pointer;
+  cursor: pointer;
 }

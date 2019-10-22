@@ -57,8 +57,8 @@ export default class Tela_inicial extends React.Component {
           <img src={barra_progresso} alt="" />
         </div>
 
-        {trajetos.map(item => (
-          <Campos num={item.num} />
+        {trajetos.map((item, index) => (
+          <Campos num={item.num} key={index} />
         ))}
 
         <div className="retirar-cidade">

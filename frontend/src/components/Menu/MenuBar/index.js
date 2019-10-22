@@ -19,7 +19,7 @@ export default class Header extends React.Component {
 
   render() {
     return (
-      <div className="header">
+      <div className="headerTCE">
         <div className="de-sua-opiniao">
           <h1 id="de_sua_opiniao" onClick={this.evento_opiniao}>
             Dê sua Opinião

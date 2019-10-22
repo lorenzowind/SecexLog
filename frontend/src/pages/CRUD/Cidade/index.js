@@ -6,12 +6,12 @@ import makeAnimated from "react-select/animated";
 import Calendar from "../components/Calendar/Calendar";
 import Expand from "react-expand-animated";
 import Menu from "../../../components/Menu/MenuLateral/index";
+import MenuBar from "../../../components/Menu/MenuBar/index";
 //import api from "../../../services/api";
 
 import "moment/locale/pt-br";
 
 import "react-day-picker/lib/style.css";
-import "./styles.css";
 
 import "moment/locale/pt-br";
 
@@ -346,7 +346,11 @@ export default class CrudCidade extends Component {
 
     return (
       <div className="body">
-        <Menu />
+        <div className="Menu">
+          <Menu />
+          <MenuBar />
+        </div>
+
         <div className="cadastro">
           <HeaderCidade />
           <form>
