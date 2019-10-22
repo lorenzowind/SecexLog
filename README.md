@@ -20,6 +20,35 @@
 
 ##### OBS: Todos os retornos são em JSON
 
+#### Login:
+
+- POST:
+> localhost:3333/login (realizará a autenticação do usuário através do login e senha)
+###### OBS: A resposta dessa rota (em caso de sucesso) será um `json` com as informações do usuário junto com o `token` de autenticação do mesmo, o token servirá, basicamente, para verificar se o usuário está logado e para controlar seu nível de acesso (por exemplo: verificar se ele pode, ou não, acessar uma área de administrador). O json da resposta em caso de sucesso no login será desse formato: 
+```
+{
+  id,
+  login,
+  nome,
+  email,
+  cargo,
+  token,
+  iat,
+  exp
+}
+```
+###### Os campos estarão exatamente com esses mesmos nomes. Os campos iat e exp significam, respectivamente, `emitido em (...)` e `expira em (...)`. Como os nomes sugerem, esses campos indicarão quando o token foi criado e quando ele será expirado (1 dia após a criação), isso serve para manter o controle das autenticações no sistema. Reiterando: é importante guardar o token do usuário pelos motivos explicados anteriormente, `o token deve ser passado como header (o name do header deve ser, exatamente, Authorization)` quando o usuário fizer alguma requisição (por exemplo: cadastrar um usuário), `já que o usuário não tem acesso a ele` (front-end deve predefinir isso). Exemplo de como deve estar o token no header Authorization: `bearer tokendeexemplo12345`
+
+- GET: 
+> localhost:3333/validateToken (validar o token)
+###### OBS: deve receber o token já predefinido em uma requisição do tipo body. Retorna true ou false.
+
+#### Recuperar senha:
+
+- POST:
+> localhost:3333/forgot_password
+##### OBS: deve receber o email do usuário em uma requisição do tipo body e, em caso de sucesso, enviará um email para o usuário com uma nova senha gerada automaticamente. Como o sistema não está em produção, a plataforma usada para o teste dos emails foi o `mailtrap`.
+
 #### Usuários: 
 
 ###### OBS: Os names dos inputs devem ser: nome, cargo, login, senha e email 
