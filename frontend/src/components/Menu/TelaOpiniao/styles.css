@@ -1,0 +1,132 @@
+.tela-opiniao {
+  width: 850px;
+  height: 550px;
+  border: 1px solid black;
+  background: white;
+  margin: 0 auto;
+  left: 28%;
+  top: 202px;
+  border-top-left-radius: 50px;
+  border-top-right-radius: 50px;
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  position: absolute;
+  display: none;
+}
+
+.icone_sair_opiniao {
+  float: right;
+  padding-top: 50px;
+  padding-right: 50px;
+}
+
+.icone_sair_opiniao:hover {
+  cursor: pointer;
+}
+
+h1[id="opiniao"] {
+  font-size: 50px;
+}
+
+.opiniao {
+  padding-top: 58px;
+  padding-left: 125px;
+  display: flex;
+  justify-content: center;
+}
+
+.assunto {
+  display: flex;
+  justify-content: center;
+  border-radius: 30px;
+  position: absolute;
+  top: 158px;
+  left: 252px;
+}
+
+h1[id="assunto"] {
+  border: 1px solid gray;
+  width: 350px;
+  height: 50px;
+  padding-left: 25px;
+  border-radius: 30px;
+  padding-top: 20px;
+  font-size: 20px;
+}
+
+h1[id="assunto"]:hover {
+  cursor: pointer;
+}
+
+.selecione_assunto {
+  border: 1px solid gray;
+  width: 375px;
+  height: 200px;
+  border-radius: 30px;
+  position: absolute;
+  top: 250px;
+  left: 252px;
+}
+
+h1[id="selecione_assunto"] {
+  border: 0px;
+  width: 300px;
+  padding-top: 10px;
+  height: 20px;
+  padding-left: 50px;
+  border-radius: 30px;
+  font-size: 20px;
+}
+
+h1[id="selecione_assunto"]:hover {
+  cursor: pointer;
+}
+
+input[name="selecione_assunto"]:focus {
+  outline: 0px;
+}
+
+input[name="enviar"] {
+  position: absolute;
+  top: 460px;
+  left: 650px;
+  background-image: url("../../../assets/ConsultaManual/icone_enviar.png");
+  background-repeat: no-repeat;
+  padding: 40px 38px 0px 26px;
+  border: 0px;
+  border-radius: 40px;
+}
+
+input[name="enviar"]:focus {
+  outline: 0px;
+}
+
+input[name="enviar"]:hover {
+  cursor: pointer;
+}
+
+.texto_opiniao {
+  position: absolute;
+  top: 260px;
+  left: 90px;
+  display: flex;
+  justify-content: center;
+  display: none;
+}
+
+textarea {
+  resize: none;
+  border: 1px solid gray;
+  border-radius: 30px;
+  font-size: 18px;
+  color: gray;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 20px;
+  width: 606px;
+  height: 160px;
+}
+
+textarea:focus {
+  outline: 0px;
+}

@@ -5,7 +5,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Calendar from "../components/Calendar/Calendar";
 import Expand from "react-expand-animated";
-import api from "../../../services/api";
+import Menu from "../../../components/Menu/MenuLateral/index";
+//import api from "../../../services/api";
 
 import "moment/locale/pt-br";
 
@@ -345,6 +346,7 @@ export default class CrudCidade extends Component {
 
     return (
       <div className="body">
+        <Menu />
         <div className="cadastro">
           <HeaderCidade />
           <form>

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import HeaderUser from "../components/HeaderUsuario/index";
+import MenuBar from "../../../components/Menu/MenuBar/index";
+import Menu from "../../../components/Menu/MenuLateral/index";
 
 import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Seach from "../../../assets/Cadastro de usuário/pesquisar.png";
@@ -460,6 +462,8 @@ export default class CrudUsuario extends Component {
   render() {
     return (
       <div className="body">
+        <MenuBar />
+        <Menu />
         <HeaderUser />
 
         <h2>Pesquisar usuários</h2>
