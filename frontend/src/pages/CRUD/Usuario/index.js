@@ -462,191 +462,196 @@ export default class CrudUsuario extends Component {
   render() {
     return (
       <div className="body">
-        <MenuBar />
-        <Menu />
-        <HeaderUser />
-
-        <h2>Pesquisar usuários</h2>
-        <div className="searchUser">
-          <input
-            type="text"
-            id="text"
-            name="search"
-            onChange={this.handleChange}
-            onKeyDown={e => {
-              if (e.key === "Enter") {
-                this.handleSearch();
-              }
-            }}
-            disabled={this.state.popUpStats}
-          />
-          <img src={Seach} alt="" onClick={this.handleSearch} />
+        <div className="Menu">
+          <Menu />
+          <MenuBar />
         </div>
 
-        <div className="addUser">
-          <h2>Adicionar Usuário</h2>
-          <button onClick={this.createPopUp} disabled={this.state.popUpStats}>
-            <img src={Mais} alt="" />
-          </button>
-        </div>
+        <div className="cadastro">
+          <HeaderUser />
 
-        <div className="tableUser">
-          <table>
-            <thead>
-              <tr>
-                <th align="left">Usuário</th>
-                <th align="left">Login</th>
-                <th align="left">Email</th>
-                <th align="left">Cargo</th>
-                <th align="left">Senha</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.row.map((c, i) => (
-                <tr key={i}>
-                  <td>{c.nome}</td>
-                  <td>{c.login}</td>
-                  <td>{c.email}</td>
-                  <td>{c.cargo}</td>
-                  <td>
-                    <input type="password" value={c.senha} disabled={true} />
-                  </td>
-                  <td>
-                    <img
-                      src={Edit}
-                      alt=""
-                      onClick={
-                        (e = () => {
-                          const content = c;
-                          this.editPopUp(content);
-                        })
-                      }
-                    />
-                  </td>
+          <h2>Pesquisar usuários</h2>
+          <div className="searchUser">
+            <input
+              type="text"
+              id="text"
+              name="search"
+              onChange={this.handleChange}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  this.handleSearch();
+                }
+              }}
+              disabled={this.state.popUpStats}
+            />
+            <img src={Seach} alt="" onClick={this.handleSearch} />
+          </div>
+
+          <div className="addUser">
+            <h2>Adicionar Usuário</h2>
+            <button onClick={this.createPopUp} disabled={this.state.popUpStats}>
+              <img src={Mais} alt="" />
+            </button>
+          </div>
+
+          <div className="tableUser">
+            <table>
+              <thead>
+                <tr>
+                  <th align="left">Usuário</th>
+                  <th align="left">Login</th>
+                  <th align="left">Email</th>
+                  <th align="left">Cargo</th>
+                  <th align="left">Senha</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {this.state.row.map((c, i) => (
+                  <tr key={i}>
+                    <td>{c.nome}</td>
+                    <td>{c.login}</td>
+                    <td>{c.email}</td>
+                    <td>{c.cargo}</td>
+                    <td>
+                      <input type="password" value={c.senha} disabled={true} />
+                    </td>
+                    <td>
+                      <img
+                        src={Edit}
+                        alt=""
+                        onClick={
+                          (e = () => {
+                            const content = c;
+                            this.editPopUp(content);
+                          })
+                        }
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {this.state.popUp.map((c, i) => (
+            <div className="popUp" key={i}>
+              <div>
+                <div className="title">
+                  <h2>{c.h1}</h2>
+                  <img src={Close} alt="" onClick={this.handleClose} />
+                </div>
+
+                <h4>{c.nome}</h4>
+                <input
+                  type="text"
+                  name="nome"
+                  onChange={this.handleChange}
+                  required
+                />
+
+                <h4>{c.login}</h4>
+                <input
+                  type="text"
+                  name="login"
+                  onChange={this.handleChange}
+                  required
+                />
+
+                <h4>{c.cargo}</h4>
+                <select
+                  name="cargo"
+                  onChange={this.handleChange}
+                  defaultValue="selected"
+                  required
+                >
+                  <option defaultValue="selected"></option>
+                  <option value="Admin">Admin</option>
+                  <option value="User">User</option>
+                </select>
+
+                <h4>{c.email}</h4>
+                <input
+                  type="email"
+                  name="email"
+                  onChange={this.handleChange}
+                  required
+                />
+
+                <h4>{c.senha}</h4>
+                <input
+                  type="password"
+                  name="senha"
+                  onChange={this.handleChange}
+                  required
+                />
+
+                <button onClick={this.handleSubmit} />
+              </div>
+            </div>
+          ))}
+          {this.state.editPopUp.map((c, i) => (
+            <div className="popUp" key={i}>
+              <div>
+                <div className="title">
+                  <h2>{c.h1}</h2>
+                  <img src={Close} alt="" onClick={this.handleClose} />
+                </div>
+
+                <h4>{c.nome}</h4>
+                <input
+                  type="text"
+                  name="nome"
+                  onChange={this.handleChange}
+                  defaultValue={this.state.editNome}
+                  required
+                />
+
+                <h4>{c.login}</h4>
+                <input
+                  type="text"
+                  name="login"
+                  onChange={this.handleChange}
+                  defaultValue={this.state.editLogin}
+                  required
+                />
+
+                <h4>{c.cargo}</h4>
+                <select
+                  name="cargo"
+                  onChange={this.handleChange}
+                  defaultValue={this.state.editCargo}
+                  required
+                >
+                  <option value="Admin">Admin</option>
+                  <option value="User">User</option>
+                </select>
+
+                <h4>{c.email}</h4>
+                <input
+                  type="email"
+                  name="email"
+                  onChange={this.handleChange}
+                  defaultValue={this.state.editEmail}
+                  required
+                />
+
+                <h4>{c.senha}</h4>
+                <input
+                  type="password"
+                  name="senha"
+                  onChange={this.handleChange}
+                  defaultValue={this.state.editSenha}
+                  required
+                />
+
+                <div className="btns">
+                  <img src={Trash} alt="Deletar" onClick={this.handleDelete} />
+                  <button onClick={this.handleEditSubmit} />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-
-        {this.state.popUp.map((c, i) => (
-          <div className="popUp" key={i}>
-            <div>
-              <div className="title">
-                <h2>{c.h1}</h2>
-                <img src={Close} alt="" onClick={this.handleClose} />
-              </div>
-
-              <h4>{c.nome}</h4>
-              <input
-                type="text"
-                name="nome"
-                onChange={this.handleChange}
-                required
-              />
-
-              <h4>{c.login}</h4>
-              <input
-                type="text"
-                name="login"
-                onChange={this.handleChange}
-                required
-              />
-
-              <h4>{c.cargo}</h4>
-              <select
-                name="cargo"
-                onChange={this.handleChange}
-                defaultValue="selected"
-                required
-              >
-                <option defaultValue="selected"></option>
-                <option value="Admin">Admin</option>
-                <option value="User">User</option>
-              </select>
-
-              <h4>{c.email}</h4>
-              <input
-                type="email"
-                name="email"
-                onChange={this.handleChange}
-                required
-              />
-
-              <h4>{c.senha}</h4>
-              <input
-                type="password"
-                name="senha"
-                onChange={this.handleChange}
-                required
-              />
-
-              <button onClick={this.handleSubmit} />
-            </div>
-          </div>
-        ))}
-        {this.state.editPopUp.map((c, i) => (
-          <div className="popUp" key={i}>
-            <div>
-              <div className="title">
-                <h2>{c.h1}</h2>
-                <img src={Close} alt="" onClick={this.handleClose} />
-              </div>
-
-              <h4>{c.nome}</h4>
-              <input
-                type="text"
-                name="nome"
-                onChange={this.handleChange}
-                defaultValue={this.state.editNome}
-                required
-              />
-
-              <h4>{c.login}</h4>
-              <input
-                type="text"
-                name="login"
-                onChange={this.handleChange}
-                defaultValue={this.state.editLogin}
-                required
-              />
-
-              <h4>{c.cargo}</h4>
-              <select
-                name="cargo"
-                onChange={this.handleChange}
-                defaultValue={this.state.editCargo}
-                required
-              >
-                <option value="Admin">Admin</option>
-                <option value="User">User</option>
-              </select>
-
-              <h4>{c.email}</h4>
-              <input
-                type="email"
-                name="email"
-                onChange={this.handleChange}
-                defaultValue={this.state.editEmail}
-                required
-              />
-
-              <h4>{c.senha}</h4>
-              <input
-                type="password"
-                name="senha"
-                onChange={this.handleChange}
-                defaultValue={this.state.editSenha}
-                required
-              />
-
-              <div className="btns">
-                <img src={Trash} alt="Deletar" onClick={this.handleDelete} />
-                <button onClick={this.handleEditSubmit} />
-              </div>
-            </div>
-          </div>
-        ))}
       </div>
     );
   }
