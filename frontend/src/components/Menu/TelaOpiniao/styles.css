@@ -1,11 +1,10 @@
 .tela-opiniao {
-  width: 875px;
-  height: 576px;
+  width: 700px;
+  height: 525px;
   border: 1px solid black;
   background: white;
-  margin: 0 auto;
-  left: 28%;
-  top: 202px;
+  left: 32%;
+  top: 200%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
   border-bottom-left-radius: 50px;
@@ -16,8 +15,8 @@
 
 .icone_sair_opiniao {
   float: right;
-  padding-top: 50px;
-  padding-right: 50px;
+  padding-top: 30px;
+  padding-right: 30px;
 }
 
 .icone_sair_opiniao:hover {
@@ -29,8 +28,8 @@ h1[id="opiniao"] {
 }
 
 .opiniao {
-  padding-top: 58px;
-  padding-left: 125px;
+  padding-top: 8%;
+  padding-left: 14%;
   display: flex;
   justify-content: center;
 }
@@ -39,9 +38,8 @@ h1[id="opiniao"] {
   display: flex;
   justify-content: center;
   border-radius: 30px;
-  position: absolute;
-  top: 158px;
-  left: 252px;
+  padding-left: 3%;
+  padding-top: 4%;
 }
 
 h1[id="assunto"] {
@@ -63,9 +61,8 @@ h1[id="assunto"]:hover {
   width: 371px;
   height: 193px;
   border-radius: 30px;
-  position: absolute;
-  top: 250px;
-  left: 252px;
+  margin-top: 1%;
+  margin-left: 25%;
 }
 
 h1[id="selecione_assunto"] {
@@ -87,10 +84,13 @@ input[name="selecione_assunto"]:focus {
   outline: 0px;
 }
 
+.enviar {
+  float: right;
+  padding-right: 20%;
+  padding-top: 5%;
+}
+
 input[name="enviar"] {
-  position: absolute;
-  top: 460px;
-  left: 650px;
   background-image: url("../../../assets/ConsultaManual/icone_enviar.png");
   background-repeat: no-repeat;
   padding: 40px 38px 0px 26px;
@@ -107,11 +107,9 @@ input[name="enviar"]:hover {
 }
 
 .texto_opiniao {
-  position: absolute;
-  top: 241px;
-  left: 144px;
-  display: flex;
-  justify-content: center;
+  float: left;
+  padding-left: 7%;
+  padding-top: 1%;
   display: none;
 }
 
@@ -125,7 +123,7 @@ textarea {
   padding-right: 30px;
   padding-top: 20px;
   width: 606px;
-  height: 191px;
+  height: 193px;
 }
 
 textarea:focus {

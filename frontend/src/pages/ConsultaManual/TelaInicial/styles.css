@@ -1,23 +1,21 @@
 .logo_secexlog {
-    padding-top: 98px;
-    padding-left: 566px;
+    display: flex;
+    justify-content: center;
+    padding-right: 4%;
+    padding-top: 3%;
 }
 
 .barra_progresso {
-    padding-top: 40px;
-    padding-left: 808px;
-    padding-block-end: 50px;
-}
-
-.adicionar-cidade {
-    padding-left: 49%;
+    padding-top: 2%;
+    display: flex;
+    justify-content: center;
+    padding-left: 1%;
+    padding-block-end: 2%;
 }
 
 .consulta {
-    padding-top: 50px;
-    display: flex;
-    justify-content: center;
-    padding-block-end: 90px;
+    padding-top: 5%;
+    padding-left: 47%;
 }
 
 input[name=consulta] {
@@ -43,16 +41,20 @@ input[name=consulta]:active {
     background-image: url("../../../assets/ConsultaManual/botao_consulta1.png");
 }
 
+.operacao {
+    display: table-cell;
+    float: left;
+    padding-left: 60%;
+    padding-top: 2%;
+}
+
 .retirar-cidade {
     display: table-cell;
-    padding-left: 1100px;
-    padding-top: 70px;
 }
 
 .adicionar-cidade {
     display: table-cell;
-    padding-left: 45px;
-    padding-top: 70px;
+    padding-left: 5%;
 }
 
 h1[id="retira"] {
@@ -81,6 +83,7 @@ h1[id="retirar-cidade"] {
     display: table-cell;
     font-size: 20px;
     padding-left: 20px;
+    width: auto;
 }
 
 h1[id="retirar-cidade"]:hover {
@@ -91,6 +94,7 @@ h1[id="adicionar-cidade"] {
     display: table-cell;
     font-size: 20px;
     padding-left: 20px;
+    width: 300px;
 }
 
 h1[id="adicionar-cidade"] {

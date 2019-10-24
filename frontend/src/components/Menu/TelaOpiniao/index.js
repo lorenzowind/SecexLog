@@ -87,12 +87,12 @@ export default class Tela_opiniao extends React.Component {
           </h1>
         </div>
 
-        <div className="enviar">
-          <input type="button" name="enviar" onClick={this.evento_enviar} />
-        </div>
-
         <div className="texto_opiniao">
           <textarea placeholder="Escreva sua opinião..." />
+        </div>
+
+        <div className="enviar">
+          <input type="button" name="enviar" onClick={this.evento_enviar} />
         </div>
       </div>
     );

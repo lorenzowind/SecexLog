@@ -6,6 +6,7 @@ import barra_progresso from "../../../assets/ConsultaManual/barra_progresso.png"
 import Header from "../../../components/Menu/MenuBar/index";
 import Campos from "../components/Campos/index";
 import TelaLogin from "../../../components/Menu/TelaLogin/index";
+import TelaEsqueceuSenha from "../../../components/Menu/TelaEsqueceuSenha/index";
 
 import "./styles.css";
 
@@ -57,26 +58,30 @@ export default class Tela_inicial extends React.Component {
           <img src={barra_progresso} alt="" />
         </div>
 
-        {trajetos.map(item => (
-          <Campos num={item.num} />
+        {trajetos.map((item, index) => (
+          <Campos num={item.num} key={index}/>
         ))}
 
-        <div className="retirar-cidade">
-          <h1 id="retira" onClick={this.evento_retirarTrajeto}>
-            -
-          </h1>
-          <h1 id="retirar-cidade" onClick={this.evento_retirarTrajeto}>
-            Retirar cidade
-          </h1>
-        </div>
+        <div className="operacao">
+          
+          <div className="retirar-cidade">
+            <h1 id="retira" onClick={this.evento_retirarTrajeto}>
+              -
+            </h1>
+            <h1 id="retirar-cidade" onClick={this.evento_retirarTrajeto}>
+              Retirar cidade
+            </h1>
+          </div>
 
-        <div className="adicionar-cidade">
-          <h1 id="adiciona" onClick={this.evento_adicionarTrajeto}>
-            +
-          </h1>
-          <h1 id="adicionar-cidade" onClick={this.evento_adicionarTrajeto}>
-            Mais cidades para auditar
-          </h1>
+          <div className="adicionar-cidade">
+            <h1 id="adiciona" onClick={this.evento_adicionarTrajeto}>
+              +
+            </h1>
+            <h1 id="adicionar-cidade" onClick={this.evento_adicionarTrajeto}>
+              Mais cidades para auditar
+            </h1>
+          </div>
+          
         </div>
 
         <div className="consulta">
@@ -88,6 +93,8 @@ export default class Tela_inicial extends React.Component {
         </div>
 
         <TelaLogin />
+        <TelaEsqueceuSenha/>
+
       </div>
     );
   }

@@ -1,15 +1,18 @@
 import React from "react";
 
 import icone_sair from "../../../assets/ConsultaManual/icone_sair_menor.png";
-
+ 
 import "./styles.css";
 
 export default class Tela_login extends React.Component {
+  
   evento_sair() {
     var el_1 = document.getElementsByClassName("tela-login");
     var el_2 = document.getElementsByClassName("erro");
+    var el_3 = document.getElementsByClassName("tela-esqueceu-senha");
     el_1[0].style.display = "none";
     el_2[0].style.display = "none";
+    el_3[0].style.display = "none";
   }
 
   evento_validarLogin() {
@@ -32,9 +35,15 @@ export default class Tela_login extends React.Component {
     }
   }
 
+  evento_esqueceu_senha() {
+    var el_1 = document.getElementsByClassName("tela-esqueceu-senha");
+    el_1[0].style.display = "block";
+  }
+
   render() {
     return (
       <div className="tela-login">
+
         <div className="erro">
           <h1 id="erro">Login ou senha incorreta!</h1>
         </div>
@@ -51,17 +60,14 @@ export default class Tela_login extends React.Component {
           <input type="password" name="senha" />
         </div>
 
-        <div className="esqueceu-senha">
-          <h1 id="esqueceu-senha">Esqueceu sua senha?</h1>
+        <div className="esqueceu_senha">
+          <h1 id="esqueceu_senha" onClick={this.evento_esqueceu_senha}>Esqueceu sua senha?</h1>
         </div>
 
         <div className="botao_login">
-          <input
-            type="button"
-            name="login"
-            onClick={this.evento_validarLogin}
-          />
+          <input type="button" name="login" onClick={this.evento_validarLogin}/>
         </div>
+
       </div>
     );
   }

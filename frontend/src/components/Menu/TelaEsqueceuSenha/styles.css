@@ -1,0 +1,92 @@
+.tela-esqueceu-senha {
+    width: 625px;
+    height: 310px;
+    border: 1px solid black;
+    background: white;
+    left: 34.3%;
+    top: 22%;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    position: absolute;
+    display: none;
+}
+
+.icone_sair_senha {
+    float: right;
+    padding-top: 5%;
+    padding-right: 5%;
+}
+
+.icone_sair_senha:hover {
+    cursor: pointer;
+}
+
+.insira_email {
+    float: left;
+    padding-left: 8%;
+}
+
+.insira_conta {
+    float: left;
+    padding-top: 1%;
+    padding-left: 18%;
+}
+
+h1[id="insira_email"]{
+    font-size: 40px;
+}
+
+h1[id="insira_email"]:hover{
+    cursor: default;
+}
+
+h1[id="insira_conta"]{
+    font-size: 15px;
+    font-weight: normal;
+}
+
+h1[id="insira_conta"]:hover{
+    cursor: default;
+}
+
+.email {
+    float: left;
+    padding-left: 23%;
+    padding-top: 5%;
+}
+
+input[name=email] {
+    box-sizing: border-box;
+    border: 1px solid gray;
+    border-radius: 30px;
+    font-size: 18px;
+    color: gray;
+    padding: 15px 20px 12px 15px;
+    width: 331px;
+    height: 50px;
+}
+
+.botao_enviar_email {
+    float: right;
+    padding-right: 38%;
+    padding-top: 5%;
+}
+
+input[name=enviar_email] {
+    background-image: url("../../../assets/ConsultaManual/botao_enviar0.png");
+    background-repeat: no-repeat;
+    padding: 10px 115px 10px 26px;
+    border: 0px;
+    border-radius: 40px;
+}
+
+input[name=enviar_email]:focus {
+    outline: 0px;
+}
+  
+input[name=enviar_email]:hover {
+    cursor: pointer;
+}
+
