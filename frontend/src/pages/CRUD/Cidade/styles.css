@@ -116,8 +116,13 @@ textarea {
   width: 290px;
   height: 60px;
   resize: none;
+  font-size: 14px;
   border-radius: 17px;
   padding: 20px;
+}
+
+textarea:disabled {
+  background-color: #f1f1f1;
 }
 
 legend {

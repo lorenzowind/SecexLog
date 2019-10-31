@@ -7,7 +7,7 @@ import "./styles.css";
 
 import "moment/locale/pt-br";
 
-export default class Example extends React.Component {
+export default class Calendar extends React.Component {
   static defaultProps = {
     numberOfMonths: 2
   };
@@ -29,6 +29,11 @@ export default class Example extends React.Component {
   handleDayClick(day) {
     const range = DateUtils.addDayToRange(day, this.state);
     this.setState(range);
+    if (range.to && this.props.name === "feriado") {
+      this.props.getRange(range, this.props.name);
+    } else if (range.to && this.props.name === "enchente") {
+      this.props.getRange(range, this.props.name);
+    }
   }
 
   handleResetClick() {

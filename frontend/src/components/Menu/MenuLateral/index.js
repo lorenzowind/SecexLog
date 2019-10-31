@@ -83,7 +83,7 @@ export default class MenuLateral extends React.Component {
         ))}
 
         {this.state.menu_fechado.map((c, i) => (
-          <div className="menu-fechado">
+          <div className="menu-fechado" key={i}>
             <div className="icone_abrir">
               <img src={icone_abrir} alt="" onClick={this.evento_abrirMenu} />
             </div>

@@ -3,17 +3,11 @@ import HeaderCidade from "../components/HeaderCidade/index";
 import HeaderTrajeto from "../components/HeaderTrajeto/index";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Calendar from "../components/Calendar/Calendar";
 import Expand from "react-expand-animated";
 import Menu from "../../../components/Menu/MenuLateral/index";
 import MenuBar from "../../../components/Menu/MenuBar/index";
+import Calendar from "../components/Calendar/Calendar";
 //import api from "../../../services/api";
-
-import "moment/locale/pt-br";
-
-import "react-day-picker/lib/style.css";
-
-import "moment/locale/pt-br";
 
 import "./styles.css";
 
@@ -24,11 +18,7 @@ import Triangulo from "../../../assets/6_Cadastro_de_Cidade_Trejetos/triangulo.p
 
 const animatedComponents = makeAnimated();
 
-const options = [
-  { value: "tefe", label: "Tefé" },
-  { value: "itacoatiara", label: "Itacoatiara" },
-  { value: "presidente figueiredo", label: "Presidente Figueiredo" }
-];
+let options = null;
 
 export default class CrudCidade extends Component {
   constructor(props) {
@@ -42,9 +32,11 @@ export default class CrudCidade extends Component {
       opCidadeBase: false,
       opCidadeAuditada: false,
       cidadesRelacionadas: null,
-      dataFeriado: {},
-      initDataCheia: undefined,
-      endDataCheia: undefined,
+      initDataCheia: "",
+      endDataCheia: "",
+      nomeFeriado: "",
+      initDataFeriado: "",
+      endDataFeriado: "",
       obsInterdicao: "",
       obsCidade: "",
       cidadeTrajetoInit: "",
@@ -58,6 +50,7 @@ export default class CrudCidade extends Component {
       opTaxi: false,
       opOnibus: false,
       opLancha: false,
+      opModal: null,
       nomePrestador: "",
       diasEmbarque: [],
       horasEmbarque: [],
@@ -68,12 +61,12 @@ export default class CrudCidade extends Component {
       localDesembarque: "",
       telefone: "",
       email: "",
-      from: undefined,
-      to: undefined,
 
       dia: "",
       hora: "",
       itemArray: [],
+
+      interdicaoTrecho: false,
 
       openaviao: false,
       opentaxiaereo: false,
@@ -88,8 +81,11 @@ export default class CrudCidade extends Component {
   }
 
   componentDidMount() {
-    this.loadOpcoes();
     this.loadModais();
+  }
+
+  componentWillMount() {
+    this.loadOpcoes();
   }
 
   //Métodos CRUD
@@ -97,13 +93,34 @@ export default class CrudCidade extends Component {
   //POST (Create)
   onSubmit = async ev => {
     ev.preventDefault();
+    var dias = null;
+    var horas = null;
+
+    if (this.state.diasEmbarque.length === 0) {
+      dias = this.state.dia;
+    } else {
+      const dia = this.state.dia;
+      dias = this.state.diasEmbarque;
+      if (dia) {
+        dias.push({ dia });
+      }
+    }
+
+    if (this.state.horasEmbarque.length === 0) {
+      horas = this.state.hora;
+    } else {
+      const hora = this.state.hora;
+      horas = this.state.horasEmbarque;
+      if (hora) {
+        horas.push({ hora });
+      }
+    }
 
     const state = {
       nomeCidade: this.state.nomeCidade,
       opCidadeBase: this.state.opCidadeBase,
       opCidadeAuditada: this.state.opCidadeAuditada,
       cidadesRelacionadas: this.state.cidadesRelacionadas,
-      dataFeriado: this.state.dataFeriado,
       initDataCheia: this.state.initDataCheia,
       endDataCheia: this.state.endDataCheia,
       obsInterdicao: this.state.obsInterdicao,
@@ -120,23 +137,27 @@ export default class CrudCidade extends Component {
       opOnibus: this.state.opOnibus,
       opLancha: this.state.opLancha,
       nomePrestador: this.state.nomePrestador,
-      diasEmbarque: this.state.diasEmbarque,
-      horasEmbarque: this.state.horasEmbarque,
-      duracaoTrecho: this.state.nomeCidade,
+      diasEmbarque: dias,
+      horasEmbarque: horas,
+      duracaoTrecho: this.state.duracaoTrecho,
       kmTrecho: this.state.kmTrecho,
       valorTrecho: this.state.valorTrecho,
       localEmbarque: this.state.localEmbarque,
       localDesembarque: this.state.localDesembarque,
       telefone: this.state.telefone,
       email: this.state.email,
-      from: this.state.from,
-      to: this.state.to
+      nomeFeriado: this.state.nomeFeriado,
+      initDataFeriado: this.state.initDataFeriado,
+      endDataFeriado: this.state.endDataFeriado,
+      opModal: this.state.opModal
     };
 
     const isValid = this.validations(state);
 
-    if (isValid) console.log(JSON.parse(JSON.stringify(state)));
-    else console.log(isValid);
+    if (isValid) {
+      console.log(JSON.parse(JSON.stringify(state)));
+      window.location.reload(false);
+    }
   };
 
   //GET (Read)
@@ -148,6 +169,12 @@ export default class CrudCidade extends Component {
     }); 
     continuação...
     */
+
+    options = [
+      { value: "tefe", label: "Tefé" },
+      { value: "itacoatiara", label: "Itacoatiara" },
+      { value: "presidente figueiredo", label: "Presidente Figueiredo" }
+    ];
   };
 
   loadModais = async () => {
@@ -175,10 +202,9 @@ export default class CrudCidade extends Component {
   onChange = ev => {
     const state = Object.assign({}, this.state);
     const campo = ev.target.name;
+    const value = ev.target.value;
 
-    state[campo] = ev.target.value;
-
-    console.log(state[campo]);
+    state[campo] = value;
 
     this.setState(state);
   };
@@ -189,7 +215,7 @@ export default class CrudCidade extends Component {
     const campo = target.name;
 
     state[campo] = !state[campo];
-    console.log(campo);
+
     this.setState(state);
   };
 
@@ -214,13 +240,20 @@ export default class CrudCidade extends Component {
     const horas = this.state.horasEmbarque;
     const text = dia + ", " + hora;
 
+    console.log(dias);
+    console.log(horas);
+
     item.push({ text });
     dias.push({ dia });
     horas.push({ hora });
 
+    console.log(this.state.diasEmbarque);
+
+    this.state.diasEmbarque === []
+      ? console.log("objeto")
+      : console.log("string");
+
     this.setState({
-      diasEmbarque: dias,
-      horasEmbarque: horas,
       dia: "",
       hora: "",
       itemArray: item
@@ -337,6 +370,30 @@ export default class CrudCidade extends Component {
     return true;
   };
 
+  getRange = (state, name) => {
+    if (name === "feriado") {
+      var nome = "";
+
+      while (nome === "") {
+        nome = prompt("Informe o nome do feriado:");
+      }
+
+      this.setState({
+        initDataFeriado: state.from,
+        endDataFeriado: state.to,
+        nomeFeriado: nome
+      });
+    } else if (name === "enchente") {
+      this.setState({ initDataCheia: state.from, endDataCheia: state.to });
+    }
+  };
+
+  switchInterdicao = ev => {
+    this.setState(prevState => ({
+      interdicaoTrecho: !prevState.interdicaoTrecho
+    }));
+  };
+
   render() {
     const expandedDivStyle = {
       width: "100%",
@@ -407,14 +464,20 @@ export default class CrudCidade extends Component {
                   Adicionar data de feriado ou datas comemorativas da cidade
                 </h2>
                 <div className="RangeExample">
-                  <Calendar />
+                  <Calendar
+                    name={"feriado"}
+                    getRange={this.getRange.bind(this)}
+                  />
                 </div>
               </div>
 
               <div className="flood">
                 <h2>Adicionar período de cheias de rios</h2>
                 <div className="RangeExample">
-                  <Calendar />
+                  <Calendar
+                    name={"enchente"}
+                    getRange={this.getRange.bind(this)}
+                  />
                 </div>
               </div>
 
@@ -422,7 +485,7 @@ export default class CrudCidade extends Component {
                 <div className="interdicao-switch">
                   <h2>Interdição de trecho</h2>
                   <label className="switch">
-                    <input type="checkbox" />
+                    <input type="checkbox" onChange={this.switchInterdicao} />
                     <span className="slider round"></span>
                   </label>
                   <img src={Notif} alt="" />
@@ -431,6 +494,7 @@ export default class CrudCidade extends Component {
                 <textarea
                   name="obsInterdicao"
                   onChange={this.onChange}
+                  disabled={!this.state.interdicaoTrecho}
                 ></textarea>
               </div>
 
@@ -715,13 +779,15 @@ export default class CrudCidade extends Component {
                 <input
                   type="text"
                   id="dia"
-                  name="diasEmbarque"
+                  name="dia"
+                  value={this.state.dia}
                   onChange={this.onChange}
                 />
                 <input
                   type="text"
                   id="hora"
-                  name="horasEmbarque"
+                  name="hora"
+                  value={this.state.hora}
                   onChange={this.onChange}
                 />
                 <button onClick={this.addMoreOptions}>
@@ -740,8 +806,6 @@ export default class CrudCidade extends Component {
                   );
                 })}
               </div>
-
-              <div className="showDiaHora"></div>
 
               <div className="dados-trecho">
                 <div>
@@ -815,7 +879,7 @@ export default class CrudCidade extends Component {
                 <input
                   type="radio"
                   id="option"
-                  name="opcao-modal"
+                  name="opModal"
                   value="linha"
                   onChange={this.onChange}
                 />
@@ -824,7 +888,7 @@ export default class CrudCidade extends Component {
                 <input
                   type="radio"
                   id="option1"
-                  name="opcao-modal"
+                  name="opModal"
                   value="contratado"
                   onChange={this.onChange}
                 />
