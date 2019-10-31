@@ -162,10 +162,10 @@ export default class CrudCidade extends Component {
 
   loadPrestador = async () => {
     /*
-    const res = await api.get("").catch(err => {
+    const res = await api.get("").catch(err => { 
       alert(err);
       window.location.reload(false);
-    }); 
+    });  
     continuação...
     */
   };
