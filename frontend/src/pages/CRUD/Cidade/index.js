@@ -293,7 +293,14 @@ export default class CrudCidade extends Component {
     let telefoneError = "";
     let emailError = "";
 
-    if (!state) {
+    if (
+      !state.nomeCidade ||
+      !state.nomePrestador ||
+      !state.diasEmbarque ||
+      !state.horasEmbarque ||
+      !state.telefone ||
+      !state.email
+    ) {
       cidadeError = "Por favor, preencha todos os campos";
       alert(cidadeError);
       return false;
