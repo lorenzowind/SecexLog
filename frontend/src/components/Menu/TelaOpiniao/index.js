@@ -4,9 +4,26 @@ import icone_sair from "../../../assets/ConsultaManual/icone_sair.png";
 
 import "./styles.css";
 
+import api from "../../../services/api";
+
 export default class Tela_opiniao extends React.Component {
-  evento_enviar() {
-    alert("Opinião enviada");
+  
+  evento_enviar = async ev => {
+    ev.preventDefault();
+
+    var el_1 = document.getElementById("assunto");
+    var el_2 = document.getElementsByClassName("texto_opiniao");
+
+    const state = {
+      titulo: el_1.innerHTML,
+      desc: el_2[0].firstChild.value
+    };
+
+    await api.post("/opinions", state).catch(err => {
+      alert(err);
+    });
+
+    this.evento_sair();
   }
 
   evento_sair() {
