@@ -33,7 +33,7 @@ export default class Header extends React.Component {
         </div>
 
         <div className="logo_tce">
-          <img src={tce_logo} alt="logo tce" />
+          <img src={tce_logo} alt="" />
         </div>
 
         <TelaOpiniao />

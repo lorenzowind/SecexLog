@@ -1,5 +1,5 @@
 .cadastro {
-  width: 100%;
+  width: 75%;
   margin-left: 25%;
 }
 
@@ -232,6 +232,8 @@ h2#h2-dia-hora {
 input#email {
   height: 38px;
   width: 200px;
+  font-size: 14px;
+  color: black;
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   border-radius: 50px;

@@ -1,7 +1,11 @@
+.campos {
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
 .trajeto {
     display: table-cell;
-    justify-content: center;
-    padding-left: 409px;
     cursor: default;
 }
 
@@ -10,17 +14,14 @@ h1[id="trajeto"] {
 }
 
 .cidade-saida {
-    padding-top: 25px;
     padding-left: 30px;
     display: table-cell;
-    justify-content: center;
 }
 
-.cidade-destino {
-    padding-top: 25px;      
+.cidade-destino {      
     padding-left: 20px;
+    padding-right: 20px;
     display: table-cell;
-    justify-content: center;
 }
 
 input[name=cidade-saida] {
@@ -29,10 +30,10 @@ input[name=cidade-saida] {
     border-radius: 30px;
     font-size: 18px;
     color: gray;
-    padding: 12px 20px 12px 55px;
+    padding: 15px 20px 12px 55px;
     width: 331px;
-    height: 55px;
-    background-position: 20px 9px; 
+    height: 65px;
+    background-position: 20px 14px; 
     background-repeat: no-repeat;  
     background-image: url("../../../../assets/ConsultaManual/icone_cidade_saida.png");  
 }
@@ -47,10 +48,10 @@ input[name=cidade-destino] {
     border-radius: 30px;
     font-size: 18px;
     color: gray;
-    padding: 12px 20px 12px 55px;
+    padding: 15px 20px 12px 55px;
     width: 331px;
-    height: 55px;
-    background-position: 20px 9px; 
+    height: 65px;
+    background-position: 20px 14px; 
     background-repeat: no-repeat;  
     background-image: url("../../../../assets/ConsultaManual/icone_cidade_destino.png");
 }
@@ -60,34 +61,14 @@ input[name=cidade-destino]:focus {
 }
 
 .ida { 
-    padding-top: 25px;
     padding-left: 25px;
+    padding-right: 25px;
     display: table-cell;
-    justify-content: center;
-    align-items: center;
-}
-
-input[name=ida]:hover {
-    cursor: pointer;
-}
-
-input[name=ida] {
     border: 1px solid gray;
-    color: gray;
+    background-color: white;
     font-size: 18px;
     border-radius: 30px;
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
-    padding-left: 20px;
-    width: 180px;
-    height: 55px; 
-    background-position: 140px 9px; 
-    background-repeat: no-repeat;
-    background-image: url("../../../../assets/ConsultaManual/botao_calendario_adicionar.png");
+    width: 230px;
 }
-
-input[name=ida]:focus {
-    outline: 0px;
-}
-
-

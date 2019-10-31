@@ -3,8 +3,7 @@
   height: 310px;
   border: 1px solid black;
   background: white;
-  margin: 0 auto;
-  left: 68%;
+  left: 71%;
   top: 10%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -15,9 +14,9 @@
 }
 
 .icone_sair_login {
-  position: absolute;
-  top: 40px;
-  left: 373px;
+  float: right;
+  padding-top: 5%;
+  padding-right: 5%;
 }
 
 .icone_sair_login:hover {
@@ -61,32 +60,30 @@ input[name="senha"]:focus {
 }
 
 .usuario {
-  position: absolute;
-  top: 98px;
-  left: 47px;
+  padding-top: 20%;
+  padding-left: 10%;
 }
 
 .senha {
-  position: absolute;
-  top: 184px;
-  left: 47px;
+  padding-top: 3%;
+  padding-left: 10%;
 }
 
-.esqueceu-senha {
-  position: absolute;
-  top: 265px;
-  left: 75px;
+.esqueceu_senha {
+  float: left;
+  padding-left: 12%;
+  padding-top: 10%;
 }
 
-h1[id="esqueceu-senha"] {
+h1[id="esqueceu_senha"] {
   cursor: pointer;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .botao_login {
-  position: absolute;
-  top: 270px;
-  left: 233px;
+  float: right;
+  padding-right: 12%;
+  padding-top: 8%;
 }
 
 input[name="login"] {
@@ -113,9 +110,10 @@ input[name="login"]:active {
 }
 
 .erro {
-  padding-top: 45px;
-  padding-left: 75px;
   display: none;
+  float: left;
+  padding-top: 10%;
+  padding-left: 12%;
 }
 
 h1[id="erro"] {

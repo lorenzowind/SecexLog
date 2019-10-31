@@ -7,7 +7,7 @@ import Expand from "react-expand-animated";
 import Menu from "../../../components/Menu/MenuLateral/index";
 import MenuBar from "../../../components/Menu/MenuBar/index";
 import Calendar from "../components/Calendar/Calendar";
-//import api from "../../../services/api";
+import api from "../../../services/api";
 
 import "./styles.css";
 
@@ -116,17 +116,21 @@ export default class CrudCidade extends Component {
       }
     }
 
-    const state = {
-      nomeCidade: this.state.nomeCidade,
-      opCidadeBase: this.state.opCidadeBase,
-      opCidadeAuditada: this.state.opCidadeAuditada,
-      cidadesRelacionadas: this.state.cidadesRelacionadas,
-      initDataCheia: this.state.initDataCheia,
-      endDataCheia: this.state.endDataCheia,
-      obsInterdicao: this.state.obsInterdicao,
-      obsCidade: this.state.obsCidade,
-      cidadeTrajetoInit: this.state.cidadeTrajetoInit.value,
-      cidadeTrajetoEnd: this.state.cidadeTrajetoEnd.value,
+    let cidadesRelacionadas = this.state.cidadesRelacionadas;
+    let cidades = [];
+
+    if (cidadesRelacionadas) {
+      const length = cidadesRelacionadas.length;
+
+      for (var k = 0; k < length; k++) {
+        cidades[k] = cidadesRelacionadas[k].label;
+      }
+    }
+
+    const stateTrajeto = {
+      cidadesRelacionadas: cidades,
+      initCidade: this.state.cidadeTrajetoInit.value,
+      endCidade: this.state.cidadeTrajetoEnd.value,
       opAviao: this.state.opAviao,
       opTaxiAereo: this.state.opTaxiAereo,
       opBarco: this.state.opBarco,
@@ -136,39 +140,68 @@ export default class CrudCidade extends Component {
       opTaxi: this.state.opTaxi,
       opOnibus: this.state.opOnibus,
       opLancha: this.state.opLancha,
-      nomePrestador: this.state.nomePrestador,
       diasEmbarque: dias,
       horasEmbarque: horas,
-      duracaoTrecho: this.state.duracaoTrecho,
-      kmTrecho: this.state.kmTrecho,
-      valorTrecho: this.state.valorTrecho,
-      localEmbarque: this.state.localEmbarque,
-      localDesembarque: this.state.localDesembarque,
-      telefone: this.state.telefone,
-      email: this.state.email,
-      nomeFeriado: this.state.nomeFeriado,
-      initDataFeriado: this.state.initDataFeriado,
-      endDataFeriado: this.state.endDataFeriado,
-      opModal: this.state.opModal
+      duration: this.state.duracaoTrecho,
+      quilometragem: this.state.kmTrecho,
+      valor: this.state.valorTrecho,
+      embarque: this.state.localEmbarque,
+      desembarque: this.state.localDesembarque,
+      modal: this.state.opModal
     };
 
-    const isValid = this.validations(state);
+    const statePrestador = {
+      prestNome: this.state.nomePrestador,
+      telefone: this.state.telefone,
+      email: this.state.email
+    };
 
-    if (isValid) {
-      console.log(JSON.parse(JSON.stringify(state)));
-      window.location.reload(false);
-    }
+    const stateCidade = {
+      nome: this.state.nomeCidade,
+      cBase: this.state.opCidadeBase,
+      cAuditada: this.state.opCidadeAuditada,
+      initDataCheia: this.state.initDataCheia.toString(),
+      endDataCheia: this.state.endDataCheia.toString(),
+      initDataFeriado: this.state.initDataFeriado.toString(),
+      endDataFeriado: this.state.endDataFeriado.toString(),
+      nomeFeriado: this.state.nomeFeriado,
+      obsInterdicao: this.state.obsInterdicao,
+      obsCidade: this.state.obsCidade
+    };
+
+    /*const resCidade = await api.post("/cities", stateCidade).catch(err => {
+      alert("Verifque se todos os dados estão inseridos corretamente");
+    });*/
+
+    //if (resCidade) {
+    /*const resTrajeto = await api.post("/path", stateTrajeto).catch(err => {
+      alert("Verifque se todos os dados estão inseridos corretamente");
+    });*/
+
+    //if (resTrajeto) {
+    const resPrestador = await api
+      .post("/providers", statePrestador)
+      .catch(err => {
+        alert("Verifque se todos os dados estão inseridos corretamente");
+      });
+
+    //if(resPrestador){
+    //window.location.reload(false);
+    //}
+    //}
+    //}
+
+    console.log(statePrestador);
   };
 
   //GET (Read)
   loadOpcoes = async () => {
-    /*
-    const res = await api.get("").catch(err => {
-      alert(err);
+    /*const res = await api.get("/cities").catch(err => {
+      alert(err.message);
       window.location.reload(false);
-    }); 
-    continuação...
-    */
+    });*/
+
+    //console.log(res.data);
 
     options = [
       { value: "tefe", label: "Tefé" },
@@ -178,23 +211,17 @@ export default class CrudCidade extends Component {
   };
 
   loadModais = async () => {
-    /*
-    const res = await api.get("").catch(err => {
+    /*const res = await api.get("").catch(err => {
       alert(err);
       window.location.reload(false);
-    }); 
-    continuação...
-    */
+    }); */
   };
 
-  loadPrestador = async () => {
-    /*
-    const res = await api.get("").catch(err => {
-      alert(err);
-      window.location.reload(false);
-    }); 
-    continuação...
-    */
+  loadPrestador = async nome => {
+    console.log(nome);
+    const res = await api.get(`/providers`);
+
+    console.log("Resposta = " + res);
   };
 
   //Fim Métodos CRUD
@@ -203,6 +230,10 @@ export default class CrudCidade extends Component {
     const state = Object.assign({}, this.state);
     const campo = ev.target.name;
     const value = ev.target.value;
+
+    if (campo === "nomePrestador") {
+      this.loadPrestador(value);
+    }
 
     state[campo] = value;
 
@@ -773,7 +804,7 @@ export default class CrudCidade extends Component {
                 </div>
               </div>
 
-              <h2>Nome do Prestador de Servico</h2>
+              <h2>Nome do Prestador de Serviço</h2>
               <input
                 type="text"
                 id="text"

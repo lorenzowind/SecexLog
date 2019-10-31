@@ -1,8 +1,11 @@
 import React from 'react';
 
+import DatePicker from '../DatePicker/index';
+
 import "./styles.css";
 
 export default class Campos extends React.Component {
+    
     render(){
         return (
             <div className="campos">
@@ -21,7 +24,7 @@ export default class Campos extends React.Component {
                     </div>
                     
                     <div className="ida">
-                        <input type="date" name="ida" placeholder="Data de Ida"/>
+                        <DatePicker/>
                     </div>
 
                 </form>
