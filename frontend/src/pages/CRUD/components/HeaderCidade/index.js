@@ -4,7 +4,7 @@ import "./styles.css";
 import Img from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/cadastro.png";
 
 const Header = () => (
-  <div className="header">
+  <div className="header_cidade">
     <img src={Img} alt="" />
     <header id="main-header">Cadastro</header>
   </div>

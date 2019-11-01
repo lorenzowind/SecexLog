@@ -9,8 +9,12 @@ import {
 
 export default function MaterialUIPickers() {
   var now = new Date();
+<<<<<<< HEAD
   let date =
     now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + (now.getDate() + 1);
+=======
+  let date = now.getFullYear() + '-' + (now.getMonth()+1) + '-' + ((now.getDate()));
+>>>>>>> c81dda3575af1824b8ac5ecd7c38dc322cf3e5d8
   const [selectedDate, setSelectedDate] = React.useState(new Date(date));
 
   const handleDateChange = date => {

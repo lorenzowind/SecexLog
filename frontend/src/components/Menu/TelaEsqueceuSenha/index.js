@@ -4,11 +4,29 @@ import icone_sair from "../../../assets/ConsultaManual/icone_sair_menor.png";
 
 import './styles.css';
 
+import api from "../../../services/api";
+
 export default class TelaEsqueceuSenha extends React.Component {
     
     evento_sair() {
         var el_1 = document.getElementsByClassName("tela-esqueceu-senha");
         el_1[0].style.display = "none";
+    }
+
+    evento_enviarEmail = async ev => {
+        ev.preventDefault();
+
+        var el_1 = document.getElementsByClassName("email");
+
+        const state = {
+            email: el_1[0].firstChild.value
+        };
+
+        await api.post("/forgot_password", state).catch(err => {
+            alert(err);
+        });
+
+        this.evento_sair();
     }
     
     render() {

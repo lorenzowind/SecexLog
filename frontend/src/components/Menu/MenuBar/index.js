@@ -1,15 +1,30 @@
 import React from "react";
+import { Redirect } from 'react-router';
 
 import tce_logo from "../../../assets/ConsultaManual/tce_logo.png";
 import TelaOpiniao from "../TelaOpiniao/index";
+import TelaLogin from "../TelaLogin/index";
+import TelaEsqueceuSenha from "../TelaEsqueceuSenha/index";
 
 import "./styles.css";
 
 export default class Header extends React.Component {
-  evento_login() {
-    console.log("login");
-    var el = document.getElementsByClassName("tela-login");
-    el[0].style.display = "block";
+  
+  state = {
+    logout: false,
+    text: 'Login'
+  }
+  
+  evento_login = () => {
+    if(localStorage.getItem('login')!=='in'){
+      localStorage.setItem('login','out');
+      console.log(localStorage.getItem('login'));
+      var el = document.getElementsByClassName("tela-login");
+      el[0].style.display = "block";
+    }
+    else{
+      this.setState({ logout: true });
+    }
   }
 
   evento_opiniao() {
@@ -18,8 +33,16 @@ export default class Header extends React.Component {
   }
 
   render() {
+
+    if(localStorage.getItem('login')==='in')this.state.text = 'Logout';
+
+    if(this.state.logout) {
+      alert('Logout com sucesso');
+      return <Redirect to="/" push={true}/>
+    }
+
     return (
-      <div className="header">
+      <div className="header_menu">
         <div className="de-sua-opiniao">
           <h1 id="de_sua_opiniao" onClick={this.evento_opiniao}>
             Dê sua Opinião
@@ -28,7 +51,7 @@ export default class Header extends React.Component {
 
         <div className="login">
           <h1 id="login" onClick={this.evento_login}>
-            Login
+            {this.state.text}
           </h1>
         </div>
 
@@ -37,6 +60,9 @@ export default class Header extends React.Component {
         </div>
 
         <TelaOpiniao />
+        <TelaLogin />
+        <TelaEsqueceuSenha />
+    
       </div>
     );
   }

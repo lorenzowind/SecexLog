@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import HeaderUser from "../components/HeaderUsuario/index";
-import MenuBar from "../../../components/Menu/MenuBar/index";
-import Menu from "../../../components/Menu/MenuLateral/index";
 
 import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Seach from "../../../assets/Cadastro de usuário/pesquisar.png";
@@ -11,11 +9,11 @@ import Trash from "../../../assets/Cadastro de usuário/lixeira.png";
 
 import "./styles.css";
 
-import api from "../../../services/api";
+//import api from "../../../services/api";
 
 // eslint-disable-next-line
 var e = 0;
-var editedlogin = "";
+//var editedlogin = "";
 
 export default class CrudUsuario extends Component {
   constructor(props) {
@@ -55,7 +53,7 @@ export default class CrudUsuario extends Component {
 
   //POST (CREATE usuário)
   handleSubmit = async ev => {
-    ev.preventDefault();
+    /*ev.preventDefault();
 
     const isValid = this.validate();
 
@@ -77,12 +75,12 @@ export default class CrudUsuario extends Component {
       this.createRow(state);
 
       this.setState({ popUp: [], popUpStats: false });
-    }
+    }*/
   };
 
   //GET (READ dados na tabela)
   loadData = async () => {
-    const res = await api.get("/users").catch(err => {
+    /*const res = await api.get("/users").catch(err => {
       alert(err);
       window.location.reload(false);
     });
@@ -92,12 +90,12 @@ export default class CrudUsuario extends Component {
       row.push(res.data[i]);
     }
 
-    this.setState({ row: row });
+    this.setState({ row: row });*/
   };
 
   //GET (READ dados de busca)
   handleSearch = async () => {
-    const res = await api.get(`/users/${this.state.search}`);
+    /*const res = await api.get(`/users/${this.state.search}`);
 
     if (!res.data || res.data.length <= 0) {
       alert("Usuário não encontrado");
@@ -121,12 +119,12 @@ export default class CrudUsuario extends Component {
         this.setState({ row: row });
         return;
       }
-    }
+    }*/
   };
 
   //PUT (UPDATE usuário)
   handleEditSubmit = async ev => {
-    ev.preventDefault();
+    /*ev.preventDefault();
 
     var state = {};
 
@@ -190,12 +188,12 @@ export default class CrudUsuario extends Component {
       }
 
       this.setState({ editPopUp: [], popUpStats: false });
-    }
+    }*/
   };
 
   //DELETE (DELETE usuário)
   handleDelete = async ev => {
-    ev.preventDefault();
+    /*ev.preventDefault();
 
     // eslint-disable-next-line
     var state = null;
@@ -240,7 +238,7 @@ export default class CrudUsuario extends Component {
       }
     }
     this.setState({ editPopUp: [], popUpStats: false });
-    window.location.reload(false);
+    window.location.reload(false);*/
   };
 
   //FIM Métodos CRUD
@@ -277,7 +275,7 @@ export default class CrudUsuario extends Component {
     const editSenha = c.senha;
     for (var cont = 0; cont < this.state.row.length; cont++) {
       if (this.state.row[cont].login === editLogin) {
-        editedlogin = this.state.row[cont].login;
+        //editedlogin = this.state.row[cont].login;
       }
     }
 
@@ -462,8 +460,6 @@ export default class CrudUsuario extends Component {
   render() {
     return (
       <div className="body">
-        <MenuBar />
-        <Menu />
         <HeaderUser />
 
         <h2>Pesquisar usuários</h2>
