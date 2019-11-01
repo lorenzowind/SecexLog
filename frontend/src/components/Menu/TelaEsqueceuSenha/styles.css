@@ -3,20 +3,20 @@
     height: 310px;
     border: 1px solid black;
     background: white;
-    left: 34.3%;
+    left: 34%;
     top: 22%;
     border-top-left-radius: 50px;
     border-top-right-radius: 50px;
     border-bottom-left-radius: 50px;
     border-bottom-right-radius: 50px;
-    position: absolute;
+    position: fixed;
     display: none;
 }
 
 .icone_sair_senha {
     float: right;
-    padding-top: 5%;
-    padding-right: 5%;
+    padding-top: 4%;
+    padding-right: 4%;
 }
 
 .icone_sair_senha:hover {
@@ -35,6 +35,7 @@
 }
 
 h1[id="insira_email"]{
+    padding-top: 10%;
     font-size: 40px;
 }
 

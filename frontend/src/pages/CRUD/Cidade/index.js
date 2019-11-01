@@ -4,10 +4,16 @@ import HeaderTrajeto from "../components/HeaderTrajeto/index";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Expand from "react-expand-animated";
-import Menu from "../../../components/Menu/MenuLateral/index";
-import MenuBar from "../../../components/Menu/MenuBar/index";
 import Calendar from "../components/Calendar/Calendar";
+import Menu from "../../../components/Menu/MenuLateral/index";
 import api from "../../../services/api";
+
+import "moment/locale/pt-br";
+
+import "react-day-picker/lib/style.css";
+import "./styles.css";
+
+import "moment/locale/pt-br";
 
 import "./styles.css";
 
@@ -441,11 +447,7 @@ export default class CrudCidade extends Component {
 
     return (
       <div className="body">
-        <div className="Menu">
-          <Menu />
-          <MenuBar />
-        </div>
-
+        <Menu />
         <div className="cadastro">
           <HeaderCidade />
           <form>

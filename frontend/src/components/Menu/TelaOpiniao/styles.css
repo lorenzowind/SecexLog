@@ -3,13 +3,13 @@
   height: 525px;
   border: 1px solid black;
   background: white;
-  left: 32%;
-  top: 200%;
+  left: 28%;
+  top: 20%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
   border-bottom-left-radius: 50px;
   border-bottom-right-radius: 50px;
-  position: absolute;
+  position: fixed;
   display: none;
 }
 
@@ -87,7 +87,7 @@ input[name="selecione_assunto"]:focus {
 .enviar {
   float: right;
   padding-right: 20%;
-  padding-top: 5%;
+  padding-top: 4%;
 }
 
 input[name="enviar"] {
@@ -113,15 +113,12 @@ input[name="enviar"]:hover {
   display: none;
 }
 
-textarea {
+textarea[id="opiniao"] {
   resize: none;
   border: 1px solid gray;
   border-radius: 30px;
   font-size: 18px;
   color: gray;
-  padding-left: 30px;
-  padding-right: 30px;
-  padding-top: 20px;
   width: 606px;
   height: 193px;
 }

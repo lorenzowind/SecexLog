@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import HeaderUser from "../components/HeaderUsuario/index";
-import MenuBar from "../../../components/Menu/MenuBar/index";
-import Menu from "../../../components/Menu/MenuLateral/index";
 import Loading from "../../../components/Loading/index";
+import Menu from "../../../components/Menu/MenuLateral/index";
 
 import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Seach from "../../../assets/Cadastro de usuário/pesquisar.png";
@@ -17,6 +16,11 @@ import api from "../../../services/api";
 // eslint-disable-next-line
 var e = 0;
 var editedlogin = "";
+
+const token = localStorage.getItem("token");
+const header = {
+  headers: { Authorization: "bearer " + token }
+};
 
 export default class CrudUsuario extends Component {
   constructor(props) {
@@ -70,7 +74,7 @@ export default class CrudUsuario extends Component {
     };
 
     if (isValid) {
-      await api.post("/users", state).catch(err => {
+      await api.post("/users", state, header).catch(err => {
         alert("Verifque se todos os dados estão inseridos corretamente");
       });
 
@@ -82,9 +86,10 @@ export default class CrudUsuario extends Component {
 
   //GET (READ dados na tabela)
   loadData = async () => {
+    console.log(JSON.stringify(header));
     await setTimeout(() => {
       api
-        .get("/users")
+        .get("/users", header)
         .then(res => {
           const row = this.state.row;
 
@@ -105,7 +110,7 @@ export default class CrudUsuario extends Component {
 
   //GET (READ dados de busca)
   handleSearch = async () => {
-    const res = await api.get(`/users/${this.state.search}`);
+    const res = await api.get(`/users/${this.state.search}`, header);
 
     if (!res.data || res.data.length <= 0) {
       alert("Usuário não encontrado");
@@ -162,8 +167,7 @@ export default class CrudUsuario extends Component {
       };
     }
 
-    const isValid = this.validateEdit();
-
+    const isValid = this.validateEdit(state);
     if (isValid) {
       for (var i = 0; i < this.state.row.length; i++) {
         if (this.state.row[i].login === editedlogin) {
@@ -179,16 +183,20 @@ export default class CrudUsuario extends Component {
         }
       }
 
-      const res = await api.get("/users").catch(err => {
+      const res = await api.get("/users", header).catch(err => {
         alert("Verifque se todos os dados estão inseridos corretamente");
       });
 
+      console.log(res.data);
+
       // eslint-disable-next-line
-      for (var i = 0; i < this.state.row.length; i++) {
+      for (var i = 0; i < res.data.length; i++) {
         if (res.data[i].login === editedlogin) {
+          console.log(res.data[i].login);
+          console.log(JSON.stringify(state));
           // eslint-disable-next-line
           const put = await api
-            .put(`/users/${res.data[i].id}`, state)
+            .put(`/users/${res.data[i].login}`, state, header)
             .catch(err => {
               alert(err);
               window.location.reload(false);
@@ -231,7 +239,7 @@ export default class CrudUsuario extends Component {
       };
     }
 
-    const res = await api.get("/users").catch(err => {
+    const res = await api.get("/users", header).catch(err => {
       alert("Verifque se todos os dados estão inseridos corretamente");
     });
 
@@ -239,10 +247,12 @@ export default class CrudUsuario extends Component {
     for (var i = 0; i < this.state.row.length; i++) {
       if (res.data[i].login === editedlogin) {
         // eslint-disable-next-line
-        const del = await api.delete(`/users/${res.data[i].id}`).catch(err => {
-          alert(err);
-          window.location.reload(false);
-        });
+        const del = await api
+          .delete(`/users/${res.data[i].id}`, header)
+          .catch(err => {
+            alert(err);
+            window.location.reload(false);
+          });
       }
     }
     this.setState({ editPopUp: [], popUpStats: false });
@@ -391,41 +401,47 @@ export default class CrudUsuario extends Component {
     return true;
   };
 
-  validateEdit = () => {
+  validateEdit = state => {
     let nameError = "";
     let loginError = "";
     let emailError = "";
     let passwordError = "";
 
     if (
-      !this.state.editNome ||
-      !this.state.editLogin ||
-      !this.state.editSenha ||
-      !this.state.editEmail ||
-      !this.state.editCargo
+      !state.nome ||
+      !state.login ||
+      !state.senha ||
+      !state.email ||
+      !state.cargo
     ) {
+      console.log(state.nome);
+      console.log(state.login);
+      console.log(state.senha);
+      console.log(state.email);
+      console.log(state.cargo);
+
       nameError = "Por favor, preencha todos os campos";
       alert(nameError);
       return false;
     }
 
     if (
-      this.state.editNome.includes("_") ||
-      this.state.editNome.includes("@") ||
-      this.state.editNome.includes("-")
+      state.nome.includes("_") ||
+      state.nome.includes("@") ||
+      state.nome.includes("-")
     ) {
       nameError = "Nome não pode conter caracteres especiais";
     }
 
-    if (this.state.editLogin.includes(" ")) {
+    if (state.login.includes(" ")) {
       loginError = "Login não pode conter espaço";
     }
 
-    if (this.state.editSenha.includes(" ")) {
+    if (state.senha.includes(" ")) {
       passwordError = "Senha não pode conter espaço";
     }
 
-    if (!this.state.editEmail.includes("@")) {
+    if (!state.email.includes("@")) {
       emailError = "Digite um email válido";
     }
 
@@ -468,15 +484,11 @@ export default class CrudUsuario extends Component {
   render() {
     return (
       <div className="body">
+        <Menu />
         {!this.state.load ? (
           <Loading />
         ) : (
           <div>
-            <div className="Menu">
-              <Menu />
-              <MenuBar />
-            </div>
-
             <div className="cadastro">
               <HeaderUser />
 
@@ -536,12 +548,10 @@ export default class CrudUsuario extends Component {
                           <img
                             src={Edit}
                             alt=""
-                            onClick={
-                              (e = () => {
-                                const content = c;
-                                this.editPopUp(content);
-                              })
-                            }
+                            onClick={() => {
+                              const content = c;
+                              this.editPopUp(content);
+                            }}
                           />
                         </td>
                       </tr>

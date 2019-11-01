@@ -36,6 +36,33 @@ h1[id="cadastro"] {
   margin-left: 15px;
 }
 
+h1[id="cidade_trajeto"] {
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  font-size: 16px;
+  margin-left: 100px;
+  border-bottom: none;
+}
+
+h1[id="cidade_trajeto"]:hover {
+  cursor: pointer;
+}
+
+h1[id="usuario"] {
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  font-size: 16px;
+  margin-left: 100px;
+}
+
+h1[id="usuario"]:hover {
+  cursor: pointer;
+}
+
 .icone_configuracao {
   margin-top: 30px;
   margin-left: 25px;

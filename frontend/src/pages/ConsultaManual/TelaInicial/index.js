@@ -5,8 +5,6 @@ import barra_progresso from "../../../assets/ConsultaManual/barra_progresso.png"
 
 import Header from "../../../components/Menu/MenuBar/index";
 import Campos from "../components/Campos/index";
-import TelaLogin from "../../../components/Menu/TelaLogin/index";
-import TelaEsqueceuSenha from "../../../components/Menu/TelaEsqueceuSenha/index";
 
 import "./styles.css";
 
@@ -45,6 +43,8 @@ export default class Tela_inicial extends React.Component {
 
   render() {
     const { trajetos } = this.state;
+
+    localStorage.setItem("login", "out");
 
     return (
       <div className="tela-inicial">
@@ -89,9 +89,6 @@ export default class Tela_inicial extends React.Component {
             onClick={this.evento_consultar}
           />
         </div>
-
-        <TelaLogin />
-        <TelaEsqueceuSenha />
       </div>
     );
   }

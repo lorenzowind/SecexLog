@@ -1,9 +1,12 @@
-.headerTCE {
+.header_menu {
   width: 100%;
   height: 100px;
   display: flex;
+  float: right;
   justify-content: flex-end;
   align-items: center;
+  padding-right: 5%;
+  position: fixed;
 }
 
 .de-sua-opiniao {

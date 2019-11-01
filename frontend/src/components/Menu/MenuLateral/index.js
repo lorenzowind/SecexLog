@@ -1,5 +1,10 @@
 import React from "react";
 
+import MenuBar from "../MenuBar/index";
+import { BrowserRouter, Link, Switch, Route } from "react-router-dom";
+import CrudCidade from "../../../pages/CRUD/Cidade/index";
+import CrudUser from "../../../pages/CRUD/Usuario/index";
+
 import secex_logo from "../../../assets/Menu/secex_logo.png";
 import icone_cadastro from "../../../assets/Menu/icone_cadastro.png";
 import icone_configuracao from "../../../assets/Menu/icone_configuracao.png";
@@ -50,6 +55,7 @@ export default class MenuLateral extends React.Component {
   render() {
     return (
       <div className="menu-lateral">
+        <MenuBar />
         {this.state.menu_aberto.map((c, i) => (
           <div className="menu-aberto" key={i}>
             <div className="secex_logo">
@@ -59,6 +65,15 @@ export default class MenuLateral extends React.Component {
             <div className="icone_cadastro">
               <img src={icone_cadastro} alt="" />
               <h1 id="cadastro">{c.cadastro}</h1>
+            </div>
+
+            <div className="rotas-cadastro">
+              <Link to="/cadastro/cidade" style={{ textDecoration: "none" }}>
+                <h1 id="cidade_trajeto">Cidade/Trajeto</h1>
+              </Link>
+              <Link to="/cadastro/user" style={{ textDecoration: "none" }}>
+                <h1 id="usuario">Usuário</h1>
+              </Link>
             </div>
 
             <div className="icone_configuracao">
