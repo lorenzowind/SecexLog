@@ -18,9 +18,11 @@ export default class TelaEsqueceuSenha extends React.Component {
 
         var el_1 = document.getElementsByClassName("email");
 
-        var email = el_1[0].firstChild.value;
+        const state = {
+            email: el_1[0].firstChild.value
+        };
 
-        await api.post("/forgot_password", email).catch(err => {
+        await api.post("/forgot_password", state).catch(err => {
             alert(err);
         });
 

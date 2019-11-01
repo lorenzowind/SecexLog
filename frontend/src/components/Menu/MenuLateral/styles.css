@@ -36,9 +36,13 @@ h1[id="cadastro"] {
     left: 80px;
 }
 
+h1[id="cadastro"]:hover {
+    cursor: default;
+}
+
 .icone_configuracao {
     position: absolute;
-    top: 210px;
+    top: 260px;
     left: 20px;
 }
 
@@ -49,30 +53,48 @@ h1[id="configuracao"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 220px;
+    top: 270px;
     left: 80px;
 }
 
-h1[id="fonte"] {
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    font-size: 18px;
-    top: 270px;
-    left: 75px;
+h1[id="configuracao"]:hover {
+    cursor: pointer;
 }
 
-h1[id="logistica"] {
+h1[id="cidade_trajeto"] {
     color: #ffffff;
     font-weight: normal;
     font-stretch: normal;
     font-style: normal;
     position: absolute;
     font-size: 18px;
-    top: 300px;
+    top: 200px;
     left: 75px;
+    position: fixed;
+}
+
+h1[id="cidade_trajeto"]:hover {
+    cursor: pointer;
+}
+
+.rotas-cadastro {
+    display: none;
+}
+
+h1[id="usuario"] {
+    color: #ffffff;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    position: absolute;
+    font-size: 18px;
+    top: 230px;
+    left: 75px;
+    position: fixed;
+}
+
+h1[id="usuario"]:hover {
+    cursor: pointer;
 }
 
 .icone_calendario {
@@ -92,60 +114,9 @@ h1[id="calendario"] {
     left: 75px;
 }
 
-.icone_historico {
-    position: absolute;
-    top: 560px;
-    left: 20px;
-}
-
-h1[id="historico"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 565px;
-    left: 80px;
-}
-
-.icone_backup {
-    position: absolute;
-    top: 630px;
-    left: 20px;
-}
-
-h1[id="backup"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 630px;
-    left: 80px;
-}
-
-.icone_relatorio {
-    position: absolute;
-    top: 700px;
-    left: 28px;
-}
-
-h1[id="relatorio"] {
-    font-size: 24px;
-    color: #ffffff;
-    font-weight: normal;
-    font-stretch: normal;
-    font-style: normal;
-    position: absolute;
-    top: 705px;
-    left: 80px;
-}
-
 .icone_opiniao {
     position: absolute;
-    top: 820px;
+    top: 620px;
     left: 28px;
 }
 
@@ -156,13 +127,17 @@ h1[id="opiniao_menu"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 820px;
+    top: 620px;
     left: 85px;
+}
+
+h1[id="opiniao_menu"]:hover {
+    cursor: pointer;
 }
 
 .icone_ajuda {
     position: absolute;
-    top: 900px;
+    top: 700px;
     left: 28px;
 }
 
@@ -173,8 +148,12 @@ h1[id="ajuda"] {
     font-stretch: normal;
     font-style: normal;
     position: absolute;
-    top: 900px;
+    top: 700px;
     left: 85px;
+}
+
+h1[id="ajuda"]:hover {
+    cursor: pointer;
 }
 
 .menu-fechado {

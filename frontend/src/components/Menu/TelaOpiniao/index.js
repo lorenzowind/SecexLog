@@ -105,7 +105,7 @@ export default class Tela_opiniao extends React.Component {
         </div>
 
         <div className="texto_opiniao">
-          <textarea placeholder="Escreva sua opinião..." />
+          <textarea id="opiniao" placeholder="Escreva sua opinião..." />
         </div>
 
         <div className="enviar">

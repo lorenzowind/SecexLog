@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from 'react-router';
 
 import icone_sair from "../../../assets/ConsultaManual/icone_sair_menor.png";
  
@@ -7,7 +8,11 @@ import "./styles.css";
 import api from "../../../services/api";
 
 export default class Tela_login extends React.Component {
-  
+
+  state = {
+    login: false
+  }
+
   evento_sair() {
     var el_1 = document.getElementsByClassName("tela-login");
     var el_2 = document.getElementsByClassName("erro");
@@ -38,7 +43,9 @@ export default class Tela_login extends React.Component {
       el[0].style.display = "none";
       tela[0].style.display = "none";
       localStorage.setItem('token', post.data.token);
+      localStorage.setItem('login', 'in');
       alert('Login com sucesso');
+      this.setState({ login: true });
     }
   }
 
@@ -48,6 +55,13 @@ export default class Tela_login extends React.Component {
   }
 
   render() {
+
+    const { login } = this.state
+
+    if(login) {
+      return <Redirect to="/menu" push={true}/>
+    }
+
     return (
       <div className="tela-login">
 
