@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import HeaderUser from "../components/HeaderUsuario/index";
 import MenuBar from "../../../components/Menu/MenuBar/index";
 import Menu from "../../../components/Menu/MenuLateral/index";
+import Loading from "../../../components/Loading/index";
 
 import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Seach from "../../../assets/Cadastro de usuário/pesquisar.png";
 import Edit from "../../../assets/Cadastro de usuário/editar.png";
 import Close from "../../../assets/Cadastro de usuário/sair_secex.png";
 import Trash from "../../../assets/Cadastro de usuário/lixeira.png";
-import Loading from "../../../assets/secex.gif";
 
 import "./styles.css";
 
@@ -98,7 +98,7 @@ export default class CrudUsuario extends Component {
         })
         .catch(err => {
           alert(err);
-          window.location.reload(false);
+          window.location.replace("/");
         });
     }, 1200);
   };
@@ -469,7 +469,7 @@ export default class CrudUsuario extends Component {
     return (
       <div className="body">
         {!this.state.load ? (
-          <img src={Loading} alt="Loading..." className="loading" />
+          <Loading />
         ) : (
           <div>
             <div className="Menu">
