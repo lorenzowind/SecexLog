@@ -42,7 +42,6 @@ export default class Tela_login extends React.Component {
       el[0].style.display = "none";
       tela[0].style.display = "none";
       localStorage.setItem("token", post.data.token);
-      localStorage.setItem("login", "in");
       alert("Login com sucesso");
       this.setState({ login: true });
     }

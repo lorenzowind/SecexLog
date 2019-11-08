@@ -53,7 +53,7 @@ export default class CrudUsuario extends Component {
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.loadData();
   }
 
@@ -74,7 +74,7 @@ export default class CrudUsuario extends Component {
     };
 
     if (isValid) {
-      await api.post("/users", state, header).catch(err => {
+      await api.post("/users", state).catch(err => {
         alert("Verifque se todos os dados estão inseridos corretamente");
       });
 
@@ -89,7 +89,7 @@ export default class CrudUsuario extends Component {
     console.log(JSON.stringify(header));
     await setTimeout(() => {
       api
-        .get("/users", header)
+        .get("/users")
         .then(res => {
           const row = this.state.row;
 
@@ -102,15 +102,20 @@ export default class CrudUsuario extends Component {
           this.setState({ row: row, load: true });
         })
         .catch(err => {
-          alert(err);
-          window.location.replace("/");
+          if (err.message === "Request failed with status code 401") {
+            alert("Nível de acesso negado! Contate o administrador do sistema");
+            window.location.replace("/menu");
+          } else {
+            alert(err);
+            window.location.replace("/");
+          }
         });
     }, 1200);
   };
 
   //GET (READ dados de busca)
   handleSearch = async () => {
-    const res = await api.get(`/users/${this.state.search}`, header);
+    const res = await api.get(`/users/${this.state.search}`);
 
     if (!res.data || res.data.length <= 0) {
       alert("Usuário não encontrado");
@@ -183,7 +188,7 @@ export default class CrudUsuario extends Component {
         }
       }
 
-      const res = await api.get("/users", header).catch(err => {
+      const res = await api.get("/users").catch(err => {
         alert("Verifque se todos os dados estão inseridos corretamente");
       });
 
@@ -196,7 +201,7 @@ export default class CrudUsuario extends Component {
           console.log(JSON.stringify(state));
           // eslint-disable-next-line
           const put = await api
-            .put(`/users/${res.data[i].login}`, state, header)
+            .put(`/users/${res.data[i].login}`, state)
             .catch(err => {
               alert(err);
               window.location.reload(false);
@@ -239,7 +244,7 @@ export default class CrudUsuario extends Component {
       };
     }
 
-    const res = await api.get("/users", header).catch(err => {
+    const res = await api.get("/users").catch(err => {
       alert("Verifque se todos os dados estão inseridos corretamente");
     });
 
@@ -247,12 +252,10 @@ export default class CrudUsuario extends Component {
     for (var i = 0; i < this.state.row.length; i++) {
       if (res.data[i].login === editedlogin) {
         // eslint-disable-next-line
-        const del = await api
-          .delete(`/users/${res.data[i].id}`, header)
-          .catch(err => {
-            alert(err);
-            window.location.reload(false);
-          });
+        const del = await api.delete(`/users/${res.data[i].id}`).catch(err => {
+          alert(err);
+          window.location.reload(false);
+        });
       }
     }
     this.setState({ editPopUp: [], popUpStats: false });

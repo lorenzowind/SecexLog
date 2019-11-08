@@ -44,8 +44,6 @@ export default class Tela_inicial extends React.Component {
   render() {
     const { trajetos } = this.state;
 
-    localStorage.setItem("login", "out");
-
     return (
       <div className="tela-inicial">
         <Header />

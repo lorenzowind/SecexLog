@@ -3,8 +3,16 @@
   padding-top: 3%;
 }
 
+.header_cidade img {
+  height: 40px;
+  width: 40px;
+  margin-right: 10px;
+  position: relative;
+  top: 20px;
+}
+
 header#main-header {
-  width: 200px;
+  width: 220px;
   font-size: 20px;
   font-weight: bolder;
   color: #292eec;

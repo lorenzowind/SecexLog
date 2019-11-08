@@ -1,9 +1,7 @@
 import React from "react";
 
 import MenuBar from "../MenuBar/index";
-import { BrowserRouter, Link, Switch, Route } from "react-router-dom";
-import CrudCidade from "../../../pages/CRUD/Cidade/index";
-import CrudUser from "../../../pages/CRUD/Usuario/index";
+import { Link } from "react-router-dom";
 
 import secex_logo from "../../../assets/Menu/secex_logo.png";
 import icone_cadastro from "../../../assets/Menu/icone_cadastro.png";

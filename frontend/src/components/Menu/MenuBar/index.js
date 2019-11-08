@@ -6,21 +6,30 @@ import TelaOpiniao from "../TelaOpiniao/index";
 import TelaLogin from "../TelaLogin/index";
 import TelaEsqueceuSenha from "../TelaEsqueceuSenha/index";
 
+import { isAuthenticated } from "../../../services/auth";
+
 import "./styles.css";
 
 export default class Header extends React.Component {
-  state = {
-    logout: false,
-    text: "Login"
-  };
+  constructor() {
+    super();
+    this.state = {
+      logout: false,
+      text: "Login"
+    };
+  }
+
+  componentDidMount() {
+    if (isAuthenticated()) this.setState({ text: "Logout" });
+    else this.setState({ text: "Login" });
+  }
 
   evento_login = () => {
-    if (localStorage.getItem("login") !== "in") {
-      localStorage.setItem("login", "out");
-      console.log(localStorage.getItem("login"));
+    if (!isAuthenticated()) {
       var el = document.getElementsByClassName("tela-login");
       el[0].style.display = "block";
     } else {
+      localStorage.removeItem("token");
       this.setState({ logout: true });
     }
   };
@@ -31,8 +40,6 @@ export default class Header extends React.Component {
   }
 
   render() {
-    if (localStorage.getItem("login") === "in") this.state.text = "Logout";
-
     if (this.state.logout) {
       alert("Logout com sucesso");
       return <Redirect to="/" push={true} />;
