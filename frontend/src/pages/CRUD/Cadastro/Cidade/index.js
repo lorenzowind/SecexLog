@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import HeaderCidade from "../../Cadastro/components/HeaderCidade/index";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import Calendar from "../../components/Calendar/Calendar";
+import Calendar from "../components/Calendar/Calendar";
 import Menu from "../../../../components/Menu/MenuLateral/index";
-//import api from "../../../../services/api";
+import api from "../../../../services/api";
 
 import "moment/locale/pt-br";
 
@@ -18,8 +18,6 @@ import "./styles.css";
 import Notif from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
 
 const animatedComponents = makeAnimated();
-
-let options = null;
 
 export default class CrudCidade extends Component {
   constructor(props) {
@@ -35,15 +33,14 @@ export default class CrudCidade extends Component {
       cidadesRelacionadas: null,
       initDataCheia: "",
       endDataCheia: "",
-      nomeFeriado: "",
-      initDataFeriado: "",
-      endDataFeriado: "",
       obsInterdicao: "",
       obsCidade: "",
 
       itemArray: [],
 
-      interdicaoTrecho: false
+      interdicaoTrecho: false,
+
+      options: []
     };
   }
 
@@ -56,28 +53,6 @@ export default class CrudCidade extends Component {
   //POST (Create)
   onSubmit = async ev => {
     ev.preventDefault();
-    var dias = null;
-    var horas = null;
-
-    if (this.state.diasEmbarque.length === 0) {
-      dias = this.state.dia;
-    } else {
-      const dia = this.state.dia;
-      dias = this.state.diasEmbarque;
-      if (dia) {
-        dias.push({ dia });
-      }
-    }
-
-    if (this.state.horasEmbarque.length === 0) {
-      horas = this.state.hora;
-    } else {
-      const hora = this.state.hora;
-      horas = this.state.horasEmbarque;
-      if (hora) {
-        horas.push({ hora });
-      }
-    }
 
     let cidadesRelacionadas = this.state.cidadesRelacionadas;
     let cidades = [];
@@ -94,39 +69,42 @@ export default class CrudCidade extends Component {
       nome: this.state.nomeCidade,
       cBase: this.state.opCidadeBase,
       cAuditada: this.state.opCidadeAuditada,
+      //cidadesRelacionadas: cidades,
       initDataCheia: this.state.initDataCheia.toString(),
       endDataCheia: this.state.endDataCheia.toString(),
-      initDataFeriado: this.state.initDataFeriado.toString(),
-      endDataFeriado: this.state.endDataFeriado.toString(),
-      nomeFeriado: this.state.nomeFeriado,
       obsInterdicao: this.state.obsInterdicao,
       obsCidade: this.state.obsCidade
     };
 
-    /*const resCidade = await api.post("/cities", stateCidade).catch(err => {
-      alert("Verifque se todos os dados estão inseridos corretamente");
-    });*/
+    let error = null;
 
-    //if (resCidade) {
-    /*const resTrajeto = await api.post("/path", stateTrajeto).catch(err => {
-      alert("Verifque se todos os dados estão inseridos corretamente");
-    });*/
+    await api.post("/cities", stateCidade).catch(err => {
+      alert(
+        "Verifque se todos os dados estão inseridos corretamente ou se o nome da cidade já foi cadastrado"
+      );
+      error = err;
+    });
+
+    if (!error) window.location.reload();
   };
 
   //GET (Read)
   loadOpcoes = async () => {
-    /*const res = await api.get("/cities").catch(err => {
+    const res = await api.get("/cities").catch(err => {
       alert(err.message);
       window.location.reload(false);
-    });*/
+    });
 
-    //console.log(res.data);
+    const options = [];
 
-    options = [
-      { value: "tefe", label: "Tefé" },
-      { value: "itacoatiara", label: "Itacoatiara" },
-      { value: "presidente figueiredo", label: "Presidente Figueiredo" }
-    ];
+    for (var i = 0; i < res.data.length; i++) {
+      let value = res.data[i].nome;
+      let label = res.data[i].nome;
+
+      options.push({ value, label });
+    }
+
+    this.setState({ options: options });
   };
 
   //Fim Métodos CRUD
@@ -259,25 +237,11 @@ export default class CrudCidade extends Component {
     return true;
   };
 
-  getRange = (state, name) => {
-    if (name === "feriado") {
-      var nome = "";
-
-      while (nome === "") {
-        nome = prompt("Informe o nome do feriado:");
-      }
-
-      this.setState({
-        initDataFeriado: state.from,
-        endDataFeriado: state.to,
-        nomeFeriado: nome
-      });
-    } else if (name === "enchente") {
-      this.setState({ initDataCheia: state.from, endDataCheia: state.to });
-    }
+  getRange = state => {
+    this.setState({ initDataCheia: state.from, endDataCheia: state.to });
   };
 
-  switchInterdicao = ev => {
+  switchInterdicao = () => {
     this.setState(prevState => ({
       interdicaoTrecho: !prevState.interdicaoTrecho
     }));
@@ -332,22 +296,10 @@ export default class CrudCidade extends Component {
                   placeholder=""
                   components={animatedComponents}
                   isMulti
-                  options={options}
+                  options={this.state.options}
                   name="cidadesRelacionadas"
                   onChange={this.handleCidadesRelacionadas}
                 />
-              </div>
-
-              <div className="holiday">
-                <h2>
-                  Adicionar data de feriado ou datas comemorativas da cidade
-                </h2>
-                <div className="RangeExample">
-                  <Calendar
-                    name={"feriado"}
-                    getRange={this.getRange.bind(this)}
-                  />
-                </div>
               </div>
 
               <div className="flood">

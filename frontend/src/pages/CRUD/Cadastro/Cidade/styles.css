@@ -41,6 +41,10 @@
   border: none;
 }
 
+.flood {
+  display: inline;
+}
+
 .interdicao-switch {
   display: flex;
   align-items: center;
@@ -114,10 +118,12 @@ textarea {
   font-size: 14px;
   border-radius: 17px;
   padding: 20px;
+  transition: 0.4s;
 }
 
 textarea:disabled {
   background-color: #f1f1f1;
+  transition: 0.4s;
 }
 
 legend {

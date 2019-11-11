@@ -1,0 +1,138 @@
+.cadastroCidade {
+  padding-top: 7%;
+  padding-left: 22%;
+}
+
+.cadastroCidade h1 {
+  width: 231px;
+  height: 25px;
+  font-size: 18px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.32;
+  letter-spacing: normal;
+  margin-top: 3.5%;
+  margin-bottom: 1.5%;
+  text-align: left;
+  color: #707070;
+}
+
+.cadastroCidade input[type="text"] {
+  height: 38px;
+  width: 171px;
+  border-radius: 29px;
+  margin-right: 88px;
+  padding: 20px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
+}
+
+.searchCity img {
+  height: 20px;
+  position: relative;
+  top: 6px;
+  right: 70px;
+  cursor: pointer;
+}
+
+.add {
+  display: flex;
+}
+
+.add img {
+  height: 50px;
+  position: relative;
+  top: 6px;
+  right: 60px;
+  cursor: pointer;
+}
+
+.listCity {
+  max-width: 800px;
+  height: 200px;
+  border-radius: 34px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.table {
+  height: 200px;
+  display: flex;
+  margin-right: 20px;
+}
+
+.listCity table {
+  margin: 20px;
+  max-height: 190px;
+}
+
+.listCity table th {
+  width: 500px;
+}
+
+.listCity table td {
+  padding-top: 5%;
+}
+
+.listCity img {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.popUp {
+  height: 73%;
+  width: 300px;
+  background-color: #ffff;
+  border: 1px solid #b0b0b0;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+  bottom: 400px;
+  left: 450px;
+}
+
+.popUp h2 {
+  margin-top: 20px;
+  margin-bottom: 0;
+  margin-left: 8.4%;
+}
+
+.popUp h4 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 12px;
+  margin-left: 8.4%;
+}
+
+.popUp input {
+  height: 38px;
+  width: 260px;
+  margin-right: 88px;
+  margin-left: 8.4%;
+  margin-top: 1.5%;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  border: 1px solid #b0b0b0;
+  padding: 20px;
+}
+
+.flood {
+  display: flex;
+}
+
+.flood img {
+  height: 38px;
+  margin-right: 20px;
+  position: relative;
+  top: 6px;
+}
+
+.flood input[type="text"] {
+  width: 85px;
+  margin-left: 0;
+  margin-right: 20px;
+}

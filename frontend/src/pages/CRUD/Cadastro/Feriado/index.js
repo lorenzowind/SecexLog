@@ -1,0 +1,133 @@
+import React, { Component } from "react";
+
+import Header from "../components/HeaderFeriado/index";
+import Menu from "../../../../components/Menu/MenuLateral/index";
+import Calendar from "../components/MultiCalendar/index";
+
+import api from "../../../../services/api";
+
+var day = null;
+
+export default class Feriado extends Component {
+  constructor() {
+    super();
+    this.state = this.getInitialState();
+  }
+
+  getInitialState() {
+    return {
+      nomeCidade: "",
+      nome: "",
+      days: "",
+
+      cidades: []
+    };
+  }
+
+  componentWillMount() {
+    this.loadCidades();
+  }
+
+  loadCidades = async () => {
+    const res = await api.get("/cities").catch(err => {
+      alert(err);
+      window.location.reload();
+    });
+
+    const cidades = res.data;
+    console.log(res.data);
+    this.setState({ cidades });
+  };
+
+  getDays = days => {
+    day = days;
+  };
+
+  handleChange = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+    const value = ev.target.value;
+
+    console.log(`state[${name}]==${value}`);
+
+    state[name] = value;
+
+    this.setState(state);
+  };
+
+  onSubmit = ev => {
+    ev.preventDefault();
+
+    console.log(day);
+
+    this.setState({ days: day });
+
+    const state = {
+      nomeCidade: this.state.nomeCidade,
+      nome: this.state.nome,
+      days: day
+    };
+
+    console.log(state);
+  };
+
+  render() {
+    const footerStyles = {
+      marginTop: "40px"
+    };
+
+    const inputStyles = {
+      height: "38px",
+      width: "267px",
+      borderRadius: "29px",
+      marginRight: "88px",
+      padding: "20px",
+      border: "solid 1px #707070",
+      backgroundColor: "#ffffff"
+    };
+
+    const selectStyles = {
+      border: "solid 1px #707070"
+    };
+
+    return (
+      <div className="body">
+        <Menu />
+        <div className="cadastro">
+          <Header />
+
+          <h2>Nome da Cidade</h2>
+          <select
+            name="nomeCidade"
+            onChange={this.handleChange}
+            defaultValue="selected"
+            style={selectStyles}
+            required
+          >
+            {this.state.cidades.map((c, i) => (
+              <option kei={i} value={c.nome}>
+                {c.nome}
+              </option>
+            ))}
+          </select>
+
+          <h2>Nome do Feriado</h2>
+          <input
+            type="text"
+            name="nome"
+            id="nomeFeriado"
+            style={inputStyles}
+            onChange={this.handleChange}
+          />
+
+          <h2>Selecionar Dia</h2>
+          <Calendar name={"feriado"} getDays={this.getDays} />
+
+          <div className="footer" style={footerStyles}>
+            <button onClick={this.onSubmit}></button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

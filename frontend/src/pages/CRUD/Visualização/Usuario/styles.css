@@ -1,6 +1,6 @@
 .cadastro {
   padding-top: 7%;
-  padding-left: 30%;
+  padding-left: 22%;
 }
 
 .body h2 {
@@ -93,7 +93,7 @@
   cursor: pointer;
 }
 
-.popUp {
+.popUpUser {
   width: 300px;
   background-color: #ffff;
   border: 1px solid #b0b0b0;
@@ -104,7 +104,7 @@
   left: 700px;
 }
 
-.popUp div {
+.popUpUser div {
   margin-left: 20px;
 }
 
@@ -127,7 +127,7 @@
   cursor: pointer;
 }
 
-.popUp input,
+.popUpUser input,
 select {
   height: 38px;
   width: 260px;
@@ -138,28 +138,37 @@ select {
   border: 1px solid #b0b0b0;
 }
 
-.popUp input {
+.popUpUser input[nome="nome"],
+input[nome="login"] {
+  width: 2600px;
+}
+
+.popUpUser select[name="cargo"] {
+  margin-left: 0;
+}
+
+.popUpUser input {
   padding: 20px;
 }
 
-.popUp h2 {
+.popUpUser h2 {
   margin-top: 20px;
   margin-bottom: 0;
 }
 
-.popUp h3 {
+.popUpUser h3 {
   margin-top: 30px;
   margin-bottom: 10px;
   font-size: 18px;
 }
 
-.popUp button {
+.popUpUser button {
   height: 38px;
   width: 95px;
   margin-top: 30px;
   margin-right: 20px;
   margin-bottom: 10px;
-  background: url("../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar.png");
+  background: url("../../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar.png");
   border-radius: 40px;
   border: none;
   cursor: pointer;
@@ -167,8 +176,8 @@ select {
   float: right;
 }
 
-.popUp button:hover {
-  background: url("../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar1.png");
+.popUpUser button:hover {
+  background: url("../../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar1.png");
   transition: 0.2s;
 }
 
