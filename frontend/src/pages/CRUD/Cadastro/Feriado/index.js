@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Header from "../components/HeaderFeriado/index";
 import Menu from "../../../../components/Menu/MenuLateral/index";
-import Calendar from "../components/MultiCalendar/index";
+import Calendar from "../components/Calendar/Calendar";
 
 import api from "../../../../services/api";
 
@@ -18,7 +18,8 @@ export default class Feriado extends Component {
     return {
       nomeCidade: "",
       nome: "",
-      days: "",
+      initFeriado: "",
+      endFeriado: "",
 
       cidades: []
     };
@@ -39,8 +40,8 @@ export default class Feriado extends Component {
     this.setState({ cidades });
   };
 
-  getDays = days => {
-    day = days;
+  getRange = state => {
+    this.setState({ initFeriado: state.from, endFeriado: state.to });
   };
 
   handleChange = ev => {
@@ -65,7 +66,8 @@ export default class Feriado extends Component {
     const state = {
       nomeCidade: this.state.nomeCidade,
       nome: this.state.nome,
-      days: day
+      initFeriado: this.state.initFeriado.toLocaleDateString(),
+      endFeriado: this.state.endFeriado.toLocaleDateString()
     };
 
     console.log(state);
@@ -102,10 +104,12 @@ export default class Feriado extends Component {
             onChange={this.handleChange}
             defaultValue="selected"
             style={selectStyles}
+            placeholder="Selecione uma cidade"
             required
           >
+            <option defaultValue="selected">Selecione uma cidade</option>
             {this.state.cidades.map((c, i) => (
-              <option kei={i} value={c.nome}>
+              <option key={i} value={c.nome}>
                 {c.nome}
               </option>
             ))}
@@ -121,7 +125,7 @@ export default class Feriado extends Component {
           />
 
           <h2>Selecionar Dia</h2>
-          <Calendar name={"feriado"} getDays={this.getDays} />
+          <Calendar name={"feriado"} getRange={this.getRange.bind(this)} />
 
           <div className="footer" style={footerStyles}>
             <button onClick={this.onSubmit}></button>

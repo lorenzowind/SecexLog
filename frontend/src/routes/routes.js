@@ -10,6 +10,8 @@ import CadCidade from "../pages/CRUD/Cadastro/Cidade/index";
 import CrudUser from "../pages/CRUD/Visualização/Usuario/index";
 
 import CadFeriado from "../pages/CRUD/Cadastro/Feriado/index";
+import CadPrestador from "../pages/CRUD/Cadastro/Prestador/index";
+import CadModal from "../pages/CRUD/Cadastro/Modal/index";
 
 import Menu from "../pages/Dashboard/index";
 import TelaInicial from "../pages/ConsultaManual/TelaInicial/index";
@@ -35,6 +37,12 @@ const Routes = () => (
         path="/cadastro/feriado/create"
         component={CadFeriado}
       />
+      <PrivateRoutes
+        exact
+        path="/cadastro/prestador/create"
+        component={CadPrestador}
+      />
+      <PrivateRoutes exact path="/cadastro/modal/create" component={CadModal} />
 
       <Route path="*" component={Error404} />
     </Switch>

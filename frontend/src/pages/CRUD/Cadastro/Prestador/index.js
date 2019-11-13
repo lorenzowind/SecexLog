@@ -1,0 +1,158 @@
+import React, { Component } from "react";
+
+import Menu from "../../../../components/Menu/MenuLateral/index";
+import Header from "../components/HeaderPrestador/index";
+
+import "./styles.css";
+import api from "../../../../services/api";
+
+export default class Prestador extends Component {
+  constructor() {
+    super();
+    this.state = this.getInitialState();
+  }
+
+  getInitialState() {
+    return {
+      nome: "",
+      telefone: "",
+      email: "",
+      modal: "",
+      tipoDado: "CPF",
+      dadoPrestador: ""
+    };
+  }
+
+  handleChange = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+    const value = ev.target.value;
+
+    console.log(`state[${name}]==${value}`);
+
+    state[name] = value;
+
+    this.setState(state);
+  };
+
+  onSubmit = async ev => {
+    ev.preventDefault();
+
+    const state = {
+      prestNome: this.state.nome,
+      telefone: this.state.telefone,
+      email: this.state.email,
+      modal: this.state.modal,
+      tipoDado: this.state.tipoDado,
+      dadoPrestador: this.state.dadoPrestador
+    };
+
+    await api.post(`/providers/${state}`, state).catch(err => {
+      alert(err);
+    });
+
+    console.log(state);
+  };
+
+  render() {
+    const footerStyles = {
+      marginTop: "40px"
+    };
+
+    const inputStyles = {
+      height: "38px",
+      width: "267px",
+      borderRadius: "29px",
+      marginRight: "88px",
+      padding: "20px",
+      fontSize: "12px",
+      color: "#000",
+      border: "solid 1px #707070",
+      backgroundColor: "#ffffff"
+    };
+
+    const selectStyles = {
+      border: "solid 1px #707070"
+    };
+
+    return (
+      <div className="body">
+        <Menu />
+        <div className="cadastro">
+          <Header />
+
+          <h2>Nome do Prestador de Serviço</h2>
+          <input
+            type="text"
+            name="nome"
+            style={inputStyles}
+            onChange={this.handleChange}
+          />
+
+          <div className="dados">
+            <div>
+              <h2>Telefone</h2>
+              <input
+                type="text"
+                name="telefone"
+                style={inputStyles}
+                onChange={this.handleChange}
+              />
+            </div>
+
+            <div>
+              <h2>E-mail</h2>
+              <input
+                type="text"
+                name="email"
+                style={inputStyles}
+                onChange={this.handleChange}
+              />
+            </div>
+          </div>
+
+          <h2>Modal</h2>
+          <select
+            name="modal"
+            onChange={this.handleChange}
+            defaultValue="selected"
+            style={selectStyles}
+            required
+          >
+            <option defaultValue="selected">Selecione um modal</option>
+            {/* {this.state.cidades.map((c, i) => (
+              <option key={i} value={c.nome}>
+                {c.nome}
+              </option>
+            ))} */}
+          </select>
+
+          <div>
+            <h2>Você prefere</h2>
+            <select
+              name="tipoDado"
+              onChange={this.handleChange}
+              defaultValue="selected"
+              style={selectStyles}
+              required
+            >
+              <option defaultValue="cpf">CPF</option>
+              <option value="rg">RG</option>
+            </select>
+
+            <input
+              type="text"
+              name="dadoPrestador"
+              style={inputStyles}
+              onChange={this.handleChange}
+            />
+          </div>
+
+          <div className="footer" style={footerStyles}>
+            <button onClick={this.onSubmit}></button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}

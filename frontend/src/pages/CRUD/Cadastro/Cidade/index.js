@@ -114,10 +114,6 @@ export default class CrudCidade extends Component {
     const campo = ev.target.name;
     const value = ev.target.value;
 
-    if (campo === "nomePrestador") {
-      this.loadPrestador(value);
-    }
-
     state[campo] = value;
 
     this.setState(state);
