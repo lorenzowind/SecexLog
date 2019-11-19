@@ -1,4 +1,5 @@
 import React from "react";
+import DayPicker from 'react-day-picker';
 
 import MenuBar from "../MenuBar/index";
 import { Link } from "react-router-dom";
@@ -11,7 +12,34 @@ import icone_opiniao from "../../../assets/Menu/icone_opiniao.png";
 import icone_ajuda from "../../../assets/Menu/icone_ajuda.png";
 import icone_abrir from "../../../assets/Menu/icone_abrir.png";
 
+import 'react-day-picker/lib/style.css';
+
 import "./styles.css";
+
+const MONTHS = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
+];
+const WEEKDAYS_LONG = [
+  'Domingo',
+  'Segunda',
+  'Terça',
+  'Quarta',
+  'Quinta',
+  'Sexta',
+  'Sábado',
+];
+const WEEKDAYS_SHORT = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
 
 export default class MenuLateral extends React.Component {
   constructor(props) {
@@ -50,6 +78,11 @@ export default class MenuLateral extends React.Component {
     this.setState({ menu_aberto: [], menu_fechado: menu_fechado });
   };
 
+  evento_abrirOpiniao = () => {
+    var el = document.getElementsByClassName("tela-opiniao");
+    el[0].style.display = "block";
+  }
+
   render() {
     return (
       <div className="menu-lateral">
@@ -62,15 +95,8 @@ export default class MenuLateral extends React.Component {
 
             <div className="icone_cadastro">
               <img src={icone_cadastro} alt="" />
-              <h1 id="cadastro">{c.cadastro}</h1>
-            </div>
-
-            <div className="rotas-cadastro">
-              <Link to="/cadastro/cidade" style={{ textDecoration: "none" }}>
-                <h1 id="cidade_trajeto">Cidade/Trajeto</h1>
-              </Link>
-              <Link to="/cadastro/user" style={{ textDecoration: "none" }}>
-                <h1 id="usuario">Usuário</h1>
+              <Link to="/cadastro" style={{ textDecoration: "none" }}>
+                <div className="cadastro_opcao"><h1 id="cadastro">{c.cadastro}</h1></div>
               </Link>
             </div>
 
@@ -78,19 +104,19 @@ export default class MenuLateral extends React.Component {
               <img src={icone_configuracao} alt="" />
               <h1 id="configuracao">{c.config}</h1>
             </div>
+
             <div className="icone_calendario">
               <img src={icone_calendario} alt="" />
               <h1 id="calendario">{c.caledario}</h1>
             </div>
+            
+            <div className="calendario">
+              <DayPicker months={MONTHS} weekdaysLong={WEEKDAYS_LONG} weekdaysShort={WEEKDAYS_SHORT}/>
+            </div>
 
             <div className="icone_opiniao">
               <img src={icone_opiniao} alt="" />
-              <h1 id="opiniao_menu">{c.opiniao}</h1>
-            </div>
-
-            <div className="icone_ajuda">
-              <img src={icone_ajuda} alt="" />
-              <h1 id="ajuda">{c.ajuda}</h1>
+              <h1 id="opiniao_menu" onClick={this.evento_abrirOpiniao}>{c.opiniao}</h1>
             </div>
           </div>
         ))}

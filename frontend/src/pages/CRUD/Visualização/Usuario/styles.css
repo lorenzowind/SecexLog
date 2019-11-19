@@ -1,0 +1,14 @@
+.adiciona_usuario {
+    display: flex;
+}
+
+.adiciona_usuario img {
+  height: 50px;
+  margin-top: 2%;
+  position: relative;
+  cursor: pointer;
+}
+
+.adiciona_usuario h1 {
+    width: 180px;
+}

@@ -7,6 +7,7 @@
   align-items: center;
   padding-right: 5%;
   position: fixed;
+  z-index: 10;
 }
 
 .de-sua-opiniao {
