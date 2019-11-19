@@ -1,0 +1,12 @@
+.row button {
+  height: 70px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  border-radius: 100%;
+  border: none;
+  cursor: pointer;
+}
+
+.row img {
+  height: 70px;
+}

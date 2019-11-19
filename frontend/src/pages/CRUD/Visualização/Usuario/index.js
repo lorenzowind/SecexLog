@@ -13,7 +13,17 @@ import Close from "../../../../assets/Cadastro de usuário/sair_secex.png";
 
 import "./styles.css";
 
-export default class Cidade extends Component {
+
+// eslint-disable-next-line
+var e = 0;
+var editedlogin = "";
+
+const token = localStorage.getItem("token");
+const header = {
+  headers: { Authorization: "bearer " + token }
+};
+
+export default class CrudUsuario extends Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();

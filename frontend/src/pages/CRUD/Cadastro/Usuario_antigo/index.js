@@ -3,11 +3,11 @@ import HeaderUser from "../../components/HeaderUsuario/index";
 import Loading from "../../../../components/Loading/index";
 import Menu from "../../../../components/Menu/MenuLateral/index";
 
-import Mais from "../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
-import Seach from "../../../assets/Cadastro de usuário/pesquisar.png";
-import Edit from "../../../assets/Cadastro de usuário/editar.png";
-import Close from "../../../assets/Cadastro de usuário/sair_secex.png";
-import Trash from "../../../assets/Cadastro de usuário/lixeira.png";
+import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
+import Seach from "../../../../assets/Cadastro de usuário/pesquisar.png";
+import Edit from "../../../../assets/Cadastro de usuário/editar.png";
+import Close from "../../../../assets/Cadastro de usuário/sair_secex.png";
+import Trash from "../../../../assets/Cadastro de usuário/lixeira.png";
 
 import "./styles.css";
 
@@ -487,7 +487,6 @@ export default class CrudUsuario extends Component {
   render() {
     return (
       <div className="body">
-        <Menu />
         {!this.state.load ? (
           <Loading />
         ) : (
@@ -564,7 +563,7 @@ export default class CrudUsuario extends Component {
               </div>
 
               {this.state.popUp.map((c, i) => (
-                <div className="popUp" key={i}>
+                <div className="popUpUser" key={i}>
                   <div>
                     <div className="title">
                       <h2>{c.h1}</h2>
@@ -620,7 +619,7 @@ export default class CrudUsuario extends Component {
                 </div>
               ))}
               {this.state.editPopUp.map((c, i) => (
-                <div className="popUp" key={i}>
+                <div className="popUpUser" key={i}>
                   <div>
                     <div className="title">
                       <h2>{c.h1}</h2>
