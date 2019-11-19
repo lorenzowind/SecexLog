@@ -114,7 +114,10 @@ export default class CrudUsuario extends Component {
 
   //GET (READ dados de busca)
   handleSearch = async () => {
-    const res = await api.get(`/users/${this.state.search}`);
+    const res = await api.get(`/users/${this.state.search}`).catch(err => {
+      alert(err);
+      return;
+    });
 
     if (!res.data || res.data.length <= 0) {
       alert("Usuário não encontrado");
