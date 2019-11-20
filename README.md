@@ -81,6 +81,8 @@
 
 ##### Os names dos inputs são: nome(String), cBase(booleano -> indica se a cidade é base ou não), cAuditada(booleano -> indica se a cidade é auditada ou não), initDataFeriado(String), endDataFeriado(String), initDataCheia(String), endDataCheia(String), obsInterdicao(String -> observação de interdição), obsCidade(String -> observação de cidade). Somente os três primeiros campos são obrigatórios no back-end. 
 
+#### Novo campo: relations (string)
+
 - Rotas com método GET: 
 > - localhost:3333/cities (retorna todas as cidades cadastradas)
 > - localhost:3333/cities/id_ou_nome (retorna uma cidade com parametro id ou nome passado)  
@@ -91,7 +93,29 @@
 - PUT / DELETE:
 > localhost:3333/cities/id (atualiza/deleta uma opinião com ID informado)
 
-#### Trajetos: 
+#### Feriados:
+
+##### Deve receber um json do formato: 
+
+- Rotas com o método GET:
+> - localhost:3333/holidays (retorna todos os feriados)
+> - localhpst:3333/holidays/id (retorna um feriado com id informado)
+
+- POST:
+> localhost:3333/holidays (insere um feriado)
+```
+{
+  "nome": "nome do feriado",
+  "cidade": "nome da cidade",
+  "init":"inicio do feriado",
+  "end":"final do feriado"
+}
+```
+
+- PUT / DELETE:
+>localhost:3333/holidays/id
+
+#### Trajetos [NÃO USAR POR ENQUANTO]: 
 
 ##### Os names dos inputs são: initCidade(String), endCidade(String), modalTipo(String), prestNome(String), dia(String), hora(String), duration(String), quilometragem(Double), valor(Double), embarque(String), desembarque(String), telefone(String), email(String), modal(String)
 
@@ -107,7 +131,7 @@
 - PUT / DELETE:
 > localhost:3333/paths/id (atualiza/deleta um trajeto com ID informado)
 
-#### Prestadores:
+#### Prestadores [NÃO USAR POR ENQUANTO]:
 
 #### OBS: Essa rota trabalha junto com a rota de trajetos, portanto, vai recuperar, no cadastro de trajetos, somente os campos em comum entre essas duas tabelas: prestNome, telefone e email.
 
