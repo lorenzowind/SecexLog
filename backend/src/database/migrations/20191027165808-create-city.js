@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Users', {
+    return queryInterface.createTable('Cities', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,19 +9,28 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nome: {
-        type: Sequelize.STRING,
-      },
-      login: {
         type: Sequelize.STRING
       },
-      cargo: {
+      relations: {
         type: Sequelize.STRING
       },
-      senha: {
+      cBase: {
+        type: Sequelize.BOOLEAN
+      },
+      cAuditada: {
+        type: Sequelize.BOOLEAN
+      },
+      initDataCheia: {
         type: Sequelize.STRING
       },
-      email:{
+      endDataCheia: {
         type: Sequelize.STRING
+      },
+      obsInterdicao: {
+        type: Sequelize.TEXT
+      },
+      obsCidade: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
@@ -33,10 +42,7 @@ module.exports = {
       }
     });
   },
-
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('Users');
-    
+    return queryInterface.dropTable('Cities');
   }
-
 };

@@ -2,20 +2,19 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const routes = require("./routes");
+const { server } = require('./.env');
 
 const app = express();
 
-const port = 3333;
-
 app.use(cors());
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 routes(app);
 
-app.listen(port, () => {
+app.listen(server.port, () => {
   console.log(
-    `Backend executado e rodando em localhost na porta ${port}\nCTRL + C para parar`
+    `Backend executado e rodando em ${server.host} na porta ${server.port}\nCTRL + C para parar`
   );
 });

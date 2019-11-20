@@ -51,10 +51,16 @@ module.exports = (sequelize, DataTypes) => {
             throw new Error('A senha do usuário não foi informada');
         }
       }
+    },
+    senhaResetToken: {
+      type: DataTypes.STRING
+    },
+    senhaResetExpires: {
+      type: DataTypes.DATE
     }
   }, {
       defaultScope: {
-        attributes: { exclude: ['senha', 'createdAt','updatedAt'] },
+        attributes: { exclude: ['senha','senhaResetToken','senhaResetExpires','createdAt','updatedAt'] },
       }
     });
   User.associate = function (models) {

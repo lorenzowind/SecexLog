@@ -1,8 +1,7 @@
+const { db } = require('../.env');
+
 module.exports = {
-  username: "root",
-  password: "",
-  database: "secex_log",
-  host: "127.0.0.1",
+  ...db,
   dialect: 'mysql',
   // define: {
   //   timestamps: false
