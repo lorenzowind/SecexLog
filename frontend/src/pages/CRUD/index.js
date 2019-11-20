@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import CrudCidade from "./Visualização/Cidade/index";
-import CrudUsuario from "./Visualização/Usuario_antigo/index";
+import CrudUsuario from "./Visualização/Usuario/index";
 import CrudFeriado from "./Visualização/Feriado/index";
 import CrudPrestador from "./Visualização/Prestador/index";
 import CrudModal from "./Visualização/Modal/index";

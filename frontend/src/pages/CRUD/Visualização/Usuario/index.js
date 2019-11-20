@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import HeaderUser from "../../components/HeaderUsuario/index";
+import Loading from "../../../../components/Loading/index";
+import Menu from "../../../../components/Menu/MenuLateral/index";
 
-import Header from "../../components/HeaderUsuario/index";
-
-import api from "../../../../services/api";
-
-import Lupa from "../../../../assets/Cadastro de usuário/pesquisar.png";
 import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
-import Ir from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/ir.png";
+import Seach from "../../../../assets/Cadastro de usuário/pesquisar.png";
 import Edit from "../../../../assets/Cadastro de usuário/editar.png";
 import Close from "../../../../assets/Cadastro de usuário/sair_secex.png";
+import Trash from "../../../../assets/Cadastro de usuário/lixeira.png";
 
 import "./styles.css";
+
+import api from "../../../../services/api";
 
 // eslint-disable-next-line
 var e = 0;
@@ -30,260 +30,516 @@ export default class CrudUsuario extends Component {
 
   getInitialState() {
     return {
-      city1: [],
-      city2: [],
-      city3: [],
-      city4: [],
-      city5: [],
+      nome: "",
+      login: "",
+      email: "",
+      cargo: "",
+      senha: "",
 
-      popUp: []
+      search: "",
+
+      row: [],
+      popUp: [],
+      editPopUp: [],
+
+      editNome: "",
+      editLogin: "",
+      editEmail: "",
+      editCargo: "",
+      editSenha: "",
+
+      popUpStats: false,
+      load: false
     };
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.loadData();
   }
 
-  loadData = async () => {
-    const res = await api.get("/users").catch(err => {
-      alert(err);
-      window.location.reload();
-    });
+  //Métodos CRUD
 
-    const data = res.data;
+  //POST (CREATE usuário)
+  handleSubmit = async ev => {
+    ev.preventDefault();
 
-    const city1 = [];
-    const city2 = [];
-    const city3 = [];
-    const city4 = [];
-    const city5 = [];
+    const isValid = this.validate();
 
-    console.log(data.length);
-    let cont = 0;
-    for (var i = 0; i < data.length; i++) {
-      let aux = data[i];
+    const state = {
+      nome: this.state.nome,
+      login: this.state.login,
+      email: this.state.email,
+      cargo: this.state.cargo,
+      senha: this.state.senha
+    };
 
-      if (cont >= 0 && cont <= 3) {
-        console.log(cont);
-        city1.push({ aux });
-        cont++;
-      } else if (cont >= 4 && cont <= 7) {
-        city2.push({ aux });
-        cont++;
-      } else if (cont >= 8 && cont <= 11) {
-        city3.push({ aux });
-        cont++;
-      } else if (cont >= 12 && cont <= 15) {
-        city4.push({ aux });
-        cont++;
-      } else if (cont >= 16 && cont <= 19) {
-        city5.push({ aux });
-        cont++;
-      }
-      if (cont > 19) cont = 0;
+    if (isValid) {
+      await api.post("/users", state).catch(err => {
+        alert("Verifque se todos os dados estão inseridos corretamente");
+      });
+
+      console.log(state);
+
+      this.createRow(state);
+
+      this.setState({ popUp: [], popUpStats: false });
     }
-
-    console.log(city1);
-
-    this.setState({ city1, city2, city3, city4, city5 });
   };
 
-  editPopUp = c => {
-    let { popUp } = this.state;
+  //GET (READ dados na tabela)
+  loadData = async () => {
+    console.log(JSON.stringify(header));
+    await setTimeout(() => {
+      api
+        .get("/users")
+        .then(res => {
+          const row = this.state.row;
 
-    let h1 = "Cadastrar Cidade";
-    let nome = "Nome";
-    let cidadesRelacionadas = "Cidades Relacionadas";
-    let feriados = "Feriados";
-    let cheia = "Período de Cheia";
+          for (var i = 0; i < res.data.length; i++) {
+            row.push(res.data[i]);
+          }
+          return row;
+        })
+        .then(row => {
+          this.setState({ row: row, load: true });
+        })
+        .catch(err => {
+          if (err.message === "Request failed with status code 401") {
+            alert("Nível de acesso negado! Contate o administrador do sistema");
+            window.location.replace("/menu");
+          } else {
+            alert(err);
+            window.location.replace("/");
+          }
+        });
+    }, 1200);
+  };
 
-    let name = c.aux.nome;
-    let relatedCities = "Ainda Nenhuma";
-    let holidays = "Ainda Nenhum";
-    let initFlood = c.aux.initDataCheia;
-    let endFlood = c.aux.endDataCheia;
+  //GET (READ dados de busca)
+  handleSearch = async () => {
+    const res = await api.get(`/users/${this.state.search}`);
 
-    let text = { h1, nome, cidadesRelacionadas, feriados, cheia };
-    let value = { name, relatedCities, holidays, initFlood, endFlood };
+    if (!res.data || res.data.length <= 0) {
+      alert("Usuário não encontrado");
+      return;
+    }
 
-    popUp.push({ text, value });
+    var nome = null;
+
+    !isNaN(parseInt(this.state.search, 10))
+      ? (nome = res.data.nome)
+      : (nome = res.data[0].nome);
+
+    var row = this.state.row;
+
+    for (var i = 0; i < row.length; i++) {
+      if (nome === row[i].nome) {
+        const aux = row[i];
+        row[i] = row[0];
+        row[0] = aux;
+
+        this.setState({ row: row });
+        return;
+      }
+    }
+  };
+
+  //PUT (UPDATE usuário)
+  handleEditSubmit = async ev => {
+    ev.preventDefault();
+
+    var state = {};
+
+    if (
+      this.state.nome !== this.state.editNome ||
+      this.state.login !== this.state.editLogin ||
+      this.state.email !== this.state.editEmail ||
+      this.state.cargo !== this.state.editCargo ||
+      this.state.senha !== this.state.editSenha
+    ) {
+      state = {
+        nome: this.state.nome,
+        login: this.state.login,
+        email: this.state.email,
+        cargo: this.state.cargo,
+        senha: this.state.senha
+      };
+    } else {
+      state = {
+        nome: this.state.editNome,
+        login: this.state.editLogin,
+        email: this.state.editEmail,
+        cargo: this.state.editCargo,
+        senha: this.state.editSenha
+      };
+    }
+
+    const isValid = this.validateEdit(state);
+    if (isValid) {
+      for (var i = 0; i < this.state.row.length; i++) {
+        if (this.state.row[i].login === editedlogin) {
+          const row = this.state.row;
+
+          row[i].nome = state.nome;
+          row[i].login = state.login;
+          row[i].email = state.email;
+          row[i].cargo = state.cargo;
+          row[i].senha = state.senha;
+
+          this.setState({ row: row });
+        }
+      }
+
+      const res = await api.get("/users").catch(err => {
+        alert("Verifque se todos os dados estão inseridos corretamente");
+      });
+
+      // eslint-disable-next-line
+      for (var i = 0; i < res.data.length; i++) {
+        if (res.data[i].login === editedlogin) {
+          await api.put(`/users/${res.data[i].login}`, state).catch(err => {
+            alert(err);
+            window.location.reload(false);
+          });
+        }
+      }
+
+      this.setState({ editPopUp: [], popUpStats: false });
+    }
+  };
+
+  //DELETE (DELETE usuário)
+  handleDelete = async ev => {
+    ev.preventDefault();
+
+    // eslint-disable-next-line
+    var state = null;
+
+    if (
+      this.state.nome !== this.state.editNome ||
+      this.state.login !== this.state.editLogin ||
+      this.state.email !== this.state.editEmail ||
+      this.state.cargo !== this.state.editCargo ||
+      this.state.senha !== this.state.editSenha
+    ) {
+      state = {
+        nome: this.state.nome,
+        login: this.state.login,
+        email: this.state.email,
+        cargo: this.state.cargo,
+        senha: this.state.senha
+      };
+    } else {
+      state = {
+        nome: this.state.editNome,
+        login: this.state.editLogin,
+        email: this.state.editEmail,
+        cargo: this.state.editCargo,
+        senha: this.state.editSenha
+      };
+    }
+
+    const res = await api.get("/users").catch(err => {
+      alert("Verifque se todos os dados estão inseridos corretamente");
+    });
+
+    // eslint-disable-next-line
+    for (var i = 0; i < this.state.row.length; i++) {
+      if (res.data[i].login === editedlogin) {
+        await api.delete(`/users/${res.data[i].id}`).catch(err => {
+          alert(err);
+          window.location.reload(false);
+        });
+      }
+    }
+    this.setState({ editPopUp: [], popUpStats: false });
+    window.location.reload(false);
+  };
+
+  //FIM Métodos CRUD
+
+  //PopUps
+  createPopUp = () => {
+    let popUp = this.state.popUp;
+
+    const h1 = "Adicionar Usuário";
+    const nome = "Nome";
+    const login = "Login";
+    const email = "Email";
+    const cargo = "Cargo";
+    const senha = "Senha";
+
+    popUp.push({
+      h1,
+      nome,
+      login,
+      email,
+      cargo,
+      senha
+    });
 
     this.setState({ popUp: popUp, popUpStats: true });
   };
 
-  handleClose = ev => {
-    ev.preventDefault();
-    this.setState({ popUp: [] });
+  //PopUps
+  editPopUp = c => {
+    const editNome = c.nome;
+    const editLogin = c.login;
+    const editEmail = c.email;
+    const editCargo = c.cargo;
+    const editSenha = c.senha;
+    for (var cont = 0; cont < this.state.row.length; cont++) {
+      if (this.state.row[cont].login === editLogin) {
+        editedlogin = this.state.row[cont].login;
+      }
+    }
+
+    let popUp = this.state.editPopUp;
+
+    const h1 = "Editar Usuário";
+    const nome = "Nome";
+    const login = "Login";
+    const email = "Email";
+    const cargo = "Cargo";
+    const senha = "Senha";
+
+    popUp.push({
+      h1,
+      nome,
+      login,
+      email,
+      cargo,
+      senha
+    });
+
+    this.setState({
+      editPopUp: popUp,
+      popUpStats: true,
+      editNome,
+      editLogin,
+      editEmail,
+      editCargo,
+      editSenha,
+      nome: editNome,
+      login: editLogin,
+      email: editEmail,
+      cargo: editCargo,
+      senha: editSenha
+    });
   };
 
-  handleChange = () => {};
+  handleChange = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+
+    state[name] = ev.target.value;
+
+    this.setState(state);
+  };
+
+  validate = () => {
+    let nameError = "";
+    let loginError = "";
+    let emailError = "";
+    let passwordError = "";
+
+    if (
+      !this.state.nome ||
+      !this.state.login ||
+      !this.state.senha ||
+      !this.state.email ||
+      !this.state.cargo
+    ) {
+      nameError = "Por favor, preencha todos os campos";
+      alert(nameError);
+      return false;
+    }
+
+    if (
+      this.state.nome.includes("_") ||
+      this.state.nome.includes("@") ||
+      this.state.nome.includes("-")
+    ) {
+      nameError = "Nome não pode conter caracteres especiais";
+    }
+
+    if (this.state.login.includes(" ")) {
+      loginError = "Login não pode conter espaço";
+    }
+
+    if (this.state.senha.includes(" ")) {
+      passwordError = "Senha não pode conter espaço";
+    }
+
+    if (!this.state.email.includes("@")) {
+      emailError = "Digite um email válido";
+    }
+
+    if (nameError) {
+      alert(nameError);
+      return false;
+    }
+
+    if (loginError) {
+      alert(loginError);
+      return false;
+    }
+
+    if (passwordError) {
+      alert(passwordError);
+      return false;
+    }
+
+    if (emailError) {
+      alert(emailError);
+      return false;
+    }
+
+    return true;
+  };
+
+  validateEdit = state => {
+    let nameError = "";
+    let loginError = "";
+    let emailError = "";
+    let passwordError = "";
+
+    if (
+      !state.nome ||
+      !state.login ||
+      !state.senha ||
+      !state.email ||
+      !state.cargo
+    ) {
+      console.log(state.nome);
+      console.log(state.login);
+      console.log(state.senha);
+      console.log(state.email);
+      console.log(state.cargo);
+
+      nameError = "Por favor, preencha todos os campos";
+      alert(nameError);
+      return false;
+    }
+
+    if (
+      state.nome.includes("_") ||
+      state.nome.includes("@") ||
+      state.nome.includes("-")
+    ) {
+      nameError = "Nome não pode conter caracteres especiais";
+    }
+
+    if (state.login.includes(" ")) {
+      loginError = "Login não pode conter espaço";
+    }
+
+    if (state.senha.includes(" ")) {
+      passwordError = "Senha não pode conter espaço";
+    }
+
+    if (!state.email.includes("@")) {
+      emailError = "Digite um email válido";
+    }
+
+    if (nameError) {
+      alert(nameError);
+      return false;
+    }
+
+    if (loginError) {
+      alert(loginError);
+      return false;
+    }
+
+    if (passwordError) {
+      alert(passwordError);
+      return false;
+    }
+
+    if (emailError) {
+      alert(emailError);
+      return false;
+    }
+
+    return true;
+  };
+
+  createRow = state => {
+    let row = this.state.row;
+
+    row.push(state);
+
+    this.setState({ row: row });
+  };
+
+  handleClose = ev => {
+    ev.preventDefault();
+    this.setState({ popUp: [], editPopUp: [], popUpStats: false });
+  };
 
   render() {
     return (
       <div className="body">
-        <div className="cadastroCidade">
-          <Header />
+        {!this.state.load ? (
+          <Loading />
+        ) : (
+          <div>
+            <div className="cadastro">
+              <HeaderUser />
 
-          <h1>Pesquisar Usuário</h1>
-          <div className="searchCity">
-            <input type="text" name="searchCidade" />
-            <img src={Lupa} alt="" />
-          </div>
+              <h2>Pesquisar usuários</h2>
+              <div className="searchUser">
+                <input
+                  type="text"
+                  id="text"
+                  name="search"
+                  onChange={this.handleChange}
+                  onKeyDown={e => {
+                    if (e.key === "Enter") {
+                      this.handleSearch();
+                    }
+                  }}
+                  disabled={this.state.popUpStats}
+                />
+                <img src={Seach} alt="" onClick={this.handleSearch} />
+              </div>
 
-          <div className="addCity">
-            <div className="adiciona_usuario">
-              <h1>Adicionar Usuário</h1>
-              <img src={Mais} alt="" />
-            </div>
+              <div className="addUser">
+                <h2>Adicionar Usuário</h2>
+                <button
+                  onClick={this.createPopUp}
+                  disabled={this.state.popUpStats}
+                >
+                  <img src={Mais} alt="" />
+                </button>
+              </div>
 
-            <div className="listCity">
-              <div className="table">
-                <table name="table1">
+              <div className="tableUser">
+                <table>
                   <thead>
                     <tr>
                       <th align="left">Usuário</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.city1.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
-
-                <table name="table2">
-                  <thead>
-                    <tr>
                       <th align="left">Login</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.city2.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
-
-                <table name="table3">
-                  <thead>
-                    <tr>
-                      <th align="left">E-mail</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.city3.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
-
-                <table name="table4">
-                  <thead>
-                    <tr>
+                      <th align="left">Email</th>
                       <th align="left">Cargo</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.city4.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
-
-                <table name="table5">
-                  <thead>
-                    <tr>
                       <th align="left">Senha</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {this.state.city5.map((c, i) => (
+                    {this.state.row.map((c, i) => (
                       <tr key={i}>
-                        <td>{c.aux.nome}</td>
+                        <td>{c.nome}</td>
+                        <td>{c.login}</td>
+                        <td>{c.email}</td>
+                        <td>{c.cargo}</td>
+                        <td>
+                          <input
+                            type="password"
+                            value={c.senha}
+                            disabled={true}
+                          />
+                        </td>
                         <td>
                           <img
                             src={Edit}
@@ -299,54 +555,132 @@ export default class CrudUsuario extends Component {
                   </tbody>
                 </table>
               </div>
+
+              {this.state.popUp.map((c, i) => (
+                <div className="popUpUser" key={i}>
+                  <div>
+                    <div className="title">
+                      <h2>{c.h1}</h2>
+                      <img src={Close} alt="" onClick={this.handleClose} />
+                    </div>
+
+                    <h4>{c.nome}</h4>
+                    <input
+                      type="text"
+                      name="nome"
+                      onChange={this.handleChange}
+                      required
+                    />
+
+                    <h4>{c.login}</h4>
+                    <input
+                      type="text"
+                      name="login"
+                      onChange={this.handleChange}
+                      required
+                    />
+
+                    <h4>{c.cargo}</h4>
+                    <select
+                      name="cargo"
+                      onChange={this.handleChange}
+                      defaultValue="selected"
+                      required
+                    >
+                      <option defaultValue="selected"></option>
+                      <option value="Admin">Admin</option>
+                      <option value="User">User</option>
+                    </select>
+
+                    <h4>{c.email}</h4>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={this.handleChange}
+                      required
+                    />
+
+                    <h4>{c.senha}</h4>
+                    <input
+                      type="password"
+                      name="senha"
+                      onChange={this.handleChange}
+                      required
+                    />
+
+                    <button onClick={this.handleSubmit} />
+                  </div>
+                </div>
+              ))}
+              {this.state.editPopUp.map((c, i) => (
+                <div className="popUpUser" key={i}>
+                  <div>
+                    <div className="title">
+                      <h2>{c.h1}</h2>
+                      <img src={Close} alt="" onClick={this.handleClose} />
+                    </div>
+
+                    <h4>{c.nome}</h4>
+                    <input
+                      type="text"
+                      name="nome"
+                      onChange={this.handleChange}
+                      defaultValue={this.state.editNome}
+                      required
+                    />
+
+                    <h4>{c.login}</h4>
+                    <input
+                      type="text"
+                      name="login"
+                      onChange={this.handleChange}
+                      defaultValue={this.state.editLogin}
+                      required
+                    />
+
+                    <h4>{c.cargo}</h4>
+                    <select
+                      name="cargo"
+                      onChange={this.handleChange}
+                      defaultValue={this.state.editCargo}
+                      required
+                    >
+                      <option value="Admin">Admin</option>
+                      <option value="User">User</option>
+                    </select>
+
+                    <h4>{c.email}</h4>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={this.handleChange}
+                      defaultValue={this.state.editEmail}
+                      required
+                    />
+
+                    <h4>{c.senha}</h4>
+                    <input
+                      type="password"
+                      name="senha"
+                      onChange={this.handleChange}
+                      defaultValue={this.state.editSenha}
+                      required
+                    />
+
+                    <div className="btns">
+                      <img
+                        src={Trash}
+                        alt="Deletar"
+                        onClick={this.handleDelete}
+                      />
+                      <button onClick={this.handleEditSubmit} />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
-
-          {this.state.popUp.map((c, i) => (
-            <div className="popUp" key={i}>
-              <div className="title">
-                <h2>{c.text.h1}</h2>
-                <img src={Close} alt="" onClick={this.handleClose} />
-              </div>
-
-              <h4>{c.text.nome}</h4>
-              <input
-                type="text"
-                value={c.value.name}
-                onChange={this.handleChange}
-              />
-
-              <h4>{c.text.cidadesRelacionadas}</h4>
-              <input
-                type="text"
-                value={c.value.relatedCities}
-                onChange={this.handleChange}
-              />
-
-              <h4>{c.text.feriados}</h4>
-              <input
-                type="text"
-                value={c.value.holidays}
-                onChange={this.handleChange}
-              />
-
-              <h4>{c.text.cheia}</h4>
-              <div className="flood">
-                <input
-                  type="text"
-                  value={new Date(c.value.initFlood)}
-                  onChange={this.handleChange}
-                />
-                <img src={Ir} alt="" />
-                <input
-                  type="text"
-                  value={new Date(c.value.endFlood)}
-                  onChange={this.handleChange}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
+        )}
       </div>
     );
   }
