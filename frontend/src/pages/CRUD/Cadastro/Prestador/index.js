@@ -1,158 +1,150 @@
 import React, { Component } from "react";
+import makeAnimated from "react-select/animated";
+import Select from "react-select";
 
+import HeaderPrestador from "../../Cadastro/components/HeaderOp/index";
 import Menu from "../../../../components/Menu/MenuLateral/index";
-import Header from "../components/HeaderPrestador/index";
 
 import "./styles.css";
-import api from "../../../../services/api";
+
+const animatedComponents = makeAnimated();
+
+let options = null;
+let options_pref = null;
 
 export default class Prestador extends Component {
-  constructor() {
-    super();
-    this.state = this.getInitialState();
-  }
+    
+    constructor(props) {
+        super(props);
+        this.state = this.getInitialState();
+    }
 
-  getInitialState() {
-    return {
-      nome: "",
-      telefone: "",
-      email: "",
-      modal: "",
-      tipoDado: "CPF",
-      dadoPrestador: ""
+    getInitialState() {
+        return {
+            modaisRelacionados: null,
+            preferencia: "escolhe porra",
+            nomePrestador: "",
+            telefone_prestador: "",
+            email_prestador: ""
+        };
+    }
+
+    componentWillMount() {
+        this.loadOpcoes();
+    }
+
+    loadOpcoes = async () => {
+        options = [
+            { value: "carro", label: "Carro" },
+            { value: "barco", label: "Barco" }
+        ];
+        options_pref = [    
+            { value: "cpf", label: "CPF" },
+            { value: "cnpj", label: "CNPJ" }
+        ];
+    }
+
+    handleModaisRelacionados = modaisRelacionados => {
+        this.setState({ modaisRelacionados });
     };
-  }
-
-  handleChange = ev => {
-    const state = Object.assign({}, this.state);
-    const name = ev.target.name;
-    const value = ev.target.value;
-
-    console.log(`state[${name}]==${value}`);
-
-    state[name] = value;
-
-    this.setState(state);
-  };
-
-  onSubmit = async ev => {
-    ev.preventDefault();
-
-    const state = {
-      prestNome: this.state.nome,
-      telefone: this.state.telefone,
-      email: this.state.email,
-      modal: this.state.modal,
-      tipoDado: this.state.tipoDado,
-      dadoPrestador: this.state.dadoPrestador
+    
+    handlePreferencia = preferencia => {
+        this.state.preferencia = preferencia.label;
+        var el = document.getElementsByClassName("pref");
+        el[0].childNodes[0].innerHTML = this.state.preferencia;
+        el[0].style.display = "block";
     };
+    
+    render() {
+        return (
+            <div className="body">
+               <Menu/>
+                <div className="cadastro">
+                    <HeaderPrestador op={"Prestador"}/>
+                    <form>
+                        <div className="cadastro-prestador">
 
-    await api.post(`/providers/${state}`, state).catch(err => {
-      alert(err);
-    });
+                        <h2>Nome do Prestador de Serviço</h2>
+                        <div className="nome_prestador">
+                            <input
+                                type="text"
+                                id="text"
+                                name="nome_prestador"
+                                onChange={this.onChange}
+                            />  
+                        </div>
 
-    console.log(state);
-  };
+                        <div className="info">
+                            <div className="telefone_prestador">
+                                <h2>Telefone</h2>
+                                <input
+                                    type="text"
+                                    id="telefone"
+                                    name="telefone_prestador"
+                                    onChange={this.onChange}
+                                />  
+                            </div>
+                            <div className="email_prestador">
+                                <h2>E-mail</h2>
+                                <input
+                                    type="text"
+                                    id="email"
+                                    name="email_prestador"
+                                    onChange={this.onChange}
+                                />  
+                            </div>
+                        </div>
+                        
+                        <h2>Modal</h2>
+                        <div className="select_modal">
+                            <Select
+                                className="select"
+                                closeMenuOnSelect={false}
+                                placeholder=""
+                                components={animatedComponents}
+                                isMulti
+                                options={options}
+                                name="modaisRelacionadas"
+                                onChange={this.handleModaisRelacionados}
+                            />
+                        </div>
 
-  render() {
-    const footerStyles = {
-      marginTop: "40px"
-    };
+                        <div className="prefere">
+                            
+                            <div className="preferencia">
+                                <h2>Você prefere?</h2>
+                                <Select
+                                    className="select"
+                                    closeMenuOnSelect={false}
+                                    placeholder=""
+                                    components={animatedComponents}
+                                    isSingle
+                                    options={options_pref}
+                                    name="preferencia"
+                                    onChange={this.handlePreferencia}
+                                />
+                            </div>
+                            
+                            <div className="pref">
+                                <h2>{this.state.preferencia}</h2>
+                                <input
+                                    type="text"
+                                    id="text"
+                                    name="pref"
+                                    onChange={this.onChange}
+                                />  
+                            </div>
 
-    const inputStyles = {
-      height: "38px",
-      width: "267px",
-      borderRadius: "29px",
-      marginRight: "88px",
-      padding: "20px",
-      fontSize: "12px",
-      color: "#000",
-      border: "solid 1px #707070",
-      backgroundColor: "#ffffff"
-    };
+                        </div>
 
-    const selectStyles = {
-      border: "solid 1px #707070"
-    };
+                        <div className="footer">
+                            <button onClick={this.onSubmit}></button>
+                        </div>
 
-    return (
-      <div className="body">
-        <Menu />
-        <div className="cadastro">
-          <Header />
-
-          <h2>Nome do Prestador de Serviço</h2>
-          <input
-            type="text"
-            name="nome"
-            style={inputStyles}
-            onChange={this.handleChange}
-          />
-
-          <div className="dados">
-            <div>
-              <h2>Telefone</h2>
-              <input
-                type="text"
-                name="telefone"
-                style={inputStyles}
-                onChange={this.handleChange}
-              />
+                        </div>
+                    </form>
+                </div> 
             </div>
-
-            <div>
-              <h2>E-mail</h2>
-              <input
-                type="text"
-                name="email"
-                style={inputStyles}
-                onChange={this.handleChange}
-              />
-            </div>
-          </div>
-
-          <h2>Modal</h2>
-          <select
-            name="modal"
-            onChange={this.handleChange}
-            defaultValue="selected"
-            style={selectStyles}
-            required
-          >
-            <option defaultValue="selected">Selecione um modal</option>
-            {/* {this.state.cidades.map((c, i) => (
-              <option key={i} value={c.nome}>
-                {c.nome}
-              </option>
-            ))} */}
-          </select>
-
-          <div>
-            <h2>Você prefere</h2>
-            <select
-              name="tipoDado"
-              onChange={this.handleChange}
-              defaultValue="selected"
-              style={selectStyles}
-              required
-            >
-              <option defaultValue="cpf">CPF</option>
-              <option value="rg">RG</option>
-            </select>
-
-            <input
-              type="text"
-              name="dadoPrestador"
-              style={inputStyles}
-              onChange={this.handleChange}
-            />
-          </div>
-
-          <div className="footer" style={footerStyles}>
-            <button onClick={this.onSubmit}></button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+        )
+    }
 }

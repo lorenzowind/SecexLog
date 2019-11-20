@@ -29,7 +29,9 @@ export default class Modal extends Component {
       icon: "",
       safe: "não",
       rental: "não",
-      fast: "não"
+      fast: "não",
+
+      colorIcon: [{ name: "", url: "" }]
     };
   }
 
@@ -48,10 +50,33 @@ export default class Modal extends Component {
 
   handleClick = ev => {
     ev.preventDefault();
-
     const src = ev.target.currentSrc;
-    console.log(src);
-    this.setState({ icon: src });
+    const { colorIcon } = this.state;
+    const color = require(`../../../../assets/coloredModal/${ev.target.alt}.png`);
+    if (
+      this.state.colorIcon.url &&
+      ev.target.alt === this.state.colorIcon.name
+    ) {
+      colorIcon.url = "";
+      colorIcon.name = "";
+      this.setState({ icon: "", colorIcon });
+    } else {
+      console.log(ev.target);
+
+      colorIcon.name = ev.target.alt;
+      colorIcon.url = color;
+
+      console.log(colorIcon.url);
+
+      console.log(color);
+      this.setState({ icon: src, colorIcon });
+    }
+  };
+
+  handleNewIcon = ev => {
+    //const icon = URL.createObjectURL(ev.target.value);
+    console.log(ev.target);
+    this.setState({ icon: ev.target.value });
   };
 
   onSubmit = async ev => {
@@ -106,36 +131,106 @@ export default class Modal extends Component {
           <div className="icons">
             <div className="row">
               <button name="icon" onClick={this.handleClick}>
-                <img src={Carro} alt="Carro" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "Carro"
+                      ? this.state.colorIcon.url
+                      : Carro
+                  }
+                  alt="Carro"
+                />
               </button>
               <button name="icon" onClick={this.handleClick}>
-                <img src={Bus} alt="Ônibus" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "Onibus"
+                      ? this.state.colorIcon.url
+                      : Bus
+                  }
+                  alt="Onibus"
+                />
               </button>
               <button name="icon" onClick={this.handleClick}>
-                <img src={Aviao} alt="Avião" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "Aviao"
+                      ? this.state.colorIcon.url
+                      : Aviao
+                  }
+                  alt="Aviao"
+                />
               </button>
               <button name="icon" onClick={this.handleClick}>
-                <img src={Barco} alt="Barco" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "Barco"
+                      ? this.state.colorIcon.url
+                      : Barco
+                  }
+                  alt="Barco"
+                />
               </button>
             </div>
             <div className="row">
               <button name="icon" onClick={this.handleClick}>
-                <img src={TaxiAereo} alt="Carro" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "TaxiAereo"
+                      ? this.state.colorIcon.url
+                      : TaxiAereo
+                  }
+                  alt="TaxiAereo"
+                />
               </button>
               <button name="icon" onClick={this.handleClick}>
-                <img src={Lancha} alt="Ônibus" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "Lancha"
+                      ? this.state.colorIcon.url
+                      : Lancha
+                  }
+                  alt="Lancha"
+                />
               </button>
               <button name="icon" onClick={this.handleClick}>
-                <img src={Rabeta} alt="Avião" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "Rabeta"
+                      ? this.state.colorIcon.url
+                      : Rabeta
+                  }
+                  alt="Rabeta"
+                />
               </button>
               <button name="icon" onClick={this.handleClick}>
-                <img src={Voadeira} alt="Barco" />
+                <img
+                  src={
+                    this.state.colorIcon.url &&
+                    this.state.colorIcon.name === "Voadeira"
+                      ? this.state.colorIcon.url
+                      : Voadeira
+                  }
+                  alt="Voadeira"
+                />
               </button>
             </div>
             <div className="row">
-              <button name="icon" onClick={this.handleClick}>
-                <img src={Interrogacao} alt="Escolher ícone" />
-              </button>
+              <label name="icon" htmlFor="interrogacao">
+                <img src={this.state.icon} alt="Escolher ícone" />
+              </label>
+              <input
+                id="interrogacao"
+                type="file"
+                name="icon"
+                onChange={this.handleNewIcon}
+              />
             </div>
           </div>
           <h2>Esse modal é seguro?</h2>

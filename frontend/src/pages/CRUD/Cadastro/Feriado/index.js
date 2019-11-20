@@ -1,137 +1,107 @@
 import React, { Component } from "react";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
-import Header from "../components/HeaderFeriado/index";
+import HeaderFeriado from "../../Cadastro/components/HeaderOp/index";
 import Menu from "../../../../components/Menu/MenuLateral/index";
 import Calendar from "../components/Calendar/Calendar";
 
-import api from "../../../../services/api";
+import "./styles.css";
 
-var day = null;
+const animatedComponents = makeAnimated();
+
+let options = null;
 
 export default class Feriado extends Component {
-  constructor() {
-    super();
-    this.state = this.getInitialState();
-  }
 
-  getInitialState() {
-    return {
-      nomeCidade: "",
-      nome: "",
-      initFeriado: "",
-      endFeriado: "",
+    constructor(props) {
+        super(props);
+        this.state = this.getInitialState();
+    }
 
-      cidades: []
-    };
-  }
+    getInitialState() {
+        return {
+            cidadesRelacionadas: null,
+            nomeFeriado: "",
+            initData: "",
+            endData: "",
+        };
+    }
 
-  componentWillMount() {
-    this.loadCidades();
-  }
+    componentWillMount() {
+        this.loadOpcoes();
+    }
 
-  loadCidades = async () => {
-    const res = await api.get("/cities").catch(err => {
-      alert(err);
-      window.location.reload();
-    });
+    loadOpcoes = async () => {
+        options = [
+            { value: "tefe", label: "Tefé" },
+            { value: "itacoatiara", label: "Itacoatiara" },
+            { value: "presidente figueiredo", label: "Presidente Figueiredo" }
+          ];
+    }
 
-    const cidades = res.data;
-    console.log(res.data);
-    this.setState({ cidades });
-  };
-
-  getRange = state => {
-    this.setState({ initFeriado: state.from, endFeriado: state.to });
-  };
-
-  handleChange = ev => {
-    const state = Object.assign({}, this.state);
-    const name = ev.target.name;
-    const value = ev.target.value;
-
-    console.log(`state[${name}]==${value}`);
-
-    state[name] = value;
-
-    this.setState(state);
-  };
-
-  onSubmit = ev => {
-    ev.preventDefault();
-
-    console.log(day);
-
-    this.setState({ days: day });
-
-    const state = {
-      nomeCidade: this.state.nomeCidade,
-      nome: this.state.nome,
-      initFeriado: this.state.initFeriado.toLocaleDateString(),
-      endFeriado: this.state.endFeriado.toLocaleDateString()
+    handleCidadesRelacionadas = cidadesRelacionadas => {
+        this.setState({ cidadesRelacionadas });
     };
 
-    console.log(state);
-  };
+    getRange = (state, name) => {
+        if (name === "feriado") {
+          this.setState({
+            initDataFeriado: state.from,
+            endDataFeriado: state.to
+          });
+        }
+      };
 
-  render() {
-    const footerStyles = {
-      marginTop: "40px"
-    };
+    render() {
+        return (
+            <div className="body">
+               <Menu/>
+                <div className="cadastro">
+                    <HeaderFeriado op={"Feriado"}/>
+                    <form>
+                        <div className="cadastro-feriado">
+                            
+                            <h2>Nome da cidade</h2>
+                            <div className="nome_cidade">
+                            <Select
+                                className="select"
+                                closeMenuOnSelect={false}
+                                placeholder=""
+                                components={animatedComponents}
+                                isMulti
+                                options={options}
+                                name="cidadesRelacionadas"
+                                onChange={this.handleCidadesRelacionadas}
+                            />
+                            </div>
 
-    const inputStyles = {
-      height: "38px",
-      width: "267px",
-      borderRadius: "29px",
-      marginRight: "88px",
-      padding: "20px",
-      border: "solid 1px #707070",
-      backgroundColor: "#ffffff"
-    };
+                            <h2>Nome do Feriado</h2>
+                            <div className="nome_feriado">
+                            <input
+                                type="text"
+                                id="text"
+                                name="nomeCidade"
+                                onChange={this.onChange}
+                            />
+                            </div>
 
-    const selectStyles = {
-      border: "solid 1px #707070"
-    };
+                            <h2>Selecionar dia</h2>
+                            <div className="RangeExample">
+                                <Calendar
+                                name={"feriado"}
+                                getRange={this.getRange.bind(this)}
+                                />
+                            </div>
 
-    return (
-      <div className="body">
-        <Menu />
-        <div className="cadastro">
-          <Header />
+                            <div className="footer">
+                                <button onClick={this.onSubmit}></button>
+                            </div>
 
-          <h2>Nome da Cidade</h2>
-          <select
-            name="nomeCidade"
-            onChange={this.handleChange}
-            defaultValue="selected"
-            style={selectStyles}
-            placeholder="Selecione uma cidade"
-            required
-          >
-            <option defaultValue="selected">Selecione uma cidade</option>
-            {this.state.cidades.map((c, i) => (
-              <option key={i} value={c.nome}>
-                {c.nome}
-              </option>
-            ))}
-          </select>
-
-          <h2>Nome do Feriado</h2>
-          <input
-            type="text"
-            name="nome"
-            id="nomeFeriado"
-            style={inputStyles}
-            onChange={this.handleChange}
-          />
-
-          <h2>Selecionar Dia</h2>
-          <Calendar name={"feriado"} getRange={this.getRange.bind(this)} />
-
-          <div className="footer" style={footerStyles}>
-            <button onClick={this.onSubmit}></button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+                        </div>
+                    </form>
+                </div> 
+            </div>
+        )
+    }
 }

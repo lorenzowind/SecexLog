@@ -1,12 +1,13 @@
 .menu-aberto {
   position: fixed;
   left: 0;
-  width: 250px;
+  width: 310px;
   height: 100%;
   margin-right: 130px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
   border: solid 1px #707070;
   background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
+  z-index: 10;
 }
 
 .secex_logo {
@@ -36,30 +37,36 @@ h1[id="cadastro"] {
   margin-left: 15px;
 }
 
-h1[id="cidade_trajeto"] {
-  color: #ffffff;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  font-size: 16px;
-  margin-left: 100px;
-  border-bottom: none;
-}
-
-h1[id="cidade_trajeto"]:hover {
+h1[id="cadastro"]:hover {
   cursor: pointer;
 }
 
-h1[id="usuario"] {
+h1[id="cidade_opcao"] {
   color: #ffffff;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
-  font-size: 16px;
+  font-size: 18px;
   margin-left: 100px;
+  border-bottom: none;
+  margin-block-end: 8px;
 }
 
-h1[id="usuario"]:hover {
+h1[id="cidade_opcao"]:hover {
+  cursor: pointer;
+}
+
+h1[id="usuario_opcao"] {
+  color: #ffffff;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  font-size: 18px;
+  margin-left: 100px;
+  margin-block-end: 8px;
+}
+
+h1[id="usuario_opcao"]:hover {
   cursor: pointer;
 }
 
@@ -95,56 +102,28 @@ h1[id="calendario"] {
   margin-left: 15px;
 }
 
-.icone_historico {
-  margin-top: 30px;
-  margin-left: 25px;
-  display: flex;
+h1[id="calendario"]:hover {
+  cursor: default;
 }
 
-h1[id="historico"] {
-  font-size: 18px;
-  color: #ffffff;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  margin-top: 7px;
-  margin-left: 15px;
+.calendario {
+  margin-top: 10px;
 }
 
-.icone_backup {
-  margin-top: 30px;
-  margin-left: 25px;
-  display: flex;
+.DayPicker-Weekday {
+  color: #D1E4EB;
 }
 
-h1[id="backup"] {
-  font-size: 18px;
-  color: #ffffff;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  margin-top: 7px;
-  margin-left: 15px;
+.DayPicker-Day {
+  color: #D1E4EB;
 }
 
-.icone_relatorio {
-  margin-top: 30px;
-  margin-left: 25px;
-  display: flex;
-}
-
-h1[id="relatorio"] {
-  font-size: 18px;
-  color: #ffffff;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  margin-top: 12px;
-  margin-left: 15px;
+.DayPicker-Caption {
+  color: #D1E4EB;
 }
 
 .icone_opiniao {
-  margin-top: 120px;
+  margin-top: 100%;
   margin-left: 25px;
   display: flex;
 }
@@ -159,20 +138,8 @@ h1[id="opiniao_menu"] {
   margin-left: 15px;
 }
 
-.icone_ajuda {
-  margin-top: 10px;
-  margin-left: 25px;
-  display: flex;
-}
-
-h1[id="ajuda"] {
-  font-size: 18px;
-  color: #ffffff;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  margin-top: 10px;
-  margin-left: 15px;
+h1[id="opiniao_menu"]:hover {
+  cursor: pointer;
 }
 
 .menu-fechado {
@@ -183,6 +150,7 @@ h1[id="ajuda"] {
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.5);
   border: solid 1px #707070;
   background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
+  z-index: 10;
 }
 
 .icone_abrir {

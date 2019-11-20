@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 
 import CrudCidade from "./Visualização/Cidade/index";
-import CrudUser from "./Visualização/Usuario/index";
+import CrudUsuario from "./Visualização/Usuario_antigo/index";
 import CrudFeriado from "./Visualização/Feriado/index";
 import CrudPrestador from "./Visualização/Prestador/index";
 import CrudModal from "./Visualização/Modal/index";
+import CrudTrajeto from "./Visualização/Trajeto/index";
 
 import Menu from "../../components/Menu/MenuLateral/index";
 
@@ -17,11 +18,12 @@ export default class CRUD extends Component {
     return (
       <div>
         <Menu />
-        <CrudUser />
+        <CrudUsuario />
         <CrudCidade />
         <CrudFeriado />
-        <CrudPrestador />
         <CrudModal />
+        <CrudTrajeto />
+        <CrudPrestador />
       </div>
     );
   }

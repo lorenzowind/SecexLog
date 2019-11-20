@@ -1,5 +1,6 @@
 import React from "react";
+import "./styles.css";
 
-const Header = () => <header id="main-header">Modal</header>;
+const Header = () => <header id="main-header">Modais</header>;
 
 export default Header;

@@ -1,3 +1,8 @@
+.cadastro {
+  padding-top: 4%;
+  padding-left: 20%;
+}
+
 .body form h2 {
   margin-top: 30px;
   margin-bottom: 15px;
@@ -258,8 +263,9 @@ input#email {
 .footer button {
   height: 38px;
   width: 95px;
-  margin-right: 450px;
+  margin-right: 500px;
   margin-left: 20px;
+  margin-top: 20px;
   background: url("../../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar.png");
   border-radius: 40px;
   border: none;

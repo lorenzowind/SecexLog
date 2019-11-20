@@ -7,6 +7,31 @@ import "./styles.css";
 
 import "moment/locale/pt-br";
 
+const MONTHS = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro',
+];
+const WEEKDAYS_LONG = [
+  'Domingo',
+  'Segunda',
+  'Terça',
+  'Quarta',
+  'Quinta',
+  'Sexta',
+  'Sábado',
+];
+const WEEKDAYS_SHORT = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+
 export default class Calendar extends React.Component {
   static defaultProps = {
     numberOfMonths: 2
@@ -68,7 +93,9 @@ export default class Calendar extends React.Component {
           modifiersStyles={modifiersStyles}
           onDayClick={this.handleDayClick}
           localeUtils={MomentLocaleUtils}
-          locale={"pt-br"}
+          months={MONTHS} 
+          weekdaysLong={WEEKDAYS_LONG} 
+          weekdaysShort={WEEKDAYS_SHORT}
         />
       </div>
     );

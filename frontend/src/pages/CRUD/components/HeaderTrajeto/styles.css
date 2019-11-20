@@ -1,0 +1,12 @@
+header#main-header {
+    max-width: 220px;
+    font-size: 20px;
+    font-weight: bolder;
+    color: #292eec;
+    margin-top: 32px;
+    border-bottom: 1px solid #b0b0b0;
+    padding-bottom: 4px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }

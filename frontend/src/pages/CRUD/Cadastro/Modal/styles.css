@@ -10,3 +10,11 @@
 .row img {
   height: 70px;
 }
+
+.row input[type="file"] {
+  /* display: none; */
+}
+
+.row label {
+  cursor: pointer;
+}

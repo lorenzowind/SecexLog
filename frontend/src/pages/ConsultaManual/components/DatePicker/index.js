@@ -10,7 +10,7 @@ import {
 export default function MaterialUIPickers() {
   var now = new Date();
   let date =
-    now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + now.getDate();
+    now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + (now.getDate() + 1);
   const [selectedDate, setSelectedDate] = React.useState(new Date(date));
 
   const handleDateChange = date => {
@@ -30,6 +30,7 @@ export default function MaterialUIPickers() {
           KeyboardButtonProps={{
             "aria-label": "change date"
           }}
+          locale='pt-BR'
         />
       </Grid>
     </MuiPickersUtilsProvider>

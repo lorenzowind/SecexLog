@@ -3,24 +3,32 @@ import { Link } from "react-router-dom";
 
 import Header from "../../components/HeaderPrestador/index";
 
+import api from "../../../../services/api";
+
 import Lupa from "../../../../assets/Cadastro de usuário/pesquisar.png";
 import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
+import Ir from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/ir.png";
 import Edit from "../../../../assets/Cadastro de usuário/editar.png";
 import Close from "../../../../assets/Cadastro de usuário/sair_secex.png";
 
-import api from "../../../../services/api";
-
 import "./styles.css";
 
-export default class Prestador extends Component {
-  constructor() {
-    super();
+export default class Cidade extends Component {
+  constructor(props) {
+    super(props);
     this.state = this.getInitialState();
   }
 
   getInitialState() {
     return {
-      nome: ""
+      nome: "",
+      telefone: "",
+      email: "",
+      modal: "",
+
+      row: [],
+
+      popUp: []
     };
   }
 
@@ -29,35 +37,59 @@ export default class Prestador extends Component {
   }
 
   loadData = async () => {
-    // const res = await api.get(`/providers/${"AM1"}`).catch(err => {
-    //   alert(err);
-    //   window.location.reload();
-    // });
-    // const data = res.data;
-    // console.log(JSON.stringify(res));
-    // const city1 = [];
-    // const city2 = [];
-    // const city3 = [];
-    // console.log(data.length);
-    // let cont = 0;
-    // for (var i = 0; i < data.length; i++) {
-    //   let aux = data[i];
-    //   if (cont >= 0 && cont <= 3) {
-    //     console.log(cont);
-    //     city1.push({ aux });
-    //     cont++;
-    //   } else if (cont >= 4 && cont <= 7) {
-    //     city2.push({ aux });
-    //     cont++;
-    //   } else if (cont >= 8 && cont <= 11) {
-    //     city3.push({ aux });
-    //     cont++;
-    //     if (cont > 11) cont = 0;
-    //   }
-    // }
-    // console.log(city1);
-    // this.setState({ city1, city2, city3 });
+    // await setTimeout(() => {
+    //   api
+    //     .get("/users")
+    //     .then(res => {
+    //       const row = this.state.row;
+    //       for (var i = 0; i < res.data.length; i++) {
+    //         row.push(res.data[i]);
+    //       }
+    //       return row;
+    //     })
+    //     .then(row => {
+    //       this.setState({ row: row, load: true });
+    //     })
+    //     .catch(err => {
+    //       if (err.message === "Request failed with status code 401") {
+    //         alert("Nível de acesso negado! Contate o administrador do sistema");
+    //         window.location.replace("/menu");
+    //       } else {
+    //         alert(err);
+    //         window.location.replace("/");
+    //       }
+    //     });
+    // }, 1200);
   };
+
+  editPopUp = c => {
+    let { popUp } = this.state;
+
+    let h1 = "Editar Cidade";
+    let nome = "Nome do Prestador";
+    let telefone = "Telefone";
+    let email = "E-mail";
+    let modal = "Modal";
+
+    let name = c.aux.nome;
+    let cellphone = c.aux.telefone;
+    let e_mail = c.aux.email;
+    let modalValue = c.aux.modal;
+
+    let text = { h1, nome, telefone, email, modal };
+    let value = { name, cellphone, e_mail, modalValue };
+
+    popUp.push({ text, value });
+
+    this.setState({ popUp: popUp, popUpStats: true });
+  };
+
+  handleClose = ev => {
+    ev.preventDefault();
+    this.setState({ popUp: [] });
+  };
+
+  handleChange = () => {};
 
   render() {
     return (
@@ -65,7 +97,7 @@ export default class Prestador extends Component {
         <div className="cadastroCidade">
           <Header />
 
-          <h1>Pesquisar feriados</h1>
+          <h1>Pesquisar Prestador</h1>
           <div className="searchCity">
             <input type="text" name="searchCidade" />
             <img src={Lupa} alt="" />
@@ -73,24 +105,30 @@ export default class Prestador extends Component {
 
           <div className="addCity">
             <div className="add">
-              <h1>Adicionar Feriado</h1>
+              <h1>Adicionar Prestador</h1>
               <Link to="/cadastro/prestador/create">
-                <img src={Mais} alt="" />
+                <img src={Mais} alt="" style={{ bottom: "15px" }} />
               </Link>
             </div>
 
             <div className="listCity">
               <div className="table">
-                <table name="table1">
+                <table>
                   <thead>
                     <tr>
                       <th align="left">Nome</th>
+                      <th align="left">Telefone</th>
+                      <th align="left">E-mail</th>
+                      <th align="left">Modal</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {/* {this.state.holiday1.map((c, i) => (
+                    {this.state.row.map((c, i) => (
                       <tr key={i}>
-                        <td>{c.aux.nome}</td>
+                        <td>{c.nome}</td>
+                        <td>{c.telefone}</td>
+                        <td>{c.email}</td>
+                        <td>{c.modal}</td>
                         <td>
                           <img
                             src={Edit}
@@ -102,82 +140,14 @@ export default class Prestador extends Component {
                           />
                         </td>
                       </tr>
-                    ))} */}
-                  </tbody>
-                </table>
-
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
-
-                <table name="table2">
-                  <thead>
-                    <tr>
-                      <th align="left">Nome</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* {this.state.holiday2.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    ))} */}
-                  </tbody>
-                </table>
-
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
-
-                <table name="table3">
-                  <thead>
-                    <tr>
-                      <th align="left">Nome</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {/* {this.state.holiday3.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
-                      </tr>
-                    ))} */}
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
 
-          {/* {this.state.popUp.map((c, i) => (
+          {this.state.popUp.map((c, i) => (
             <div className="popUp" key={i}>
               <div className="title">
                 <h2>{c.text.h1}</h2>
@@ -212,7 +182,7 @@ export default class Prestador extends Component {
                   value={new Date(c.value.initFlood)}
                   onChange={this.handleChange}
                 />
-                <img src="" alt="" />
+                <img src={Ir} alt="" />
                 <input
                   type="text"
                   value={new Date(c.value.endFlood)}
@@ -220,7 +190,7 @@ export default class Prestador extends Component {
                 />
               </div>
             </div>
-          ))} */}
+          ))}
         </div>
       </div>
     );

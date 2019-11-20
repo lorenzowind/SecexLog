@@ -1,5 +1,5 @@
 .cadastroCidade {
-  padding-top: 7%;
+  padding-top: 4%;
   padding-left: 22%;
 }
 
@@ -43,9 +43,12 @@
 .add img {
   height: 50px;
   position: relative;
-  top: 6px;
-  right: 60px;
+  top: 10px;
   cursor: pointer;
+}
+
+.add h1 {
+  width: 180px;
 }
 
 .listCity {

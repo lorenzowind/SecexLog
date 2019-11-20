@@ -3,7 +3,7 @@
   height: 525px;
   border: 1px solid black;
   background: white;
-  left: 28%;
+  left: 30%;
   top: 20%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -11,6 +11,7 @@
   border-bottom-right-radius: 50px;
   position: fixed;
   display: none;
+  z-index: 0;
 }
 
 .icone_sair_opiniao {

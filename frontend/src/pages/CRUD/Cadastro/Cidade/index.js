@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import HeaderCidade from "../../Cadastro/components/HeaderCidade/index";
+import HeaderCidade from "../components/HeaderOp/index";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Calendar from "../components/Calendar/Calendar";
@@ -7,19 +7,16 @@ import Menu from "../../../../components/Menu/MenuLateral/index";
 import api from "../../../../services/api";
 
 import "moment/locale/pt-br";
-
 import "react-day-picker/lib/style.css";
-import "./styles.css";
-
-import "moment/locale/pt-br";
-
 import "./styles.css";
 
 import Notif from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
 
 const animatedComponents = makeAnimated();
 
-export default class CrudCidade extends Component {
+let options = null;
+
+export default class Cidade extends Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
@@ -248,7 +245,7 @@ export default class CrudCidade extends Component {
       <div className="body">
         <Menu />
         <div className="cadastro">
-          <HeaderCidade />
+          <HeaderCidade op={"Cidade"} />
           <form>
             <div className="cadastro-cidade">
               <h2>Escolha a Cidade</h2>
@@ -298,14 +295,12 @@ export default class CrudCidade extends Component {
                 />
               </div>
 
-              <div className="flood">
-                <h2>Adicionar período de cheias de rios</h2>
-                <div className="RangeExample">
-                  <Calendar
-                    name={"enchente"}
-                    getRange={this.getRange.bind(this)}
-                  />
-                </div>
+              <h2>Adicionar período de cheias de rios</h2>
+              <div className="RangeExample">
+                <Calendar
+                  name={"enchente"}
+                  getRange={this.getRange.bind(this)}
+                />
               </div>
 
               <div className="interdicao">

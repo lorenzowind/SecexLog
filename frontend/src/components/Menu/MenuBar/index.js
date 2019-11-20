@@ -47,6 +47,11 @@ export default class Header extends React.Component {
 
     return (
       <div className="header_menu">
+
+        <TelaOpiniao />
+        <TelaLogin />
+        <TelaEsqueceuSenha />
+
         <div className="de-sua-opiniao">
           <h1 id="de_sua_opiniao" onClick={this.evento_opiniao}>
             Dê sua Opinião
@@ -62,10 +67,6 @@ export default class Header extends React.Component {
         <div className="logo_tce">
           <img src={tce_logo} alt="" />
         </div>
-
-        <TelaOpiniao />
-        <TelaLogin />
-        <TelaEsqueceuSenha />
       </div>
     );
   }

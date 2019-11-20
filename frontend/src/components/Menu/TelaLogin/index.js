@@ -56,7 +56,7 @@ export default class Tela_login extends React.Component {
     const { login } = this.state;
 
     if (login) {
-      return <Redirect to="/menu" push={true} />;
+      return <Redirect to="/" push={true} />;
     }
 
     return (
