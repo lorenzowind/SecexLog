@@ -1,0 +1,18 @@
+.btns button {
+  height: 38px;
+  width: 95px;
+  margin-top: 30px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  background: url("../../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar.png");
+  border-radius: 40px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s;
+  float: right;
+}
+
+.btns button:hover {
+  background: url("../../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar1.png");
+  transition: 0.2s;
+}

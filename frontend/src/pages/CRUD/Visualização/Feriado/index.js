@@ -7,6 +7,7 @@ import Lupa from "../../../../assets/Cadastro de usuário/pesquisar.png";
 import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Edit from "../../../../assets/Cadastro de usuário/editar.png";
 import Close from "../../../../assets/Cadastro de usuário/sair_secex.png";
+import Trash from "../../../../assets/Cadastro de usuário/lixeira.png";
 
 import api from "../../../../services/api";
 
@@ -24,6 +25,13 @@ export default class Feriado extends Component {
       holiday2: [],
       holiday3: [],
 
+      id: "",
+      nome: "",
+      dias: [],
+      diaInit: "",
+      diaEnd: "",
+      cidade: "",
+
       popUp: []
     };
   }
@@ -33,32 +41,108 @@ export default class Feriado extends Component {
   }
 
   loadData = async () => {
-    // const res = await api.get("/holiday").catch(err => {
-    //   alert(err);
-    //   window.location.reload();
-    // });
-    // const data = res.data;
-    // const holiday1 = [];
-    // const holiday2 = [];
-    // const holiday3 = [];
-    // console.log(data.length);
-    // let cont = 0;
-    // for (var i = 0; i < data.length; i++) {
-    //   let aux = data[i];
-    //   if (cont >= 0 && cont <= 3) {
-    //     console.log(cont);
-    //     holiday1.push({ aux });
-    //     cont++;
-    //   } else if (cont >= 4 && cont <= 7) {
-    //     holiday2.push({ aux });
-    //     cont++;
-    //   } else if (cont >= 8 && cont <= 11) {
-    //     holiday3.push({ aux });
-    //     cont++;
-    //     if (cont > 11) cont = 0;
-    //   }
-    // }
-    // this.setState({ holiday1, holiday2, holiday3 });
+    const res = await api.get("/holidays").catch(err => {
+      alert(err);
+      window.location.reload();
+    });
+    const data = res.data;
+    const holiday1 = [];
+    const holiday2 = [];
+    const holiday3 = [];
+    console.log(data.length);
+    let cont = 0;
+    for (var i = 0; i < data.length; i++) {
+      let aux = data[i];
+      if (cont >= 0 && cont < 3) {
+        console.log(cont);
+        holiday1.push({ aux });
+        cont++;
+      } else if (cont >= 3 && cont < 7) {
+        holiday2.push({ aux });
+        cont++;
+      } else if (cont >= 7 && cont <= 11) {
+        holiday3.push({ aux });
+        cont++;
+        if (cont >= 11) cont = 0;
+      }
+    }
+
+    console.log(holiday1);
+    this.setState({ holiday1, holiday2, holiday3 });
+  };
+
+  handleChange = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+    const value = ev.target.value;
+
+    state[name] = value;
+
+    this.setState(state);
+  };
+
+  editPopUp = c => {
+    let { popUp } = this.state;
+
+    const h1 = "Editar Feriado";
+    const nome = "Nome";
+    const dia = "Dia";
+
+    const nomeFeriado = c.aux.nome;
+    const diaInit = c.aux.init;
+    const diaEnd = c.aux.end;
+    var dias = null;
+
+    if (diaInit === diaEnd) dias = diaInit;
+    else dias = [{ diaInit, diaEnd }];
+
+    const text = { h1, nome, dia };
+    const value = { nomeFeriado, dias };
+
+    popUp.push({
+      text,
+      value
+    });
+
+    console.log(c.aux);
+
+    this.setState({
+      popUp,
+      popUpStats: true,
+      nome: nomeFeriado,
+      diaInit,
+      diaEnd,
+      id: c.aux.id,
+      cidade: c.aux.city_id
+    });
+  };
+
+  handleClose = ev => {
+    ev.preventDefault();
+    this.setState({ popUp: [] });
+  };
+
+  handleEditSubmit = async ev => {
+    ev.preventDefault();
+
+    const id = await api.get(`/cities/${this.state.cidade}`);
+
+    const state = {
+      nome: this.state.nome,
+      cidade: id.data.nome,
+      init: this.state.diaInit,
+      end: this.state.diaEnd
+    };
+
+    await api
+      .put(`/holidays/${this.state.id}`, state)
+      .then(() => {
+        this.setState({ popUp: [] });
+        window.location.reload();
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   render() {
@@ -189,50 +273,63 @@ export default class Feriado extends Component {
             </div>
           </div>
 
-          {/* {this.state.popUp.map((c, i) => (
+          {this.state.popUp.map((c, i) => (
             <div className="popUp" key={i}>
               <div className="title">
-                <h2>{c.text.h1}</h2>
+                <h2 style={{ left: "1px" }}>{c.text.h1}</h2>
                 <img src={Close} alt="" onClick={this.handleClose} />
               </div>
 
               <h4>{c.text.nome}</h4>
               <input
                 type="text"
-                value={c.value.name}
+                name="nome"
+                value={this.state.nome}
                 onChange={this.handleChange}
               />
 
-              <h4>{c.text.cidadesRelacionadas}</h4>
-              <input
-                type="text"
-                value={c.value.relatedCities}
-                onChange={this.handleChange}
-              />
-
-              <h4>{c.text.feriados}</h4>
-              <input
-                type="text"
-                value={c.value.holidays}
-                onChange={this.handleChange}
-              />
-
-              <h4>{c.text.cheia}</h4>
-              <div className="flood">
-                <input
-                  type="text"
-                  value={new Date(c.value.initFlood)}
-                  onChange={this.handleChange}
+              <h4>{c.text.dia}</h4>
+              {this.state.popUp[0].value.dias.map((c, i) => (
+                <div key={i} style={{ display: "flex" }}>
+                  <input
+                    type="text"
+                    name="diaInit"
+                    value={this.state.diaInit}
+                    style={{ width: "110px", marginRight: "0" }}
+                    onChange={this.handleChange}
+                    maxLength="10"
+                  />
+                  <p
+                    style={{
+                      marginLeft: "2%",
+                      lineHeight: "38px",
+                      position: "relative",
+                      top: "5px"
+                    }}
+                  >
+                    até
+                  </p>
+                  <input
+                    type="text"
+                    name="diaEnd"
+                    value={this.state.diaEnd}
+                    onChange={this.handleChange}
+                    style={{ width: "110px", marginLeft: "2%" }}
+                    maxLength="10"
+                  />
+                </div>
+              ))}
+              <div className="btns">
+                <img
+                  src={Trash}
+                  alt="Deletar"
+                  onClick={this.handleDelete}
+                  style={{ left: "20px" }}
                 />
-                <img src="" alt="" />
-                <input
-                  type="text"
-                  value={new Date(c.value.endFlood)}
-                  onChange={this.handleChange}
-                />
+                <button onClick={this.handleEditSubmit} />
               </div>
             </div>
-          ))} */}
+          ))}
         </div>
       </div>
     );

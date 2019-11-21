@@ -55,13 +55,17 @@ export default class CrudCidade extends Component {
     ev.preventDefault();
 
     let cidadesRelacionadas = this.state.cidadesRelacionadas;
-    let cidades = [];
+    let cidades = "";
 
     if (cidadesRelacionadas) {
       const length = cidadesRelacionadas.length;
 
       for (var k = 0; k < length; k++) {
-        cidades[k] = cidadesRelacionadas[k].label;
+        if (k === length - 1) {
+          cidades += cidadesRelacionadas[k].label;
+        } else {
+          cidades += cidadesRelacionadas[k].label + ", ";
+        }
       }
     }
 
@@ -69,12 +73,14 @@ export default class CrudCidade extends Component {
       nome: this.state.nomeCidade,
       cBase: this.state.opCidadeBase,
       cAuditada: this.state.opCidadeAuditada,
-      //cidadesRelacionadas: cidades,
+      relations: cidades,
       initDataCheia: this.state.initDataCheia.toString(),
       endDataCheia: this.state.endDataCheia.toString(),
       obsInterdicao: this.state.obsInterdicao,
       obsCidade: this.state.obsCidade
     };
+
+    console.log(stateCidade);
 
     let error = null;
 

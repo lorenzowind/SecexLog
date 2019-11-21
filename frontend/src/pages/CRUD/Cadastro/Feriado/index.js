@@ -49,28 +49,34 @@ export default class Feriado extends Component {
     const name = ev.target.name;
     const value = ev.target.value;
 
-    console.log(`state[${name}]==${value}`);
-
     state[name] = value;
 
     this.setState(state);
   };
 
-  onSubmit = ev => {
+  onSubmit = async ev => {
     ev.preventDefault();
-
-    console.log(day);
 
     this.setState({ days: day });
 
     const state = {
-      nomeCidade: this.state.nomeCidade,
+      cidade: this.state.nomeCidade,
       nome: this.state.nome,
-      initFeriado: this.state.initFeriado.toLocaleDateString(),
-      endFeriado: this.state.endFeriado.toLocaleDateString()
+      init: this.state.initFeriado.toLocaleDateString(),
+      end: this.state.endFeriado
+        ? this.state.endFeriado.toLocaleDateString()
+        : this.state.initFeriado.toLocaleDateString()
     };
 
+    await api.post("/holidays", state).catch(err => {
+      alert(
+        "Verifque se todos os dados estão inseridos corretamente ou se o nome do feriado já foi cadastrado"
+      );
+      return;
+    });
     console.log(state);
+    window.location.reload();
+    return;
   };
 
   render() {

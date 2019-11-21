@@ -97,8 +97,6 @@ export default class Cidade extends Component {
     this.setState({ popUp: [] });
   };
 
-  handleChange = () => {};
-
   render() {
     return (
       <div className="body">
