@@ -111,38 +111,49 @@ export default class Cidade extends Component {
               </Link>
             </div>
 
-            <div className="listCity">
-              <div className="table">
-                <table>
-                  <thead>
-                    <tr>
-                      <th align="left">Nome</th>
-                      <th align="left">Telefone</th>
-                      <th align="left">E-mail</th>
-                      <th align="left">Modal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.row.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.nome}</td>
-                        <td>{c.telefone}</td>
-                        <td>{c.email}</td>
-                        <td>{c.modal}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
+            <div
+              style={{
+                height: "190px",
+                width: "800px",
+                borderRadius: "34px",
+                border: "solid 1px #707070",
+                backgroundColor: "#ffffff",
+                overflow: "hidden"
+              }}
+            >
+              <div className="listCity">
+                <div className="table">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th align="left">Nome</th>
+                        <th align="left">Telefone</th>
+                        <th align="left">E-mail</th>
+                        <th align="left">Modal</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {this.state.row.map((c, i) => (
+                        <tr key={i}>
+                          <td>{c.nome}</td>
+                          <td>{c.telefone}</td>
+                          <td>{c.email}</td>
+                          <td>{c.modal}</td>
+                          <td>
+                            <img
+                              src={Edit}
+                              alt=""
+                              onClick={() => {
+                                const content = c;
+                                this.editPopUp(content);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>

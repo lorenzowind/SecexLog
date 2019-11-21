@@ -78,12 +78,9 @@
 }
 
 .tableUser {
-  max-width: 800px;
+  max-width: 770px;
   height: 200px;
-  background-color: #ffff;
-  border: 1px solid #b0b0b0;
-  border-radius: 20px;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .tableUser input:disabled {

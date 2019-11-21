@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import HeaderUser from "../../components/HeaderUsuario/index";
 import Loading from "../../../../components/Loading/index";
-import Menu from "../../../../components/Menu/MenuLateral/index";
 
 import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Seach from "../../../../assets/Cadastro de usuário/pesquisar.png";
@@ -73,16 +72,22 @@ export default class CrudUsuario extends Component {
       senha: this.state.senha
     };
 
+    var error = null;
+
     if (isValid) {
       await api.post("/users", state).catch(err => {
         alert("Verifque se todos os dados estão inseridos corretamente");
+        error = err;
       });
+
+      if (error) return;
 
       console.log(state);
 
       this.createRow(state);
 
       this.setState({ popUp: [], popUpStats: false });
+      return;
     }
   };
 
@@ -515,45 +520,56 @@ export default class CrudUsuario extends Component {
                 </button>
               </div>
 
-              <div className="tableUser">
-                <table>
-                  <thead>
-                    <tr>
-                      <th align="left">Usuário</th>
-                      <th align="left">Login</th>
-                      <th align="left">Email</th>
-                      <th align="left">Cargo</th>
-                      <th align="left">Senha</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.row.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.nome}</td>
-                        <td>{c.login}</td>
-                        <td>{c.email}</td>
-                        <td>{c.cargo}</td>
-                        <td>
-                          <input
-                            type="password"
-                            value={c.senha}
-                            disabled={true}
-                          />
-                        </td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
+              <div
+                style={{
+                  height: "190px",
+                  width: "800px",
+                  borderRadius: "34px",
+                  border: "solid 1px #707070",
+                  backgroundColor: "#ffffff",
+                  overflow: "hidden"
+                }}
+              >
+                <div className="tableUser">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th align="left">Usuário</th>
+                        <th align="left">Login</th>
+                        <th align="left">Email</th>
+                        <th align="left">Cargo</th>
+                        <th align="left">Senha</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {this.state.row.map((c, i) => (
+                        <tr key={i}>
+                          <td>{c.nome}</td>
+                          <td>{c.login}</td>
+                          <td>{c.email}</td>
+                          <td>{c.cargo}</td>
+                          <td>
+                            <input
+                              type="password"
+                              value={c.senha}
+                              disabled={true}
+                            />
+                          </td>
+                          <td>
+                            <img
+                              src={Edit}
+                              alt=""
+                              onClick={() => {
+                                const content = c;
+                                this.editPopUp(content);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {this.state.popUp.map((c, i) => (
