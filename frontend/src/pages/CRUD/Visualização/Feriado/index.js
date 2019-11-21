@@ -25,6 +25,8 @@ export default class Feriado extends Component {
       holiday2: [],
       holiday3: [],
 
+      search: "",
+
       id: "",
       nome: "",
       dias: [],
@@ -127,11 +129,14 @@ export default class Feriado extends Component {
 
     const id = await api.get(`/cities/${this.state.cidade}`);
 
+    const { dias } = this.state.popUp[0].value;
+    console.log(dias);
+
     const state = {
       nome: this.state.nome,
       cidade: id.data.nome,
-      init: this.state.diaInit,
-      end: this.state.diaEnd
+      init: dias.length > 1 ? dias : this.state.diaInit,
+      end: dias.length > 1 ? dias : this.state.diaEnd
     };
 
     await api
@@ -145,6 +150,29 @@ export default class Feriado extends Component {
       });
   };
 
+  handleDelete = async ev => {
+    ev.preventDefault();
+
+    await api
+      .delete(`/holidays/${this.state.id}`)
+      .then(window.location.reload())
+      .catch(err => {
+        alert(err);
+      });
+  };
+
+  handleSearch = async ev => {
+    ev.preventDefault();
+
+    const { search } = this.state;
+
+    const res = await api.get(`/holidays/${search}`).catch(err => {
+      alert(err);
+    });
+
+    console.log(res);
+  };
+
   render() {
     return (
       <div className="body">
@@ -153,8 +181,8 @@ export default class Feriado extends Component {
 
           <h1>Pesquisar feriados</h1>
           <div className="searchCity">
-            <input type="text" name="searchCidade" />
-            <img src={Lupa} alt="" />
+            <input type="text" name="search" onChange={this.handleChange} />
+            <img src={Lupa} alt="" onClick={this.handleSearch} />
           </div>
 
           <div className="addCity">
@@ -289,36 +317,48 @@ export default class Feriado extends Component {
               />
 
               <h4>{c.text.dia}</h4>
-              {this.state.popUp[0].value.dias.map((c, i) => (
-                <div key={i} style={{ display: "flex" }}>
-                  <input
-                    type="text"
-                    name="diaInit"
-                    value={this.state.diaInit}
-                    style={{ width: "110px", marginRight: "0" }}
-                    onChange={this.handleChange}
-                    maxLength="10"
-                  />
-                  <p
-                    style={{
-                      marginLeft: "2%",
-                      lineHeight: "38px",
-                      position: "relative",
-                      top: "5px"
-                    }}
-                  >
-                    até
-                  </p>
-                  <input
-                    type="text"
-                    name="diaEnd"
-                    value={this.state.diaEnd}
-                    onChange={this.handleChange}
-                    style={{ width: "110px", marginLeft: "2%" }}
-                    maxLength="10"
-                  />
-                </div>
-              ))}
+              {this.state.popUp[0].value.dias.length === 1 ? (
+                this.state.popUp[0].value.dias.map((c, i) => (
+                  <div key={i} style={{ display: "flex" }}>
+                    <input
+                      type="text"
+                      name="diaInit"
+                      value={this.state.diaInit}
+                      style={{ width: "110px", marginRight: "0" }}
+                      onChange={this.handleChange}
+                      maxLength="10"
+                    />
+                    <p
+                      style={{
+                        marginLeft: "2%",
+                        lineHeight: "38px",
+                        position: "relative",
+                        top: "5px"
+                      }}
+                    >
+                      até
+                    </p>
+                    <input
+                      type="text"
+                      name="diaEnd"
+                      value={this.state.diaEnd}
+                      onChange={this.handleChange}
+                      style={{ width: "110px", marginLeft: "2%" }}
+                      maxLength="10"
+                    />
+                  </div>
+                ))
+              ) : (
+                <input
+                  type="text"
+                  name="dias"
+                  value={this.state.popUp[0].value.dias}
+                  onChange={this.handleChange}
+                  style={{ width: "110px", marginRight: "0" }}
+                  maxLength="10"
+                />
+              )}
+
               <div className="btns">
                 <img
                   src={Trash}
