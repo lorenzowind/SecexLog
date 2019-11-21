@@ -55,7 +55,6 @@ module.exports = {
             ...payload,
             token: jwt.encode(payload, authSecret)
         })
-
     },
 
     validateToken(req,res){

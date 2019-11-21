@@ -22,6 +22,9 @@ module.exports = app => {
 
    /* ROTAS DE USUÁRIOS */
 
+   /* CADASTRAR USUÁRIO SEM PRECISAR DE AUTENTICAÇÃO*/
+   app.route('/users/sa').post(UserController.store);
+
    app.route('/users')
       .all(AuthUser.authenticate())
       .get(authAdmin(UserController.index))
@@ -32,7 +35,7 @@ module.exports = app => {
       .get(authAdmin(UserController.show))
       .put(authAdmin(UserController.update))
       .delete(authAdmin(UserController.delete));
-
+   
    /* ROTAS DE CIDADE [COM AUTENTICAÇÃO] */
 
    // app.route('/cities')

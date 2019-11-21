@@ -17,7 +17,6 @@ module.exports = () => {
     };
 
     const strategy = new Strategy(params, (payload, done) => {
-        console.log(payload);
         User.findOne({
             // attributes: ['id','nome','login','cargo','email'],
             where: {
