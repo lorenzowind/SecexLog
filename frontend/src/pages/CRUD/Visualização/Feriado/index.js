@@ -25,6 +25,9 @@ export default class Feriado extends Component {
       holiday2: [],
       holiday3: [],
 
+      // nacionais: [],
+      // especificos: [],
+
       search: "",
 
       id: "",
@@ -47,16 +50,24 @@ export default class Feriado extends Component {
       alert(err);
       window.location.reload();
     });
+
     const data = res.data;
     const holiday1 = [];
     const holiday2 = [];
     const holiday3 = [];
-    console.log(data.length);
+
+    // const especificos = [];
+    // const nacionais= [];
+
     let cont = 0;
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
+
+      // aux.type === "especifico"
+      //   ? especificos.push({ aux })
+      //   : nacionais.push({ aux });
+
       if (cont >= 0 && cont < 3) {
-        console.log(cont);
         holiday1.push({ aux });
         cont++;
       } else if (cont >= 3 && cont < 7) {
@@ -65,12 +76,14 @@ export default class Feriado extends Component {
       } else if (cont >= 7 && cont <= 11) {
         holiday3.push({ aux });
         cont++;
+
         if (cont >= 11) cont = 0;
       }
     }
 
-    console.log(holiday1);
     this.setState({ holiday1, holiday2, holiday3 });
+
+    // this.setState({nacionais,especificos});
   };
 
   handleChange = ev => {
@@ -202,32 +215,34 @@ export default class Feriado extends Component {
                 overflow: "hidden"
               }}
             >
-              <div className="listCity">
+              <div className="listCity" style={{ overflowY: "hidden" }}>
                 <div className="table">
-                  <table name="table1">
-                    <thead>
-                      <tr>
-                        <th align="left">Nome</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.holiday1.map((c, i) => (
-                        <tr key={i}>
-                          <td>{c.aux.nome}</td>
-                          <td>
-                            <img
-                              src={Edit}
-                              alt=""
-                              onClick={() => {
-                                const content = c;
-                                this.editPopUp(content);
-                              }}
-                            />
-                          </td>
+                  <div style={{ overflowY: "auto", marginRight: "20px" }}>
+                    <table name="table1">
+                      <thead>
+                        <tr>
+                          <th align="left">Nacionais</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {this.state.holiday1.map((c, i) => (
+                          <tr key={i}>
+                            <td>{c.aux.nome}</td>
+                            <td>
+                              <img
+                                src={Edit}
+                                alt=""
+                                onClick={() => {
+                                  const content = c;
+                                  this.editPopUp(content);
+                                }}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
                   <hr
                     style={{
@@ -238,64 +253,32 @@ export default class Feriado extends Component {
                     }}
                   />
 
-                  <table name="table2">
-                    <thead>
-                      <tr>
-                        <th align="left">Nome</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.holiday2.map((c, i) => (
-                        <tr key={i}>
-                          <td>{c.aux.nome}</td>
-                          <td>
-                            <img
-                              src={Edit}
-                              alt=""
-                              onClick={() => {
-                                const content = c;
-                                this.editPopUp(content);
-                              }}
-                            />
-                          </td>
+                  <div style={{ overflowY: "auto" }}>
+                    <table name="table2">
+                      <thead>
+                        <tr>
+                          <th align="left">Específicos</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-
-                  <hr
-                    style={{
-                      width: "1px",
-                      height: "100%",
-                      display: "inline-block",
-                      marginTop: "3%"
-                    }}
-                  />
-
-                  <table name="table3">
-                    <thead>
-                      <tr>
-                        <th align="left">Nome</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.holiday3.map((c, i) => (
-                        <tr key={i}>
-                          <td>{c.aux.nome}</td>
-                          <td>
-                            <img
-                              src={Edit}
-                              alt=""
-                              onClick={() => {
-                                const content = c;
-                                this.editPopUp(content);
-                              }}
-                            />
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                      </thead>
+                      <tbody>
+                        {this.state.holiday2.map((c, i) => (
+                          <tr key={i}>
+                            <td>{c.aux.nome}</td>
+                            <td>
+                              <img
+                                src={Edit}
+                                alt=""
+                                onClick={() => {
+                                  const content = c;
+                                  this.editPopUp(content);
+                                }}
+                              />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
             </div>

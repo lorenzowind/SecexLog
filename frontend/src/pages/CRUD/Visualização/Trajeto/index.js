@@ -10,6 +10,7 @@ import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Ir from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/ir.png";
 import Edit from "../../../../assets/Cadastro de usuário/editar.png";
 import Close from "../../../../assets/Cadastro de usuário/sair_secex.png";
+import Trash from "../../../../assets/Cadastro de usuário/lixeira.png";
 
 import "./styles.css";
 
@@ -26,7 +27,7 @@ export default class Cidade extends Component {
       modal: "",
       prestador: "",
 
-      row: [{ nome: "bla", telefone: "bla", email: "bla", modal: "bla" }],
+      row: [],
 
       popUp: []
     };
@@ -101,7 +102,7 @@ export default class Cidade extends Component {
   handleChange = () => {};
 
   render() {
-    const cidadesStyles = { width: "30%", marginRight: "3%", marginLeft: "3%" };
+    const cidadesStyles = { width: "35%", marginRight: "3%", marginLeft: "3%" };
     const imgStyles = {
       height: "38px",
       position: "relative",
@@ -109,6 +110,11 @@ export default class Cidade extends Component {
     };
     const diaStyle = { width: "36%", marginRight: "3%" };
     const horaStyle = { width: "22.4%", marginRight: "3%", marginLeft: "3%" };
+    const popUpStyles = {
+      maxHeight: "420px",
+      overflow: "hidden",
+      overflowY: "scroll"
+    };
 
     return (
       <div className="body">
@@ -177,7 +183,7 @@ export default class Cidade extends Component {
           </div>
 
           {this.state.popUp.map((c, i) => (
-            <div className="popUp" key={i}>
+            <div className="popUp" key={i} style={popUpStyles}>
               <div className="title" style={{ marginLeft: "8.4%" }}>
                 <h2>{c.text.h1}</h2>
                 <img src={Close} alt="" onClick={this.handleClose} />
@@ -205,18 +211,20 @@ export default class Cidade extends Component {
               </div>
 
               <h4>{c.text.modal}</h4>
-              <input
-                type="select"
+              <select
                 //value={c.value.relatedCities}
                 onChange={this.handleChange}
-              />
+              >
+                <option value="teste">Teste</option>
+              </select>
 
               <h4>{c.text.prestador}</h4>
-              <input
-                type="select"
-                //value={c.value.holidays}
+              <select
+                //value={c.value.relatedCities}
                 onChange={this.handleChange}
-              />
+              >
+                <option value="teste">Teste</option>
+              </select>
 
               <h4>{c.text.diaHora}</h4>
               <div className="diaHora add" style={{ display: "flex" }}>
@@ -241,6 +249,63 @@ export default class Cidade extends Component {
                     top: "0"
                   }}
                 />
+              </div>
+
+              <div className="tempoKm" style={{ display: "flex" }}>
+                <div className="tempo">
+                  <h4>
+                    Duração do
+                    <br /> trecho
+                  </h4>
+                  <input onChange={this.handleChange} />
+                </div>
+                <div className="km">
+                  <h4>Quilometragem (Km)</h4>
+                  <input onChange={this.handleChange} />
+                </div>
+              </div>
+
+              <div className="valorTipo" style={{ display: "flex" }}>
+                <div className="valor">
+                  <h4>Valor do trecho</h4>
+                  <input type="text" />
+                </div>
+                <div className="tipo">
+                  <h4>O modal é:</h4>
+                  <div>
+                    <div style={{ display: "flex" }}>
+                      <input
+                        type="radio"
+                        id="option"
+                        name="opCidadeBase"
+                        value="cidadeBase"
+                        onChange={this.handleChange}
+                      />
+                      Linha
+                    </div>
+                    <br />
+                    <div style={{ display: "flex" }}>
+                      <input
+                        type="radio"
+                        id="option"
+                        name="opCidadeAuditada"
+                        value="cidadeAuditada"
+                        onChange={this.handleChange}
+                      />
+                      Contratado
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="btns">
+                <img
+                  src={Trash}
+                  alt="Deletar"
+                  onClick={this.handleDelete}
+                  style={{ left: "20px" }}
+                />
+                <button onClick={this.handleEditSubmit} />
               </div>
             </div>
           ))}

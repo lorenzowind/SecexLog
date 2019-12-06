@@ -1,0 +1,72 @@
+.popUp input,
+select {
+  border: solid 1px #707070;
+}
+
+.popUp select {
+  width: 85%;
+  margin-left: 9%;
+}
+
+.tempoKm {
+  text-align: center;
+}
+
+.tempoKm h4 {
+  margin-left: 15%;
+}
+
+.tempoKm input {
+  width: 70%;
+  margin-right: 3%;
+}
+
+.tempo h4 {
+  width: 70%;
+}
+
+.km h4 {
+  width: 70%;
+}
+
+.km input {
+  margin-left: 0;
+}
+
+.valorTipo {
+  text-align: center;
+}
+
+.valorTipo h4 {
+  margin-left: 15%;
+}
+
+.valorTipo input[type="text"] {
+  width: 73%;
+  margin-left: 15%;
+}
+
+.valorTipo div {
+  width: 50%;
+}
+
+.valor h4 {
+  width: 70%;
+}
+
+.tipo {
+  text-align: left;
+  font-size: 15px;
+}
+
+.tipo div {
+  width: 100%;
+}
+
+.tipo input[type="radio"] {
+  margin-left: 15%;
+  width: 1.6em;
+  height: 1.6em;
+  margin-right: 10px;
+  font-size: 11px;
+}
