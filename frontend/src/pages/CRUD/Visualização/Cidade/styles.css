@@ -52,16 +52,13 @@
 }
 
 .listCity {
-  max-width: 800px;
+  max-width: 770px;
   height: 200px;
-  border-radius: 34px;
-  border: solid 1px #707070;
-  background-color: #ffffff;
-  overflow: hidden;
+  overflow-y: auto;
 }
 
 .table {
-  height: 200px;
+  height: 190px;
   display: flex;
   margin-right: 20px;
 }

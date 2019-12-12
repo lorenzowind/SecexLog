@@ -21,12 +21,15 @@ export default class Modal extends Component {
   constructor() {
     super();
     this.state = this.getInitialState();
+    this.fileInput = React.createRef();
   }
 
   getInitialState() {
     return {
       nome: "",
       icon: "",
+      selectedIcon: Interrogacao,
+
       safe: "não",
       rental: "não",
       fast: "não",
@@ -69,14 +72,29 @@ export default class Modal extends Component {
       console.log(colorIcon.url);
 
       console.log(color);
-      this.setState({ icon: src, colorIcon });
+      this.setState({ icon: src, colorIcon, selectedIcon: Interrogacao });
     }
   };
 
   handleNewIcon = ev => {
-    //const icon = URL.createObjectURL(ev.target.value);
-    console.log(ev.target);
-    this.setState({ icon: ev.target.value });
+    console.log(this.fileInput.current.files[0].type);
+
+    const type = this.fileInput.current.files[0].type;
+
+    if (type.indexOf("image") < 0) {
+      alert("Por favor, insira somente imagens!");
+      return;
+    }
+
+    const selectedIcon = URL.createObjectURL(this.fileInput.current.files[0]);
+
+    const { colorIcon } = this.state;
+
+    colorIcon.name = "";
+    colorIcon.url = "";
+
+    this.setState({ selectedIcon, colorIcon, icon: "" });
+    return;
   };
 
   onSubmit = async ev => {
@@ -84,7 +102,10 @@ export default class Modal extends Component {
 
     const state = {
       nome: this.state.nome,
-      icon: this.state.icon,
+      icon:
+        this.state.selectedIcon !== Interrogacao
+          ? this.state.selectedIcon
+          : this.state.icon,
       safe: this.state.safe,
       rental: this.state.rental,
       fast: this.state.fast
@@ -223,12 +244,13 @@ export default class Modal extends Component {
             </div>
             <div className="row">
               <label name="icon" htmlFor="interrogacao">
-                <img src={this.state.icon} alt="Escolher ícone" />
+                <img src={this.state.selectedIcon} alt="Escolher ícone" />
               </label>
               <input
                 id="interrogacao"
                 type="file"
                 name="icon"
+                ref={this.fileInput}
                 onChange={this.handleNewIcon}
               />
             </div>

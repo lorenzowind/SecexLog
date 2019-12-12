@@ -1,9 +1,9 @@
-.header_op {
+.headerTrajeto {
   display: flex;
   padding-top: 0%;
 }
 
-.header_op img {
+.headerTrajeto img {
   height: 40px;
   width: 40px;
   margin-right: 10px;

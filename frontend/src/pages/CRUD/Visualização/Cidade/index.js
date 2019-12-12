@@ -97,8 +97,6 @@ export default class Cidade extends Component {
     this.setState({ popUp: [] });
   };
 
-  handleChange = () => {};
-
   render() {
     return (
       <div className="body">
@@ -119,100 +117,111 @@ export default class Cidade extends Component {
               </Link>
             </div>
 
-            <div className="listCity">
-              <div className="table">
-                <table name="table1">
-                  <thead>
-                    <tr>
-                      <th align="left">Nome</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.city1.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
+            <div
+              style={{
+                height: "190px",
+                width: "800px",
+                borderRadius: "34px",
+                border: "solid 1px #707070",
+                backgroundColor: "#ffffff",
+                overflow: "hidden"
+              }}
+            >
+              <div className="listCity">
+                <div className="table">
+                  <table name="table1">
+                    <thead>
+                      <tr>
+                        <th align="left">Nome</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {this.state.city1.map((c, i) => (
+                        <tr key={i}>
+                          <td>{c.aux.nome}</td>
+                          <td>
+                            <img
+                              src={Edit}
+                              alt=""
+                              onClick={() => {
+                                const content = c;
+                                this.editPopUp(content);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
 
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
+                  <hr
+                    style={{
+                      width: "1px",
+                      height: "100%",
+                      display: "inline-block",
+                      marginTop: "3%"
+                    }}
+                  />
 
-                <table name="table2">
-                  <thead>
-                    <tr>
-                      <th align="left">Nome</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.city2.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
+                  <table name="table2">
+                    <thead>
+                      <tr>
+                        <th align="left">Nome</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {this.state.city2.map((c, i) => (
+                        <tr key={i}>
+                          <td>{c.aux.nome}</td>
+                          <td>
+                            <img
+                              src={Edit}
+                              alt=""
+                              onClick={() => {
+                                const content = c;
+                                this.editPopUp(content);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
 
-                <hr
-                  style={{
-                    width: "1px",
-                    height: "78%",
-                    display: "inline-block",
-                    marginTop: "3%"
-                  }}
-                />
+                  <hr
+                    style={{
+                      width: "1px",
+                      height: "100%",
+                      display: "inline-block",
+                      marginTop: "3%"
+                    }}
+                  />
 
-                <table name="table3">
-                  <thead>
-                    <tr>
-                      <th align="left">Nome</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {this.state.city3.map((c, i) => (
-                      <tr key={i}>
-                        <td>{c.aux.nome}</td>
-                        <td>
-                          <img
-                            src={Edit}
-                            alt=""
-                            onClick={() => {
-                              const content = c;
-                              this.editPopUp(content);
-                            }}
-                          />
-                        </td>
+                  <table name="table3">
+                    <thead>
+                      <tr>
+                        <th align="left">Nome</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      {this.state.city3.map((c, i) => (
+                        <tr key={i}>
+                          <td>{c.aux.nome}</td>
+                          <td>
+                            <img
+                              src={Edit}
+                              alt=""
+                              onClick={() => {
+                                const content = c;
+                                this.editPopUp(content);
+                              }}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
