@@ -1,0 +1,20 @@
+module.exports = {
+    authSecret: 'hash_md5_auth',
+
+    db:{
+        username: " ",
+        password: " ",
+        database: " ",
+        host: " "
+    },
+
+    mailer: {
+        host: " ",
+        port: ,
+        auth: {
+            user: " ",
+            pass: " "
+        }
+    }
+
+}
