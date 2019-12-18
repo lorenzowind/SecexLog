@@ -8,7 +8,8 @@ const CityController = require('./app/controllers/CityController');
 const PathController = require('./app/controllers/PathController');
 const ProviderController = require('./app/controllers/ProviderController');
 const HolidayController = require('./app/controllers/HolidayController');
-//const ManualSearch = require('./app/controllers/services/ManualSearch');
+const ManualSearch = require('./app/controllers/services/ManualSearch');
+
 /* MIDDLEWARES */
 const UserAuthentication = require('./app/middlewares/UserAuthentication');
 const authAdmin = require('./app/middlewares/AdminAuthentication');
@@ -22,15 +23,13 @@ module.exports = app => {
    app.post('/validateToken', LoginController.validateToken);
    app.post('/forgot_password', ForgotPassword.recoverPass);
 
-   /* PESQUISA MANUAL */
-
-   //app.route('search').post(ManualSearch.post);
+   /* ROTAS DE USUÁRIOS */
 
    /* CADASTRAR USUÁRIO SEM PRECISAR DE AUTENTICAÇÃO*/
    app.route('/users/sa').post(UserController.store);
 
    app.route('/users')
-         .all(AuthUser.authenticate())
+      .all(AuthUser.authenticate())
       .get(authAdmin(UserController.index))
       .post(authAdmin(UserController.store));
 
@@ -39,7 +38,7 @@ module.exports = app => {
       .get(authAdmin(UserController.show))
       .put(authAdmin(UserController.update))
       .delete(authAdmin(UserController.delete));
-   
+
    /* ROTAS DE CIDADE [COM AUTENTICAÇÃO] */
 
    // app.route('/cities')
@@ -64,6 +63,10 @@ module.exports = app => {
       .put(CityController.update)
       .delete(CityController.delete);
 
+   /* PESQUISA MANUAL */
+
+   app.route('/search').post(ManualSearch.index);
+
    /* ROTAS DE FERIADO [SEM AUTENTICAÇÃO]*/
 
    app.route('/holidays')
@@ -81,7 +84,7 @@ module.exports = app => {
       // .all(AuthUser.authenticate())
       .get(ProviderController.index)
       .post(ProviderController.store);
-   
+
    app.route('/providers/:id')
       .get(ProviderController.show)
       .put(ProviderController.update)
