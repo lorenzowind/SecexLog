@@ -1,127 +1,121 @@
 .cadastro-trajeto {
-    margin-left: 50px;
+  margin-left: 50px;
 }
 
-.adicionar-cidades h1{
-    margin-top: 20px;
-    font-size: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.adicionar-cidades h1 {
+  margin-top: 20px;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .adicionar-cidades .linha {
-    position: relative;
-    height: 60px;
-    padding-top: 10px;
+  position: relative;
+  height: 60px;
+  padding-top: 10px;
 }
-.adicionar-cidades .linha input {  
-    position: absolute;
-    width: 180px;
-    height: 40px;
-    border-radius: 29px;
-    border: solid 1px #707070;
-    background-color: #ffffff;
+.adicionar-cidades .linha input {
+  position: absolute;
+  height: 40px;
+  padding: 20px;
+  border-radius: 29px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
 }
 .adicionar-cidades .linha .volta {
-    margin-left: 240px;  
+  margin-left: 240px;
 }
-.adicionar-cidades .linha img {  
-    position: absolute;
-    margin-left: 200px;
-    padding-top: 2px;
+.adicionar-cidades .linha img {
+  position: absolute;
+  margin-left: 210px;
+  padding-top: 2px;
 }
 
-.escolha-modal h1{
-    margin-top: 20px;
-    font-size: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.escolha-modal h1 {
+  margin-top: 20px;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .escolha-modal .select {
-    width: 300px;
-    padding-top: 10px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 300px;
+  padding-top: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .modal-selecionado {
-    margin-top: 40px;
-    display: none;
+  margin-top: 40px;
+  display: none;
 }
 .modal-selecionado .linha {
-    position: relative;
-    height: 60px;
-    padding-top: 10px;
+  position: relative;
+  height: 60px;
+  padding-top: 10px;
 }
 .modal-selecionado .linha img {
-    position: absolute;
-    padding-top: 10px;
-    height: 25px;
+  position: absolute;
+  padding-top: 10px;
+  height: 25px;
 }
 .modal-selecionado .linha img:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 .modal-selecionado .linha h1 {
-    margin-left: 30px;
-    font-size: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-left: 30px;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .selecione-prestador {
-    margin-left: 20px;
-    display: none;
+  margin-left: 20px;
+  display: none;
 }
 .selecione-prestador h1 {
-    margin-top: 15px;
-    font-size: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-top: 15px;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .selecione-prestador .select {
-    width: 300px;
-    padding-top: 10px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 300px;
+  padding-top: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .dia-hora-embarque {
-    margin-top: 20px;
+  margin-top: 20px;
 }
-.dia-hora-embarque h1{
-    font-size: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.dia-hora-embarque h1 {
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .dia-hora-embarque .linha_ {
-    position: relative;
-    padding-top: 10px;
-    height: 40px;
-    margin-block-end: 50px;
+  position: relative;
+  padding-top: 10px;
+  height: 40px;
+  margin-block-end: 50px;
 }
-.dia-hora-embarque .linha_ input{
-    margin-top: 20px;
-    position: absolute;
-    width: 150px;
-    height: 40px;
-    border-radius: 29px;
-    border: solid 1px #707070;
-    background-color: #ffffff;
+.dia-hora-embarque .linha_ input {
+  margin-top: 20px;
+  position: absolute;
+  width: 150px;
+  height: 40px;
+  padding: 20px;
+  border-radius: 29px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
 }
-.dia-hora-embarque .linha_ img{
-    position: absolute;
-    margin-left: 340px;
-    height: 60px;
+.dia-hora-embarque .linha_ img {
+  position: absolute;
+  margin-left: 340px;
+  height: 60px;
 }
-.dia-hora-embarque .linha_ img:hover{
-    cursor: pointer;
+.dia-hora-embarque .linha_ img:hover {
+  cursor: pointer;
 }
 .dia-hora-embarque .linha_ .hora {
-    margin-left: 160px;  
+  margin-left: 160px;
 }
 .dia-hora-embarque .linha_dia_hora {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 .dia-hora-embarque .linha_dia_hora h1 {
-    font-size: 20px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
-
-
-
-
-
-

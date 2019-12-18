@@ -34,6 +34,15 @@ export default class Trajeto extends Component {
       dia: [],
       hora: [],
 
+      duracao: "",
+      quilometragem: "",
+      valor: "",
+
+      local_embarque: "",
+      local_desembarque: "",
+
+      tipo_modal: "",
+
       modais: [],
       prestador: []
     };
@@ -88,29 +97,33 @@ export default class Trajeto extends Component {
   };
 
   loadPrestador = async () => {
-    //esperando rota de providers
-
-    /*const res = await api.get("/providers").catch(err => {
+    const res = await api.get("/providers").catch(err => {
       alert(err.message);
       window.location.reload(false);
-    });*/
+    });
 
     const prestador = [];
 
     for (var i = 0; i < 1; i++) {
-      //let value = res.data[i].nome;
-      //let label = res.data[i].nome;
-      let value = "teste";
-      let label = "teste";
+      let value = res.data[i].nome;
+      let label = res.data[i].nome;
 
       prestador.push({ value, label });
     }
-
     this.setState({ prestador: prestador });
   };
 
   onSubmit = async ev => {
     ev.preventDefault();
+
+    var linha, contratado;
+    if (this.state.tipo_modal === "linha") {
+      linha = 1;
+      contratado = 0;
+    } else {
+      linha = 0;
+      contratado = 1;
+    }
 
     const json = {
       initCidade: this.state.ida,
@@ -118,8 +131,17 @@ export default class Trajeto extends Component {
       modal: this.state.modal,
       prestNome: this.state.prestador_modal,
       dia: this.state.dia,
-      hora: this.state.hora
+      hora: this.state.hora,
+      cost: parseFloat(this.state.valor),
+      mileage: parseFloat(this.state.quilometragem),
+      arrival: this.state.local_embarque,
+      departure: this.state.local_desembarque,
+      linha: linha,
+      contratado: contratado,
+      duration: this.state.duracao
     };
+
+    console.log(JSON.stringify(json));
 
     let error = null;
 
@@ -143,9 +165,13 @@ export default class Trajeto extends Component {
   maisClicked = async () => {
     var dia = document.getElementsByClassName("dia");
     var hora = document.getElementsByClassName("hora");
+    const dia_ = this.state.dia;
+    const hora_ = this.state.hora;
 
-    this.state.dia.push(dia[0].firstElementChild.value);
-    this.state.hora.push(hora[0].firstElementChild.value);
+    dia_.push(dia[0].firstElementChild.value);
+    console.log(dia_);
+    hora_.push(hora[0].firstElementChild.value);
+    this.setState({ dia: dia_, hora: hora_ });
   };
 
   onChange = ev => {
@@ -172,7 +198,14 @@ export default class Trajeto extends Component {
                 <h1>Adicionar cidades do trajeto</h1>
 
                 <div className="linha">
-                  <div className="ida">
+                  <div
+                    className="ida"
+                    style={{
+                      border: "none",
+                      position: "relative",
+                      right: "20px"
+                    }}
+                  >
                     <input
                       type="text"
                       name="ida"
@@ -250,7 +283,10 @@ export default class Trajeto extends Component {
               </div>
 
               <div className="footer">
-                <button onClick={this.onSubmit}></button>
+                <button
+                  onClick={this.onSubmit}
+                  style={{ marginTop: "20px" }}
+                ></button>
               </div>
             </div>
           </form>

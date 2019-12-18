@@ -79,7 +79,7 @@ module.exports = app => {
     .post(HolidayController.store);
 
   app
-    .route("/holidays/:id")
+    .route("/holidays/:data")
     .get(HolidayController.show)
     .put(HolidayController.update)
     .delete(HolidayController.delete);
@@ -93,7 +93,7 @@ module.exports = app => {
     .post(ProviderController.store);
 
   app
-    .route("/providers/:id")
+    .route("/providers/:data")
     .get(ProviderController.show)
     .put(ProviderController.update)
     .delete(ProviderController.delete);
@@ -144,7 +144,7 @@ module.exports = app => {
     .post(authAdmin(ModalController.store));
 
   app
-    .route("/modals/:id")
+    .route("/modals/:data")
     .all(AuthUser.authenticate())
     .get(ModalController.show)
     .put(authAdmin(ModalController.update))

@@ -31,7 +31,6 @@
   margin-block-end: 10px;
 }
 
-
 select {
   border: solid 1px #707070;
 }
@@ -102,4 +101,178 @@ select {
   height: 1.6em;
   margin-right: 10px;
   font-size: 11px;
+}
+
+.popUp_trajeto_ .select {
+  margin-left: 10%;
+  width: 250px;
+}
+
+.diaHora_add {
+  position: relative;
+  height: 60px;
+}
+.diaHora_add .select {
+  position: absolute;
+  width: 150px;
+  margin-top: 10px;
+}
+.diaHora_add .horario {
+  position: absolute;
+  margin-left: 50%;
+  margin-top: 15px;
+}
+.diaHora_add img {
+  position: absolute;
+  margin-left: 85%;
+  height: 60px;
+}
+.diaHora_add img:hover {
+  cursor: pointer;
+}
+
+.popUp_trajeto_ .linha {
+  position: relative;
+  height: 110px;
+}
+.popUp_trajeto_ .linha .duracao {
+  position: absolute;
+}
+.popUp_trajeto_ .linha .duracao h1 {
+  margin-top: 20px;
+  margin-left: 8%;
+  width: 60%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: normal;
+}
+.popUp_trajeto_ .linha .duracao input {
+  width: 80px;
+  margin-top: 30px;
+  margin-left: 15%;
+}
+.popUp_trajeto_ .linha .quilometragem_ {
+  position: absolute;
+  margin-left: 35%;
+}
+.popUp_trajeto_ .linha .quilometragem_ h1 {
+  margin-top: 20px;
+  width: 70%;
+  text-align: center;
+  font-size: 16px;
+  font-weight: normal;
+}
+.popUp_trajeto_ .linha .quilometragem_ input {
+  width: 100px;
+  margin-top: 30px;
+  margin-left: 10%;
+}
+
+.popUp_trajeto_ .linha .valor {
+  position: absolute;
+}
+.popUp_trajeto_ .linha .valor {
+  position: absolute;
+}
+.popUp_trajeto_ .linha .valor h1 {
+  margin-top: 30px;
+  margin-left: 8%;
+  font-size: 16px;
+  font-weight: normal;
+}
+.popUp_trajeto_ .linha .valor input {
+  width: 100px;
+  margin-left: 10%;
+  margin-top: 10px;
+}
+.popUp_trajeto_ .linha .tipo_modal_ {
+  position: absolute;
+  margin-left: 45%;
+  margin-top: 20px;
+}
+.popUp_trajeto_ .linha .tipo_modal_ h1 {
+  font-size: 16px;
+  font-weight: normal;
+}
+.popUp_trajeto_ .linha .tipo_modal_ .linha_modal_ {
+  position: absolute;
+}
+.popUp_trajeto_ .linha .tipo_modal_ h2 {
+  position: absolute;
+  margin-left: 25px;
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: normal;
+}
+.popUp_trajeto_ .linha .tipo_modal_ .linha_modal_ input {
+  position: absolute;
+  margin-top: 8px;
+}
+.popUp_trajeto_ .linha .tipo_modal_ .contratado_modal_ {
+  position: absolute;
+  margin-top: 30px;
+}
+.popUp_trajeto_ .linha .tipo_modal_ h3 {
+  position: absolute;
+  margin-left: 25px;
+  margin-top: 32px;
+  font-size: 16px;
+  font-weight: normal;
+}
+.popUp_trajeto_ .linha .tipo_modal_ .contratado_modal_ input {
+  position: absolute;
+  margin-top: 6px;
+}
+
+.texto_edit1 {
+  position: relative;
+  height: 50px;
+}
+.texto_edit1 h4 {
+  position: absolute;
+}
+.texto_edit1 img {
+  position: absolute;
+  margin-left: 20%;
+  height: 20px;
+  margin-top: 10px;
+}
+.texto_edit1 img:hover {
+  cursor: pointer;
+}
+
+.texto_edit2 {
+  position: relative;
+  height: 50px;
+}
+.texto_edit2 h4 {
+  position: absolute;
+}
+.texto_edit2 img {
+  position: absolute;
+  margin-left: 45%;
+  height: 20px;
+  margin-top: 10px;
+}
+.texto_edit2 img:hover {
+  cursor: pointer;
+}
+
+.modal_trajeto h1 {
+  margin-left: 10%;
+  font-size: 15px;
+}
+
+.prest_trajeto h1 {
+  margin-left: 10%;
+  font-size: 15px;
+}
+
+.dia_horario {
+  position: relative;
+  margin-left: 10%;
+  margin-top: 20px;
+}
+.linha_dia_hora_ h1 {
+  font-size: 15px;
 }
