@@ -9,6 +9,7 @@ const PathController = require("./app/controllers/PathController");
 const ProviderController = require("./app/controllers/ProviderController");
 const HolidayController = require("./app/controllers/HolidayController");
 const ManualSearch = require("./app/controllers/services/ManualSearch");
+
 /* MIDDLEWARES */
 const UserAuthentication = require("./app/middlewares/UserAuthentication");
 const authAdmin = require("./app/middlewares/AdminAuthentication");
@@ -22,25 +23,23 @@ module.exports = app => {
   app.post("/validateToken", LoginController.validateToken);
   app.post("/forgot_password", ForgotPassword.recoverPass);
 
-  /* PESQUISA MANUAL */
-
-  // app.route("/search").post(ManualSearch.post);
+  /* ROTAS DE USUÁRIOS */
 
   /* CADASTRAR USUÁRIO SEM PRECISAR DE AUTENTICAÇÃO*/
   app.route("/users/sa").post(UserController.store);
 
   app
     .route("/users")
-    // .all(AuthUser.authenticate())
-    .get(UserController.index)
-    .post(UserController.store);
+    .all(AuthUser.authenticate())
+    .get(authAdmin(UserController.index))
+    .post(authAdmin(UserController.store));
 
   app
     .route("/users/:data")
-    // .all(AuthUser.authenticate())
-    .get(UserController.show)
-    .put(UserController.update)
-    .delete(UserController.delete);
+    .all(AuthUser.authenticate())
+    .get(authAdmin(UserController.show))
+    .put(authAdmin(UserController.update))
+    .delete(authAdmin(UserController.delete));
 
   /* ROTAS DE CIDADE [COM AUTENTICAÇÃO] */
 
@@ -68,6 +67,10 @@ module.exports = app => {
     .put(CityController.update)
     .delete(CityController.delete);
 
+  /* PESQUISA MANUAL */
+
+  app.route("/search").post(ManualSearch.index);
+
   /* ROTAS DE FERIADO [SEM AUTENTICAÇÃO]*/
 
   app
@@ -76,7 +79,7 @@ module.exports = app => {
     .post(HolidayController.store);
 
   app
-    .route("/holidays/:data")
+    .route("/holidays/:id")
     .get(HolidayController.show)
     .put(HolidayController.update)
     .delete(HolidayController.delete);
@@ -90,7 +93,7 @@ module.exports = app => {
     .post(ProviderController.store);
 
   app
-    .route("/providers/:data")
+    .route("/providers/:id")
     .get(ProviderController.show)
     .put(ProviderController.update)
     .delete(ProviderController.delete);
@@ -141,11 +144,11 @@ module.exports = app => {
     .post(authAdmin(ModalController.store));
 
   app
-    .route("/modals/:data")
-    // .all(AuthUser.authenticate())
+    .route("/modals/:id")
+    .all(AuthUser.authenticate())
     .get(ModalController.show)
-    .put(ModalController.update)
-    .delete(ModalController.delete);
+    .put(authAdmin(ModalController.update))
+    .delete(authAdmin(ModalController.delete));
 
   /* ROTAS DE FERIADO [COM AUTENTICAÇÃO]*/
 
