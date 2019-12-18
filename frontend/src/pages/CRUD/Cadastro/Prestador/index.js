@@ -10,6 +10,7 @@ export default class Prestador extends Component {
   constructor() {
     super();
     this.state = this.getInitialState();
+    this.childDiv = React.createRef();
   }
 
   getInitialState() {
@@ -19,9 +20,36 @@ export default class Prestador extends Component {
       email: "",
       modal: "",
       tipoDado: "CPF",
-      dadoPrestador: ""
+      dadoPrestador: "",
+
+      modals: []
     };
   }
+
+  componentWillMount() {
+    this.handleScroll();
+    this.loadModals();
+  }
+
+  loadModals = async () => {
+    const res = await api.get("/modals").catch(err => {
+      alert(err);
+      window.location.reload();
+    });
+
+    const modals = res.data;
+    console.log(res.data);
+    this.setState({ modals });
+  };
+
+  handleScroll = () => {
+    const { index, selected } = this.props;
+    if (index === selected) {
+      setTimeout(() => {
+        this.childDiv.current.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  };
 
   handleChange = ev => {
     const state = Object.assign({}, this.state);
@@ -39,19 +67,25 @@ export default class Prestador extends Component {
     ev.preventDefault();
 
     const state = {
-      prestNome: this.state.nome,
+      nome: this.state.nome,
       telefone: this.state.telefone,
       email: this.state.email,
       modal: this.state.modal,
-      tipoDado: this.state.tipoDado,
-      dadoPrestador: this.state.dadoPrestador
+      preference: this.state.tipoDado,
+      preferenceTxt: this.state.dadoPrestador
     };
 
-    await api.post(`/providers/${state}`, state).catch(err => {
-      alert(err);
-    });
+    var error = null;
 
-    console.log(state);
+    await api.post(`/providers`, state).catch(err => {
+      alert(
+        "Verifique se todos os dados estão inseridos corretamente ou se o nome do Prestador já foi cadastrado"
+      );
+      error = err;
+    });
+    if (!error) {
+      window.location.reload();
+    }
   };
 
   render() {
@@ -76,7 +110,7 @@ export default class Prestador extends Component {
     };
 
     return (
-      <div className="body">
+      <div className="body" ref={this.childDiv}>
         <Menu ativo={false} />
         <div className="cadastro">
           <Header />
@@ -111,41 +145,43 @@ export default class Prestador extends Component {
             </div>
           </div>
 
-          <h2>Modal</h2>
-          <select
-            name="modal"
-            onChange={this.handleChange}
-            defaultValue="selected"
-            style={selectStyles}
-            required
-          >
-            <option defaultValue="selected">Selecione um modal</option>
-            {/* {this.state.cidades.map((c, i) => (
-              <option key={i} value={c.nome}>
-                {c.nome}
-              </option>
-            ))} */}
-          </select>
-
-          <div>
-            <h2>Você prefere</h2>
+          <div className="select">
+            <h2>Modal</h2>
             <select
-              name="tipoDado"
+              name="modal"
               onChange={this.handleChange}
               defaultValue="selected"
               style={selectStyles}
               required
             >
-              <option defaultValue="cpf">CPF</option>
-              <option value="rg">RG</option>
+              <option defaultValue="selected">Selecione um modal</option>
+              {this.state.modals.map((c, i) => (
+                <option key={i} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
             </select>
 
-            <input
-              type="text"
-              name="dadoPrestador"
-              style={inputStyles}
-              onChange={this.handleChange}
-            />
+            <div>
+              <h2>Você prefere</h2>
+              <select
+                name="tipoDado"
+                onChange={this.handleChange}
+                defaultValue="selected"
+                style={selectStyles}
+                required
+              >
+                <option defaultValue="cpf">CPF</option>
+                <option value="rg">RG</option>
+              </select>
+
+              <input
+                type="text"
+                name="dadoPrestador"
+                style={inputStyles}
+                onChange={this.handleChange}
+              />
+            </div>
           </div>
 
           <div className="footer" style={footerStyles}>

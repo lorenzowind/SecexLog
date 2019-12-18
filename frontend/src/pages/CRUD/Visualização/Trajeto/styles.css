@@ -1,4 +1,5 @@
 .popUp_trajeto_ {
+  height: 500px;
   width: 400px;
   background-color: #ffff;
   border: 1px solid #b0b0b0;
@@ -101,13 +102,4 @@ select {
   height: 1.6em;
   margin-right: 10px;
   font-size: 11px;
-}
-
-.popUp_trajeto_ .select {
-  margin-left: 10%;
-  width: 250px;
-}
-
-.diaHora_add {
-  
 }

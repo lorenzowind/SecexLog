@@ -24,6 +24,7 @@ export default class Modal extends Component {
     super();
     this.state = this.getInitialState();
     this.fileInput = React.createRef();
+    this.childDiv = React.createRef();
   }
 
   getInitialState() {
@@ -41,11 +42,24 @@ export default class Modal extends Component {
     };
   }
 
+  componentDidMount = () => this.handleScroll();
+
+  handleScroll = () => {
+    const { index, selected } = this.props;
+    if (index === selected) {
+      setTimeout(() => {
+        this.childDiv.current.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  };
+
   handleChange = ev => {
     ev.preventDefault();
     const state = Object.assign({}, this.state);
     const campo = ev.target.name;
     const value = ev.target.value;
+
+    console.log(campo + "=" + value);
 
     state[campo] = value;
 
@@ -162,7 +176,7 @@ export default class Modal extends Component {
     };
 
     return (
-      <div className="body">
+      <div className="body" ref={this.childDiv}>
         <Menu ativo={false} />
         <div className="cadastro">
           <Header />

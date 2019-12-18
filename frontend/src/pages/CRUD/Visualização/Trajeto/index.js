@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 import Header from "../../components/HeaderTrajeto/index";
 
@@ -15,18 +13,6 @@ import Close from "../../../../assets/Cadastro de usuário/sair_secex.png";
 import Trash from "../../../../assets/Cadastro de usuário/lixeira.png";
 
 import "./styles.css";
-
-const animatedComponents = makeAnimated();
-
-const dias_semana = [
-  {value: "Domingo", label: "Domingo"},
-  {value: "Segunda-feira", label: "Segunda-feira"},
-  {value: "Terça-feira", label: "Terça-feira"},
-  {value: "Quarta-feira", label: "Quarta-feira"},
-  {value: "Quinta-feira", label: "Quinta-feira"},
-  {value: "Sexta-feira", label: "Sexta-feira"},
-  {value: "Sábado", label: "Sábado"}
-]
 
 export default class Trajeto extends Component {
   constructor(props) {
@@ -43,18 +29,14 @@ export default class Trajeto extends Component {
       dia: [],
       hora: [],
 
-      dia_: null,
-
       row: [],
 
-      popUp: [],
-
-      modais: [],
-      prestadores: []
+      popUp: []
     };
   }
 
   componentDidMount() {
+    this.loadData();
   }
 
   loadData = async () => {
@@ -83,62 +65,6 @@ export default class Trajeto extends Component {
         }
       });
     }, 1200);
-  };
-
-  loadModais = async () => {
-    const res = await api.get("/modals").catch(err => {
-      alert(err.message);
-      window.location.reload(false);
-    });
-
-    const modais = [];
-
-    for (var i = 0; i < res.data.length; i++) {
-      let value = res.data[i].name;
-      let label = res.data[i].name;
-
-      modais.push({ value, label });
-    }
-
-    this.setState({ modais: modais });
-  };
-
-  loadPrestador = async () => {
-    //esperando rota de providers
-
-    /*const res = await api.get("/providers").catch(err => {
-      alert(err.message);
-      window.location.reload(false);
-    });*/
-
-    const prestadores = [];
-
-    for (var i = 0; i < 1; i++) {
-      //let value = res.data[i].nome;
-      //let label = res.data[i].nome;
-      let value = "teste";
-      let label = "teste";
-
-      prestadores.push({ value, label });
-    }
-
-    this.setState({ prestadores: prestadores });
-  };
-
-  handleModais = modais => {
-
-    this.setState({ modal: modais.value });
-
-  };
-
-  handlePrestador = prestador => {
-
-    this.setState({ prestador: prestador.value });
-
-  };
-
-  handleDia = dia_ => {
-    this.setState({ dia_ });
   };
 
   editPopUp = c => {
@@ -175,9 +101,6 @@ export default class Trajeto extends Component {
     };
 
     popUp.push({ text, value });
-
-    this.loadModais();
-    this.loadPrestador();
 
     this.setState({ popUp: popUp, popUpStats: true });
   };
@@ -294,35 +217,35 @@ export default class Trajeto extends Component {
                 />
               </div>
               <h4>{c.text.tp_modal}</h4>
-              <Select
-                  className="select"
-                  placeholder=""
-                  components={animatedComponents}
-                  options={this.state.modais}
-                  name="cidadesRelacionadas"
-                  onChange={this.handleModais}
-              />
+              <select
+                value={c.value.modal}
+                onChange={this.handleChange}
+              >
+                <option value="teste">Teste</option>
+              </select>
+
               <h4>{c.text.prestador}</h4>
-              <Select
-                  className="select"
-                  placeholder=""
-                  components={animatedComponents}
-                  options={this.state.prestadores}
-                  name="cidadesRelacionadas"
-                  onChange={this.handlePrestador}
-              />
+              <select
+                value={c.value.prestNome}
+                onChange={this.handleChange}
+              >
+                <option value="teste">Teste</option>
+              </select>
 
               <h4>{c.text.diaHora}</h4>
-              <div className="diaHora_add" style={{ display: "flex" }}>
-                <Select 
-                  className="select"
-                  placeholder="Dia" 
-                  options={dias_semana} 
-                  components={animatedComponents} 
-                  name="modais" 
-                  onChange={this.handleDia}
+              <div className="diaHora add" style={{ display: "flex" }}>
+                <input
+                  type="text"
+                  //value={new Date(c.value.initFlood)}
+                  onChange={this.handleChange}
+                  style={diaStyle}
                 />
-                <input type="text" placeholder="Horário" name="hora" id="embarqueHora" />
+                <input
+                  type="text"
+                  //value={new Date(c.value.endFlood)}
+                  style={horaStyle}
+                  onChange={this.handleChange}
+                />
                 <img
                   src={Mais}
                   alt=""

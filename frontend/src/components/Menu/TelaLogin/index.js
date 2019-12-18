@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
 
@@ -9,10 +10,13 @@ import "./styles.css";
 import api from "../../../services/api";
 
 export default class Tela_login extends React.Component {
-  state = {
-    login: false,
-    done: true
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      login: false,
+      done: true
+    };
+  }
 
   evento_sair() {
     var el_1 = document.getElementsByClassName("tela-login");
@@ -38,7 +42,7 @@ export default class Tela_login extends React.Component {
       senha: senha[0].firstChild.value
     };
     await setTimeout(() => {
-      console.log("teste");
+      console.log(state);
       api
         .post("/login", state)
         .then(post => {
@@ -105,7 +109,7 @@ export default class Tela_login extends React.Component {
             <div className="loadingSpin">
               <ReactLoading
                 type={"spin"}
-                color={"black"}
+                color={"#292eec"}
                 height={15}
                 width={15}
               />

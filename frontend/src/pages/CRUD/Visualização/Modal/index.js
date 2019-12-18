@@ -30,6 +30,7 @@ export default class Feriado extends Component {
     super();
     this.state = this.getInitialState();
     this.fileInput = React.createRef();
+    this.myRef = React.createRef();
   }
 
   getInitialState() {
@@ -55,6 +56,7 @@ export default class Feriado extends Component {
   }
 
   componentDidMount() {
+    this.myRef.current.scrollTo(0, 0);
     this.loadData();
   }
 
@@ -250,7 +252,7 @@ export default class Feriado extends Component {
     };
 
     return (
-      <div className="body">
+      <div className="body" ref={this.myRef}>
         <div className="cadastroCidade">
           <Header />
 
@@ -378,7 +380,7 @@ export default class Feriado extends Component {
           </div>
 
           {this.state.popUp.map((c, i) => (
-            <div className="popUp_Modals" key={i} style={{ top: "200%" }}>
+            <div className="popUp_Modals" key={i} style={{ top: "1700px" }}>
               <div className="title">
                 <h2 style={{ marginLeft: "8.4%", right: "0" }}>{c.text.h1}</h2>
                 <img src={Close} alt="" onClick={this.handleClose} />
@@ -565,7 +567,6 @@ export default class Feriado extends Component {
                             height: "18px",
                             width: "18px",
                             marginLeft: "20px",
-                            marginTop: "10px",
                             position: "relative",
                             top: "15px",
                             cursor: "pointer"

@@ -12,6 +12,7 @@ export default class Feriado extends Component {
   constructor() {
     super();
     this.state = this.getInitialState();
+    this.childDiv = React.createRef();
   }
 
   getInitialState() {
@@ -27,7 +28,17 @@ export default class Feriado extends Component {
 
   componentWillMount() {
     this.loadCidades();
+    this.handleScroll();
   }
+
+  handleScroll = () => {
+    const { index, selected } = this.props;
+    if (index === selected) {
+      setTimeout(() => {
+        this.childDiv.current.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  };
 
   loadCidades = async () => {
     const res = await api.get("/cities").catch(err => {
@@ -70,7 +81,7 @@ export default class Feriado extends Component {
 
     await api.post("/holidays", state).catch(err => {
       alert(
-        "Verifque se todos os dados estão inseridos corretamente ou se o nome do feriado já foi cadastrado"
+        "Verifique se todos os dados estão inseridos corretamente ou se o nome do feriado já foi cadastrado"
       );
       return;
     });
@@ -99,7 +110,7 @@ export default class Feriado extends Component {
     };
 
     return (
-      <div className="body">
+      <div className="body" ref={this.childDiv}>
         <Menu ativo={false} />
         <div className="cadastro">
           <Header />

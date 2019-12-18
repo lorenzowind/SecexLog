@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
 
 import Header from "../../components/HeaderCidade/index";
 
@@ -19,8 +17,6 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import "./styles.css";
 
-const animatedComponents = makeAnimated();
-
 export default class Cidade extends Component {
   constructor(props) {
     super(props);
@@ -36,16 +32,7 @@ export default class Cidade extends Component {
       popUp: [],
 
       dateInit: new Date(),
-      dateEnd: new Date(),
-
-      options: [],
-
-      cidadesRelacionadas0: [],
-      cidadesRelacionadas1: null,
-
-      edit_status: false,
-
-      holidays: []
+      dateEnd: new Date()
     };
   }
 
@@ -60,11 +47,13 @@ export default class Cidade extends Component {
     const city2 = [];
     const city3 = [];
 
+    console.log(data.length);
     let cont = 0;
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
 
       if (cont >= 0 && cont <= 3) {
+        console.log(cont);
         city1.push({ aux });
         cont++;
       } else if (cont >= 4 && cont <= 7) {
@@ -75,13 +64,14 @@ export default class Cidade extends Component {
         cont++;
         if (cont > 11) cont = 0;
       }
-      }
+    }
+
+    console.log(city1);
 
     this.setState({ city1, city2, city3 });
   };
 
   editPopUp = c => {
-    
     let { popUp } = this.state;
 
     let h1 = "Editar Cidade";
@@ -91,138 +81,46 @@ export default class Cidade extends Component {
     let cheia = "Período de Cheia";
 
     let name = c.aux.nome;
-    let relatedCities = c.aux.relations;
+    let relatedCities = "Ainda Nenhuma";
+    let holidays = "Ainda Nenhum";
     let initFlood = c.aux.initDataCheia;
     let endFlood = c.aux.endDataCheia;
     let id = c.aux.id;
-    let cBase = c.aux.cBase;
-    let cAuditada = c.aux.cAuditada;
-    let obsInterdicao = c.aux.obsInterdicao;
-    let obsCidade = c.aux.obsCidade;
 
     let text = { h1, nome, cidadesRelacionadas, feriados, cheia };
-    let value = { name, relatedCities, id, cBase, cAuditada, obsInterdicao, obsCidade };
+    let value = { name, relatedCities, holidays, id };
 
     this.setState({ dateInit: initFlood, dateEnd: endFlood });
 
     popUp.push({ text, value });
 
     this.setState({ popUp: popUp, popUpStats: true });
-    
-    this.loadOpcoes();
-
-    this.loadHolidays();
-
-  };
-
-  loadHolidays = async () => {
-    
-    const res = await api.get("/holidays").catch(err => {
-      alert(err.message);
-      window.location.reload(false);
-    });
-
-    const holidays = [];
-
-    for (var i = 0; i < res.data.length; i++) {
-      if(this.state.popUp[0].value.id === res.data[i].city_id)holidays.push(res.data[i].nome);
-    }
-    
-    if(holidays.length === 0)holidays.push("Nenhum feríado");
-
-    this.setState({ holidays: holidays});
-
-  }
-
-  loadOpcoes = async () => {
-
-    var relations = this.state.popUp[0].value.relatedCities.split(',');
-
-    const res = await api.get("/cities").catch(err => {
-      alert(err.message);
-      window.location.reload(false);
-    });
-
-    const options = [], cidadesRelacionadas0 = [];
-
-    if(relations.length === 1 && relations[0] === '')cidadesRelacionadas0.push("Nenhuma cidade relacionada");
-    else{
-      for (var i=0;i<relations.length;i++){
-        cidadesRelacionadas0.push(relations[i].trim())
-      }
-    }
-
-    for (var i = 0; i < res.data.length; i++) {
-      let value = res.data[i].nome;
-      let label = res.data[i].nome;
-
-      if(this.state.popUp[0].value.name !== value)options.push({ value, label });
-    }
-
-    this.setState({ options: options, cidadesRelacionadas0: cidadesRelacionadas0 });
   };
 
   handleClose = ev => {
     ev.preventDefault();
-    this.setState({ edit_status: false });
     this.setState({ popUp: [] });
   };
 
   handleEditSubmit = async ev => {
     ev.preventDefault();
 
-    let cidadesRelacionadas = this.state.cidadesRelacionadas1;
-    let cidades = "";
-
-    if (cidadesRelacionadas) {
-      const length = cidadesRelacionadas.length;
-      for (var k = 0; k < length; k++) {
-        if (k === length - 1) {
-          cidades += cidadesRelacionadas[k].label;
-        } else {
-          cidades += cidadesRelacionadas[k].label + ", ";
-        }
-      }
-    }
-    else{
-      for (var k = 0; k < this.state.cidadesRelacionadas0.length; k++) {
-        if (k === this.state.cidadesRelacionadas0.length - 1) {
-          cidades += this.state.cidadesRelacionadas0[k];
-        } else {
-          cidades += this.state.cidadesRelacionadas0[k] + ", ";
-        }
-      }
-    }
-
     const state = {
       id: this.state.popUp[0].value.id,
-      nome: this.state.popUp[0].value.name,
-      relations: cidades,
-      initDataCheia: this.state.dateInit,
-      endDataCheia: this.state.dateEnd,
-      cBase: this.state.popUp[0].value.cBase,
-      cAuditada: this.state.popUp[0].value.cAuditada,
-      obsInterdicao: this.state.popUp[0].value.obsInterdicao,
-      obsCidade: this.state.popUp[0].value.obsCidade,
+      nome: this.state.popUp[0].value.nome,
+      initDataCheia: this.state.popUp[0].value.initFlood,
+      endDataCheia: this.state.popUp[0].value.endFlood
     };
 
-    console.log(state);
-
-    let error = null;
-
     await api
-      .put(`/cities/${this.state.popUp[0].value.id}`, state)
+      .put(`/cities/${state.id}`, state)
       .then(() => {
         this.setState({ popUp: [] });
         window.location.reload();
       })
       .catch(err => {
         alert(err);
-        error = err;
       });
-
-    if (!error) window.location.reload();
-  
   };
 
   handleDelete = async ev => {
@@ -243,18 +141,6 @@ export default class Cidade extends Component {
   handleDateChangeEnd = date => {
     this.setState({ dateEnd: date });
   };
-
-  handleEditIcon = () => {
-    this.setState({ edit_status: true });
-  }
-
-  handleCidadesRelacionadas = cidadesRelacionadas1 => {
-    this.setState({ cidadesRelacionadas1 });
-  };
-
-  handleChange = ev => {
-    this.state.popUp[0].value.name = ev.target.value;
-  }
 
   render() {
     return (
@@ -394,58 +280,32 @@ export default class Cidade extends Component {
                   <h2>{c.text.h1}</h2>
                   <img src={Close} alt="" onClick={this.handleClose} />
                 </div>
+
                 <h4>{c.text.nome}</h4>
                 <input
                   type="text"
-                  defaultValue={c.value.name}
+                  value={c.value.name}
                   onChange={this.handleChange}
                 />
-                <div className="linha" style={{position: 'relative', marginBlockEnd: '50px'}}>
-                <h4 style={{position: "absolute"}}>{c.text.cidadesRelacionadas}</h4>
-                <img
-                  src={Edit}
-                  alt=""
-                  style={{
-                    height: "18px",
-                    width: "18px",
-                    marginLeft: "210px",
-                    marginTop: '15px',
-                    position: "absolute",
-                    cursor: "pointer"
-                  }}
-                  onClick={this.handleEditIcon}
+
+                <h4>{c.text.cidadesRelacionadas}</h4>
+                <input
+                  type="text"
+                  value={c.value.relatedCities}
+                  onChange={this.handleChange}
                 />
-                </div>
-                {this.state.edit_status ? (
-                <Select
-                  className="select"
-                  closeMenuOnSelect={false}
-                  placeholder=""
-                  components={animatedComponents}
-                  isMulti
-                  value={this.state.options_selected  }
-                  options={this.state.options}
-                  name="cidadesRelacionadas"
-                  onChange={this.handleCidadesRelacionadas}
-                />
-                )
-                : (
-                  this.state.cidadesRelacionadas0.map((i) => (
-                    <div className="cidades-relacionadas">
-                      <h1>{i}</h1>
-                    </div>
-                  ))
-                )}
+
                 <h4>{c.text.feriados}</h4>
-                {this.state.holidays.map((i) => (
-                    <div className="feriados">
-                      <h1>{i}</h1>
-                    </div>
-                ))}
+                <input
+                  type="text"
+                  value={c.value.holidays}
+                  onChange={this.handleChange}
+                />
+
                 <h4>{c.text.cheia}</h4>
                 <div className="flood">
                   <div className="flood_">
-                    <div className="init">
+                    <div className="ida">
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
                           format="dd/MM/yyyy"
@@ -457,7 +317,7 @@ export default class Cidade extends Component {
                       </MuiPickersUtilsProvider>
                     </div>
                     <img src={Ir} alt="" />
-                    <div className="end">
+                    <div className="volta">
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
                           format="dd/MM/yyyy"
@@ -481,7 +341,7 @@ export default class Cidade extends Component {
                 </div>
               </div>
             </div>
-            ))}
+          ))}
         </div>
       </div>
     );

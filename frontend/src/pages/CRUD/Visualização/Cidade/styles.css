@@ -148,13 +148,13 @@
   margin-right: 20px;
 }
 
-.flood_ .init {
+.flood_ .ida {
   position: absolute;
   width: 140px;
   margin: 0px;
 }
 
-.flood_ .end {
+.flood_ .volta {
   position: absolute;
   width: 140px;
   margin: 0px;
@@ -168,25 +168,4 @@
 
 .MuiInputBase-input.MuiInput-input {
   font-size: 12px;
-}
-
-.popUp_city_ .select.css-2b097c-container {
-  width: 300px;
-  margin-left: 35px;
-}
-
-.cidades-relacionadas {
-  margin-left: 55px;
-}
-
-.cidades-relacionadas h1{
-  font-size: 14px;
-}
-
-.feriados {
-  margin-left: 55px;
-}
-
-.feriados h1{
-  font-size: 14px;
 }

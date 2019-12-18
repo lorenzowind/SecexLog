@@ -1,151 +1,161 @@
 /* CONTROLLERS */
-const LoginController = require('./app/controllers/auth/LoginController');
-const ForgotPassword = require('./app/controllers/auth/ForgotPassword');
-const UserController = require('./app/controllers/UserController');
-const OpinionController = require('./app/controllers/OpinionController');
-const ModalController = require('./app/controllers/ModalController')
-const CityController = require('./app/controllers/CityController');
-const PathController = require('./app/controllers/PathController');
-const ProviderController = require('./app/controllers/ProviderController');
-const HolidayController = require('./app/controllers/HolidayController');
-const ManualSearch = require('./app/controllers/services/ManualSearch');
+const LoginController = require("./app/controllers/auth/LoginController");
+const ForgotPassword = require("./app/controllers/auth/ForgotPassword");
+const UserController = require("./app/controllers/UserController");
+const OpinionController = require("./app/controllers/OpinionController");
+const ModalController = require("./app/controllers/ModalController");
+const CityController = require("./app/controllers/CityController");
+const PathController = require("./app/controllers/PathController");
+const ProviderController = require("./app/controllers/ProviderController");
+const HolidayController = require("./app/controllers/HolidayController");
+const ManualSearch = require("./app/controllers/services/ManualSearch");
 /* MIDDLEWARES */
-const UserAuthentication = require('./app/middlewares/UserAuthentication');
-const authAdmin = require('./app/middlewares/AdminAuthentication');
+const UserAuthentication = require("./app/middlewares/UserAuthentication");
+const authAdmin = require("./app/middlewares/AdminAuthentication");
 
 const AuthUser = UserAuthentication();
 
 module.exports = app => {
-   /* ROTAS DE AUTENTICAÇÃO DE USUÁRIO */
+  /* ROTAS DE AUTENTICAÇÃO DE USUÁRIO */
 
-   app.post('/login', LoginController.signIn);
-   app.post('/validateToken', LoginController.validateToken);
-   app.post('/forgot_password', ForgotPassword.recoverPass);
+  app.post("/login", LoginController.signIn);
+  app.post("/validateToken", LoginController.validateToken);
+  app.post("/forgot_password", ForgotPassword.recoverPass);
 
-   /* PESQUISA MANUAL */
+  /* PESQUISA MANUAL */
 
-   app.route('search').post(ManualSearch.post);
+  // app.route("/search").post(ManualSearch.post);
 
-   /* CADASTRAR USUÁRIO SEM PRECISAR DE AUTENTICAÇÃO*/
-   app.route('/users/sa').post(UserController.store);
+  /* CADASTRAR USUÁRIO SEM PRECISAR DE AUTENTICAÇÃO*/
+  app.route("/users/sa").post(UserController.store);
 
-   app.route('/users')
-         .all(AuthUser.authenticate())
-      .get(authAdmin(UserController.index))
-      .post(authAdmin(UserController.store));
+  app
+    .route("/users")
+    .all(AuthUser.authenticate())
+    .get(authAdmin(UserController.index))
+    .post(authAdmin(UserController.store));
 
-   app.route('/users/:data')
-      .all(AuthUser.authenticate())
-      .get(authAdmin(UserController.show))
-      .put(authAdmin(UserController.update))
-      .delete(authAdmin(UserController.delete));
-   
-   /* ROTAS DE CIDADE [COM AUTENTICAÇÃO] */
+  app
+    .route("/users/:data")
+    .all(AuthUser.authenticate())
+    .get(authAdmin(UserController.show))
+    .put(authAdmin(UserController.update))
+    .delete(authAdmin(UserController.delete));
 
-   // app.route('/cities')
-   //    .all(AuthUser.authenticate())
-   //    .get(authAdmin(CityController.index))
-   //    .post(authAdmin(CityController.store));
+  /* ROTAS DE CIDADE [COM AUTENTICAÇÃO] */
 
-   // app.route('/cities/:data')
-   //    .all(AuthUser.authenticate())
-   //    .get(CityController.show)
-   //    .post(authAdmin(CityController.update))
-   //    .delete(authAdmin(CityController.delete));
+  // app.route('/cities')
+  //    .all(AuthUser.authenticate())
+  //    .get(authAdmin(CityController.index))
+  //    .post(authAdmin(CityController.store));
 
-   /* ROTAS DE CIDADES [SEM AUTENTICAÇÃO] */
+  // app.route('/cities/:data')
+  //    .all(AuthUser.authenticate())
+  //    .get(CityController.show)
+  //    .post(authAdmin(CityController.update))
+  //    .delete(authAdmin(CityController.delete));
 
-   app.route('/cities')
-      .get(CityController.index)
-      .post(CityController.store);
+  /* ROTAS DE CIDADES [SEM AUTENTICAÇÃO] */
 
-   app.route('/cities/:data')
-      .get(CityController.show)
-      .put(CityController.update)
-      .delete(CityController.delete);
+  app
+    .route("/cities")
+    .get(CityController.index)
+    .post(CityController.store);
 
-   /* ROTAS DE FERIADO [SEM AUTENTICAÇÃO]*/
+  app
+    .route("/cities/:data")
+    .get(CityController.show)
+    .put(CityController.update)
+    .delete(CityController.delete);
 
-   app.route('/holidays')
-      .get(HolidayController.index)
-      .post(HolidayController.store);
+  /* ROTAS DE FERIADO [SEM AUTENTICAÇÃO]*/
 
-   app.route('/holidays/:id')
-      .get(HolidayController.show)
-      .put(HolidayController.update)
-      .delete(HolidayController.delete);
+  app
+    .route("/holidays")
+    .get(HolidayController.index)
+    .post(HolidayController.store);
 
-   /* ROTA DE PROVEDORES  */
+  app
+    .route("/holidays/:id")
+    .get(HolidayController.show)
+    .put(HolidayController.update)
+    .delete(HolidayController.delete);
 
-   app.route('/providers')
-      // .all(AuthUser.authenticate())
-      .get(ProviderController.index)
-      .post(ProviderController.store);
-   
-   app.route('/providers/:id')
-      .get(ProviderController.show)
-      .put(ProviderController.update)
-      .delete(ProviderController.delete)
+  /* ROTA DE PROVEDORES  */
 
-   /* ROTAS DE TRAJETO [NÃO USAR - DEVE SER FINALIZADA*/
+  app
+    .route("/providers")
+    // .all(AuthUser.authenticate())
+    .get(ProviderController.index)
+    .post(ProviderController.store);
 
-   // app.route('/paths')
-   //    .all(AuthUser.authenticate())
-   //    .get(PathController.index)
-   //    .post(authAdmin(CityController.store));
+  app
+    .route("/providers/:id")
+    .get(ProviderController.show)
+    .put(ProviderController.update)
+    .delete(ProviderController.delete);
 
-   // app.route('/paths/:data')
-   //    .all(AuthUser.authenticate())
-   //    .get(PathController.show)
-   //    .put(authAdmin(PathController.update))
-   //    .delete(authAdmin(PathController.delete));
+  /* ROTAS DE TRAJETO [NÃO USAR - DEVE SER FINALIZADA*/
 
-   /* ROTAS DE TRAJETO SEM PROTEÇÃO */
+  // app.route('/paths')
+  //    .all(AuthUser.authenticate())
+  //    .get(PathController.index)
+  //    .post(authAdmin(CityController.store));
 
-   app.route('/paths')
-      .get(PathController.index)
-      .post(PathController.store);
+  // app.route('/paths/:data')
+  //    .all(AuthUser.authenticate())
+  //    .get(PathController.show)
+  //    .put(authAdmin(PathController.update))
+  //    .delete(authAdmin(PathController.delete));
 
-   app.route('/paths/:id')
-      .get(PathController.show)
-      .put(PathController.update)
-      .delete(PathController.delete);
+  /* ROTAS DE TRAJETO SEM PROTEÇÃO */
 
-   /* ROTAS DE OPINIÕES */
+  app
+    .route("/paths")
+    .get(PathController.index)
+    .post(PathController.store);
 
-   app.route('/opinions')
-      .get(OpinionController.index)
-      .post(OpinionController.store);
+  app
+    .route("/paths/:id")
+    .get(PathController.show)
+    .put(PathController.update)
+    .delete(PathController.delete);
 
-   app.route('/opinions/:id')
-      .get(OpinionController.show)
-      .put(OpinionController.update)
-      .delete(OpinionController.delete);
+  /* ROTAS DE OPINIÕES */
 
+  app
+    .route("/opinions")
+    .get(OpinionController.index)
+    .post(OpinionController.store);
 
-   app.route('/modals')
-      .all(AuthUser.authenticate())
-      .get(ModalController.index)
-      .post(authAdmin(ModalController.store));
+  app
+    .route("/opinions/:id")
+    .get(OpinionController.show)
+    .put(OpinionController.update)
+    .delete(OpinionController.delete);
 
-   app.route('/modals/:id')
-      .all(AuthUser.authenticate())
-      .get(ModalController.show)
-      .put(authAdmin(ModalController.update))
-      .delete(authAdmin(ModalController.delete));
+  app
+    .route("/modals")
+    .all(AuthUser.authenticate())
+    .get(ModalController.index)
+    .post(authAdmin(ModalController.store));
 
+  app
+    .route("/modals/:id")
+    .all(AuthUser.authenticate())
+    .get(ModalController.show)
+    .put(authAdmin(ModalController.update))
+    .delete(authAdmin(ModalController.delete));
 
-   /* ROTAS DE FERIADO [COM AUTENTICAÇÃO]*/
+  /* ROTAS DE FERIADO [COM AUTENTICAÇÃO]*/
 
-   // app.route('/holidays')
-   //    .all(AuthUser.authenticate())
-   //    .get(authAdmin(HolidayController.index))
-   //    .post(authAdmin(HolidayController.store));
+  // app.route('/holidays')
+  //    .all(AuthUser.authenticate())
+  //    .get(authAdmin(HolidayController.index))
+  //    .post(authAdmin(HolidayController.store));
 
-   // app.route('/holidays/:id')
-   //    .get(authAdmin(HolidayController.show))
-   //    .put(authAdmin(HolidayController.update))
-   //    .delete(authAdmin(HolidayController.delete));
-
-
-}
+  // app.route('/holidays/:id')
+  //    .get(authAdmin(HolidayController.show))
+  //    .put(authAdmin(HolidayController.update))
+  //    .delete(authAdmin(HolidayController.delete));
+};

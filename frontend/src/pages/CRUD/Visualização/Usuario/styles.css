@@ -73,8 +73,8 @@
   top: 10px;
 }
 
-  .addUser button img {
-    height: 50px;
+.addUser button img {
+  height: 50px;
 }
 
 .tableUser {
@@ -95,7 +95,7 @@
 }
 
 .tableUser table th {
-  width: 500px;
+  width: 1000px;
 }
 
 .tableUser img {
@@ -156,6 +156,7 @@ input[nome="login"] {
 
 .popUpUser select[name="cargo"] {
   margin-left: 0;
+  text-indent: 17px;
 }
 
 .popUpUser input {

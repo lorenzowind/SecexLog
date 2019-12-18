@@ -59,6 +59,76 @@ export default class Tela_inicial extends React.Component {
     }
   };
 
+  operacao = () => {
+    const { trajetos } = this.state;
+    const Style1Element = {
+      display: "table-cell",
+      float: "left",
+      marginLeft: "67%",
+      paddingTop: "2%"
+    };
+    const Style2Element = {
+      display: "table-cell",
+      float: "left",
+      marginLeft: "54%",
+      paddingTop: "2%"
+    };
+    const StyleLastElement = {
+      display: "table-cell",
+      float: "left",
+      marginLeft: "76%",
+      paddingTop: "2%"
+    };
+
+    if (trajetos.length === 1) {
+      return (
+        <div className="operacao" style={Style1Element}>
+          <div className="adicionar-cidade">
+            <h1 id="adiciona" onClick={this.evento_adicionarTrajeto}>
+              +
+            </h1>
+            <h1 id="adicionar-cidade" onClick={this.evento_adicionarTrajeto}>
+              Mais cidades para auditar
+            </h1>
+          </div>
+        </div>
+      );
+    } else if (trajetos.length > 1 && trajetos.length < 4) {
+      return (
+        <div className="operacao" style={Style2Element}>
+          <div className="retirar-cidade" id="retirarCidade">
+            <h1 id="retira" onClick={this.evento_retirarTrajeto}>
+              -
+            </h1>
+            <h1 id="retirar-cidade" onClick={this.evento_retirarTrajeto}>
+              Retirar cidade
+            </h1>
+
+            <div className="adicionar-cidade">
+              <h1 id="adiciona" onClick={this.evento_adicionarTrajeto}>
+                +
+              </h1>
+              <h1 id="adicionar-cidade" onClick={this.evento_adicionarTrajeto}>
+                Mais cidades para auditar
+              </h1>
+            </div>
+          </div>
+        </div>
+      );
+    } else if (trajetos.length >= 4) {
+      return (
+        <div className="operacao" style={StyleLastElement}>
+          <h1 id="retira" onClick={this.evento_retirarTrajeto}>
+            -
+          </h1>
+          <h1 id="retirar-cidade" onClick={this.evento_retirarTrajeto}>
+            Retirar cidade
+          </h1>
+        </div>
+      );
+    }
+  };
+
   render() {
     const { trajetos } = this.state;
 
@@ -78,33 +148,7 @@ export default class Tela_inicial extends React.Component {
           <Campos num={item.num} key={index} />
         ))}
 
-        <div className="operacao">
-          {this.state.trajetos.length > 1 ? (
-            <div className="retirar-cidade" id="retirarCidade">
-              <h1 id="retira" onClick={this.evento_retirarTrajeto}>
-                -
-              </h1>
-              <h1 id="retirar-cidade" onClick={this.evento_retirarTrajeto}>
-                Retirar cidade
-              </h1>
-            </div>
-          ) : (
-            <div></div>
-          )}
-
-          {this.state.trajetos.length <= 3 ? (
-            <div className="adicionar-cidade">
-              <h1 id="adiciona" onClick={this.evento_adicionarTrajeto}>
-                +
-              </h1>
-              <h1 id="adicionar-cidade" onClick={this.evento_adicionarTrajeto}>
-                Mais cidades para auditar
-              </h1>
-            </div>
-          ) : (
-            <div />
-          )}
-        </div>
+        <div>{this.operacao()}</div>
 
         <div className="consulta">
           <input

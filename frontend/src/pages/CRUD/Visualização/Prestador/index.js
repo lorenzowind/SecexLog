@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import Header from "../../components/HeaderPrestador/index";
 
-//import api from "../../../../services/api";
+import api from "../../../../services/api";
 
 import Lupa from "../../../../assets/Cadastro de usuário/pesquisar.png";
 import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
@@ -37,51 +37,52 @@ export default class Cidade extends Component {
   }
 
   loadData = async () => {
-    // await setTimeout(() => {
-    //   api
-    //     .get("/users")
-    //     .then(res => {
-    //       const row = this.state.row;
-    //       for (var i = 0; i < res.data.length; i++) {
-    //         row.push(res.data[i]);
-    //       }
-    //       return row;
-    //     })
-    //     .then(row => {
-    //       this.setState({ row: row, load: true });
-    //     })
-    //     .catch(err => {
-    //       if (err.message === "Request failed with status code 401") {
-    //         alert("Nível de acesso negado! Contate o administrador do sistema");
-    //         window.location.replace("/menu");
-    //       } else {
-    //         alert(err);
-    //         window.location.replace("/");
-    //       }
-    //     });
-    // }, 1200);
+    api
+      .get("/providers")
+      .then(res => {
+        const row = this.state.row;
+        for (var i = 0; i < res.data.length; i++) {
+          row.push(res.data[i]);
+        }
+        return row;
+      })
+      .then(row => {
+        console.log(row);
+        this.setState({ row: row });
+      })
+      .catch(err => {
+        if (err.message === "Request failed with status code 401") {
+          alert("Nível de acesso negado! Contate o administrador do sistema");
+          window.location.replace("/menu");
+        } else {
+          alert(err);
+          window.location.replace("/");
+        }
+      });
   };
 
   editPopUp = c => {
     let { popUp } = this.state;
 
-    let h1 = "Editar Cidade";
+    let h1 = "Editar Prestador";
     let nome = "Nome do Prestador";
     let telefone = "Telefone";
     let email = "E-mail";
     let modal = "Modal";
 
-    let name = c.aux.nome;
-    let cellphone = c.aux.telefone;
-    let e_mail = c.aux.email;
-    let modalValue = c.aux.modal;
-
     let text = { h1, nome, telefone, email, modal };
-    let value = { name, cellphone, e_mail, modalValue };
 
-    popUp.push({ text, value });
+    popUp.push({ text });
 
-    this.setState({ popUp: popUp, popUpStats: true });
+    this.setState({
+      popUp: popUp,
+      popUpStats: true,
+      id: c.id,
+      nome: c.nome,
+      telefone: c.telefone,
+      email: c.email,
+      modal: c.modal
+    });
   };
 
   handleClose = ev => {
@@ -159,7 +160,7 @@ export default class Cidade extends Component {
           </div>
 
           {this.state.popUp.map((c, i) => (
-            <div className="popUp" key={i}>
+            <div className="popUp_Modals" key={i} style={{ top: "2650px" }}>
               <div className="title">
                 <h2>{c.text.h1}</h2>
                 <img src={Close} alt="" onClick={this.handleClose} />
@@ -168,37 +169,27 @@ export default class Cidade extends Component {
               <h4>{c.text.nome}</h4>
               <input
                 type="text"
-                value={c.value.name}
+                value={this.state.nome}
                 onChange={this.handleChange}
               />
 
-              <h4>{c.text.cidadesRelacionadas}</h4>
+              <h4>{c.text.telefone}</h4>
               <input
                 type="text"
-                value={c.value.relatedCities}
+                value={this.state.telefone}
                 onChange={this.handleChange}
               />
 
-              <h4>{c.text.feriados}</h4>
+              <h4>{c.text.email}</h4>
               <input
                 type="text"
-                value={c.value.holidays}
+                value={this.state.email}
                 onChange={this.handleChange}
               />
 
-              <h4>{c.text.cheia}</h4>
+              <h4>{c.text.modal}</h4>
               <div className="flood">
-                <input
-                  type="text"
-                  value={new Date(c.value.initFlood)}
-                  onChange={this.handleChange}
-                />
-                <img src={Ir} alt="" />
-                <input
-                  type="text"
-                  value={new Date(c.value.endFlood)}
-                  onChange={this.handleChange}
-                />
+                <input />
               </div>
             </div>
           ))}

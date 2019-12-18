@@ -11,6 +11,8 @@ import "moment/locale/pt-br";
 import "react-day-picker/lib/style.css";
 import "./styles.css";
 
+import "moment/locale/pt-br";
+
 import "./styles.css";
 
 import Notif from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
@@ -21,6 +23,7 @@ export default class CrudCidade extends Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
+    this.childDiv = React.createRef();
   }
 
   getInitialState() {
@@ -44,7 +47,17 @@ export default class CrudCidade extends Component {
 
   componentWillMount() {
     this.loadOpcoes();
+    this.handleScroll();
   }
+
+  handleScroll = () => {
+    const { index, selected } = this.props;
+    if (index === selected) {
+      setTimeout(() => {
+        this.childDiv.current.scrollIntoView({ behavior: "smooth" });
+      }, 500);
+    }
+  };
 
   //Métodos CRUD
 
@@ -247,7 +260,7 @@ export default class CrudCidade extends Component {
 
   render() {
     return (
-      <div className="body">
+      <div className="body" ref={this.childDiv}>
         <Menu ativo={false} />
         <div className="cadastro">
           <HeaderCidade />

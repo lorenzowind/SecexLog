@@ -51,13 +51,6 @@ input[name="consulta"]:active {
   background-image: url("../../../assets/ConsultaManual/botao_consulta1.png");
 }
 
-.operacao {
-  display: table-cell;
-  float: left;
-  padding-left: 60%;
-  padding-top: 2%;
-}
-
 .retirar-cidade {
   display: table-cell;
 }
