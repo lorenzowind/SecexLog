@@ -36,10 +36,9 @@ export default class Trajeto extends Component {
 
   getInitialState() {
     return {
-      origem: "",
-      destino: "",
       modal: "",
       prestador: "",
+      tipo_modal: "",
       dia: [],
       hora: [],
 
@@ -49,12 +48,16 @@ export default class Trajeto extends Component {
 
       popUp: [],
 
+      edit_modal_status: false,
+      edit_prest_status: false,
+
       modais: [],
       prestadores: []
     };
   }
 
   componentDidMount() {
+    this.loadData()
   }
 
   loadData = async () => {
@@ -104,20 +107,17 @@ export default class Trajeto extends Component {
   };
 
   loadPrestador = async () => {
-    //esperando rota de providers
 
-    /*const res = await api.get("/providers").catch(err => {
+    const res = await api.get("/providers").catch(err => {
       alert(err.message);
       window.location.reload(false);
-    });*/
+    });
 
     const prestadores = [];
 
     for (var i = 0; i < 1; i++) {
-      //let value = res.data[i].nome;
-      //let label = res.data[i].nome;
-      let value = "teste";
-      let label = "teste";
+      let value = res.data[i].nome;
+      let label = res.data[i].nome;
 
       prestadores.push({ value, label });
     }
@@ -126,19 +126,43 @@ export default class Trajeto extends Component {
   };
 
   handleModais = modais => {
-
     this.setState({ modal: modais.value });
-
   };
 
   handlePrestador = prestador => {
-
     this.setState({ prestador: prestador.value });
-
   };
 
   handleDia = dia_ => {
     this.setState({ dia_ });
+  };
+
+  handleEditModal = () => {
+    this.setState({ edit_modal_status: true });
+  }
+
+  handleEditPrest = () => {
+    this.setState({ edit_prest_status: true });
+  }
+
+  handleDelete = async ev => {
+    ev.preventDefault();
+
+    await api
+      .delete(`/paths/${this.state.popUp[0].value.id}`)
+      .then(window.location.reload())
+      .catch(err => {
+        alert(err);
+      });
+  };
+
+  maisClicked = async () => {
+    var hora = document.getElementsByClassName("horario");
+    const dia = this.state.dia;
+    const hora_ = this.state.hora;
+    dia.push(this.state.dia_.value);
+    hora_.push(hora[0].firstElementChild.value);
+    this.setState({dia: dia, hora: hora_});
   };
 
   editPopUp = c => {
@@ -150,12 +174,26 @@ export default class Trajeto extends Component {
     let prestador = "Nome do Prestador";
     let diaHora = "Dia e Hora de embarque";
 
+    let id = c.id;
     let initCidade = c.initCidade;
     let endCidade = c.endCidade;
     let modal = c.modal;
     let prestNome = c.prestNome;
     let dia = c.dia;
     let hora = c.hora;
+    let mileage = c.mileage;
+    let cost = c.cost;
+    let departure = c.departure;
+    let arrival= c.arrival;
+    let linha = c.linha;
+    let duration = c.duration;
+
+    this.setState({dia: dia, hora: hora});
+
+    if(linha)this.setState({tipo_modal: "linha"})
+    else this.setState({tipo_modal: "contratado"})
+
+    this.setState({modal: modal, prestador: prestNome});
 
     let text = {
       h1,
@@ -166,12 +204,18 @@ export default class Trajeto extends Component {
     };
 
     let value = { 
+      id,
       initCidade,
       endCidade,
       modal,
       prestNome,
       dia,
-      hora
+      hora,
+      mileage,
+      cost,
+      departure,
+      arrival,
+      duration
     };
 
     popUp.push({ text, value });
@@ -184,10 +228,83 @@ export default class Trajeto extends Component {
 
   handleClose = ev => {
     ev.preventDefault();
+    this.setState({ edit_modal_status: false });
+    this.setState({ edit_prest_status: false });
     this.setState({ popUp: [] });
   };
 
-  handleChange = () => {};
+  handleChangeRadio = ev => {
+    ev.preventDefault();
+    const value = ev.target.value;
+    this.setState({tipo_modal: value});
+  };
+
+  handleChangeText = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+    const value = ev.target.value;
+
+    state[name] = value;
+
+    this.setState(state);
+  };
+  handleChangeDuracao = ev => {
+    this.state.popUp[0].value.duration = ev.target.value;
+  };
+  handleChangeQuilometragem = ev => {
+    this.state.popUp[0].value.mileage = ev.target.value;
+  };
+  handleChangeValor = ev => {
+    this.state.popUp[0].value.cost = ev.target.value;
+  };
+
+  handleEditSubmit = async ev => {
+    ev.preventDefault();
+
+    var linha, contratado;
+    if(this.state.tipo_modal === "linha"){
+      linha = 1;
+      contratado = 0;
+    }
+    else {
+      linha = 0;
+      contratado = 1;
+    }
+
+    const state = {
+      initCidade: this.state.popUp[0].value.initCidade,
+      endCidade: this.state.popUp[0].value.endCidade,
+      modal: this.state.modal,
+      prestNome: this.state.prestador,
+      dia: this.state.dia,
+      hora: this.state.hora,
+      mileage: parseFloat(this.state.popUp[0].value.mileage),
+      cost: parseFloat(this.state.popUp[0].value.cost),
+      departure: this.state.popUp[0].value.departure,
+      arrival: this.state.popUp[0].value.arrival,
+      linha: this.state.linha,
+      contratado: this.state.contratado, 
+      duration: this.state.popUp[0].value.duration
+    };
+
+    console.log(state);
+
+    let error = null;
+
+    await api
+      .put(`/paths/${this.state.popUp[0].value.id}`, state)
+      .then(() => {
+        this.setState({ popUp: [] });
+        window.location.reload();
+      })
+      .catch(err => {
+        alert(err);
+        error = err;
+      });
+
+    if (!error) window.location.reload();
+  
+  };
 
   render() {
     const cidadesStyles = { width: "35%", marginRight: "3%", marginLeft: "5%" };
@@ -198,6 +315,8 @@ export default class Trajeto extends Component {
     };
     const diaStyle = { width: "30%", marginRight: "3%", marginTop: '2%'};
     const horaStyle = { width: "30%", marginRight: "3%", marginTop: '2%', marginLeft: "1%" };
+
+    const { dia } = this.state;
 
     return (
       <div className="body">
@@ -280,7 +399,6 @@ export default class Trajeto extends Component {
                   name="origem"
                   placeholder="Origem"
                   value={c.value.initCidade}
-                  onChange={this.handleChange}
                   style={cidadesStyles}
                 />
                 <img src={Ir} alt="" style={imgStyles} />
@@ -290,30 +408,54 @@ export default class Trajeto extends Component {
                   placeholder="Destino"
                   value={c.value.endCidade}
                   style={cidadesStyles}
-                  onChange={this.handleChange}
                 />
               </div>
-              <h4>{c.text.tp_modal}</h4>
-              <Select
-                  className="select"
-                  placeholder=""
-                  components={animatedComponents}
-                  options={this.state.modais}
-                  name="cidadesRelacionadas"
-                  onChange={this.handleModais}
-              />
-              <h4>{c.text.prestador}</h4>
-              <Select
+              <div className="texto_edit1">
+                <h4>{c.text.tp_modal}</h4>
+                <img
+                  src={Edit}
+                  alt=""
+                  onClick={this.handleEditModal}
+                />
+              </div>
+              {this.state.edit_modal_status ? (
+                <Select
+                    className="select"
+                    placeholder=""
+                    components={animatedComponents}
+                    options={this.state.modais}
+                    name="cidadesRelacionadas"
+                    onChange={this.handleModais}
+                />
+              ) : (
+                <div className="modal_trajeto">
+                  <h1>{c.value.modal}</h1>
+                </div>
+              )}
+              <div className="texto_edit2">
+                <h4>{c.text.prestador}</h4>
+                <img
+                  src={Edit}
+                  alt=""
+                  onClick={this.handleEditPrest}
+                />
+              </div>
+              {this.state.edit_prest_status ? (
+                <Select
                   className="select"
                   placeholder=""
                   components={animatedComponents}
                   options={this.state.prestadores}
                   name="cidadesRelacionadas"
                   onChange={this.handlePrestador}
-              />
-
+                />
+              ) : (
+                <div className="prest_trajeto">
+                  <h1>{c.value.prestNome}</h1>
+                </div>
+              )}
               <h4>{c.text.diaHora}</h4>
-              <div className="diaHora_add" style={{ display: "flex" }}>
+              <div className="diaHora_add">
                 <Select 
                   className="select"
                   placeholder="Dia" 
@@ -322,18 +464,57 @@ export default class Trajeto extends Component {
                   name="modais" 
                   onChange={this.handleDia}
                 />
-                <input type="text" placeholder="Horário" name="hora" id="embarqueHora" />
-                <img
-                  src={Mais}
-                  alt=""
-                  style={{
-                    position: "relative",
-                    bottom: "50px",
-                    top: "0"
-                  }}
-                />
+                <div className="horario"><input type="text" placeholder="Horário" name="hora" id="embarqueHora" style={{width: "100px"}}/></div>
+                <img src={Mais} alt="" onClick={this.maisClicked}/>
               </div>
-
+              <div className="dia_horario">
+                {dia.map((i, index) => (
+                  <div className="linha_dia_hora_" key={i}>
+                    <h1>
+                      {i}, {this.state.hora[index]}
+                    </h1>
+                  </div>
+                ))}
+                </div>
+              <div className="linha">
+                <div className="duracao">
+                  <h1>Duração do Trecho</h1>
+                  <input type="text" defaultValue={c.value.duration} onChange={this.handleChangeDuracao}/>
+                </div>
+                <div className="quilometragem_">
+                  <h1>Quilometragem (Km)</h1>
+                  <input type="text" defaultValue={c.value.mileage} onChange={this.handleChangeQuilometragem}/>
+                </div>
+              </div>
+              <div className="linha">
+                <div className="valor">
+                  <h1>Valor do Trecho</h1>
+                  <input type="text" defaultValue={c.value.cost} onChange={this.handleChangeValor}/>
+                </div>
+                <div className="tipo_modal_">
+                  <h1>O modal é:</h1>
+                  <div className="linha_modal_">
+                  <input
+                    type="radio"
+                    name="linha"
+                    value="linha"
+                    onChange={this.handleChangeRadio}
+                    checked={this.state.tipo_modal === "linha"}
+                  />
+                  </div>
+                  <h2>Linha</h2>
+                  <div className="contratado_modal_">
+                  <input
+                    type="radio"
+                    name="contratado"
+                    value="contratado"
+                    onChange={this.handleChangeRadio}
+                    checked={this.state.tipo_modal === "contratado"}
+                  />
+                  </div>
+                  <h3>Contratado</h3>
+                </div>
+              </div>
               <div className="btns">
                 <img
                   src={Trash}

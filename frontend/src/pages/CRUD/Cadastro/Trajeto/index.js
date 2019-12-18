@@ -53,9 +53,6 @@ export default class Trajeto extends Component {
       local_desembarque: "",
 
       tipo_modal: "",
-      
-      email: "",
-      telefone: "",
 
       modais: [],
       prestador: [],
@@ -99,25 +96,20 @@ export default class Trajeto extends Component {
   };
 
   loadPrestador = async () => {
-    //esperando rota de providers
 
-    /*const res = await api.get("/providers").catch(err => {
+    const res = await api.get("/providers").catch(err => {
       alert(err.message);
       window.location.reload(false);
-    });*/
+    });
 
     const prestador = [];
 
     for (var i = 0; i < 1; i++) {
-      //let value = res.data[i].nome;
-      //let label = res.data[i].nome;
-      let value = "teste";
-      let label = "teste";
+      let value = res.data[i].nome;
+      let label = res.data[i].nome;
 
       prestador.push({ value, label });
     }
-    this.setState({ email: 'teste' })
-    this.setState({ telefone: 'teste' })
     this.setState({ prestador: prestador });
   };
 
@@ -128,6 +120,16 @@ export default class Trajeto extends Component {
 
   onSubmit = async ev => {
     ev.preventDefault();
+
+    var linha, contratado;
+    if(this.state.tipo_modal === "linha"){
+      linha = 1;
+      contratado = 0;
+    }
+    else {
+      linha = 0;
+      contratado = 1;
+    }
 
     const json = {
       initCidade: this.state.ida.value,
@@ -140,11 +142,12 @@ export default class Trajeto extends Component {
       mileage: parseFloat(this.state.quilometragem),
       arrival: this.state.local_embarque,
       departure: this.state.local_desembarque,
-      telefone: this.state.telefone,
-      email: this.state.email,
-      modalTipo: this.state.tipo_modal,
+      linha: linha,
+      contratado: contratado,
       duration: this.state.duracao
     };
+
+    console.log(json)
 
     let error = null;
 
@@ -188,6 +191,7 @@ export default class Trajeto extends Component {
     dia.push(this.state.dia_.value);
     hora_.push(hora[0].firstElementChild.value);
     this.setState({dia: dia, hora: hora_});
+    this.setState({dia: null})
   };
 
   onChange = ev => {
