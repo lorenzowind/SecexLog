@@ -8,6 +8,7 @@ const CityController = require('./app/controllers/CityController');
 const PathController = require('./app/controllers/PathController');
 const ProviderController = require('./app/controllers/ProviderController');
 const HolidayController = require('./app/controllers/HolidayController');
+const ManualSearch = require('./app/controllers/services/ManualSearch');
 /* MIDDLEWARES */
 const UserAuthentication = require('./app/middlewares/UserAuthentication');
 const authAdmin = require('./app/middlewares/AdminAuthentication');
@@ -21,7 +22,9 @@ module.exports = app => {
    app.post('/validateToken', LoginController.validateToken);
    app.post('/forgot_password', ForgotPassword.recoverPass);
 
-   /* ROTAS DE USUÁRIOS */
+   /* PESQUISA MANUAL */
+
+   app.route('search').post(ManualSearch.post);
 
    /* CADASTRAR USUÁRIO SEM PRECISAR DE AUTENTICAÇÃO*/
    app.route('/users/sa').post(UserController.store);
