@@ -1,0 +1,36 @@
+.popUp_Providers {
+  width: 300px;
+  background-color: #ffff;
+  border: 1px solid #b0b0b0;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: absolute;
+  left: 700px;
+  top: 1700px;
+}
+
+.popUp_Providers h2 {
+  margin-top: 20px;
+  margin-bottom: 0;
+  margin-left: 15%;
+}
+
+.popUp_Providers h4 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+  font-size: 16px;
+  margin-left: 8.4%;
+}
+
+.popUp_Providers input {
+  height: 38px;
+  width: 250px;
+  margin-right: 88px;
+  margin-left: 8.4%;
+  margin-top: 1.5%;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  border: 1px solid #707070;
+  padding: 20px;
+}

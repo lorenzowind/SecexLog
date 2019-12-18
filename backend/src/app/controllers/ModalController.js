@@ -34,13 +34,51 @@ module.exports = {
   },
 
   async show(req, res) {
-    const { id } = req.params;
+    // const { id } = req.params;
 
-    Modal.findOne({
-      where: { id }
-    })
-      .then(modal => res.json(modal))
-      .catch(err => res.status(500).send(err));
+    // Modal.findOne({
+    //   where: { id }
+    // })
+    //   .then(modal => res.json(modal))
+    //   .catch(err => res.status(500).send(err));
+    let checkById = false;
+    const modalData = req.params.data;
+    console.log(modalData);
+    /*
+        Verifica se o dado passado para a url é um número, para, assim, 
+        fazer (ou não) uma pesquisa por id
+        */
+    if (!isNaN(modalData)) checkById = true;
+
+    /* 
+        Caso a condição seja verdadeira será feita uma pesquisa por id,
+        retornando, assim, apenas um usuário. Caso seja falsa, será feita
+        uma pesquisa por nome, retornado vários usuários. 
+        */
+    if (checkById) {
+      Modal.findOne({
+        where: {
+          id: modalData
+        }
+      })
+        .then(modals => res.json(modals))
+        .catch(err => {
+          console.log(modalData), res.status(500).send(err);
+        });
+    } else {
+      Modal.findAll({
+        where: {
+          name: { [Operation.like]: `%${modalData}%` }
+        }
+      })
+        .then(modals => {
+          console.log(modals);
+          res.json(modals);
+        })
+        .catch(err => {
+          res.status(500).send(err);
+        });
+    }
   },
 
   update(req, res) {

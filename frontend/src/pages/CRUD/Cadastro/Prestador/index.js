@@ -172,7 +172,7 @@ export default class Prestador extends Component {
                 required
               >
                 <option defaultValue="cpf">CPF</option>
-                <option value="rg">RG</option>
+                <option value="cnpj">CNPJ</option>
               </select>
 
               <input

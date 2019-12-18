@@ -29,6 +29,9 @@ export default class Cidade extends Component {
       city2: [],
       city3: [],
 
+      search: "",
+      busca: false,
+
       popUp: [],
 
       dateInit: new Date(),
@@ -42,6 +45,8 @@ export default class Cidade extends Component {
 
   loadData = async () => {
     const data = await this.props.cities;
+
+    console.log(data);
 
     const city1 = [];
     const city2 = [];
@@ -68,7 +73,47 @@ export default class Cidade extends Component {
 
     console.log(city1);
 
-    this.setState({ city1, city2, city3 });
+    this.setState({ city1, city2, city3, busca: false });
+  };
+
+  handleSearch = async () => {
+    if (this.state.busca) {
+      this.loadData();
+    } else {
+      console.log(this.state.search);
+      const res = await api.get(`/cities/${this.state.search}`);
+
+      const data = res.data;
+
+      console.log(data);
+
+      const city1 = [];
+      const city2 = [];
+      const city3 = [];
+
+      console.log(data.length);
+      let cont = 0;
+      for (var i = 0; i < data.length; i++) {
+        let aux = data[i];
+
+        if (cont >= 0 && cont <= 3) {
+          console.log(cont);
+          city1.push({ aux });
+          cont++;
+        } else if (cont >= 4 && cont <= 7) {
+          city2.push({ aux });
+          cont++;
+        } else if (cont >= 8 && cont <= 11) {
+          city3.push({ aux });
+          cont++;
+          if (cont > 11) cont = 0;
+        }
+      }
+
+      console.log(city1);
+
+      this.setState({ city1, city2, city3, busca: true });
+    }
   };
 
   editPopUp = c => {
@@ -134,6 +179,15 @@ export default class Cidade extends Component {
       });
   };
 
+  handleChange = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+
+    state[name] = ev.target.value;
+
+    this.setState(state);
+  };
+
   handleDateChangeInit = date => {
     this.setState({ dateInit: date });
   };
@@ -150,8 +204,12 @@ export default class Cidade extends Component {
 
           <h1>Pesquisar cidades</h1>
           <div className="searchCity">
-            <input type="text" name="searchCidade" />
-            <img src={Lupa} alt="" />
+            <input type="text" name="search" onChange={this.handleChange} />
+            <img
+              src={this.state.busca ? Close : Lupa}
+              alt=""
+              onClick={this.handleSearch}
+            />
           </div>
 
           <div className="addCity">

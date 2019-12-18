@@ -21,14 +21,15 @@ export default class Feriado extends Component {
 
   getInitialState() {
     return {
-      holiday1: [],
-      holiday2: [],
-      holiday3: [],
+      // holiday1: [],
+      // holiday2: [],
+      // holiday3: [],
 
-      // nacionais: [],
-      // especificos: [],
+      nacionais: [],
+      especificos: [],
 
       search: "",
+      busca: false,
 
       id: "",
       nome: "",
@@ -53,14 +54,14 @@ export default class Feriado extends Component {
 
     const data = res.data;
 
-    const holiday1 = [];
-    const holiday2 = [];
-    const holiday3 = [];
+    // const holiday1 = [];
+    // const holiday2 = [];
+    // const holiday3 = [];
 
-    // const especificos = [];
-    // const nacionais= [];
+    const especificos = [];
+    const nacionais = [];
 
-    let cont = 0;
+    // let cont = 0;
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
 
@@ -68,23 +69,77 @@ export default class Feriado extends Component {
       //   ? especificos.push({ aux })
       //   : nacionais.push({ aux });
 
-      if (cont >= 0 && cont < 3) {
-        holiday1.push({ aux });
-        cont++;
-      } else if (cont >= 3 && cont < 7) {
-        holiday2.push({ aux });
-        cont++;
-      } else if (cont >= 7 && cont <= 11) {
-        holiday3.push({ aux });
-        cont++;
+      especificos.push({ aux });
 
-        if (cont >= 11) cont = 0;
-      }
+      // if (cont >= 0 && cont < 3) {
+      //   holiday1.push({ aux });
+      //   cont++;
+      // } else if (cont >= 3 && cont < 7) {
+      //   holiday2.push({ aux });
+      //   cont++;
+      // } else if (cont >= 7 && cont <= 11) {
+      //   holiday3.push({ aux });
+      //   cont++;
+
+      //   if (cont >= 11) cont = 0;
+      // }
     }
 
-    this.setState({ holiday1, holiday2, holiday3 });
+    // this.setState({ holiday1, holiday2, holiday3 });
 
-    // this.setState({nacionais,especificos});
+    console.log(especificos);
+
+    this.setState({ nacionais, especificos, busca: false });
+  };
+
+  handleSearch = async () => {
+    if (this.state.busca) {
+      this.loadData();
+    } else {
+      console.log(this.state.search);
+      const res = await api.get(`/holidays/${this.state.search}`);
+
+      const data = res.data;
+
+      console.log(data);
+
+      // const holiday1 = [];
+      // const holiday2 = [];
+      // const holiday3 = [];
+
+      const especificos = [];
+      const nacionais = [];
+
+      // let cont = 0;
+      for (var i = 0; i < data.length; i++) {
+        let aux = data[i];
+
+        // aux.type === "especifico"
+        //   ? especificos.push({ aux })
+        //   : nacionais.push({ aux });
+
+        especificos.push({ aux });
+
+        // if (cont >= 0 && cont < 3) {
+        //   holiday1.push({ aux });
+        //   cont++;
+        // } else if (cont >= 3 && cont < 7) {
+        //   holiday2.push({ aux });
+        //   cont++;
+        // } else if (cont >= 7 && cont <= 11) {
+        //   holiday3.push({ aux });
+        //   cont++;
+
+        //   if (cont >= 11) cont = 0;
+        // }
+      }
+
+      // this.setState({ holiday1, holiday2, holiday3 });
+
+      console.log(especificos);
+
+      this.setState({ nacionais, especificos, busca: true });
+    }
   };
 
   handleChange = ev => {
@@ -175,18 +230,6 @@ export default class Feriado extends Component {
       });
   };
 
-  handleSearch = async ev => {
-    ev.preventDefault();
-
-    const { search } = this.state;
-
-    const res = await api.get(`/holidays/${search}`).catch(err => {
-      alert(err);
-    });
-
-    console.log(res);
-  };
-
   render() {
     return (
       <div className="body">
@@ -196,7 +239,11 @@ export default class Feriado extends Component {
           <h1>Pesquisar feriados</h1>
           <div className="searchCity">
             <input type="text" name="search" onChange={this.handleChange} />
-            <img src={Lupa} alt="" onClick={this.handleSearch} />
+            <img
+              src={this.state.busca ? Close : Lupa}
+              alt=""
+              onClick={this.handleSearch}
+            />
           </div>
 
           <div className="addCity">
@@ -222,11 +269,11 @@ export default class Feriado extends Component {
                     <table name="table1">
                       <thead>
                         <tr>
-                          <th align="left">Nacionais</th>
+                          <th align="left">Específicos</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {this.state.holiday1.map((c, i) => (
+                        {this.state.especificos.map((c, i) => (
                           <tr key={i}>
                             <td>{c.aux.nome}</td>
                             <td>
@@ -258,11 +305,11 @@ export default class Feriado extends Component {
                     <table name="table2">
                       <thead>
                         <tr>
-                          <th align="left">Específicos</th>
+                          <th align="left">Nacionais</th>
                         </tr>
                       </thead>
                       <tbody>
-                        {this.state.holiday2.map((c, i) => (
+                        {this.state.nacionais.map((c, i) => (
                           <tr key={i}>
                             <td>{c.aux.nome}</td>
                             <td>

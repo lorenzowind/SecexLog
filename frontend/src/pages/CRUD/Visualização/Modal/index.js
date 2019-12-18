@@ -44,6 +44,9 @@ export default class Feriado extends Component {
 
       btIcon: [{ stats: true }],
 
+      search: "",
+      busca: false,
+
       modal1: [],
       modal2: [],
       modal3: [],
@@ -86,7 +89,47 @@ export default class Feriado extends Component {
         if (cont > 11) cont = 0;
       }
     }
-    this.setState({ modal1, modal2, modal3 });
+    this.setState({ modal1, modal2, modal3, busca: false });
+  };
+
+  handleSearch = async () => {
+    if (this.state.busca) {
+      this.loadData();
+    } else {
+      console.log(this.state.search);
+      const res = await api.get(`/modals/${this.state.search}`);
+
+      const data = res.data;
+
+      console.log(data);
+
+      const modal1 = [];
+      const modal2 = [];
+      const modal3 = [];
+
+      console.log(data.length);
+      let cont = 0;
+      for (var i = 0; i < data.length; i++) {
+        let aux = data[i];
+
+        if (cont >= 0 && cont <= 3) {
+          console.log(cont);
+          modal1.push({ aux });
+          cont++;
+        } else if (cont >= 4 && cont <= 7) {
+          modal2.push({ aux });
+          cont++;
+        } else if (cont >= 8 && cont <= 11) {
+          modal3.push({ aux });
+          cont++;
+          if (cont > 11) cont = 0;
+        }
+      }
+
+      console.log(modal1);
+
+      this.setState({ modal1, modal2, modal3, busca: true });
+    }
   };
 
   editPopUp = c => {
@@ -258,8 +301,12 @@ export default class Feriado extends Component {
 
           <h1>Pesquisar Modal</h1>
           <div className="searchCity">
-            <input type="text" name="searchCidade" />
-            <img src={Lupa} alt="" />
+            <input type="text" name="search" onChange={this.handleChange} />
+            <img
+              src={this.state.busca ? Close : Lupa}
+              alt=""
+              onClick={this.handleSearch}
+            />
           </div>
 
           <div className="addCity">

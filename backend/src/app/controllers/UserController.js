@@ -74,19 +74,21 @@ module.exports = {
         }
       })
         .then(usuario => res.json(usuario))
-        .catch(err => res.status(500).send(err));
+        .catch(err => {
+          console.log(userData), res.status(500).send(err);
+        });
     } else {
       User.findAll({
         where: {
-          name: { [Operation.like]: `%${userData}%` }
+          nome: { [Operation.like]: `%${userData}%` }
         }
       })
         .then(usuarios => {
-          usuarios.forEach(user => {
-            // user.senha =
-          });
+          res.json(usuarios);
         })
-        .catch(err => res.status(500).send(err));
+        .catch(err => {
+          res.status(500).send(err);
+        });
     }
   },
   //Atualiza um usuário

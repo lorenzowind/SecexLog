@@ -37,8 +37,10 @@ export default class CrudUsuario extends Component {
       senha: "",
 
       search: "",
+      busca: false,
 
       row: [],
+      searchRow: [],
       popUp: [],
       editPopUp: [],
 
@@ -94,37 +96,37 @@ export default class CrudUsuario extends Component {
 
   //GET (READ dados na tabela)
   loadData = async () => {
-    const row = await this.props.users;
-    console.log(row);
-    this.setState({ row: row });
+    await api
+      .get("/users")
+      .then(res => {
+        const row = this.state.row;
+        for (var i = 0; i < res.data.length; i++) {
+          row.push(res.data[i]);
+        }
+
+        this.setState({ row: row, busca: false });
+      })
+      .catch(err => {
+        if (err.message === "Request failed with status code 401") {
+          alert("Nível de acesso negado! Contate o administrador do sistema");
+          window.location.replace("/menu");
+        } else {
+          alert(err);
+          window.location.replace("/");
+        }
+      });
   };
 
   //GET (READ dados de busca)
   handleSearch = async () => {
-    const res = await api.get(`/users/${this.state.search}`);
+    if (this.state.busca) {
+      this.loadData();
+    } else {
+      const res = await api.get(`/users/${this.state.search}`);
 
-    if (!res.data || res.data.length <= 0) {
-      alert("Usuário não encontrado");
-      return;
-    }
+      console.log(res.data);
 
-    var nome = null;
-
-    !isNaN(parseInt(this.state.search, 10))
-      ? (nome = res.data.nome)
-      : (nome = res.data[0].nome);
-
-    var row = this.state.row;
-
-    for (var i = 0; i < row.length; i++) {
-      if (nome === row[i].nome) {
-        const aux = row[i];
-        row[i] = row[0];
-        row[0] = aux;
-
-        this.setState({ row: row });
-        return;
-      }
+      this.setState({ row: res.data, busca: true });
     }
   };
 
@@ -479,7 +481,11 @@ export default class CrudUsuario extends Component {
                 }}
                 disabled={this.state.popUpStats}
               />
-              <img src={Seach} alt="" onClick={this.handleSearch} />
+              <img
+                src={this.state.busca ? Close : Seach}
+                alt=""
+                onClick={this.handleSearch}
+              />
             </div>
 
             <div className="addUser">

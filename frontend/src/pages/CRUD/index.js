@@ -19,43 +19,12 @@ export default class CRUD extends Component {
   }
 
   getInitialState() {
-    return { loading: false, userRow: [], citieRow: [], holidayRow: [] };
+    return { loading: false, citieRow: [], holidayRow: [] };
   }
 
   componentDidMount() {
-    this.getAll();
-  }
-
-  getAll = () => {
-    this.getUsers();
     this.getCities();
-  };
-
-  getUsers = async () => {
-    this.setState({ loading: false });
-    await setTimeout(() => {
-      api
-        .get("/users")
-        .then(res => {
-          const row = this.state.userRow;
-
-          for (var i = 0; i < res.data.length; i++) {
-            row.push(res.data[i]);
-          }
-
-          this.setState({ loading: true, userRow: row });
-        })
-        .catch(err => {
-          if (err.message === "Request failed with status code 401") {
-            alert("Nível de acesso negado! Contate o administrador do sistema");
-            window.location.replace("/menu");
-          } else {
-            alert(err);
-            window.location.replace("/");
-          }
-        });
-    }, 1200);
-  };
+  }
 
   getCities = async () => {
     this.setState({ loading: false });
@@ -64,6 +33,7 @@ export default class CRUD extends Component {
       api
         .get("/cities")
         .then(res => {
+          console.log(res.data);
           this.setState({ loading: true, citieRow: res.data });
         })
         .catch(err => {
@@ -73,19 +43,13 @@ export default class CRUD extends Component {
     }, 1200);
   };
 
-  getModals = async () => {};
-
-  getProviders = async () => {};
-
-  getPaths = async () => {};
-
   render() {
     const state = this.state;
 
     return this.state.loading ? (
       <div>
         <Menu ativo={false} />
-        <CrudUsuario users={state.userRow} />
+        <CrudUsuario />
         <CrudCidade cities={state.citieRow} />
         <CrudFeriado />
         <CrudModal />
