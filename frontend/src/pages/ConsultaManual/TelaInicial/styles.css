@@ -1,102 +1,112 @@
 .logo_secexlog {
-    display: flex;
-    justify-content: center;
-    padding-right: 4%;
-    padding-top: 8.6%;
+  display: flex;
+  justify-content: center;
+  padding-right: 4%;
+  padding-top: 8.6%;
+}
+
+.logo_secexlog img {
+  height: 13.6%;
+  width: 36.3%;
 }
 
 .barra_progresso {
-    padding-top: 2%;
-    display: flex;
-    justify-content: center;
-    padding-left: 1%;
-    padding-block-end: 2%;
+  padding-top: 2%;
+  display: flex;
+  justify-content: center;
+  padding-left: 1%;
+  padding-block-end: 2%;
+}
+
+.barra_progresso img {
+  height: 5%;
+  width: 20%;
 }
 
 .consulta {
-    padding-top: 5%;
-    padding-left: 47%;
+  padding-top: 5%;
+  padding-left: 47%;
 }
 
-input[name=consulta] {
-    background-image: url("../../../assets/ConsultaManual/botao_consulta0.png");
-    background-repeat: no-repeat;
-    padding: 42px 40px 0px 100px;
-    border: 0px;
-    border-top-left-radius: 35px;
-    border-top-right-radius: 35px;
-    border-bottom-left-radius: 35px;
-    border-bottom-right-radius: 35px;
+input[name="consulta"] {
+  background-image: url("../../../assets/ConsultaManual/botao_consulta0.png");
+  background-repeat: no-repeat;
+  padding: 42px 40px 0px 100px;
+  border: 0px;
+  border-top-left-radius: 35px;
+  border-top-right-radius: 35px;
+  border-bottom-left-radius: 35px;
+  border-bottom-right-radius: 35px;
 }
 
-input[name=consulta]:hover {
-    cursor: pointer;
+input[name="consulta"]:hover {
+  cursor: pointer;
 }
 
-input[name=consulta]:focus {
-    outline: 0px;
+input[name="consulta"]:focus {
+  outline: 0px;
 }
 
-input[name=consulta]:active {
-    background-image: url("../../../assets/ConsultaManual/botao_consulta1.png");
+input[name="consulta"]:active {
+  background-image: url("../../../assets/ConsultaManual/botao_consulta1.png");
 }
 
 .operacao {
-    display: table-cell;
-    float: left;
-    padding-left: 60%;
-    padding-top: 2%;
+  display: table-cell;
+  float: left;
+  padding-left: 60%;
+  padding-top: 2%;
 }
 
 .retirar-cidade {
-    display: table-cell;
+  display: table-cell;
 }
 
 .adicionar-cidade {
-    display: table-cell;
-    padding-left: 5%;
+  display: table-cell;
+  padding-left: 5%;
 }
 
 h1[id="retira"] {
-    display: table-cell;
-    font-size: 20px;
-    font-weight: bold;  
-    color: #cccccc;
+  display: table-cell;
+  font-size: 20px;
+  font-weight: bold;
+  color: #cccccc;
 }
 
 h1[id="retira"]:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 h1[id="adiciona"] {
-    display: table-cell;
-    font-size: 20px;
-    font-weight: bold;
-    color: #cccccc;
+  display: table-cell;
+  font-size: 20px;
+  font-weight: bold;
+  color: #cccccc;
 }
 
 h1[id="adiciona"]:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 h1[id="retirar-cidade"] {
-    display: table-cell;
-    font-size: 20px;
-    padding-left: 20px;
-    width: auto;
+  display: table-cell;
+  font-size: 20px;
+  padding-left: 20px;
+  width: auto;
 }
 
 h1[id="retirar-cidade"]:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 h1[id="adicionar-cidade"] {
-    display: table-cell;
-    font-size: 20px;
-    padding-left: 20px;
-    width: 300px;
+  display: table-cell;
+  font-size: 20px;
+  padding-left: 20px;
+  width: 300px;
 }
 
 h1[id="adicionar-cidade"] {
-    cursor: pointer;
+  cursor: pointer;
 }

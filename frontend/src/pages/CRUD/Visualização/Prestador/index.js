@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import Header from "../../components/HeaderPrestador/index";
 
-import api from "../../../../services/api";
+//import api from "../../../../services/api";
 
 import Lupa from "../../../../assets/Cadastro de usuário/pesquisar.png";
 import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";

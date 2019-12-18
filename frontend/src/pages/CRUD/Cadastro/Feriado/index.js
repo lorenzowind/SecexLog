@@ -100,7 +100,7 @@ export default class Feriado extends Component {
 
     return (
       <div className="body">
-        <Menu />
+        <Menu ativo={false} />
         <div className="cadastro">
           <Header />
 

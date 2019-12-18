@@ -15,6 +15,8 @@ import Voadeira from "../../../../assets/Cadastro_Modal/8.png";
 
 import Interrogacao from "../../../../assets/Cadastro_Modal/aa.png";
 
+import api from "../../../../services/api";
+
 import "./styles.css";
 
 export default class Modal extends Component {
@@ -29,6 +31,7 @@ export default class Modal extends Component {
       nome: "",
       icon: "",
       selectedIcon: Interrogacao,
+      blob: null,
 
       safe: "não",
       rental: "não",
@@ -44,8 +47,6 @@ export default class Modal extends Component {
     const campo = ev.target.name;
     const value = ev.target.value;
 
-    console.log(value);
-
     state[campo] = value;
 
     this.setState(state);
@@ -53,9 +54,11 @@ export default class Modal extends Component {
 
   handleClick = ev => {
     ev.preventDefault();
-    const src = ev.target.currentSrc;
+
     const { colorIcon } = this.state;
     const color = require(`../../../../assets/coloredModal/${ev.target.alt}.png`);
+    const src = color;
+
     if (
       this.state.colorIcon.url &&
       ev.target.alt === this.state.colorIcon.name
@@ -71,7 +74,7 @@ export default class Modal extends Component {
 
       console.log(colorIcon.url);
 
-      console.log(color);
+      console.log(src);
       this.setState({ icon: src, colorIcon, selectedIcon: Interrogacao });
     }
   };
@@ -86,14 +89,28 @@ export default class Modal extends Component {
       return;
     }
 
-    const selectedIcon = URL.createObjectURL(this.fileInput.current.files[0]);
+    const selectedIcon = new Blob([this.fileInput.current.files[0]], {
+      type: type
+    });
+
+    console.log(selectedIcon);
 
     const { colorIcon } = this.state;
 
     colorIcon.name = "";
     colorIcon.url = "";
 
-    this.setState({ selectedIcon, colorIcon, icon: "" });
+    var a = new FileReader();
+    a.readAsDataURL(selectedIcon);
+    a.onload = e => {
+      var url = e.target.result;
+      this.setState({
+        selectedIcon: url,
+        icon: url,
+        colorIcon
+      });
+    };
+
     return;
   };
 
@@ -101,17 +118,25 @@ export default class Modal extends Component {
     ev.preventDefault();
 
     const state = {
-      nome: this.state.nome,
-      icon:
-        this.state.selectedIcon !== Interrogacao
-          ? this.state.selectedIcon
-          : this.state.icon,
-      safe: this.state.safe,
-      rental: this.state.rental,
-      fast: this.state.fast
+      name: this.state.nome,
+      imgUrl: this.state.icon,
+      safety: this.state.safe === "sim" ? true : false,
+      cost: this.state.rental === "sim" ? true : false,
+      fast: this.state.fast === "sim" ? true : false
     };
 
     console.log(state);
+
+    var error = null;
+
+    await api.post("/modals", state).catch(err => {
+      alert(
+        "Verifque se todos os dados estão inseridos corretamente ou se o nome da cidade já foi cadastrado"
+      );
+      error = err;
+    });
+
+    if (!error) window.location.reload();
   };
 
   render() {
@@ -138,7 +163,7 @@ export default class Modal extends Component {
 
     return (
       <div className="body">
-        <Menu />
+        <Menu ativo={false} />
         <div className="cadastro">
           <Header />
           <h2>Nome do Modal</h2>
@@ -258,72 +283,60 @@ export default class Modal extends Component {
           <h2>Esse modal é seguro?</h2>
           <input
             type="radio"
-            id="option"
             name="safe"
             value="sim"
             style={selectStyles}
             onChange={this.handleChange}
-            onClick={this.handleChange}
             checked={this.state.safe === "sim"}
           />
           Sim
           <br />
           <input
             type="radio"
-            id="option"
             name="safe"
             value="não"
             style={selectStyles}
             onChange={this.handleChange}
-            onClick={this.handleChange}
             checked={this.state.safe === "não"}
           />
           Não
           <h2>Esse modal é de baixo custo?</h2>
           <input
             type="radio"
-            id="option"
             name="rental"
             value="sim"
             style={selectStyles}
             onChange={this.handleChange}
-            onClick={this.handleChange}
             checked={this.state.rental === "sim"}
           />
           Sim
           <br />
           <input
             type="radio"
-            id="option"
             name="rental"
             value="não"
             style={selectStyles}
             onChange={this.handleChange}
-            onClick={this.handleChange}
             checked={this.state.rental === "não"}
           />
           Não
           <h2>Esse modal é rápido?</h2>
           <input
             type="radio"
-            id="option"
             name="fast"
             value="sim"
             style={selectStyles}
             onChange={this.handleChange}
-            onClick={this.handleChange}
             checked={this.state.fast === "sim"}
           />
           Sim
           <br />
           <input
             type="radio"
-            id="option"
             name="fast"
             value="não"
             style={selectStyles}
             onChange={this.handleChange}
-            onClick={this.handleChange}
             checked={this.state.fast === "não"}
           />
           Não

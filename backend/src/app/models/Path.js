@@ -4,115 +4,71 @@ const Provider = require('./Provider');
 module.exports = (sequelize, DataTypes) => {
   const Path = sequelize.define('Path', {
     initCidade: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
-      references: {
-        model: 'cities',
-        key:'nome'
-      }
-
- 
     },
     endCidade: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
-      references: {
-        model: 'cities',
-        key: 'nome'
-      }
-
-  },
-    modalTipo: {
-      type:DataTypes.STRING,
+    },
+    modal: {
+      type: DataTypes.STRING,
       allowNull: false,
 
     },
     prestNome: {
-      type:DataTypes.STRING,
+      type: DataTypes.STRING,
       allowNull: false,
-      references: {
-        model: 'providers',
-        key: 'nome'
-      }
-
     },
     dia: {
-      type:DataTypes.STRING,
-    
+      type: DataTypes.STRING,
+      get() {
+        return this.getDataValue('dia').split(',');
+      },
+      set(dia) {
+        this.setDataValue('dia',dia.join(','));
+     },
     },
-    hora:{
-      type:DataTypes.STRING,
+    hora: {
+      type: DataTypes.STRING,
+      get() {
+        return this.getDataValue('hora').split(',');
+      },
+      set(hora) {
+        this.setDataValue('hora',hora.join(','));
+     },
 
     },
     duration: {
-      type:DataTypes.STRING,
-      allowNull: false,
-    //   validate: {
-    //     notEmpty(value) {
-    //       if(!value)
-    //         throw new Error('A duração não foi informada');
-    //     }
-    // }
+      type: DataTypes.STRING
     },
-    valor: {
-      type:DataTypes.DOUBLE
-    },
-    quilometragem: {
+    mileage: {
       type: DataTypes.DOUBLE
     },
-    embarque: {
-      type:DataTypes.STRING,
-      allowNull: false,
-    //   validate: {
-    //     notEmpty(value) {
-    //       if(!value)
-    //         throw new Error('O nome da cidade embarque não foi informado');
-    //     }
-    // }
+    cost: {
+      type: DataTypes.DOUBLE
     },
-    desembarque: {
-      type:DataTypes.STRING,
-      allowNull: false,
-    //   validate: {
-    //     notEmpty(value) {
-    //       if(!value)
-    //         throw new Error('O nome da cidade desembarque não foi informado');
-    //     }
-    // }
+    departure: {
+      type: DataTypes.STRING
     },
-    telefone: {
-      type:DataTypes.STRING,
-      references: {
-        model: 'provider',
-        key: 'telefone'
-      }
+    cost: {
+      type: DataTypes.DOUBLE
     },
-    email: {
-      type:DataTypes.STRING,
-      references: {
-        model: 'provider',
-        key: 'email'
-      },
-      validate: {
-        isEmail: true
-      }
+    arrival: {
+      type: DataTypes.STRING
     },
-    modal: {
-      type:DataTypes.STRING,
-      allowNull: false,
-    //   validate: {
-    //     notEmpty(value) {
-    //       if(!value)
-    //         throw new Error('O modal não foi informado');
-    //     }
-    // }
+    linha: {
+      type: DataTypes.BOOLEAN
     },
-  }, {
-    defaultScope: {
-      attributes: { exclude: ['createdAt','updatedAt'] },
+    contratado: {
+      type: DataTypes.BOOLEAN
     }
-  });
-  Path.associate = function(models) {
+  }, {
+      defaultScope: {
+        attributes: { exclude: ['createdAt', 'updatedAt'] },
+      }
+    });
+  Path.associate = function (models) {
     // associations can be defined here
     // Path.hasMany(City);
     // Path.hasOne(Provider);

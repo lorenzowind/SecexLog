@@ -93,6 +93,7 @@ module.exports = {
   async update(req, res) {
     const userId = req.params.data;
     const usuario = { ...req.body };
+
     try {
       existsOrError(usuario.nome, "O nome do usuário deve ser informado");
       existsOrError(usuario.login, "O login do usuário deve ser informado");
@@ -104,7 +105,7 @@ module.exports = {
         where: { login: usuario.login }
       });
 
-      if (resultFromDB.login !== usuario.login)
+      if (resultFromDB && resultFromDB.dataValues.login !== usuario.login)
         notExistsOrError(
           resultFromDB,
           `Já existe um usuário com o login ${usuario.login}`
@@ -114,12 +115,13 @@ module.exports = {
         where: { email: usuario.email }
       });
 
-      if (resultFromDB.email !== usuario.email)
+      if (resultFromDB && resultFromDB.dataValues.email !== usuario.email)
         notExistsOrError(
           resultFromDB,
           `Já existe um usuário com o email ${usuario.email}`
         );
     } catch (msg) {
+      console.log(msg);
       return res.status(400).send(msg);
     }
 
@@ -136,7 +138,9 @@ module.exports = {
               senha: cryptPsw(usuario.senha)
             })
             .then(_ => res.status(204).send())
-            .catch(err => res.status(500).send(err));
+            .catch(err => {
+              res.status(500).send(err);
+            });
         }
       })
       .catch(err => res.status(500).send(err));

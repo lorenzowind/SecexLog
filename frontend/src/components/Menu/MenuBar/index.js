@@ -47,7 +47,6 @@ export default class Header extends React.Component {
 
     return (
       <div className="header_menu">
-
         <TelaOpiniao />
         <TelaLogin />
         <TelaEsqueceuSenha />

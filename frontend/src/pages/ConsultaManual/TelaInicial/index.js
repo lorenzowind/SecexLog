@@ -8,6 +8,10 @@ import Campos from "../components/Campos/index";
 
 import "./styles.css";
 
+var Style = {
+  display: "none"
+};
+
 export default class Tela_inicial extends React.Component {
   trajetos = [{ num: 1 }];
 
@@ -25,6 +29,10 @@ export default class Tela_inicial extends React.Component {
     this.setState(state => ({
       trajetos: this.trajetos
     }));
+
+    if (this.trajetos.length > 1) {
+      Style.display = "table-cell";
+    }
   };
 
   evento_retirarTrajeto = e => {
@@ -35,11 +43,21 @@ export default class Tela_inicial extends React.Component {
         trajetos: this.trajetos
       }));
     }
+
+    if (this.trajetos.length === 1) {
+      Style.display = "none";
+    }
   };
 
   evento_consultar() {
     console.log("consultar");
   }
+
+  componentDidMount = () => {
+    if (this.trajetos.length === 1) {
+      Style.display = "none";
+    }
+  };
 
   render() {
     const { trajetos } = this.state;
@@ -61,23 +79,31 @@ export default class Tela_inicial extends React.Component {
         ))}
 
         <div className="operacao">
-          <div className="retirar-cidade">
-            <h1 id="retira" onClick={this.evento_retirarTrajeto}>
-              -
-            </h1>
-            <h1 id="retirar-cidade" onClick={this.evento_retirarTrajeto}>
-              Retirar cidade
-            </h1>
-          </div>
+          {this.state.trajetos.length > 1 ? (
+            <div className="retirar-cidade" id="retirarCidade">
+              <h1 id="retira" onClick={this.evento_retirarTrajeto}>
+                -
+              </h1>
+              <h1 id="retirar-cidade" onClick={this.evento_retirarTrajeto}>
+                Retirar cidade
+              </h1>
+            </div>
+          ) : (
+            <div></div>
+          )}
 
-          <div className="adicionar-cidade">
-            <h1 id="adiciona" onClick={this.evento_adicionarTrajeto}>
-              +
-            </h1>
-            <h1 id="adicionar-cidade" onClick={this.evento_adicionarTrajeto}>
-              Mais cidades para auditar
-            </h1>
-          </div>
+          {this.state.trajetos.length <= 3 ? (
+            <div className="adicionar-cidade">
+              <h1 id="adiciona" onClick={this.evento_adicionarTrajeto}>
+                +
+              </h1>
+              <h1 id="adicionar-cidade" onClick={this.evento_adicionarTrajeto}>
+                Mais cidades para auditar
+              </h1>
+            </div>
+          ) : (
+            <div />
+          )}
         </div>
 
         <div className="consulta">

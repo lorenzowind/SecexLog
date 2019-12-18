@@ -3,7 +3,6 @@
   height: 310px;
   border: 1px solid black;
   background: white;
-  left: 71%;
   top: 10%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -11,6 +10,7 @@
   border-bottom-right-radius: 50px;
   position: fixed;
   display: none;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .icone_sair_login {
@@ -82,8 +82,8 @@ h1[id="esqueceu_senha"] {
 
 .botao_login {
   float: right;
-  padding-right: 12%;
   padding-top: 8%;
+  margin-left: 10px;
 }
 
 input[name="login"]#login {
@@ -119,4 +119,10 @@ input[name="login"]:active#login {
 h1[id="erro"] {
   color: #ff2d2d;
   font-size: 16px;
+}
+
+.loadingSpin {
+  position: relative;
+  top: 43px;
+  margin-left: 10px;
 }

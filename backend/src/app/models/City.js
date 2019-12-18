@@ -1,40 +1,47 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const City = sequelize.define('City', {
-    nome:{
+    nome: {
       type: DataTypes.STRING,
+      unique: true,
       allowNull: false,
     },
-    relations:{
+    relations: {
       type: DataTypes.STRING,
       allowNull: false
     },
-    cBase:{
-      type:DataTypes.BOOLEAN
+    cBase: {
+      type: DataTypes.BOOLEAN
     },
     cAuditada: {
-      type:DataTypes.BOOLEAN
+      type: DataTypes.BOOLEAN
     },
     initDataCheia: {
-      type:DataTypes.STRING
+      type: DataTypes.STRING
     },
     endDataCheia: {
-      type:DataTypes.STRING
+      type: DataTypes.STRING
     },
     obsInterdicao: {
       type: DataTypes.TEXT
     },
     obsCidade: {
       type: DataTypes.TEXT
-    }
+    },
+    
   }, {
 
     defaultScope: {
-      attributes: { exclude: ['createdAt','updatedAt'] },
+      attributes: { exclude: ['createdAt', 'updatedAt'] },
     }
   });
-  City.associate = function(models) {
-    // associations can be defined here
+
+  City.associate = (models) => {
+    City.belongsToMany(models.City, {
+      through: 'cityProviders',
+      as: 'providers',
+      foreignKey: 'CityId'
+    });
   };
   return City;
 };

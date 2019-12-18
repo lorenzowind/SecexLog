@@ -14,6 +14,6 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    return <div>{!this.state.load ? this.wait() : <Menu />}</div>;
+    return <div>{!this.state.load ? this.wait() : <Menu ativo={true} />}</div>;
   }
 }

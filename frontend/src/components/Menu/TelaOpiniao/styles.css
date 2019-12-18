@@ -1,9 +1,9 @@
 .tela-opiniao {
-  width: 700px;
-  height: 525px;
+  width: 45%;
+  height: 70%;
   border: 1px solid black;
   background: white;
-  left: 30%;
+  left: 10%;
   top: 20%;
   border-top-left-radius: 50px;
   border-top-right-radius: 50px;
@@ -20,12 +20,17 @@
   padding-right: 30px;
 }
 
+.icone_sair_opiniao img {
+  height: 20px;
+  width: 20px;
+}
+
 .icone_sair_opiniao:hover {
   cursor: pointer;
 }
 
 h1[id="opiniao"] {
-  font-size: 50px;
+  font-size: 25px;
 }
 
 .opiniao {
@@ -36,21 +41,24 @@ h1[id="opiniao"] {
 }
 
 .assunto {
+  height: 15%;
+  width: 60%;
   display: flex;
   justify-content: center;
-  border-radius: 30px;
+  border-radius: 20px;
   padding-left: 3%;
   padding-top: 4%;
+  margin-left: 20%;
 }
 
 h1[id="assunto"] {
   border: 1px solid gray;
   width: 370px;
-  height: 60px;
-  padding-left: 37px;
+  height: 40px;
+  padding-top: 10px;
+  padding-left: 15px;
   border-radius: 30px;
-  padding-top: 20px;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 h1[id="assunto"]:hover {
@@ -58,23 +66,23 @@ h1[id="assunto"]:hover {
 }
 
 .selecione_assunto {
+  width: 58%;
   border: 1px solid gray;
-  width: 371px;
-  height: 193px;
+  height: 40%;
   border-radius: 30px;
   margin-top: 1%;
-  margin-left: 25%;
+  margin-left: 23%;
 }
 
 h1[id="selecione_assunto"] {
   border: 0px;
   width: 300px;
-  padding-top: 20px;
+  padding-top: 13px;
   padding-block-end: 25px;
-  height: 27px;
-  padding-left: 60px;
+  height: 10%;
+  padding-left: 20%;
   border-radius: 30px;
-  font-size: 20px;
+  font-size: 14px;
 }
 
 h1[id="selecione_assunto"]:hover {
@@ -87,7 +95,7 @@ input[name="selecione_assunto"]:focus {
 
 .enviar {
   float: right;
-  padding-right: 20%;
+  padding-right: 10%;
   padding-top: 4%;
 }
 

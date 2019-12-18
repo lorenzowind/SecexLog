@@ -11,8 +11,6 @@ import "moment/locale/pt-br";
 import "react-day-picker/lib/style.css";
 import "./styles.css";
 
-import "moment/locale/pt-br";
-
 import "./styles.css";
 
 import Notif from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
@@ -79,8 +77,6 @@ export default class CrudCidade extends Component {
       obsInterdicao: this.state.obsInterdicao,
       obsCidade: this.state.obsCidade
     };
-
-    console.log(stateCidade);
 
     let error = null;
 
@@ -252,7 +248,7 @@ export default class CrudCidade extends Component {
   render() {
     return (
       <div className="body">
-        <Menu />
+        <Menu ativo={false} />
         <div className="cadastro">
           <HeaderCidade />
           <form>

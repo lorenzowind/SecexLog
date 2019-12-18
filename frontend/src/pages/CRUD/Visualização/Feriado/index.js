@@ -52,6 +52,7 @@ export default class Feriado extends Component {
     });
 
     const data = res.data;
+
     const holiday1 = [];
     const holiday2 = [];
     const holiday3 = [];
@@ -285,71 +286,73 @@ export default class Feriado extends Component {
           </div>
 
           {this.state.popUp.map((c, i) => (
-            <div className="popUp" key={i}>
-              <div className="title">
-                <h2 style={{ left: "1px" }}>{c.text.h1}</h2>
-                <img src={Close} alt="" onClick={this.handleClose} />
-              </div>
+            <div className="popUp_feriado" key={i}>
+              <div className="popUp_feriado_">
+                <div className="title">
+                  <h2 style={{ left: "1px" }}>{c.text.h1}</h2>
+                  <img src={Close} alt="" onClick={this.handleClose} />
+                </div>
 
-              <h4>{c.text.nome}</h4>
-              <input
-                type="text"
-                name="nome"
-                value={this.state.nome}
-                onChange={this.handleChange}
-              />
-
-              <h4>{c.text.dia}</h4>
-              {this.state.popUp[0].value.dias.length === 1 ? (
-                this.state.popUp[0].value.dias.map((c, i) => (
-                  <div key={i} style={{ display: "flex" }}>
-                    <input
-                      type="text"
-                      name="diaInit"
-                      value={this.state.diaInit}
-                      style={{ width: "110px", marginRight: "0" }}
-                      onChange={this.handleChange}
-                      maxLength="10"
-                    />
-                    <p
-                      style={{
-                        marginLeft: "2%",
-                        lineHeight: "38px",
-                        position: "relative",
-                        top: "5px"
-                      }}
-                    >
-                      até
-                    </p>
-                    <input
-                      type="text"
-                      name="diaEnd"
-                      value={this.state.diaEnd}
-                      onChange={this.handleChange}
-                      style={{ width: "110px", marginLeft: "2%" }}
-                      maxLength="10"
-                    />
-                  </div>
-                ))
-              ) : (
+                <h4>{c.text.nome}</h4>
                 <input
                   type="text"
-                  name="dias"
-                  value={this.state.popUp[0].value.dias}
+                  name="nome"
+                  value={this.state.nome}
                   onChange={this.handleChange}
-                  style={{ width: "110px", marginRight: "0" }}
-                  maxLength="10"
                 />
-              )}
 
-              <div className="btns">
-                <img
-                  src={Trash}
-                  alt="Deletar"
-                  onClick={this.handleDelete}
-                  style={{ left: "20px" }}
-                />
-                <button onClick={this.handleEditSubmit} />
+                <h4>{c.text.dia}</h4>
+                {this.state.popUp[0].value.dias.length === 1 ? (
+                  this.state.popUp[0].value.dias.map((c, i) => (
+                    <div key={i} style={{ display: "flex" }}>
+                      <input
+                        type="text"
+                        name="diaInit"
+                        value={this.state.diaInit}
+                        style={{ width: "110px", marginRight: "0" }}
+                        onChange={this.handleChange}
+                        maxLength="10"
+                      />
+                      <p
+                        style={{
+                          marginLeft: "2%",
+                          lineHeight: "38px",
+                          position: "relative",
+                          top: "5px"
+                        }}
+                      >
+                        até
+                      </p>
+                      <input
+                        type="text"
+                        name="diaEnd"
+                        value={this.state.diaEnd}
+                        onChange={this.handleChange}
+                        style={{ width: "110px", marginLeft: "2%" }}
+                        maxLength="10"
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <input
+                    type="text"
+                    name="dias"
+                    value={this.state.popUp[0].value.dias}
+                    onChange={this.handleChange}
+                    style={{ width: "110px", marginRight: "0" }}
+                    maxLength="10"
+                  />
+                )}
+
+                <div className="btns">
+                  <img
+                    src={Trash}
+                    alt="Deletar"
+                    onClick={this.handleDelete}
+                    style={{ left: "40px" }}
+                  />
+                  <button onClick={this.handleEditSubmit} />
+                </div>
               </div>
             </div>
           ))}

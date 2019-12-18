@@ -7,7 +7,6 @@ import "./styles.css";
 import api from "../../../services/api";
 
 export default class Tela_opiniao extends React.Component {
-  
   evento_enviar = async ev => {
     ev.preventDefault();
 
@@ -24,7 +23,7 @@ export default class Tela_opiniao extends React.Component {
     });
 
     this.evento_sair();
-  }
+  };
 
   evento_sair() {
     var el_1 = document.getElementsByClassName("tela-opiniao");

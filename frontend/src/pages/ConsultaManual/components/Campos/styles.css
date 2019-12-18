@@ -1,75 +1,75 @@
 .campos {
-    display: flex;
-    justify-content: center;
-    padding-top: 20px;
-    padding-right: 1%;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  padding-right: 1%;
 }
 
 .trajeto {
-    display: table-cell;
-    cursor: default;
+  display: table-cell;
+  cursor: default;
 }
 
 h1[id="trajeto"] {
-    font-size: 20px;
+  font-size: 20px;
 }
 
 .cidade-saida {
-    padding-left: 30px;
-    display: table-cell;
+  padding-left: 30px;
+  display: table-cell;
 }
 
-.cidade-destino {      
-    padding-left: 20px;
-    padding-right: 20px;
-    display: table-cell;
+.cidade-destino {
+  padding-left: 20px;
+  padding-right: 20px;
+  display: table-cell;
 }
 
-input[name=cidade-saida] {
-    box-sizing: border-box;
-    border: 1px solid gray;
-    border-radius: 30px;
-    font-size: 18px;
-    color: gray;
-    padding: 15px 20px 12px 55px;
-    width: 331px;
-    height: 65px;
-    background-position: 20px 14px; 
-    background-repeat: no-repeat;  
-    background-image: url("../../../../assets/ConsultaManual/icone_cidade_saida.png");  
+input[name="cidade-saida"] {
+  box-sizing: border-box;
+  border: 1px solid gray;
+  border-radius: 30px;
+  font-size: 18px;
+  color: gray;
+  padding: 15px 20px 12px 55px;
+  width: 331px;
+  height: 65px;
+  background-position: 20px 14px;
+  background-repeat: no-repeat;
+  background-image: url("../../../../assets/ConsultaManual/icone_cidade_saida.png");
 }
 
-input[name=cidade-saida]:focus {
-    outline: 0px;
+input[name="cidade-saida"]:focus {
+  outline: 0px;
 }
 
-input[name=cidade-destino] {
-    box-sizing: border-box;
-    border: 1px solid gray;
-    border-radius: 30px;
-    font-size: 18px;
-    color: gray;
-    padding: 15px 20px 12px 55px;
-    width: 331px;
-    height: 65px;
-    background-position: 20px 14px; 
-    background-repeat: no-repeat;  
-    background-image: url("../../../../assets/ConsultaManual/icone_cidade_destino.png");
+input[name="cidade-destino"] {
+  box-sizing: border-box;
+  border: 1px solid gray;
+  border-radius: 30px;
+  font-size: 18px;
+  color: gray;
+  padding: 15px 20px 12px 55px;
+  width: 331px;
+  height: 65px;
+  background-position: 20px 14px;
+  background-repeat: no-repeat;
+  background-image: url("../../../../assets/ConsultaManual/icone_cidade_destino.png");
 }
 
-input[name=cidade-destino]:focus {
-    outline: 0px;
+input[name="cidade-destino"]:focus {
+  outline: 0px;
 }
 
-.ida { 
-    padding-left: 25px;
-    padding-right: 25px;
-    display: table-cell;
-    border: 1px solid gray;
-    background-color: white;
-    font-size: 18px;
-    border-radius: 30px;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius: 30px;
-    width: 230px;
+.ida {
+  padding-left: 25px;
+  padding-right: 25px;
+  display: table-cell;
+  border: 1px solid gray;
+  background-color: white;
+  font-size: 18px;
+  border-radius: 30px;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  width: 230px;
 }

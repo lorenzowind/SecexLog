@@ -1,6 +1,6 @@
 .cadastroCidade {
   padding-top: 4%;
-  padding-left: 22%;
+  margin-left: 22%;
 }
 
 .cadastroCidade h1 {
@@ -43,7 +43,7 @@
 .add img {
   height: 50px;
   position: relative;
-  top: 10px;
+  top: 30%;
   cursor: pointer;
 }
 
@@ -54,11 +54,17 @@
 .listCity {
   max-width: 770px;
   height: 200px;
+}
+
+.listCity_ {
+  margin-top: 10px;
+  height: 160px;
   overflow-y: auto;
+  display: flex;
 }
 
 .table {
-  height: 190px;
+  height: 160px;
   display: flex;
   margin-right: 20px;
 }
@@ -82,32 +88,36 @@
   cursor: pointer;
 }
 
-.popUp {
+.popUp_city {
+  position: absolute;
+}
+
+.popUp_city_ {
   height: 73%;
-  width: 300px;
+  width: 400px;
   background-color: #ffff;
   border: 1px solid #b0b0b0;
   border-radius: 20px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   position: relative;
   bottom: 400px;
-  left: 450px;
+  left: 300px;
 }
 
-.popUp h2 {
+.popUp_city h2 {
   margin-top: 20px;
   margin-bottom: 0;
   margin-left: 8.4%;
 }
 
-.popUp h4 {
+.popUp_city h4 {
   margin-top: 30px;
   margin-bottom: 10px;
   font-size: 12px;
   margin-left: 8.4%;
 }
 
-.popUp input {
+.popUp_city input {
   height: 38px;
   width: 260px;
   margin-right: 88px;
@@ -120,19 +130,63 @@
   padding: 20px;
 }
 
-.flood {
-  display: flex;
+.flood_ {
+  padding-bottom: 100px;
+  padding-left: 35px;
 }
 
-.flood img {
+.flood_ img {
+  position: absolute;
   height: 38px;
-  margin-right: 20px;
-  position: relative;
-  top: 6px;
+  margin-top: 30px;
+  margin-left: 140px;
 }
 
-.flood input[type="text"] {
-  width: 85px;
+.flood_ input[type="text"] {
+  height: 10px;
   margin-left: 0;
   margin-right: 20px;
+}
+
+.flood_ .init {
+  position: absolute;
+  width: 140px;
+  margin: 0px;
+}
+
+.flood_ .end {
+  position: absolute;
+  width: 140px;
+  margin: 0px;
+  margin-left: 180px;
+}
+
+.MuiFormControl-root.MuiTextField-root {
+  width: 125px;
+  padding-top: 20px;
+}
+
+.MuiInputBase-input.MuiInput-input {
+  font-size: 12px;
+}
+
+.popUp_city_ .select.css-2b097c-container {
+  width: 300px;
+  margin-left: 35px;
+}
+
+.cidades-relacionadas {
+  margin-left: 55px;
+}
+
+.cidades-relacionadas h1{
+  font-size: 14px;
+}
+
+.feriados {
+  margin-left: 55px;
+}
+
+.feriados h1{
+  font-size: 14px;
 }

@@ -48,7 +48,7 @@ module.exports = {
                Para adicionar mais dias na expiração do token deve-se multiplicar o 24 pela quantidade
                de dias desejada, ex: (60 * 60 * 24 * 2) -> dois dias para o token expirar.
             */
-            exp: dateNow + (60 * 60 * 24)
+            exp: dateNow + (60 * 60 * 2)
         }
 
         res.json({

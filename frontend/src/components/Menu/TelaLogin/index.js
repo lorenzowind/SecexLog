@@ -1,5 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router";
+import ReactLoading from "react-loading";
 
 import icone_sair from "../../../assets/ConsultaManual/icone_sair_menor.png";
 
@@ -9,7 +10,8 @@ import api from "../../../services/api";
 
 export default class Tela_login extends React.Component {
   state = {
-    login: false
+    login: false,
+    done: true
   };
 
   evento_sair() {
@@ -24,6 +26,8 @@ export default class Tela_login extends React.Component {
   evento_validarLogin = async ev => {
     ev.preventDefault();
 
+    this.setState({ done: false });
+
     var usuario = document.getElementsByClassName("usuario");
     var senha = document.getElementsByClassName("senha");
     var el = document.getElementsByClassName("erro");
@@ -33,18 +37,23 @@ export default class Tela_login extends React.Component {
       login: usuario[0].firstChild.value,
       senha: senha[0].firstChild.value
     };
-
-    const post = await api.post("/login", state).catch(err => {
-      el[0].style.display = "block";
-    });
-
-    if (post) {
-      el[0].style.display = "none";
-      tela[0].style.display = "none";
-      localStorage.setItem("token", post.data.token);
-      alert("Login com sucesso");
-      this.setState({ login: true });
-    }
+    await setTimeout(() => {
+      console.log("teste");
+      api
+        .post("/login", state)
+        .then(post => {
+          if (post) {
+            el[0].style.display = "none";
+            tela[0].style.display = "none";
+            localStorage.setItem("token", post.data.token);
+            this.setState({ login: true, done: true });
+          }
+        })
+        .catch(err => {
+          el[0].style.display = "block";
+          this.setState({ done: true });
+        });
+    }, 1200);
   };
 
   evento_esqueceu_senha() {
@@ -77,19 +86,33 @@ export default class Tela_login extends React.Component {
           <input type="password" name="senha" id="password" />
         </div>
 
-        <div className="esqueceu_senha">
-          <h1 id="esqueceu_senha" onClick={this.evento_esqueceu_senha}>
-            Esqueceu sua senha?
-          </h1>
-        </div>
+        <div style={{ display: "flex" }}>
+          <div className="esqueceu_senha">
+            <h1 id="esqueceu_senha" onClick={this.evento_esqueceu_senha}>
+              Esqueceu sua senha?
+            </h1>
+          </div>
 
-        <div className="botao_login">
-          <input
-            type="button"
-            name="login"
-            id="login"
-            onClick={this.evento_validarLogin}
-          />
+          <div className="botao_login">
+            <input
+              type="button"
+              name="login"
+              id="login"
+              onClick={this.evento_validarLogin}
+            />
+          </div>
+          {!this.state.done ? (
+            <div className="loadingSpin">
+              <ReactLoading
+                type={"spin"}
+                color={"black"}
+                height={15}
+                width={15}
+              />
+            </div>
+          ) : (
+            <div />
+          )}
         </div>
       </div>
     );

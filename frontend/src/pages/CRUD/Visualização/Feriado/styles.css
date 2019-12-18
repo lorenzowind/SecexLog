@@ -2,8 +2,8 @@
   height: 38px;
   width: 95px;
   margin-top: 30px;
-  margin-right: 20px;
-  margin-bottom: 10px;
+  margin-right: 60px;
+  margin-bottom: 20px;
   background: url("../../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar.png");
   border-radius: 40px;
   border: none;
@@ -16,3 +16,49 @@
   background: url("../../../../assets/6_Cadastro_de_Cidade_Trejetos/salvar1.png");
   transition: 0.2s;
 }
+
+.popUp_feriado {
+    position: absolute;
+}
+
+.popUp_feriado_ {
+  height: 73%;
+  width: 350px;
+  background-color: #ffff;
+  border: 1px solid #b0b0b0;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+  bottom: 400px;
+  left: 300px;
+}
+
+ 
+.popUp_feriado h2 {
+  margin-top: 20px;
+  margin-bottom: 0;
+  margin-left: 8.4%;
+}
+
+.popUp_feriado h4 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  font-size: 18px;
+  margin-left: 8.4%;
+}
+
+.popUp_feriado input {
+  height: 38px;
+  width: 100px;
+  margin-right: 88px;
+  margin-left: 8.4%;
+  margin-top: 1.5%;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  border: 1px solid #b0b0b0;
+  padding: 20px;
+}
+
+
+

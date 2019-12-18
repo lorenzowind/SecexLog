@@ -21,6 +21,7 @@ export default function MaterialUIPickers() {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container justify="space-around">
         <KeyboardDatePicker
+          style={{ margin: 0 }}
           disableToolbar
           variant="inline"
           format="dd/MM/yyyy"
@@ -30,7 +31,7 @@ export default function MaterialUIPickers() {
           KeyboardButtonProps={{
             "aria-label": "change date"
           }}
-          locale='pt-BR'
+          locale="pt-BR"
         />
       </Grid>
     </MuiPickersUtilsProvider>

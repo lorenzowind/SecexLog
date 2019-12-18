@@ -3,6 +3,7 @@ const LoginController = require('./app/controllers/auth/LoginController');
 const ForgotPassword = require('./app/controllers/auth/ForgotPassword');
 const UserController = require('./app/controllers/UserController');
 const OpinionController = require('./app/controllers/OpinionController');
+const ModalController = require('./app/controllers/ModalController')
 const CityController = require('./app/controllers/CityController');
 const PathController = require('./app/controllers/PathController');
 const ProviderController = require('./app/controllers/ProviderController');
@@ -26,7 +27,7 @@ module.exports = app => {
    app.route('/users/sa').post(UserController.store);
 
    app.route('/users')
-      .all(AuthUser.authenticate())
+         .all(AuthUser.authenticate())
       .get(authAdmin(UserController.index))
       .post(authAdmin(UserController.store));
 
@@ -71,12 +72,17 @@ module.exports = app => {
       .put(HolidayController.update)
       .delete(HolidayController.delete);
 
-   /* ROTA DE PROVEDORES [NÃO USAR - DEVE SER FINALIZADA] */
+   /* ROTA DE PROVEDORES  */
 
-   // app.route('/providers')
-   //    .all(AuthUser.authenticate())
-   //    .get(ProviderController.storeOrShow)
-   //    .post(ProviderController.storeOrShow)
+   app.route('/providers')
+      // .all(AuthUser.authenticate())
+      .get(ProviderController.index)
+      .post(ProviderController.store);
+   
+   app.route('/providers/:id')
+      .get(ProviderController.show)
+      .put(ProviderController.update)
+      .delete(ProviderController.delete)
 
    /* ROTAS DE TRAJETO [NÃO USAR - DEVE SER FINALIZADA*/
 
@@ -88,19 +94,19 @@ module.exports = app => {
    // app.route('/paths/:data')
    //    .all(AuthUser.authenticate())
    //    .get(PathController.show)
-   //    .post(authAdmin(PathController.update))
+   //    .put(authAdmin(PathController.update))
    //    .delete(authAdmin(PathController.delete));
 
-   /* ROTAS DE TRAJETO SEM PROTEÇÃO - [NÃO USAR- DEVE SER FINALIZADA] */
+   /* ROTAS DE TRAJETO SEM PROTEÇÃO */
 
-   // app.route('/paths')
-   //    .get(PathController.index)
-   //    .post(PathController.store);
+   app.route('/paths')
+      .get(PathController.index)
+      .post(PathController.store);
 
-   // app.route('/paths/:data')
-   //    .get(PathController.show)
-   //    .post(PathController.update)
-   //    .delete(PathController.delete);
+   app.route('/paths/:id')
+      .get(PathController.show)
+      .put(PathController.update)
+      .delete(PathController.delete);
 
    /* ROTAS DE OPINIÕES */
 
@@ -110,9 +116,21 @@ module.exports = app => {
 
    app.route('/opinions/:id')
       .get(OpinionController.show)
-
       .put(OpinionController.update)
       .delete(OpinionController.delete);
+
+
+   app.route('/modals')
+      .all(AuthUser.authenticate())
+      .get(ModalController.index)
+      .post(authAdmin(ModalController.store));
+
+   app.route('/modals/:id')
+      .all(AuthUser.authenticate())
+      .get(ModalController.show)
+      .put(authAdmin(ModalController.update))
+      .delete(authAdmin(ModalController.delete));
+
 
    /* ROTAS DE FERIADO [COM AUTENTICAÇÃO]*/
 

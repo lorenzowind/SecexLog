@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 import Header from "../../components/HeaderTrajeto/index";
 
@@ -14,7 +16,19 @@ import Trash from "../../../../assets/Cadastro de usuário/lixeira.png";
 
 import "./styles.css";
 
-export default class Cidade extends Component {
+const animatedComponents = makeAnimated();
+
+const dias_semana = [
+  {value: "Domingo", label: "Domingo"},
+  {value: "Segunda-feira", label: "Segunda-feira"},
+  {value: "Terça-feira", label: "Terça-feira"},
+  {value: "Quarta-feira", label: "Quarta-feira"},
+  {value: "Quinta-feira", label: "Quinta-feira"},
+  {value: "Sexta-feira", label: "Sexta-feira"},
+  {value: "Sábado", label: "Sábado"}
+]
+
+export default class Trajeto extends Component {
   constructor(props) {
     super(props);
     this.state = this.getInitialState();
@@ -26,41 +40,105 @@ export default class Cidade extends Component {
       destino: "",
       modal: "",
       prestador: "",
+      dia: [],
+      hora: [],
+
+      dia_: null,
 
       row: [],
 
-      popUp: []
+      popUp: [],
+
+      modais: [],
+      prestadores: []
     };
   }
 
   componentDidMount() {
-    this.loadData();
   }
 
   loadData = async () => {
-    // await setTimeout(() => {
-    //   api
-    //     .get("/users")
-    //     .then(res => {
-    //       const row = this.state.row;
-    //       for (var i = 0; i < res.data.length; i++) {
-    //         row.push(res.data[i]);
-    //       }
-    //       return row;
-    //     })
-    //     .then(row => {
-    //       this.setState({ row: row, load: true });
-    //     })
-    //     .catch(err => {
-    //       if (err.message === "Request failed with status code 401") {
-    //         alert("Nível de acesso negado! Contate o administrador do sistema");
-    //         window.location.replace("/menu");
-    //       } else {
-    //         alert(err);
-    //         window.location.replace("/");
-    //       }
-    //     });
-    // }, 1200);
+    await setTimeout(() => {
+      api
+      .get("/paths")
+      .then(res => {
+        console.log(res)
+        const row = this.state.row;
+        for (var i = 0; i < res.data.length; i++) {
+          row.push(res.data[i]);
+        }
+        console.log(row)
+        return row;
+      })
+      .then(row => {
+        this.setState({ row: row, load: true });
+      })
+      .catch(err => {
+        if (err.message === "Request failed with status code 401") {
+          alert("Nível de acesso negado! Contate o administrador do sistema");
+          window.location.replace("/menu");
+        } else {
+          alert(err);
+          window.location.replace("/");
+        }
+      });
+    }, 1200);
+  };
+
+  loadModais = async () => {
+    const res = await api.get("/modals").catch(err => {
+      alert(err.message);
+      window.location.reload(false);
+    });
+
+    const modais = [];
+
+    for (var i = 0; i < res.data.length; i++) {
+      let value = res.data[i].name;
+      let label = res.data[i].name;
+
+      modais.push({ value, label });
+    }
+
+    this.setState({ modais: modais });
+  };
+
+  loadPrestador = async () => {
+    //esperando rota de providers
+
+    /*const res = await api.get("/providers").catch(err => {
+      alert(err.message);
+      window.location.reload(false);
+    });*/
+
+    const prestadores = [];
+
+    for (var i = 0; i < 1; i++) {
+      //let value = res.data[i].nome;
+      //let label = res.data[i].nome;
+      let value = "teste";
+      let label = "teste";
+
+      prestadores.push({ value, label });
+    }
+
+    this.setState({ prestadores: prestadores });
+  };
+
+  handleModais = modais => {
+
+    this.setState({ modal: modais.value });
+
+  };
+
+  handlePrestador = prestador => {
+
+    this.setState({ prestador: prestador.value });
+
+  };
+
+  handleDia = dia_ => {
+    this.setState({ dia_ });
   };
 
   editPopUp = c => {
@@ -68,28 +146,38 @@ export default class Cidade extends Component {
 
     let h1 = "Editar Trajeto";
     let cidades = "Cidades";
-    let modal = "Modal";
+    let tp_modal = "Modal";
     let prestador = "Nome do Prestador";
     let diaHora = "Dia e Hora de embarque";
-    let duracao = "Duração do trecho";
-    let km = "Quilometragem (Km)";
-    let valor = "Valor do trecho";
-    let tpModal = "O modal é:";
+
+    let initCidade = c.initCidade;
+    let endCidade = c.endCidade;
+    let modal = c.modal;
+    let prestNome = c.prestNome;
+    let dia = c.dia;
+    let hora = c.hora;
 
     let text = {
       h1,
       cidades,
-      modal,
+      tp_modal,
       prestador,
-      diaHora,
-      duracao,
-      km,
-      valor,
-      tpModal
+      diaHora
     };
-    //let value = { name, relatedCities, holidays, initFlood, endFlood };
 
-    popUp.push({ text });
+    let value = { 
+      initCidade,
+      endCidade,
+      modal,
+      prestNome,
+      dia,
+      hora
+    };
+
+    popUp.push({ text, value });
+
+    this.loadModais();
+    this.loadPrestador();
 
     this.setState({ popUp: popUp, popUpStats: true });
   };
@@ -102,19 +190,14 @@ export default class Cidade extends Component {
   handleChange = () => {};
 
   render() {
-    const cidadesStyles = { width: "35%", marginRight: "3%", marginLeft: "3%" };
+    const cidadesStyles = { width: "35%", marginRight: "3%", marginLeft: "5%" };
     const imgStyles = {
       height: "38px",
       position: "relative",
-      top: "6px"
+      top: "3px"
     };
-    const diaStyle = { width: "36%", marginRight: "3%" };
-    const horaStyle = { width: "22.4%", marginRight: "3%", marginLeft: "3%" };
-    const popUpStyles = {
-      maxHeight: "420px",
-      overflow: "hidden",
-      overflowY: "scroll"
-    };
+    const diaStyle = { width: "30%", marginRight: "3%", marginTop: '2%'};
+    const horaStyle = { width: "30%", marginRight: "3%", marginTop: '2%', marginLeft: "1%" };
 
     return (
       <div className="body">
@@ -150,19 +233,19 @@ export default class Cidade extends Component {
                   <table>
                     <thead>
                       <tr>
-                        <th align="left">Nome</th>
-                        <th align="left">Telefone</th>
-                        <th align="left">E-mail</th>
+                        <th align="left">Cidade Origem</th>
+                        <th align="left">Cidade Destino</th>
                         <th align="left">Modal</th>
+                        <th align="left">Prestador</th>
                       </tr>
                     </thead>
                     <tbody>
                       {this.state.row.map((c, i) => (
                         <tr key={i}>
-                          <td>{c.nome}</td>
-                          <td>{c.telefone}</td>
-                          <td>{c.email}</td>
+                          <td>{c.initCidade}</td>
+                          <td>{c.endCidade}</td>
                           <td>{c.modal}</td>
+                          <td>{c.prestNome}</td>
                           <td>
                             <img
                               src={Edit}
@@ -183,7 +266,8 @@ export default class Cidade extends Component {
           </div>
 
           {this.state.popUp.map((c, i) => (
-            <div className="popUp" key={i} style={popUpStyles}>
+            <div className="popUp_trajeto" key={i}>
+              <div className="popUp_trajeto_">
               <div className="title" style={{ marginLeft: "8.4%" }}>
                 <h2>{c.text.h1}</h2>
                 <img src={Close} alt="" onClick={this.handleClose} />
@@ -195,7 +279,7 @@ export default class Cidade extends Component {
                   type="text"
                   name="origem"
                   placeholder="Origem"
-                  //value={c.value.name}
+                  value={c.value.initCidade}
                   onChange={this.handleChange}
                   style={cidadesStyles}
                 />
@@ -204,98 +288,50 @@ export default class Cidade extends Component {
                   type="text"
                   name="destino"
                   placeholder="Destino"
-                  //value={c.value.name}
+                  value={c.value.endCidade}
                   style={cidadesStyles}
                   onChange={this.handleChange}
                 />
               </div>
-
-              <h4>{c.text.modal}</h4>
-              <select
-                //value={c.value.relatedCities}
-                onChange={this.handleChange}
-              >
-                <option value="teste">Teste</option>
-              </select>
-
+              <h4>{c.text.tp_modal}</h4>
+              <Select
+                  className="select"
+                  placeholder=""
+                  components={animatedComponents}
+                  options={this.state.modais}
+                  name="cidadesRelacionadas"
+                  onChange={this.handleModais}
+              />
               <h4>{c.text.prestador}</h4>
-              <select
-                //value={c.value.relatedCities}
-                onChange={this.handleChange}
-              >
-                <option value="teste">Teste</option>
-              </select>
+              <Select
+                  className="select"
+                  placeholder=""
+                  components={animatedComponents}
+                  options={this.state.prestadores}
+                  name="cidadesRelacionadas"
+                  onChange={this.handlePrestador}
+              />
 
               <h4>{c.text.diaHora}</h4>
-              <div className="diaHora add" style={{ display: "flex" }}>
-                <input
-                  type="text"
-                  //value={new Date(c.value.initFlood)}
-                  onChange={this.handleChange}
-                  style={diaStyle}
+              <div className="diaHora_add" style={{ display: "flex" }}>
+                <Select 
+                  className="select"
+                  placeholder="Dia" 
+                  options={dias_semana} 
+                  components={animatedComponents} 
+                  name="modais" 
+                  onChange={this.handleDia}
                 />
-                <input
-                  type="text"
-                  //value={new Date(c.value.endFlood)}
-                  style={horaStyle}
-                  onChange={this.handleChange}
-                />
+                <input type="text" placeholder="Horário" name="hora" id="embarqueHora" />
                 <img
                   src={Mais}
                   alt=""
                   style={{
                     position: "relative",
-                    bottom: "40px",
+                    bottom: "50px",
                     top: "0"
                   }}
                 />
-              </div>
-
-              <div className="tempoKm" style={{ display: "flex" }}>
-                <div className="tempo">
-                  <h4>
-                    Duração do
-                    <br /> trecho
-                  </h4>
-                  <input onChange={this.handleChange} />
-                </div>
-                <div className="km">
-                  <h4>Quilometragem (Km)</h4>
-                  <input onChange={this.handleChange} />
-                </div>
-              </div>
-
-              <div className="valorTipo" style={{ display: "flex" }}>
-                <div className="valor">
-                  <h4>Valor do trecho</h4>
-                  <input type="text" />
-                </div>
-                <div className="tipo">
-                  <h4>O modal é:</h4>
-                  <div>
-                    <div style={{ display: "flex" }}>
-                      <input
-                        type="radio"
-                        id="option"
-                        name="opCidadeBase"
-                        value="cidadeBase"
-                        onChange={this.handleChange}
-                      />
-                      Linha
-                    </div>
-                    <br />
-                    <div style={{ display: "flex" }}>
-                      <input
-                        type="radio"
-                        id="option"
-                        name="opCidadeAuditada"
-                        value="cidadeAuditada"
-                        onChange={this.handleChange}
-                      />
-                      Contratado
-                    </div>
-                  </div>
-                </div>
               </div>
 
               <div className="btns">
@@ -307,6 +343,7 @@ export default class Cidade extends Component {
                 />
                 <button onClick={this.handleEditSubmit} />
               </div>
+            </div>
             </div>
           ))}
         </div>

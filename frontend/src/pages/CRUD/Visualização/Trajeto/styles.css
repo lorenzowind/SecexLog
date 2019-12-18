@@ -1,4 +1,36 @@
-.popUp input,
+.popUp_trajeto_ {
+  width: 400px;
+  background-color: #ffff;
+  border: 1px solid #b0b0b0;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  position: relative;
+  bottom: 400px;
+  left: 300px;
+}
+
+.popUp_trajeto {
+  position: absolute;
+}
+
+.popUp_trajeto_ select {
+  margin-left: 10%;
+}
+
+.popUp_trajeto_ input {
+  margin-left: 10%;
+}
+
+.popUp_trajeto_ h2 {
+  margin-left: 5%;
+}
+
+.popUp_trajeto_ h4 {
+  margin-left: 5%;
+  margin-block-end: 10px;
+}
+
+
 select {
   border: solid 1px #707070;
 }
@@ -69,4 +101,13 @@ select {
   height: 1.6em;
   margin-right: 10px;
   font-size: 11px;
+}
+
+.popUp_trajeto_ .select {
+  margin-left: 10%;
+  width: 250px;
+}
+
+.diaHora_add {
+  
 }

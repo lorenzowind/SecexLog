@@ -1,5 +1,5 @@
 import React from "react";
-import DayPicker from 'react-day-picker';
+import DayPicker from "react-day-picker";
 
 import MenuBar from "../MenuBar/index";
 import { Link } from "react-router-dom";
@@ -12,34 +12,34 @@ import icone_opiniao from "../../../assets/Menu/icone_opiniao.png";
 import icone_ajuda from "../../../assets/Menu/icone_ajuda.png";
 import icone_abrir from "../../../assets/Menu/icone_abrir.png";
 
-import 'react-day-picker/lib/style.css';
+import "react-day-picker/lib/style.css";
 
 import "./styles.css";
 
 const MONTHS = [
-  'Janeiro',
-  'Fevereiro',
-  'Março',
-  'Abril',
-  'Maio',
-  'Junho',
-  'Julho',
-  'Agosto',
-  'Setembro',
-  'Outubro',
-  'Novembro',
-  'Dezembro',
+  "Janeiro",
+  "Fevereiro",
+  "Março",
+  "Abril",
+  "Maio",
+  "Junho",
+  "Julho",
+  "Agosto",
+  "Setembro",
+  "Outubro",
+  "Novembro",
+  "Dezembro"
 ];
 const WEEKDAYS_LONG = [
-  'Domingo',
-  'Segunda',
-  'Terça',
-  'Quarta',
-  'Quinta',
-  'Sexta',
-  'Sábado',
+  "Domingo",
+  "Segunda",
+  "Terça",
+  "Quarta",
+  "Quinta",
+  "Sexta",
+  "Sábado"
 ];
-const WEEKDAYS_SHORT = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'];
+const WEEKDAYS_SHORT = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"];
 
 export default class MenuLateral extends React.Component {
   constructor(props) {
@@ -48,10 +48,19 @@ export default class MenuLateral extends React.Component {
   }
 
   getInitialState() {
-    return { menu_aberto: [], menu_fechado: [{ bool: false }], open: false };
+    return { menu_aberto: [{ bool: false }], menu_fechado: [], open: false };
+  }
+
+  componentDidMount() {
+    if (this.props.ativo) {
+      this.evento_abrirMenu();
+    } else {
+      this.evento_fecharMenu();
+    }
   }
 
   evento_abrirMenu = () => {
+    console.log(this.props);
     console.log(this.state);
     let menu_aberto = this.state.menu_aberto;
 
@@ -81,7 +90,7 @@ export default class MenuLateral extends React.Component {
   evento_abrirOpiniao = () => {
     var el = document.getElementsByClassName("tela-opiniao");
     el[0].style.display = "block";
-  }
+  };
 
   render() {
     return (
@@ -96,7 +105,9 @@ export default class MenuLateral extends React.Component {
             <div className="icone_cadastro">
               <img src={icone_cadastro} alt="" />
               <Link to="/cadastro" style={{ textDecoration: "none" }}>
-                <div className="cadastro_opcao"><h1 id="cadastro">{c.cadastro}</h1></div>
+                <div className="cadastro_opcao">
+                  <h1 id="cadastro">{c.cadastro}</h1>
+                </div>
               </Link>
             </div>
 
@@ -109,14 +120,20 @@ export default class MenuLateral extends React.Component {
               <img src={icone_calendario} alt="" />
               <h1 id="calendario">{c.caledario}</h1>
             </div>
-            
+
             <div className="calendario">
-              <DayPicker months={MONTHS} weekdaysLong={WEEKDAYS_LONG} weekdaysShort={WEEKDAYS_SHORT}/>
+              <DayPicker
+                months={MONTHS}
+                weekdaysLong={WEEKDAYS_LONG}
+                weekdaysShort={WEEKDAYS_SHORT}
+              />
             </div>
 
             <div className="icone_opiniao">
               <img src={icone_opiniao} alt="" />
-              <h1 id="opiniao_menu" onClick={this.evento_abrirOpiniao}>{c.opiniao}</h1>
+              <h1 id="opiniao_menu" onClick={this.evento_abrirOpiniao}>
+                {c.opiniao}
+              </h1>
             </div>
           </div>
         ))}
