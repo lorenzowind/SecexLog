@@ -87,8 +87,6 @@ export default class Feriado extends Component {
 
     // this.setState({ holiday1, holiday2, holiday3 });
 
-    console.log(especificos);
-
     this.setState({ nacionais, especificos, busca: false });
   };
 
@@ -96,12 +94,9 @@ export default class Feriado extends Component {
     if (this.state.busca) {
       this.loadData();
     } else {
-      console.log(this.state.search);
       const res = await api.get(`/holidays/${this.state.search}`);
 
       const data = res.data;
-
-      console.log(data);
 
       // const holiday1 = [];
       // const holiday2 = [];
@@ -136,8 +131,6 @@ export default class Feriado extends Component {
 
       // this.setState({ holiday1, holiday2, holiday3 });
 
-      console.log(especificos);
-
       this.setState({ nacionais, especificos, busca: true });
     }
   };
@@ -148,6 +141,8 @@ export default class Feriado extends Component {
     const value = ev.target.value;
 
     state[name] = value;
+
+    console.log(name + " = " + value);
 
     this.setState(state);
   };
@@ -175,8 +170,6 @@ export default class Feriado extends Component {
       value
     });
 
-    console.log(c.aux);
-
     this.setState({
       popUp,
       popUpStats: true,
@@ -198,15 +191,14 @@ export default class Feriado extends Component {
 
     const id = await api.get(`/cities/${this.state.cidade}`);
 
-    const { dias } = this.state.popUp[0].value;
-    console.log(dias);
-
     const state = {
       nome: this.state.nome,
       cidade: id.data.nome,
-      init: dias.length > 1 ? dias : this.state.diaInit,
-      end: dias.length > 1 ? dias : this.state.diaEnd
+      init: this.state.dias.length > 1 ? this.state.dias : this.state.diaInit,
+      end: this.state.dias.length > 1 ? this.state.dias : this.state.diaEnd
     };
+
+    console.log(state);
 
     await api
       .put(`/holidays/${this.state.id}`, state)
@@ -384,7 +376,7 @@ export default class Feriado extends Component {
                   <input
                     type="text"
                     name="dias"
-                    value={this.state.popUp[0].value.dias}
+                    defaultValue={this.state.popUp[0].value.dias}
                     onChange={this.handleChange}
                     style={{ width: "110px", marginRight: "0" }}
                     maxLength="10"

@@ -38,7 +38,7 @@
   -moz-border-radius: 50px;
   border-radius: 50px;
   padding: 20px;
-  border: 1px solid #b0b0b0;
+  border: 1px solid #707070;
 }
 
 .body input[type="email"] {
@@ -146,7 +146,7 @@ select {
   -webkit-border-radius: 50px;
   -moz-border-radius: 50px;
   border-radius: 50px;
-  border: 1px solid #b0b0b0;
+  border: 1px solid #707070;
 }
 
 .popUpUser input[nome="nome"],

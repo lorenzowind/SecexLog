@@ -87,24 +87,18 @@ export default class Cidade extends Component {
     if (this.state.busca) {
       this.loadData();
     } else {
-      console.log(this.state.search);
       const res = await api.get(`/cities/${this.state.search}`);
 
       const data = res.data;
 
-      console.log(data);
-
       const city1 = [];
       const city2 = [];
       const city3 = [];
-
-      console.log(data.length);
       let cont = 0;
       for (var i = 0; i < data.length; i++) {
         let aux = data[i];
 
         if (cont >= 0 && cont <= 3) {
-          console.log(cont);
           city1.push({ aux });
           cont++;
         } else if (cont >= 4 && cont <= 7) {
@@ -116,8 +110,6 @@ export default class Cidade extends Component {
           if (cont > 11) cont = 0;
         }
       }
-
-      console.log(city1);
 
       this.setState({ city1, city2, city3, busca: true });
     }
@@ -257,8 +249,6 @@ export default class Cidade extends Component {
       obsInterdicao: this.state.popUp[0].value.obsInterdicao,
       obsCidade: this.state.popUp[0].value.obsCidade
     };
-
-    console.log(state);
 
     let error = null;
 
@@ -499,15 +489,15 @@ export default class Cidade extends Component {
                     onChange={this.handleCidadesRelacionadas}
                   />
                 ) : (
-                  this.state.cidadesRelacionadas0.map(i => (
-                    <div className="cidades-relacionadas">
+                  this.state.cidadesRelacionadas0.map((c, i) => (
+                    <div className="cidades-relacionadas" key={i}>
                       <h1>{i}</h1>
                     </div>
                   ))
                 )}
                 <h4>{c.text.feriados}</h4>
                 {this.state.holidays.map(i => (
-                  <div className="feriados">
+                  <div className="feriados" key={i}>
                     <h1>{i}</h1>
                   </div>
                 ))}

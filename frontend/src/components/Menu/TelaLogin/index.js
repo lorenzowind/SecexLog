@@ -1,5 +1,4 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
 
@@ -42,7 +41,6 @@ export default class Tela_login extends React.Component {
       senha: senha[0].firstChild.value
     };
     await setTimeout(() => {
-      console.log(state);
       api
         .post("/login", state)
         .then(post => {

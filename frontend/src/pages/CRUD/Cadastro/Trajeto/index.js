@@ -145,8 +145,6 @@ export default class Trajeto extends Component {
       duration: this.state.duracao
     };
 
-    console.log(json);
-
     let error = null;
 
     await api.post("/paths", json).catch(err => {

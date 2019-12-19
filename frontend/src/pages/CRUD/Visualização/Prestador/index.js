@@ -48,7 +48,6 @@ export default class Cidade extends Component {
     });
 
     const modals = res.data;
-    console.log(res.data);
     this.setState({ modals });
   };
 
@@ -73,7 +72,6 @@ export default class Cidade extends Component {
     if (this.state.busca) {
       this.loadData();
     } else {
-      console.log(this.state.search);
       const res = await api
         .get(`/providers/${this.state.search}`)
         .catch(err => {
@@ -85,10 +83,6 @@ export default class Cidade extends Component {
             window.location.replace("/");
           }
         });
-
-      console.log(res.data);
-
-      console.log(res.data);
 
       this.setState({ row: res.data, busca: true });
     }
@@ -141,8 +135,6 @@ export default class Cidade extends Component {
       email: this.state.email,
       modal: this.state.modal
     };
-
-    console.log(JSON.stringify(state));
 
     await api
       .put(`/providers/${this.state.id}`, state)

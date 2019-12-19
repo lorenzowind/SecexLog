@@ -9,7 +9,6 @@ import icone_cadastro from "../../../assets/Menu/icone_cadastro.png";
 import icone_configuracao from "../../../assets/Menu/icone_configuracao.png";
 import icone_calendario from "../../../assets/Menu/icone_calendario.png";
 import icone_opiniao from "../../../assets/Menu/icone_opiniao.png";
-import icone_ajuda from "../../../assets/Menu/icone_ajuda.png";
 import icone_abrir from "../../../assets/Menu/icone_abrir.png";
 
 import "react-day-picker/lib/style.css";
@@ -60,8 +59,6 @@ export default class MenuLateral extends React.Component {
   }
 
   evento_abrirMenu = () => {
-    console.log(this.props);
-    console.log(this.state);
     let menu_aberto = this.state.menu_aberto;
 
     const menu = {

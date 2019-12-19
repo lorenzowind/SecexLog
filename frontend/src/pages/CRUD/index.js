@@ -33,7 +33,6 @@ export default class CRUD extends Component {
       api
         .get("/cities")
         .then(res => {
-          console.log(res.data);
           this.setState({ loading: true, citieRow: res.data });
         })
         .catch(err => {

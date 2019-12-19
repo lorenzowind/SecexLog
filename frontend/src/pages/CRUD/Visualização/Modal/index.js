@@ -72,12 +72,10 @@ export default class Feriado extends Component {
     const modal1 = [];
     const modal2 = [];
     const modal3 = [];
-    console.log(data.length);
     let cont = 0;
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
       if (cont >= 0 && cont <= 3) {
-        console.log(cont);
         modal1.push({ aux });
         cont++;
       } else if (cont >= 4 && cont <= 7) {
@@ -96,24 +94,18 @@ export default class Feriado extends Component {
     if (this.state.busca) {
       this.loadData();
     } else {
-      console.log(this.state.search);
       const res = await api.get(`/modals/${this.state.search}`);
 
       const data = res.data;
 
-      console.log(data);
-
       const modal1 = [];
       const modal2 = [];
       const modal3 = [];
-
-      console.log(data.length);
       let cont = 0;
       for (var i = 0; i < data.length; i++) {
         let aux = data[i];
 
         if (cont >= 0 && cont <= 3) {
-          console.log(cont);
           modal1.push({ aux });
           cont++;
         } else if (cont >= 4 && cont <= 7) {
@@ -125,8 +117,6 @@ export default class Feriado extends Component {
           if (cont > 11) cont = 0;
         }
       }
-
-      console.log(modal1);
 
       this.setState({ modal1, modal2, modal3, busca: true });
     }
@@ -144,8 +134,6 @@ export default class Feriado extends Component {
     });
 
     const url = c.aux.imgUrl;
-
-    console.log(url);
 
     this.setState({
       popUp,
@@ -192,21 +180,13 @@ export default class Feriado extends Component {
       colorIcon.name = "";
       this.setState({ icon: "", colorIcon });
     } else {
-      console.log(ev.target);
-
       colorIcon.name = ev.target.alt;
       colorIcon.url = color;
-
-      console.log(colorIcon.url);
-
-      console.log(src);
       this.setState({ icon: src, colorIcon, selectedIcon: Interrogacao });
     }
   };
 
   handleNewIcon = ev => {
-    console.log(this.fileInput.current.files[0].type);
-
     const type = this.fileInput.current.files[0].type;
 
     if (type.indexOf("image") < 0) {
@@ -217,8 +197,6 @@ export default class Feriado extends Component {
     const selectedIcon = new Blob([this.fileInput.current.files[0]], {
       type: type
     });
-
-    console.log(selectedIcon);
 
     const { colorIcon } = this.state;
 
@@ -252,8 +230,6 @@ export default class Feriado extends Component {
       cost: this.state.cost,
       fast: this.state.fast
     };
-
-    console.log(JSON.stringify(state));
 
     await api
       .put(`/modals/${this.state.id}`, state)

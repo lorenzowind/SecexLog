@@ -78,12 +78,12 @@ module.exports = app => {
     .get(HolidayController.index)
     .post(HolidayController.store);
 
+  app.route("/holidays/:data").get(HolidayController.show);
+
   app
-    .route("/holidays/:data")
-    .get(HolidayController.show)
+    .route("/holidays/:id")
     .put(HolidayController.update)
     .delete(HolidayController.delete);
-
   /* ROTA DE PROVEDORES  */
 
   app
@@ -92,12 +92,12 @@ module.exports = app => {
     .get(ProviderController.index)
     .post(ProviderController.store);
 
+  app.route("/providers/:data").get(ProviderController.show);
+
   app
-    .route("/providers/:data")
-    .get(ProviderController.show)
+    .route("/providers/:id")
     .put(ProviderController.update)
     .delete(ProviderController.delete);
-
   /* ROTAS DE TRAJETO [NÃO USAR - DEVE SER FINALIZADA*/
 
   // app.route('/paths')
@@ -118,12 +118,12 @@ module.exports = app => {
     .get(PathController.index)
     .post(PathController.store);
 
+  app.route("/paths/:data").get(PathController.show);
+
   app
-    .route("/paths/:data")
-    .get(PathController.show)
+    .route("/paths/:id")
     .put(PathController.update)
     .delete(PathController.delete);
-
   /* ROTAS DE OPINIÕES */
 
   app
@@ -143,13 +143,12 @@ module.exports = app => {
     .get(ModalController.index)
     .post(authAdmin(ModalController.store));
 
-  app
-    .route("/modals/:data")
-    .all(AuthUser.authenticate())
-    .get(ModalController.show)
-    .put(authAdmin(ModalController.update))
-    .delete(authAdmin(ModalController.delete));
+  app.route("/modals/:data").get(ModalController.show);
 
+  app
+    .route("/modals/:id")
+    .put(ModalController.update)
+    .delete(ModalController.delete);
   /* ROTAS DE FERIADO [COM AUTENTICAÇÃO]*/
 
   // app.route('/holidays')

@@ -38,7 +38,6 @@ export default class Prestador extends Component {
     });
 
     const modals = res.data;
-    console.log(res.data);
     this.setState({ modals });
   };
 
@@ -55,8 +54,6 @@ export default class Prestador extends Component {
     const state = Object.assign({}, this.state);
     const name = ev.target.name;
     const value = ev.target.value;
-
-    console.log(`state[${name}]==${value}`);
 
     state[name] = value;
 

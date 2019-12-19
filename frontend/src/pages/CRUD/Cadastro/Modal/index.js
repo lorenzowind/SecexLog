@@ -59,8 +59,6 @@ export default class Modal extends Component {
     const campo = ev.target.name;
     const value = ev.target.value;
 
-    console.log(campo + "=" + value);
-
     state[campo] = value;
 
     this.setState(state);
@@ -81,21 +79,14 @@ export default class Modal extends Component {
       colorIcon.name = "";
       this.setState({ icon: "", colorIcon });
     } else {
-      console.log(ev.target);
-
       colorIcon.name = ev.target.alt;
       colorIcon.url = color;
 
-      console.log(colorIcon.url);
-
-      console.log(src);
       this.setState({ icon: src, colorIcon, selectedIcon: Interrogacao });
     }
   };
 
   handleNewIcon = ev => {
-    console.log(this.fileInput.current.files[0].type);
-
     const type = this.fileInput.current.files[0].type;
 
     if (type.indexOf("image") < 0) {
@@ -106,8 +97,6 @@ export default class Modal extends Component {
     const selectedIcon = new Blob([this.fileInput.current.files[0]], {
       type: type
     });
-
-    console.log(selectedIcon);
 
     const { colorIcon } = this.state;
 
@@ -138,8 +127,6 @@ export default class Modal extends Component {
       cost: this.state.rental === "sim" ? true : false,
       fast: this.state.fast === "sim" ? true : false
     };
-
-    console.log(state);
 
     var error = null;
 

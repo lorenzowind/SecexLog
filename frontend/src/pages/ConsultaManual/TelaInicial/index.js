@@ -49,9 +49,7 @@ export default class Tela_inicial extends React.Component {
     }
   };
 
-  evento_consultar() {
-    console.log("consultar");
-  }
+  evento_consultar() {}
 
   componentDidMount = () => {
     if (this.trajetos.length === 1) {

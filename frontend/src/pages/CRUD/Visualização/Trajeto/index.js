@@ -67,8 +67,6 @@ export default class Trajeto extends Component {
     api
       .get("/paths")
       .then(res => {
-        console.log(res);
-
         this.setState({ row: res.data, load: true, busca: false });
       })
       .catch(err => {
@@ -95,10 +93,6 @@ export default class Trajeto extends Component {
           window.location.replace("/");
         }
       });
-
-      console.log(res.data);
-
-      console.log(res.data);
 
       this.setState({ row: res.data, busca: true });
     }
@@ -301,8 +295,6 @@ export default class Trajeto extends Component {
       duration: this.state.popUp[0].value.duration
     };
 
-    console.log(state);
-
     let error = null;
 
     await api
@@ -431,6 +423,7 @@ export default class Trajeto extends Component {
                     placeholder="Origem"
                     value={c.value.initCidade}
                     style={cidadesStyles}
+                    disabled={true}
                   />
                   <img src={Ir} alt="" style={imgStyles} />
                   <input
@@ -439,6 +432,7 @@ export default class Trajeto extends Component {
                     placeholder="Destino"
                     value={c.value.endCidade}
                     style={cidadesStyles}
+                    disabled={true}
                   />
                 </div>
                 <div className="texto_edit1">

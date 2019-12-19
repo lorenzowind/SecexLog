@@ -47,7 +47,6 @@ export default class Feriado extends Component {
     });
 
     const cidades = res.data;
-    console.log(res.data);
     this.setState({ cidades });
   };
 
@@ -85,7 +84,6 @@ export default class Feriado extends Component {
       );
       return;
     });
-    console.log(state);
     window.location.reload();
     return;
   };

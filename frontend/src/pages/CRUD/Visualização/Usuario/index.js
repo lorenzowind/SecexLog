@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import HeaderUser from "../../components/HeaderUsuario/index";
-import Loading from "../../../../components/Loading/index";
 
 import Mais from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/mais.png";
 import Seach from "../../../../assets/Cadastro de usuário/pesquisar.png";
@@ -85,8 +84,6 @@ export default class CrudUsuario extends Component {
 
       if (error) return;
 
-      console.log(state);
-
       this.createRow(state);
 
       this.setState({ popUp: [], popUpStats: false });
@@ -124,8 +121,6 @@ export default class CrudUsuario extends Component {
     } else {
       const res = await api.get(`/users/${this.state.search}`);
 
-      console.log(res.data);
-
       this.setState({ row: res.data, busca: true });
     }
   };
@@ -161,7 +156,6 @@ export default class CrudUsuario extends Component {
 
     const isValid = this.validateEdit(state);
     if (isValid) {
-      console.log(state);
       await api.put(`/users/${this.state.id}`, state).catch(err => {
         alert(
           "Verifique se todos os dados foram inseridos corretamente e tente novamente"
@@ -393,12 +387,6 @@ export default class CrudUsuario extends Component {
       !state.email ||
       !state.cargo
     ) {
-      console.log(state.nome);
-      console.log(state.login);
-      console.log(state.senha);
-      console.log(state.email);
-      console.log(state.cargo);
-
       nameError = "Por favor, preencha todos os campos";
       alert(nameError);
       return false;
