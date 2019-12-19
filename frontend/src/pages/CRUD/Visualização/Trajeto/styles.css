@@ -276,5 +276,9 @@ select {
   font-size: 15px;
 }
 
+.list_path {
+  overflow-y: auto;
+}
+
 
 

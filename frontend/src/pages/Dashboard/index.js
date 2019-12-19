@@ -3,6 +3,10 @@ import React, { Component } from "react";
 import Menu from "../../components/Menu/MenuLateral/index";
 import Loading from "../../components/Loading/index";
 
+import dashboard_ from "../../assets/5_Dashboard/dashboard.PNG"
+
+import './styles.css'
+
 export default class Dashboard extends Component {
   state = {
     load: false
@@ -14,6 +18,11 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    return <div>{!this.state.load ? this.wait() : <Menu ativo={true} />}</div>;
+    return( 
+      <div className="dashboard">
+        <div>{!this.state.load ? this.wait() : <Menu ativo={true} />}</div>
+        <div className="center"><div className="image"><img src={dashboard_} alt=""/></div></div>
+      </div>
+    )
   }
 }

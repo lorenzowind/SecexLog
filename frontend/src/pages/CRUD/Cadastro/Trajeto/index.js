@@ -191,7 +191,6 @@ export default class Trajeto extends Component {
     dia.push(this.state.dia_.value);
     hora_.push(hora[0].firstElementChild.value);
     this.setState({dia: dia, hora: hora_});
-    this.setState({dia: null})
   };
 
   onChange = ev => {

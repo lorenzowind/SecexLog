@@ -1,0 +1,250 @@
+.tela-resultado_ {
+    padding-top: 100px;
+    padding-left: 25%;
+}
+
+.linha-1 {
+    position: relative;
+    height: 150px;
+}
+.linha-1 .voltar {
+    position: absolute;
+    margin-top: 2%;
+}
+.linha-1 .voltar img:hover {
+    cursor: pointer;
+}
+.linha-1 .resultado {
+    position: absolute;
+    margin-left: 300px;
+    margin-top: 40px;
+}
+.linha-1 .barra {
+    position: absolute;
+    margin-left: 350px;
+    margin-top: 100px;
+}
+
+.tela-resultado_ .trajeto {
+    display: inline;
+}
+.nenhum_trajeto{
+    position: relative;
+    display: inline;
+}
+.nenhum_trajeto_ {
+    margin-top: 50px;
+    height: 50px;
+    margin-left: 150px;
+}
+
+.linha-2 {
+    position: relative;
+    height: 200px;
+}
+.linha-2 .filtros {
+    position: absolute;
+    margin-top: 50px;
+}
+.linha-2 .filtros .rapidoIcone {
+    position: absolute;
+}
+.linha-2 .filtros .rapidoIcone img{
+    height: 60px;
+}
+.linha-2 .filtros .custoIcone {
+    position: absolute;
+}
+.linha-2 .filtros .custoIcone img{
+    height: 60px;
+    margin-left: 100px;
+}
+.linha-2 .filtros .seguroIcone {
+    position: absolute;
+}
+.linha-2 .filtros .seguroIcone img{
+    height: 60px;
+    margin-left: 200px;
+}
+
+.linha-2 .cidades {
+    position: absolute;
+    height: 100px;
+    margin-top: 60px;
+    margin-left: 320px;
+}
+.cidades h1 {
+    position: absolute;
+    text-align: center;
+    width: 150px;
+    font-size: 15px;
+    padding-top: 10px;
+    height: 40px;
+    font-weight: normal;
+    border-radius: 24px;
+    border: solid 1px #cecece;
+    background-color: #e8e8eb;
+}
+.cidades .cidadeVolta {
+    margin-left: 200px;
+}
+
+.linha-2 .periodo {
+    position: absolute;
+    margin-top: 60px;
+    margin-left: 720px;
+}
+.linha-2 .periodo h1 {
+    text-align: center;
+    width: 200px;
+    font-size: 15px;
+    padding-top: 10px;
+    height: 40px;
+    font-weight: normal;
+    border-radius: 24px;
+    border: solid 1px #cecece;
+    background-color: #e8e8eb;
+}
+.linha-2 .filtro {
+    position: absolute;
+    margin-top: 60px;
+    margin-left: 950px;
+}
+.linha-3 {
+    position: relative;
+    height: 300px;
+    width: 500px;
+}
+.linha-3 .cartao_trajeto {
+    position: absolute;
+    width: 800px;
+    height: 250px;
+    margin-left: 100px;
+    border-radius: 38px;
+    border: solid 1px #3dbec6;
+    background-color: #ffffff;   
+}
+
+.imagem_modal {
+    position: absolute;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+.imagem_modal h1 {
+    font-size: 20px;
+}
+
+.nenhum_trajeto .msg h1 {
+    position: absolute;
+    text-align: center;
+    width: 300px;
+    font-size: 15px;
+    padding-top: 10px;
+    height: 40px;
+    border-radius: 24px;
+    border: solid 1px #cecece;
+    background-color: #e8e8eb;
+}
+.nenhum_trajeto .msg {
+    margin-left: 400px;
+}
+
+.linha-4 {
+    position: relative;
+}
+.linha-4 .horarioSaida {
+    position: absolute;
+    margin-top: 80px;
+    margin-left: 30px;
+}
+.linha-4 .horarioSaida h1 {
+    font-size: 15px;
+}
+.linha-4 .cidadeSaida {
+    position: absolute;
+    margin-top: 110px;
+    margin-left: 120px;
+}
+.linha-4 .cidadeSaida h1 {
+    font-size: 15px;
+    font-weight: normal;
+}
+.linha-4 .modalSaida {
+    position: absolute;
+    margin-top: 140px;
+    margin-left: 120px;
+}
+.linha-4 .modalSaida h1 {
+    font-size: 15px;
+    font-weight: normal;
+}
+.linha-4 .duracao {
+    position: absolute;
+    margin-top: 80px;
+    margin-left: 260px;
+}
+.linha-4 .duracao h1 {
+    font-size: 15px;
+    font-weight: normal;
+}
+.linha-4 .barraIcone2 {
+    position: absolute;
+    margin-top: 100px;
+    margin-left: 200px;
+}
+.linha-4 .horarioDestino {
+    position: absolute;
+    margin-top: 80px;
+    margin-left: 430px;
+}
+.linha-4 .horarioDestino h1 {
+    font-size: 15px;
+}
+.linha-4 .cidadeDestino {
+    position: absolute;
+    margin-top: 110px;
+    margin-left: 440px;
+}
+.linha-4 .cidadeDestino h1 {
+    font-size: 15px;
+    font-weight: normal;
+}
+.linha-4 .modalDestino {
+    position: absolute;
+    margin-top: 140px;
+    margin-left: 440px;
+}
+.linha-4 .modalDestino h1 {
+    font-size: 15px;
+    font-weight: normal;
+}
+.linha-4 .idaIcone {
+    position: absolute;
+    margin-top: 90px;
+    margin-left: 550px;
+}
+.linha-4 .linha_vertical {
+    position: absolute;
+    margin-left: 600px;
+    height: 250px;
+    width: 1px;
+    border: solid 1px #3dbec6;
+    background-color: #ffffff;
+}
+.linha-4 .preco {
+    position: absolute;
+    margin-top: 70px;
+    margin-left: 650px;
+}
+.linha-4 .botao_selecionar img {
+    margin-top: 160px;
+    margin-left: 630px;
+    height: 40px;
+    position: absolute;
+}
+.linha-4 .botao_selecionar img:hover {
+    cursor: pointer;
+}
+
+
+
