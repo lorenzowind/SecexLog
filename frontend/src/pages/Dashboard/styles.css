@@ -1,0 +1,12 @@
+.center {
+  padding-top: 5%;
+  padding-left: 20%;
+}
+
+.image {
+  position: fixed;
+}
+
+.image img {
+  width: 90%;
+}

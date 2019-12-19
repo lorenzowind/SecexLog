@@ -278,3 +278,7 @@ select {
 .linha_dia_hora_ h1 {
   font-size: 15px;
 }
+
+.list_path {
+  overflow-y: auto;
+}

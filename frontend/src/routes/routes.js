@@ -6,6 +6,7 @@ import PrivateRoutes from "./privateRoutes";
 
 import Menu from "../pages/Dashboard/index";
 import TelaInicial from "../pages/ConsultaManual/TelaInicial/index";
+import TelaResultado from "../pages/ConsultaManual/TelaResultado/index";
 import Error404 from "../pages/Error/404/index";
 import View from "../pages/CRUD/index";
 
@@ -48,6 +49,7 @@ const Routes = () => (
       />
 
       <Route exact path="/menu" component={TelaInicial} />
+      <Route exact path="/consulta-manual" component={TelaResultado} />
       <Route path="*" component={Error404} />
     </Switch>
   </BrowserRouter>
