@@ -119,7 +119,7 @@ module.exports = app => {
     .post(PathController.store);
 
   app
-    .route("/paths/:id")
+    .route("/paths/:data")
     .get(PathController.show)
     .put(PathController.update)
     .delete(PathController.delete);

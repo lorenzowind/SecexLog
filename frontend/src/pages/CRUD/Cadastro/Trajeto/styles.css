@@ -12,20 +12,17 @@
   height: 60px;
   padding-top: 10px;
 }
-.adicionar-cidades .linha input {
+.adicionar-cidades .linha .select {
   position: absolute;
+  width: 180px;
   height: 40px;
-  padding: 20px;
-  border-radius: 29px;
-  border: solid 1px #707070;
-  background-color: #ffffff;
 }
 .adicionar-cidades .linha .volta {
   margin-left: 240px;
 }
 .adicionar-cidades .linha img {
   position: absolute;
-  margin-left: 210px;
+  margin-left: 200px;
   padding-top: 2px;
 }
 
@@ -91,15 +88,26 @@
   height: 40px;
   margin-block-end: 50px;
 }
-.dia-hora-embarque .linha_ input {
+.dia-hora-embarque .linha_ .select {
   margin-top: 20px;
   position: absolute;
-  width: 150px;
+  width: 100px;
   height: 40px;
-  padding: 20px;
   border-radius: 29px;
+  padding-left: 10px;
+  margin-top: 10px;
+  width: 200px;
+}
+.dia-hora-embarque .linha_ .hora input {
+  margin-top: 20px;
+  height: 40px;
+  border-radius: 29px;
+  width: 100px;
   border: solid 1px #707070;
   background-color: #ffffff;
+  position: absolute;
+  padding-left: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .dia-hora-embarque .linha_ img {
   position: absolute;
@@ -110,7 +118,7 @@
   cursor: pointer;
 }
 .dia-hora-embarque .linha_ .hora {
-  margin-left: 160px;
+  margin-left: 220px;
 }
 .dia-hora-embarque .linha_dia_hora {
   margin-left: 10px;
@@ -118,4 +126,75 @@
 .dia-hora-embarque .linha_dia_hora h1 {
   font-size: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dados_trajeto .linha_ {
+  position: relative;
+  padding-top: 10px;
+  height: 100px;
+  margin-block-end: 50px;
+}
+.dados_trajeto .linha_ input {
+  margin-top: 10px;
+  height: 40px;
+  width: 200px;
+  border-radius: 29px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
+  padding-left: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.linha_ {
+  display: flex;
+}
+
+.quilometragem,
+.valor_trecho {
+  margin-left: 5%;
+}
+
+.local_embarque input {
+  margin-top: 10px;
+  height: 40px;
+  width: 400px;
+  border-radius: 29px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
+  padding-left: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.local_desembarque input {
+  margin-top: 10px;
+  height: 40px;
+  width: 400px;
+  border-radius: 29px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
+  padding-left: 10px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.tipo_modal .linha_ {
+  position: relative;
+  height: 50px;
+}
+.tipo_modal .linha_ .linha_modal {
+  position: absolute;
+}
+.tipo_modal .linha_ .contratado_modal {
+  position: absolute;
+  margin-left: 100px;
+}
+.tipo_modal .linha_ input {
+  font-size: 11px;
+  height: 1.6em;
+  width: 1.6em;
+  position: absolute;
+  margin-top: 32px;
+}
+.tipo_modal .linha_ h2 {
+  position: absolute;
+  margin-left: 30px;
 }

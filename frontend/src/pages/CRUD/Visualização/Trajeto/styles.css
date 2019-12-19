@@ -8,6 +8,8 @@
   position: relative;
   bottom: 400px;
   left: 300px;
+  overflow: hidden;
+  overflow-y: auto;
 }
 
 .popUp_trajeto {

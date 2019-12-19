@@ -46,6 +46,9 @@ export default class Trajeto extends Component {
 
       row: [],
 
+      search: "",
+      busca: false,
+
       popUp: [],
 
       edit_modal_status: false,
@@ -61,31 +64,44 @@ export default class Trajeto extends Component {
   }
 
   loadData = async () => {
-    await setTimeout(() => {
-      api
-        .get("/paths")
-        .then(res => {
-          console.log(res);
-          const row = this.state.row;
-          for (var i = 0; i < res.data.length; i++) {
-            row.push(res.data[i]);
-          }
-          console.log(row);
-          return row;
-        })
-        .then(row => {
-          this.setState({ row: row, load: true });
-        })
-        .catch(err => {
-          if (err.message === "Request failed with status code 401") {
-            alert("Nível de acesso negado! Contate o administrador do sistema");
-            window.location.replace("/menu");
-          } else {
-            alert(err);
-            window.location.replace("/");
-          }
-        });
-    }, 1200);
+    api
+      .get("/paths")
+      .then(res => {
+        console.log(res);
+
+        this.setState({ row: res.data, load: true, busca: false });
+      })
+      .catch(err => {
+        if (err.message === "Request failed with status code 401") {
+          alert("Nível de acesso negado! Contate o administrador do sistema");
+          window.location.replace("/menu");
+        } else {
+          alert(err);
+          window.location.replace("/");
+        }
+      });
+  };
+
+  handleSearch = async () => {
+    if (this.state.busca) {
+      this.loadData();
+    } else {
+      const res = await api.get(`/paths/${this.state.search}`).catch(err => {
+        if (err.message === "Request failed with status code 401") {
+          alert("Nível de acesso negado! Contate o administrador do sistema");
+          window.location.replace("/menu");
+        } else {
+          alert(err);
+          window.location.replace("/");
+        }
+      });
+
+      console.log(res.data);
+
+      console.log(res.data);
+
+      this.setState({ row: res.data, busca: true });
+    }
   };
 
   loadModais = async () => {
@@ -303,6 +319,15 @@ export default class Trajeto extends Component {
     if (!error) window.location.reload();
   };
 
+  handleChange = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+
+    state[name] = ev.target.value;
+
+    this.setState(state);
+  };
+
   render() {
     const cidadesStyles = { width: "35%", marginRight: "3%", marginLeft: "5%" };
     const imgStyles = {
@@ -327,8 +352,12 @@ export default class Trajeto extends Component {
 
           <h1>Pesquisar Trajeto</h1>
           <div className="searchCity">
-            <input type="text" name="searchCidade" />
-            <img src={Lupa} alt="" />
+            <input type="text" name="search" onChange={this.handleChange} />
+            <img
+              src={this.state.busca ? Close : Lupa}
+              alt=""
+              onClick={this.handleSearch}
+            />
           </div>
 
           <div className="addCity">
@@ -349,7 +378,7 @@ export default class Trajeto extends Component {
                 overflow: "hidden"
               }}
             >
-              <div className="listCity">
+              <div className="listCity" style={{ overflowY: "auto" }}>
                 <div className="table">
                   <table>
                     <thead>
@@ -363,11 +392,11 @@ export default class Trajeto extends Component {
                     <tbody>
                       {this.state.row.map((c, i) => (
                         <tr key={i}>
-                          <td>{c.initCidade}</td>
-                          <td>{c.endCidade}</td>
-                          <td>{c.modal}</td>
-                          <td>{c.prestNome}</td>
-                          <td>
+                          <td style={{ padding: "1%" }}>{c.initCidade}</td>
+                          <td style={{ padding: "1%" }}>{c.endCidade}</td>
+                          <td style={{ padding: "1%" }}>{c.modal}</td>
+                          <td style={{ padding: "1%" }}>{c.prestNome}</td>
+                          <td style={{ padding: "1%" }}>
                             <img
                               src={Edit}
                               alt=""
