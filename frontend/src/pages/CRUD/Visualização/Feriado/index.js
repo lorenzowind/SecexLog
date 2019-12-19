@@ -142,8 +142,6 @@ export default class Feriado extends Component {
 
     state[name] = value;
 
-    console.log(name + " = " + value);
-
     this.setState(state);
   };
 
@@ -197,8 +195,6 @@ export default class Feriado extends Component {
       init: this.state.dias.length > 1 ? this.state.dias : this.state.diaInit,
       end: this.state.dias.length > 1 ? this.state.dias : this.state.diaEnd
     };
-
-    console.log(state);
 
     await api
       .put(`/holidays/${this.state.id}`, state)
