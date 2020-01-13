@@ -21,9 +21,6 @@ export default class Feriado extends Component {
 
   getInitialState() {
     return {
-      // holiday1: [],
-      // holiday2: [],
-      // holiday3: [],
 
       nacionais: [],
       especificos: [],
@@ -54,38 +51,21 @@ export default class Feriado extends Component {
 
     const data = res.data;
 
-    // const holiday1 = [];
-    // const holiday2 = [];
-    // const holiday3 = [];
-
     const especificos = [];
     const nacionais = [];
 
-    // let cont = 0;
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
 
-      // aux.type === "especifico"
-      //   ? especificos.push({ aux })
-      //   : nacionais.push({ aux });
+      console.log(aux)
 
-      especificos.push({ aux });
-
-      // if (cont >= 0 && cont < 3) {
-      //   holiday1.push({ aux });
-      //   cont++;
-      // } else if (cont >= 3 && cont < 7) {
-      //   holiday2.push({ aux });
-      //   cont++;
-      // } else if (cont >= 7 && cont <= 11) {
-      //   holiday3.push({ aux });
-      //   cont++;
-
-      //   if (cont >= 11) cont = 0;
-      // }
+      if(aux.nacional){
+        nacionais.push({aux})
+      }
+      else{
+        especificos.push({ aux });
+      }
     }
-
-    // this.setState({ holiday1, holiday2, holiday3 });
 
     this.setState({ nacionais, especificos, busca: false });
   };

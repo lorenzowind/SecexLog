@@ -230,6 +230,21 @@ export default class Trajeto extends Component {
   render() {
     const { dia } = this.state;
 
+    const theme = theme => ({
+      ...theme,
+      borderRadius: "50px",
+      colors: {
+        ...theme.colors,
+        primary25: '',
+        primary: '#b0b0b0',
+      },
+    });
+
+    const selectStyle={
+      control: styles => ({...styles, height: "43px",borderColor:"#b0b0b0"}),
+      option: styles => ({...styles})
+    }
+
     return (
       <div className="body">
         <Menu ativo={false} />
@@ -248,6 +263,8 @@ export default class Trajeto extends Component {
                     options={this.state.cidades}
                     name="cidadeIda"
                     onChange={this.handleCidadeIda}
+                    theme={theme}
+                    styles={selectStyle}
                   />
                   <img src={seta} alt="" />
                   <div className="volta">
@@ -259,6 +276,8 @@ export default class Trajeto extends Component {
                       options={this.state.cidades}
                       name="cidadeVolta"
                       onChange={this.handleCidadeVolta}
+                      theme={theme}
+                    styles={selectStyle}
                     />
                   </div>
                 </div>
@@ -274,6 +293,8 @@ export default class Trajeto extends Component {
                   options={this.state.modais}
                   name="modais"
                   onChange={this.handleModais}
+                  theme={theme}
+                    styles={selectStyle}
                 />
               </div>
 
@@ -292,6 +313,8 @@ export default class Trajeto extends Component {
                     options={this.state.prestador}
                     name="modais"
                     onChange={this.handlePrestador}
+                    theme={theme}
+                    styles={selectStyle}
                   />
 
                   <div className="dia-hora-embarque">
@@ -304,6 +327,8 @@ export default class Trajeto extends Component {
                         components={animatedComponents}
                         name="modais"
                         onChange={this.handleDia}
+                        theme={theme}
+                    styles={selectStyle}
                       />
                       <div className="hora">
                         <input

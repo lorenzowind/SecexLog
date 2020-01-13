@@ -32,7 +32,7 @@ module.exports = app => {
     .route("/users")
     // .all(AuthUser.authenticate())
     .get((UserController.index))
-    .post(UserController.store));
+    .post(UserController.store);
 
   app
     .route("/users/:data")

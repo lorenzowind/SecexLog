@@ -16,6 +16,7 @@ import "moment/locale/pt-br";
 import "./styles.css";
 
 import Notif from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
+import { styles } from "material-ui-pickers/wrappers/InlineWrapper";
 
 const animatedComponents = makeAnimated();
 
@@ -259,6 +260,21 @@ export default class CrudCidade extends Component {
   };
 
   render() {
+    const theme = theme => ({
+      ...theme,
+      borderRadius: "50px",
+      colors: {
+        ...theme.colors,
+        primary25: '',
+        primary: '#b0b0b0',
+      },
+    });
+
+    const selectStyle={
+      control: styles => ({...styles, height: "43px",borderColor:"#b0b0b0"}),
+      option: styles => ({...styles})
+    }
+    
     return (
       <div className="body" ref={this.childDiv}>
         <Menu ativo={false} />
@@ -310,6 +326,8 @@ export default class CrudCidade extends Component {
                   options={this.state.options}
                   name="cidadesRelacionadas"
                   onChange={this.handleCidadesRelacionadas}
+                  theme={theme}
+                  styles={selectStyle}
                 />
               </div>
 

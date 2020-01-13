@@ -325,13 +325,21 @@ export default class Trajeto extends Component {
       position: "relative",
       top: "3px"
     };
-    const diaStyle = { width: "30%", marginRight: "3%", marginTop: "2%" };
-    const horaStyle = {
-      width: "30%",
-      marginRight: "3%",
-      marginTop: "2%",
-      marginLeft: "1%"
-    };
+
+    const theme = theme => ({
+      ...theme,
+      borderRadius: "50px",
+      colors: {
+        ...theme.colors,
+        primary25: '',
+        primary: '#b0b0b0',
+      },
+    });
+
+    const selectStyle={
+      control: styles => ({...styles, height: "43px",borderColor:"#b0b0b0"}),
+      option: styles => ({...styles})
+    }
 
     const { dia } = this.state;
 
@@ -445,6 +453,8 @@ export default class Trajeto extends Component {
                     options={this.state.modais}
                     name="cidadesRelacionadas"
                     onChange={this.handleModais}
+                    theme={theme}
+                    styles={selectStyle}
                   />
                 ) : (
                   <div className="modal_trajeto">
@@ -463,6 +473,8 @@ export default class Trajeto extends Component {
                     options={this.state.prestadores}
                     name="cidadesRelacionadas"
                     onChange={this.handlePrestador}
+                    theme={theme}
+                    styles={selectStyle}
                   />
                 ) : (
                   <div className="prest_trajeto">
@@ -478,6 +490,8 @@ export default class Trajeto extends Component {
                     components={animatedComponents}
                     name="modais"
                     onChange={this.handleDia}
+                    theme={theme}
+                    styles={selectStyle}
                   />
                   <div className="horario">
                     <input

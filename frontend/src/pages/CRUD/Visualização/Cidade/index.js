@@ -309,6 +309,21 @@ export default class Cidade extends Component {
   };
 
   render() {
+    const theme = theme => ({
+      ...theme,
+      borderRadius: "50px",
+      colors: {
+        ...theme.colors,
+        primary25: '',
+        primary: '#b0b0b0',
+      },
+    });
+
+    const selectStyle={
+      control: styles => ({...styles, height: "43px",borderColor:"#b0b0b0"}),
+      option: styles => ({...styles})
+    }
+
     return (
       <div className="body">
         <div className="cadastroCidade">
@@ -488,6 +503,8 @@ export default class Cidade extends Component {
                     options={this.state.options}
                     name="cidadesRelacionadas"
                     onChange={this.handleCidadesRelacionadas}
+                    theme={theme}
+                    styles={selectStyle}
                   />
                 ) : (
                   this.state.cidadesRelacionadas0.map((c, i) => (
