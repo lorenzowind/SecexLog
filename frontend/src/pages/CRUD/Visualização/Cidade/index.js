@@ -228,7 +228,7 @@ export default class Cidade extends Component {
           cidades += cidadesRelacionadas[k].label + ", ";
         }
       }
-    } else {
+    } else if(!this.state.edit_status){
       for (var k = 0; k < this.state.cidadesRelacionadas0.length; k++) {
         if (k === this.state.cidadesRelacionadas0.length - 1) {
           cidades += this.state.cidadesRelacionadas0[k];
@@ -237,6 +237,7 @@ export default class Cidade extends Component {
         }
       }
     }
+    else cidades = "";
 
     const state = {
       id: this.state.popUp[0].value.id,
@@ -491,7 +492,8 @@ export default class Cidade extends Component {
                 ) : (
                   this.state.cidadesRelacionadas0.map((c, i) => (
                     <div className="cidades-relacionadas" key={i}>
-                      <h1>{i}</h1>
+                      {c === 'Nenhuma cidade relacionada' ? (<h1>{i}</h1>)
+                      : (<h1>{i+1}</h1>)}
                     </div>
                   ))
                 )}

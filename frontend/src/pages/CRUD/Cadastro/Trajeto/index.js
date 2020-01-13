@@ -157,12 +157,6 @@ export default class Trajeto extends Component {
     if (!error) window.location.reload();
   };
 
-  handleChange = ev => {
-    ev.preventDefault();
-    const value = ev.target.value;
-    this.setState({ tipo_modal: value });
-  };
-
   handleChangeText = ev => {
     const state = Object.assign({}, this.state);
     const name = ev.target.name;
@@ -228,6 +222,10 @@ export default class Trajeto extends Component {
   handleDia = dia_ => {
     this.setState({ dia_ });
   };
+
+  radioButtons(event) {
+    this.setState({tipo_modal: event.target.value})
+  }
 
   render() {
     const { dia } = this.state;
@@ -381,13 +379,12 @@ export default class Trajeto extends Component {
                   </div>
                   <div className="tipo_modal">
                     <h1>O modal é:</h1>
-                    <div className="linha_">
+                    <div className="linha_" onChange={this.radioButtons.bind(this)}>
                       <div className="linha_modal">
                         <input
                           type="radio"
                           name="safe"
                           value="linha"
-                          onChange={this.handleChange}
                           checked={this.state.tipo_modal === "linha"}
                         />
                         <h2>Linha</h2>
@@ -397,7 +394,6 @@ export default class Trajeto extends Component {
                           type="radio"
                           name="safe"
                           value="contratado"
-                          onChange={this.handleChange}
                           checked={this.state.tipo_modal === "contratado"}
                         />
                         <h2>Contratado</h2>

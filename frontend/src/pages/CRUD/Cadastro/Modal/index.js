@@ -140,6 +140,18 @@ export default class Modal extends Component {
     if (!error) window.location.reload();
   };
 
+  radioButtons(event) {
+    if(event.target.name === 'safe'){
+      this.setState({safe: event.target.value})
+    }
+    else if(event.target.name === 'rental'){
+      this.setState({rental: event.target.value})
+    }
+    else if(event.target.name === 'fast'){
+      this.setState({fast: event.target.value})
+    }
+  }
+
   render() {
     const footerStyles = {
       marginTop: "40px"
@@ -281,13 +293,13 @@ export default class Modal extends Component {
               />
             </div>
           </div>
+          <div className="radio" onChange={this.radioButtons.bind(this)}>
           <h2>Esse modal é seguro?</h2>
           <input
             type="radio"
             name="safe"
             value="sim"
             style={selectStyles}
-            onChange={this.handleChange}
             checked={this.state.safe === "sim"}
           />
           Sim
@@ -297,7 +309,6 @@ export default class Modal extends Component {
             name="safe"
             value="não"
             style={selectStyles}
-            onChange={this.handleChange}
             checked={this.state.safe === "não"}
           />
           Não
@@ -307,7 +318,6 @@ export default class Modal extends Component {
             name="rental"
             value="sim"
             style={selectStyles}
-            onChange={this.handleChange}
             checked={this.state.rental === "sim"}
           />
           Sim
@@ -327,7 +337,6 @@ export default class Modal extends Component {
             name="fast"
             value="sim"
             style={selectStyles}
-            onChange={this.handleChange}
             checked={this.state.fast === "sim"}
           />
           Sim
@@ -337,10 +346,10 @@ export default class Modal extends Component {
             name="fast"
             value="não"
             style={selectStyles}
-            onChange={this.handleChange}
             checked={this.state.fast === "não"}
           />
           Não
+          </div>
           <div className="footer" style={footerStyles}>
             <button onClick={this.onSubmit}></button>
           </div>

@@ -30,16 +30,16 @@ module.exports = app => {
 
   app
     .route("/users")
-    .all(AuthUser.authenticate())
-    .get(authAdmin(UserController.index))
-    .post(authAdmin(UserController.store));
+    // .all(AuthUser.authenticate())
+    .get((UserController.index))
+    .post(UserController.store));
 
   app
     .route("/users/:data")
-    .all(AuthUser.authenticate())
-    .get(authAdmin(UserController.show))
-    .put(authAdmin(UserController.update))
-    .delete(authAdmin(UserController.delete));
+    // .all(AuthUser.authenticate())
+    .get((UserController.show))
+    .put((UserController.update))
+    .delete((UserController.delete));
 
   /* ROTAS DE CIDADE [COM AUTENTICAÇÃO] */
 

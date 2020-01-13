@@ -154,6 +154,8 @@ export default class CrudUsuario extends Component {
       };
     }
 
+    console.log(state);
+
     const isValid = this.validateEdit(state);
     if (isValid) {
       await api.put(`/users/${this.state.id}`, state).catch(err => {

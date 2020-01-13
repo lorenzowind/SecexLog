@@ -242,12 +242,6 @@ export default class Trajeto extends Component {
     this.setState({ popUp: [] });
   };
 
-  handleChangeRadio = ev => {
-    ev.preventDefault();
-    const value = ev.target.value;
-    this.setState({ tipo_modal: value });
-  };
-
   handleChangeText = ev => {
     const state = Object.assign({}, this.state);
     const name = ev.target.name;
@@ -290,8 +284,8 @@ export default class Trajeto extends Component {
       cost: parseFloat(this.state.popUp[0].value.cost),
       departure: this.state.popUp[0].value.departure,
       arrival: this.state.popUp[0].value.arrival,
-      linha: this.state.linha,
-      contratado: this.state.contratado,
+      linha: linha,
+      contratado: contratado,
       duration: this.state.popUp[0].value.duration
     };
 
@@ -319,6 +313,10 @@ export default class Trajeto extends Component {
 
     this.setState(state);
   };
+
+  radioButtons(event) {
+    this.setState({tipo_modal: event.target.value})
+  }
 
   render() {
     const cidadesStyles = { width: "35%", marginRight: "3%", marginLeft: "5%" };
@@ -528,14 +526,13 @@ export default class Trajeto extends Component {
                       onChange={this.handleChangeValor}
                     />
                   </div>
-                  <div className="tipo_modal_">
+                  <div className="tipo_modal_" onChange={this.radioButtons.bind(this)}>
                     <h1>O modal é:</h1>
                     <div className="linha_modal_">
                       <input
                         type="radio"
                         name="linha"
                         value="linha"
-                        onChange={this.handleChangeRadio}
                         checked={this.state.tipo_modal === "linha"}
                       />
                     </div>
@@ -545,7 +542,6 @@ export default class Trajeto extends Component {
                         type="radio"
                         name="contratado"
                         value="contratado"
-                        onChange={this.handleChangeRadio}
                         checked={this.state.tipo_modal === "contratado"}
                       />
                     </div>

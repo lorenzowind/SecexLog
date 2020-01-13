@@ -128,7 +128,7 @@
 .imagem_modal {
   position: absolute;
   margin-top: 20px;
-  margin-left: 20px;
+  margin-left: 30px;
 }
 .imagem_modal h1 {
   font-size: 20px;
@@ -181,7 +181,7 @@
 .linha-4 .duracao {
   position: absolute;
   margin-top: 80px;
-  margin-left: 260px;
+  margin-left: 285px;
 }
 .linha-4 .duracao h1 {
   font-size: 15px;
@@ -233,8 +233,8 @@
 }
 .linha-4 .preco {
   position: absolute;
-  margin-top: 70px;
-  margin-left: 650px;
+  margin-top: 75px;
+  margin-left: 630px;
 }
 .linha-4 .botao_selecionar img {
   margin-top: 160px;
@@ -244,4 +244,33 @@
 }
 .linha-4 .botao_selecionar img:hover {
   cursor: pointer;
+}
+
+.tempoViagem {
+  position: absolute;
+  margin-top: 125px;
+  margin-left: 650px;
+}
+
+.tempoViagem h1 {
+  font-size: 20px;
+}
+
+.tipoModal {
+  position: absolute;
+  margin-top: 155px;
+  margin-left: 675px;
+}
+
+.tipoModal h1 {
+  font-size: 16px;
+  font-weight: normal;
+  color: #818181;
+}
+
+.cidadeSaida h1,
+.modalSaida h1,
+.cidadeDestino h1,
+.modalDestino h1 {
+  color: #633ef4;
 }

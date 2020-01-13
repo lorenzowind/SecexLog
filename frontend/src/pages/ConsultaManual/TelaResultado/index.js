@@ -130,7 +130,7 @@ export default class Tela_resultado extends React.Component {
                     <div className="linha-3">
                       <div className="cartao_trajeto">
                         <div className="imagem_modal">
-                          <h1>{t.modal}</h1>
+                          <h1>{t.prestNome}</h1>
                         </div>
                         <div className="linha-4">
                           <div className="horarioSaida">
@@ -145,7 +145,7 @@ export default class Tela_resultado extends React.Component {
                             <h1>{t.modal}</h1>
                           </div>
                           <div className="duracao">
-                            <h1>{t.duration}</h1>
+                            <h1>{t.duration} Km</h1>
                           </div>
                           <div className="barraIcone2">
                             <img src={barraIcone2} alt="" />
@@ -159,19 +159,15 @@ export default class Tela_resultado extends React.Component {
                           <div className="modalDestino">
                             <h1>{t.modal}</h1>
                           </div>
-                          <div className="idaIcone">
-                            <img src={idaIcone} alt="" />
-                          </div>
                           <div className="linha_vertical" />
                           <div className="preco">
                             <h1>R$ {t.cost}</h1>
                           </div>
-                          <div className="botao_selecionar">
-                            <img
-                              src={botaoSelecionar}
-                              alt=""
-                              onClick={this.evento_selecionar}
-                            />
+                          <div className="tempoViagem">
+                            <h1>{t.duration} horas</h1>
+                          </div>
+                          <div className="tipoModal">
+                            <h1>{t.modal}</h1>
                           </div>
                         </div>
                       </div>
