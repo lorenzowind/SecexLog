@@ -107,7 +107,7 @@
 .popUp_city h2 {
   margin-top: 20px;
   margin-bottom: 0;
-  margin-left: 8.4%;
+  margin-left: 13%;
 }
 
 .popUp_city h4 {
@@ -180,13 +180,5 @@
 }
 
 .cidades-relacionadas h1 {
-  font-size: 14px;
-}
-
-.feriados {
-  margin-left: 55px;
-}
-
-.feriados h1 {
   font-size: 14px;
 }

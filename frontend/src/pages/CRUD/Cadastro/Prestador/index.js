@@ -107,7 +107,11 @@ export default class Prestador extends Component {
     };
 
     return (
-      <div className="body" ref={this.childDiv}>
+      <div
+        className="body"
+        ref={this.childDiv}
+        style={{ marginBottom: "100px" }}
+      >
         <Menu ativo={false} />
         <div className="cadastro">
           <Header />

@@ -28,8 +28,12 @@
   margin-left: 5%;
 }
 
-.popUp_trajeto_ h4 {
+.linha_traj {
   margin-left: 5%;
+}
+
+.popUp_trajeto_ h4 {
+  margin-left: 8.4%;
   margin-block-end: 10px;
 }
 
@@ -133,14 +137,14 @@ select {
   cursor: pointer;
 }
 
-.popUp_trajeto_ .linha {
+.popUp_trajeto_ .linha_traj {
   position: relative;
   height: 110px;
 }
-.popUp_trajeto_ .linha .duracao {
+.popUp_trajeto_ .linha_traj .duracao {
   position: absolute;
 }
-.popUp_trajeto_ .linha .duracao h1 {
+.popUp_trajeto_ .linha_traj .duracao h1 {
   margin-top: 20px;
   margin-left: 8%;
   width: 60%;
@@ -148,80 +152,80 @@ select {
   font-size: 16px;
   font-weight: normal;
 }
-.popUp_trajeto_ .linha .duracao input {
+.popUp_trajeto_ .linha_traj .duracao input {
   width: 80px;
   margin-top: 30px;
   margin-left: 15%;
 }
-.popUp_trajeto_ .linha .quilometragem_ {
+.popUp_trajeto_ .linha_traj .quilometragem_ {
   position: absolute;
   margin-left: 35%;
 }
-.popUp_trajeto_ .linha .quilometragem_ h1 {
+.popUp_trajeto_ .linha_traj .quilometragem_ h1 {
   margin-top: 20px;
   width: 70%;
   text-align: center;
   font-size: 16px;
   font-weight: normal;
 }
-.popUp_trajeto_ .linha .quilometragem_ input {
+.popUp_trajeto_ .linha_traj .quilometragem_ input {
   width: 100px;
   margin-top: 30px;
   margin-left: 10%;
 }
 
-.popUp_trajeto_ .linha .valor {
+.popUp_trajeto_ .linha_traj .valor {
   position: absolute;
 }
-.popUp_trajeto_ .linha .valor {
+.popUp_trajeto_ .linha_traj .valor {
   position: absolute;
 }
-.popUp_trajeto_ .linha .valor h1 {
+.popUp_trajeto_ .linha_traj .valor h1 {
   margin-top: 30px;
   margin-left: 8%;
   font-size: 16px;
   font-weight: normal;
 }
-.popUp_trajeto_ .linha .valor input {
+.popUp_trajeto_ .linha_traj .valor input {
   width: 100px;
   margin-left: 10%;
   margin-top: 10px;
 }
-.popUp_trajeto_ .linha .tipo_modal_ {
+.popUp_trajeto_ .linha_traj .tipo_modal_ {
   position: absolute;
   margin-left: 45%;
   margin-top: 20px;
 }
-.popUp_trajeto_ .linha .tipo_modal_ h1 {
+.popUp_trajeto_ .linha_traj .tipo_modal_ h1 {
   font-size: 16px;
   font-weight: normal;
 }
-.popUp_trajeto_ .linha .tipo_modal_ .linha_modal_ {
+.popUp_trajeto_ .linha_traj .tipo_modal_ .linha_modal_ {
   position: absolute;
 }
-.popUp_trajeto_ .linha .tipo_modal_ h2 {
+.popUp_trajeto_ .linha_traj .tipo_modal_ h2 {
   position: absolute;
   margin-left: 25px;
   margin-top: 5px;
   font-size: 16px;
   font-weight: normal;
 }
-.popUp_trajeto_ .linha .tipo_modal_ .linha_modal_ input {
+.popUp_trajeto_ .linha_traj .tipo_modal_ .linha_modal_ input {
   position: absolute;
   margin-top: 8px;
 }
-.popUp_trajeto_ .linha .tipo_modal_ .contratado_modal_ {
+.popUp_trajeto_ .linha_traj .tipo_modal_ .contratado_modal_ {
   position: absolute;
   margin-top: 30px;
 }
-.popUp_trajeto_ .linha .tipo_modal_ h3 {
+.popUp_trajeto_ .linha_traj .tipo_modal_ h3 {
   position: absolute;
   margin-left: 25px;
   margin-top: 32px;
   font-size: 16px;
   font-weight: normal;
 }
-.popUp_trajeto_ .linha .tipo_modal_ .contratado_modal_ input {
+.popUp_trajeto_ .linha_traj .tipo_modal_ .contratado_modal_ input {
   position: absolute;
   margin-top: 6px;
 }

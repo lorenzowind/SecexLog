@@ -265,18 +265,26 @@ export default class CrudCidade extends Component {
       borderRadius: "50px",
       colors: {
         ...theme.colors,
-        primary25: '',
-        primary: '#b0b0b0',
-      },
+        primary25: "",
+        primary: "#b0b0b0"
+      }
     });
 
-    const selectStyle={
-      control: styles => ({...styles, height: "43px",borderColor:"#b0b0b0"}),
-      option: styles => ({...styles})
-    }
-    
+    const selectStyle = {
+      control: styles => ({
+        ...styles,
+        height: "43px",
+        borderColor: "#b0b0b0"
+      }),
+      option: styles => ({ ...styles })
+    };
+
     return (
-      <div className="body" ref={this.childDiv}>
+      <div
+        className="body"
+        ref={this.childDiv}
+        style={{ marginBottom: "100px" }}
+      >
         <Menu ativo={false} />
         <div className="cadastro">
           <HeaderCidade />

@@ -31,6 +31,9 @@ export default function MaterialUIPickers() {
           KeyboardButtonProps={{
             "aria-label": "change date"
           }}
+          InputProps={{
+            disableUnderline: true
+          }}
           locale="pt-BR"
         />
       </Grid>

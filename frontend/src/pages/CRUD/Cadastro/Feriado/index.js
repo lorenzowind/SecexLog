@@ -70,8 +70,8 @@ export default class Feriado extends Component {
     this.setState({ days: day });
 
     const state = {
-      cidade: this.state.nomeCidade === "Nacional"? "":this.state.nomeCidade,
-      nacional: this.state.nomeCidade === "Nacional"? true:false,
+      cidade: this.state.nomeCidade === "Nacional" ? "" : this.state.nomeCidade,
+      nacional: this.state.nomeCidade === "Nacional" ? true : false,
       nome: this.state.nome,
       init: this.state.initFeriado.toLocaleDateString(),
       end: this.state.endFeriado
@@ -111,7 +111,11 @@ export default class Feriado extends Component {
     };
 
     return (
-      <div className="body" ref={this.childDiv}>
+      <div
+        className="body"
+        ref={this.childDiv}
+        style={{ marginBottom: "100px" }}
+      >
         <Menu ativo={false} />
         <div className="cadastro">
           <Header />

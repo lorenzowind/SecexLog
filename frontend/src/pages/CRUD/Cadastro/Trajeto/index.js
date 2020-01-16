@@ -40,7 +40,8 @@ export default class Trajeto extends Component {
 
       prestador_modal: "",
 
-      dia_: null,
+      dias: [],
+      horas: [],
 
       dia: [],
       hora: [],
@@ -129,13 +130,21 @@ export default class Trajeto extends Component {
       contratado = 1;
     }
 
+    var { dias } = this.state;
+    var { horas } = this.state;
+
+    if (this.state.dia && this.state.hora) {
+      dias.push(this.state.dia);
+      horas.push(this.state.hora);
+    }
+
     const json = {
       initCidade: this.state.ida.value,
       endCidade: this.state.volta.value,
       modal: this.state.modal,
       prestNome: this.state.prestador_modal,
-      dia: this.state.dia,
-      hora: this.state.hora,
+      dia: dias,
+      hora: horas,
       cost: parseFloat(this.state.valor),
       mileage: parseFloat(this.state.quilometragem),
       arrival: this.state.local_embarque,
@@ -174,13 +183,16 @@ export default class Trajeto extends Component {
     else element[0].style.display = "none";
   };
 
-  maisClicked = async () => {
-    var hora = document.getElementsByClassName("hora");
-    const dia = this.state.dia;
-    const hora_ = this.state.hora;
-    dia.push(this.state.dia_.value);
-    hora_.push(hora[0].firstElementChild.value);
-    this.setState({ dia: dia, hora: hora_ });
+  maisClicked = () => {
+    const { dia } = this.state;
+    const { hora } = this.state;
+    const { dias } = this.state;
+    const { horas } = this.state;
+
+    dias.push(dia);
+    horas.push(hora);
+
+    this.setState({ dia: "", hora: "", dias, horas });
   };
 
   onChange = ev => {
@@ -219,34 +231,42 @@ export default class Trajeto extends Component {
     this.setState({ volta });
   };
 
-  handleDia = dia_ => {
-    this.setState({ dia_ });
+  handleDia = dia => {
+    dia = dia.value;
+
+    this.setState({ dia });
   };
 
+  handleChange = () => {};
+
   radioButtons(event) {
-    this.setState({tipo_modal: event.target.value})
+    this.setState({ tipo_modal: event.target.value });
   }
 
   render() {
-    const { dia } = this.state;
+    const { dias } = this.state;
 
     const theme = theme => ({
       ...theme,
       borderRadius: "50px",
       colors: {
         ...theme.colors,
-        primary25: '',
-        primary: '#b0b0b0',
-      },
+        primary25: "",
+        primary: "#707070"
+      }
     });
 
-    const selectStyle={
-      control: styles => ({...styles, height: "43px",borderColor:"#b0b0b0"}),
-      option: styles => ({...styles})
-    }
+    const selectStyle = {
+      control: styles => ({
+        ...styles,
+        height: "43px",
+        borderColor: "#707070"
+      }),
+      option: styles => ({ ...styles })
+    };
 
     return (
-      <div className="body">
+      <div className="body" style={{ marginBottom: "100px" }}>
         <Menu ativo={false} />
         <div className="cadastro">
           <HeaderTrajeto op={"Trajeto"} />
@@ -277,7 +297,7 @@ export default class Trajeto extends Component {
                       name="cidadeVolta"
                       onChange={this.handleCidadeVolta}
                       theme={theme}
-                    styles={selectStyle}
+                      styles={selectStyle}
                     />
                   </div>
                 </div>
@@ -294,7 +314,7 @@ export default class Trajeto extends Component {
                   name="modais"
                   onChange={this.handleModais}
                   theme={theme}
-                    styles={selectStyle}
+                  styles={selectStyle}
                 />
               </div>
 
@@ -328,7 +348,7 @@ export default class Trajeto extends Component {
                         name="modais"
                         onChange={this.handleDia}
                         theme={theme}
-                    styles={selectStyle}
+                        styles={selectStyle}
                       />
                       <div className="hora">
                         <input
@@ -336,14 +356,15 @@ export default class Trajeto extends Component {
                           placeholder="Horário"
                           name="hora"
                           id="embarqueHora"
+                          onChange={this.onChange}
                         />
                       </div>
                       <img src={mais} alt="" onClick={this.maisClicked} />
                     </div>
-                    {dia.map((i, index) => (
+                    {dias.map((i, index) => (
                       <div className="linha_dia_hora" key={i}>
                         <h1>
-                          {i}, {this.state.hora[index]}
+                          {i}, {this.state.horas[index]}
                         </h1>
                       </div>
                     ))}
@@ -404,12 +425,16 @@ export default class Trajeto extends Component {
                   </div>
                   <div className="tipo_modal">
                     <h1>O modal é:</h1>
-                    <div className="linha_" onChange={this.radioButtons.bind(this)}>
+                    <div
+                      className="linha_"
+                      onChange={this.radioButtons.bind(this)}
+                    >
                       <div className="linha_modal">
                         <input
                           type="radio"
                           name="safe"
                           value="linha"
+                          onChange={this.handleChange}
                           checked={this.state.tipo_modal === "linha"}
                         />
                         <h2>Linha</h2>
@@ -419,6 +444,7 @@ export default class Trajeto extends Component {
                           type="radio"
                           name="safe"
                           value="contratado"
+                          onChange={this.handleChange}
                           checked={this.state.tipo_modal === "contratado"}
                         />
                         <h2>Contratado</h2>

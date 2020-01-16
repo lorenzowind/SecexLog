@@ -164,7 +164,7 @@ export default class Cidade extends Component {
     };
 
     return (
-      <div className="body">
+      <div className="body" style={{ marginBottom: "100px" }}>
         <div className="cadastroCidade">
           <Header />
 

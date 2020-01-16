@@ -141,14 +141,12 @@ export default class Modal extends Component {
   };
 
   radioButtons(event) {
-    if(event.target.name === 'safe'){
-      this.setState({safe: event.target.value})
-    }
-    else if(event.target.name === 'rental'){
-      this.setState({rental: event.target.value})
-    }
-    else if(event.target.name === 'fast'){
-      this.setState({fast: event.target.value})
+    if (event.target.name === "safe") {
+      this.setState({ safe: event.target.value });
+    } else if (event.target.name === "rental") {
+      this.setState({ rental: event.target.value });
+    } else if (event.target.name === "fast") {
+      this.setState({ fast: event.target.value });
     }
   }
 
@@ -175,7 +173,11 @@ export default class Modal extends Component {
     };
 
     return (
-      <div className="body" ref={this.childDiv}>
+      <div
+        className="body"
+        ref={this.childDiv}
+        style={{ marginBottom: "100px" }}
+      >
         <Menu ativo={false} />
         <div className="cadastro">
           <Header />
@@ -294,61 +296,61 @@ export default class Modal extends Component {
             </div>
           </div>
           <div className="radio" onChange={this.radioButtons.bind(this)}>
-          <h2>Esse modal é seguro?</h2>
-          <input
-            type="radio"
-            name="safe"
-            value="sim"
-            style={selectStyles}
-            checked={this.state.safe === "sim"}
-          />
-          Sim
-          <br />
-          <input
-            type="radio"
-            name="safe"
-            value="não"
-            style={selectStyles}
-            checked={this.state.safe === "não"}
-          />
-          Não
-          <h2>Esse modal é de baixo custo?</h2>
-          <input
-            type="radio"
-            name="rental"
-            value="sim"
-            style={selectStyles}
-            checked={this.state.rental === "sim"}
-          />
-          Sim
-          <br />
-          <input
-            type="radio"
-            name="rental"
-            value="não"
-            style={selectStyles}
-            onChange={this.handleChange}
-            checked={this.state.rental === "não"}
-          />
-          Não
-          <h2>Esse modal é rápido?</h2>
-          <input
-            type="radio"
-            name="fast"
-            value="sim"
-            style={selectStyles}
-            checked={this.state.fast === "sim"}
-          />
-          Sim
-          <br />
-          <input
-            type="radio"
-            name="fast"
-            value="não"
-            style={selectStyles}
-            checked={this.state.fast === "não"}
-          />
-          Não
+            <h2>Esse modal é seguro?</h2>
+            <input
+              type="radio"
+              name="safe"
+              value="sim"
+              style={selectStyles}
+              checked={this.state.safe === "sim"}
+            />
+            Sim
+            <br />
+            <input
+              type="radio"
+              name="safe"
+              value="não"
+              style={selectStyles}
+              checked={this.state.safe === "não"}
+            />
+            Não
+            <h2>Esse modal é de baixo custo?</h2>
+            <input
+              type="radio"
+              name="rental"
+              value="sim"
+              style={selectStyles}
+              checked={this.state.rental === "sim"}
+            />
+            Sim
+            <br />
+            <input
+              type="radio"
+              name="rental"
+              value="não"
+              style={selectStyles}
+              onChange={this.handleChange}
+              checked={this.state.rental === "não"}
+            />
+            Não
+            <h2>Esse modal é rápido?</h2>
+            <input
+              type="radio"
+              name="fast"
+              value="sim"
+              style={selectStyles}
+              checked={this.state.fast === "sim"}
+            />
+            Sim
+            <br />
+            <input
+              type="radio"
+              name="fast"
+              value="não"
+              style={selectStyles}
+              checked={this.state.fast === "não"}
+            />
+            Não
           </div>
           <div className="footer" style={footerStyles}>
             <button onClick={this.onSubmit}></button>

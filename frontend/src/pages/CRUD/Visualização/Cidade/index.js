@@ -62,10 +62,14 @@ export default class Cidade extends Component {
     const city1 = [];
     const city2 = [];
     const city3 = [];
+    let options = [];
 
     let cont = 0;
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
+      let value = data[i].nome;
+      let label = data[i].nome;
+      options.push({ value, label });
 
       if (cont >= 0 && cont <= 3) {
         city1.push({ aux });
@@ -80,7 +84,7 @@ export default class Cidade extends Component {
       }
     }
 
-    this.setState({ city1, city2, city3, busca: false });
+    this.setState({ city1, city2, city3, busca: false, options: options });
   };
 
   handleSearch = async () => {
@@ -152,7 +156,6 @@ export default class Cidade extends Component {
     this.setState({ popUp: popUp, popUpStats: true });
 
     this.loadOpcoes();
-
     this.loadHolidays();
   };
 
@@ -164,45 +167,36 @@ export default class Cidade extends Component {
 
     const holidays = [];
 
+    console.log(res.data);
+
     for (var i = 0; i < res.data.length; i++) {
       if (this.state.popUp[0].value.id === res.data[i].city_id)
-        holidays.push(res.data[i].nome);
+        holidays.push(res.data[i].init + " - " + res.data[i].nome);
     }
 
-    if (holidays.length === 0) holidays.push("Nenhum feríado");
+    if (holidays.length === 0) holidays.push("Nenhum feriado");
 
     this.setState({ holidays: holidays });
   };
 
-  loadOpcoes = async () => {
+  loadOpcoes = () => {
     var relations = this.state.popUp[0].value.relatedCities.split(",");
 
-    const res = await api.get("/cities").catch(err => {
-      alert(err.message);
-      window.location.reload(false);
-    });
-
-    const options = [],
-      cidadesRelacionadas0 = [];
+    let cidadesRelacionadas0 = [];
 
     if (relations.length === 1 && relations[0] === "")
-      cidadesRelacionadas0.push("Nenhuma cidade relacionada");
+      cidadesRelacionadas0 = null;
     else {
       for (var i = 0; i < relations.length; i++) {
-        cidadesRelacionadas0.push(relations[i].trim());
+        let city = {
+          value: relations[i].trim(),
+          label: relations[i].trim()
+        };
+        cidadesRelacionadas0.push(city);
       }
     }
 
-    for (var i = 0; i < res.data.length; i++) {
-      let value = res.data[i].nome;
-      let label = res.data[i].nome;
-
-      if (this.state.popUp[0].value.name !== value)
-        options.push({ value, label });
-    }
-
     this.setState({
-      options: options,
       cidadesRelacionadas0: cidadesRelacionadas0
     });
   };
@@ -210,7 +204,7 @@ export default class Cidade extends Component {
   handleClose = ev => {
     ev.preventDefault();
     this.setState({ edit_status: false });
-    this.setState({ popUp: [] });
+    this.setState({ popUp: [], popUpStats: false });
   };
 
   handleEditSubmit = async ev => {
@@ -218,38 +212,47 @@ export default class Cidade extends Component {
 
     let cidadesRelacionadas = this.state.cidadesRelacionadas1;
     let cidades = "";
+    let state = [];
 
     if (cidadesRelacionadas) {
-      const length = cidadesRelacionadas.length;
-      for (var k = 0; k < length; k++) {
-        if (k === length - 1) {
-          cidades += cidadesRelacionadas[k].label;
-        } else {
-          cidades += cidadesRelacionadas[k].label + ", ";
+      if (!this.state.edit_status) {
+        for (var k = 0; k < this.state.cidadesRelacionadas1.length; k++) {
+          if (k === this.state.cidadesRelacionadas1.length - 1) {
+            if (cidadesRelacionadas[k].label !== this.state.popUp[0].value.name)
+              cidades += cidadesRelacionadas[k].label;
+          } else {
+            if (cidadesRelacionadas[k].label !== this.state.popUp[0].value.name)
+              cidades += cidadesRelacionadas[k].label + ", ";
+          }
         }
       }
-    } else if(!this.state.edit_status){
-      for (var k = 0; k < this.state.cidadesRelacionadas0.length; k++) {
-        if (k === this.state.cidadesRelacionadas0.length - 1) {
-          cidades += this.state.cidadesRelacionadas0[k];
-        } else {
-          cidades += this.state.cidadesRelacionadas0[k] + ", ";
-        }
-      }
-    }
-    else cidades = "";
 
-    const state = {
-      id: this.state.popUp[0].value.id,
-      nome: this.state.popUp[0].value.name,
-      relations: cidades,
-      initDataCheia: this.state.dateInit,
-      endDataCheia: this.state.dateEnd,
-      cBase: this.state.popUp[0].value.cBase,
-      cAuditada: this.state.popUp[0].value.cAuditada,
-      obsInterdicao: this.state.popUp[0].value.obsInterdicao,
-      obsCidade: this.state.popUp[0].value.obsCidade
-    };
+      if (cidades[cidades.length - 2] === ",") {
+        cidades = cidades.substr(0, cidades.length - 3);
+      }
+      state = {
+        id: this.state.popUp[0].value.id,
+        nome: this.state.popUp[0].value.name,
+        relations: cidades.trim(),
+        initDataCheia: this.state.dateInit,
+        endDataCheia: this.state.dateEnd,
+        cBase: this.state.popUp[0].value.cBase,
+        cAuditada: this.state.popUp[0].value.cAuditada,
+        obsInterdicao: this.state.popUp[0].value.obsInterdicao,
+        obsCidade: this.state.popUp[0].value.obsCidade
+      };
+    } else {
+      state = {
+        id: this.state.popUp[0].value.id,
+        nome: this.state.popUp[0].value.name,
+        initDataCheia: this.state.dateInit,
+        endDataCheia: this.state.dateEnd,
+        cBase: this.state.popUp[0].value.cBase,
+        cAuditada: this.state.popUp[0].value.cAuditada,
+        obsInterdicao: this.state.popUp[0].value.obsInterdicao,
+        obsCidade: this.state.popUp[0].value.obsCidade
+      };
+    }
 
     let error = null;
 
@@ -314,15 +317,24 @@ export default class Cidade extends Component {
       borderRadius: "50px",
       colors: {
         ...theme.colors,
-        primary25: '',
-        primary: '#b0b0b0',
-      },
+        primary25: "",
+        primary: "#707070"
+      }
     });
 
-    const selectStyle={
-      control: styles => ({...styles, height: "43px",borderColor:"#b0b0b0"}),
-      option: styles => ({...styles})
-    }
+    const selectStyle = {
+      control: styles => ({
+        ...styles,
+        height: "43px",
+        borderColor: "#707070",
+        padding: "0",
+        overflowY: "scroll",
+        "::-webkit-scrollbar": {
+          display: "none"
+        }
+      }),
+      option: styles => ({ ...styles })
+    };
 
     return (
       <div className="body">
@@ -376,7 +388,9 @@ export default class Cidade extends Component {
                                 alt=""
                                 onClick={() => {
                                   const content = c;
-                                  this.editPopUp(content);
+                                  if (!this.state.popUpStats) {
+                                    this.editPopUp(content);
+                                  }
                                 }}
                               />
                             </td>
@@ -478,49 +492,28 @@ export default class Cidade extends Component {
                   <h4 style={{ position: "absolute" }}>
                     {c.text.cidadesRelacionadas}
                   </h4>
-                  <img
-                    src={Edit}
-                    alt=""
-                    style={{
-                      height: "18px",
-                      width: "18px",
-                      marginLeft: "210px",
-                      marginTop: "15px",
-                      position: "absolute",
-                      cursor: "pointer"
-                    }}
-                    onClick={this.handleEditIcon}
-                  />
                 </div>
-                {this.state.edit_status ? (
-                  <Select
-                    className="select"
-                    closeMenuOnSelect={false}
-                    placeholder=""
-                    components={animatedComponents}
-                    isMulti
-                    value={this.state.options_selected}
-                    options={this.state.options}
-                    name="cidadesRelacionadas"
-                    onChange={this.handleCidadesRelacionadas}
-                    theme={theme}
-                    styles={selectStyle}
-                  />
-                ) : (
-                  this.state.cidadesRelacionadas0.map((c, i) => (
-                    <div className="cidades-relacionadas" key={i}>
-                      {c === 'Nenhuma cidade relacionada' ? (<h1>{i}</h1>)
-                      : (<h1>{i+1}</h1>)}
-                    </div>
-                  ))
-                )}
-                <h4>{c.text.feriados}</h4>
+                <Select
+                  className="select"
+                  closeMenuOnSelect={false}
+                  placeholder=""
+                  components={animatedComponents}
+                  isMulti
+                  defaultValue={this.state.cidadesRelacionadas0}
+                  value={this.state.options_selected}
+                  options={this.state.options}
+                  name="cidadesRelacionadas"
+                  onChange={this.handleCidadesRelacionadas}
+                  theme={theme}
+                  styles={selectStyle}
+                />
+                <h4 style={{ marginBottom: "4.2%" }}>{c.text.feriados}</h4>
                 {this.state.holidays.map(i => (
                   <div className="feriados" key={i}>
-                    <h1>{i}</h1>
+                    <h4>{i}</h4>
                   </div>
                 ))}
-                <h4>{c.text.cheia}</h4>
+                <h4 style={{ marginTop: "9.3%" }}>{c.text.cheia}</h4>
                 <div className="flood">
                   <div className="flood_">
                     <div className="init">
@@ -530,6 +523,9 @@ export default class Cidade extends Component {
                           disableToolbar
                           variant="inline"
                           value={this.state.dateInit}
+                          InputProps={{
+                            disableUnderline: true
+                          }}
                           onChange={this.handleDateChangeInit}
                         />
                       </MuiPickersUtilsProvider>
@@ -542,6 +538,9 @@ export default class Cidade extends Component {
                           disableToolbar
                           variant="inline"
                           value={this.state.dateEnd}
+                          InputProps={{
+                            disableUnderline: true
+                          }}
                           onChange={this.handleDateChangeEnd}
                         />
                       </MuiPickersUtilsProvider>

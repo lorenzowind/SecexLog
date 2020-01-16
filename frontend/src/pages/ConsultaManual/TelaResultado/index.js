@@ -54,12 +54,15 @@ export default class Tela_resultado extends React.Component {
   validation = () => {
     const aux = this.state.trajetos;
 
+    console.log(aux);
+
     for (var i = 0; i < this.state.trajetos.length; i++) {
       for (var j = 0; j < this.state.paths.length; j++) {
         if (
           aux[i].cidadeIda === this.state.paths[j].initCidade &&
           aux[i].cidadeVolta === this.state.paths[j].endCidade
         ) {
+          console.log("teste");
           aux[i].exists = true;
           aux[i].path_id.push(this.state.paths[j]);
         }
@@ -93,8 +96,8 @@ export default class Tela_resultado extends React.Component {
               <img src={barraIcone} alt="" />
             </div>
           </div>
-          {this.state.trajetos.map(i => (
-            <div className="trajeto" key={i.cidadeIda + "-" + i.cidadeVolta}>
+          {this.state.trajetos.map((i, index) => (
+            <div className="trajeto" key={index}>
               {i.exists ? (
                 <div className="trajeto_">
                   <div className="linha-2">
@@ -126,8 +129,8 @@ export default class Tela_resultado extends React.Component {
                       <img src={filtroIcone} alt="" />
                     </div>
                   </div>
-                  {i.path_id.map(t => (
-                    <div className="linha-3">
+                  {i.path_id.map((t, index) => (
+                    <div className="linha-3" key={index}>
                       <div className="cartao_trajeto">
                         <div className="imagem_modal">
                           <h1>{t.prestNome}</h1>
