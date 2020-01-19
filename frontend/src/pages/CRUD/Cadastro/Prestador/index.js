@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import InputMask from "react-input-mask";
 
 import Menu from "../../../../components/Menu/MenuLateral/index";
 import Header from "../components/HeaderPrestador/index";
@@ -127,8 +128,8 @@ export default class Prestador extends Component {
           <div className="dados">
             <div>
               <h2>Telefone</h2>
-              <input
-                type="text"
+              <InputMask 
+                mask="(99) 99999-9999" 
                 name="telefone"
                 style={inputStyles}
                 onChange={this.handleChange}
@@ -138,7 +139,7 @@ export default class Prestador extends Component {
             <div>
               <h2>E-mail</h2>
               <input
-                type="text"
+                type="email"
                 name="email"
                 style={inputStyles}
                 onChange={this.handleChange}
@@ -175,9 +176,9 @@ export default class Prestador extends Component {
                 <option defaultValue="cpf">CPF</option>
                 <option value="cnpj">CNPJ</option>
               </select>
-
-              <input
-                type="text"
+              
+              <InputMask 
+                mask={this.state.tipoDado === "CPF" ? "999.999.999-99" : "99.999.999/9999-99"}
                 name="dadoPrestador"
                 style={inputStyles}
                 onChange={this.handleChange}

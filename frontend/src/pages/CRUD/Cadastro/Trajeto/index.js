@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import CurrencyInput from "react-currency-masked-input";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -352,7 +353,7 @@ export default class Trajeto extends Component {
                       />
                       <div className="hora">
                         <input
-                          type="text"
+                          type="time"
                           placeholder="Horário"
                           name="hora"
                           id="embarqueHora"
@@ -374,7 +375,7 @@ export default class Trajeto extends Component {
                       <div className="duracao_trecho">
                         <h1>Duração do trecho</h1>
                         <input
-                          type="text"
+                          type="number"
                           placeholder=""
                           name="duracao"
                           id="duracao"
@@ -384,7 +385,7 @@ export default class Trajeto extends Component {
                       <div className="quilometragem">
                         <h1>Quilometragem (Km)</h1>
                         <input
-                          type="text"
+                          type="number"
                           placeholder=""
                           name="quilometragem"
                           id="quilometragem"
@@ -393,9 +394,7 @@ export default class Trajeto extends Component {
                       </div>
                       <div className="valor_trecho">
                         <h1>Valor do Trecho</h1>
-                        <input
-                          type="text"
-                          placeholder=""
+                        <CurrencyInput 
                           name="valor"
                           id="valor"
                           onChange={this.handleChangeText}
@@ -405,11 +404,13 @@ export default class Trajeto extends Component {
                   </div>
                   <div className="local_embarque">
                     <h1>Local de Embarque</h1>
+
                     <input
                       type="text"
                       placeholder=""
                       name="local_embarque"
                       id="local_embarque"
+                      onKeyDown='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'
                       onChange={this.handleChangeText}
                     />
                   </div>
@@ -420,6 +421,7 @@ export default class Trajeto extends Component {
                       placeholder=""
                       name="local_desembarque"
                       id="local_desembarque"
+                      onKeyDown='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'
                       onChange={this.handleChangeText}
                     />
                   </div>
