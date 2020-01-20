@@ -32,7 +32,7 @@ export default class CrudCidade extends Component {
       nomeCidade: "",
       opCidadeBase: false,
       opCidadeAuditada: false,
-      latitude: "",
+      latitute: "",
       longitude: "",
       cidadesRelacionadas: null,
       initDataCheia: "",
@@ -87,7 +87,7 @@ export default class CrudCidade extends Component {
       nome: this.state.nomeCidade,
       cBase: this.state.opCidadeBase,
       cAuditada: this.state.opCidadeAuditada,
-      latitude: this.state.latitude,
+      latitute: this.state.latitute,
       longitude: this.state.longitude,
       relations: cidades,
       initDataCheia: this.state.initDataCheia.toString(),
@@ -359,7 +359,7 @@ export default class CrudCidade extends Component {
                   <input
                     type="text"
                     id="text"
-                    name="latitude"
+                    name="latitute"
                     onChange={this.onChange}
                     style={{ width: "60%" }}
                   />

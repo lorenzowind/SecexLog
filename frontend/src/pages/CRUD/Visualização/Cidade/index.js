@@ -180,22 +180,29 @@ export default class Cidade extends Component {
   };
 
   loadOpcoes = () => {
-    var relations = this.state.popUp[0].value.relatedCities.split(",");
-
     let cidadesRelacionadas0 = [];
+    let flag = 0;
 
-    if (relations.length === 1 && relations[0] === "")
-      cidadesRelacionadas0 = null;
-    else {
-      for (var i = 0; i < relations.length; i++) {
-        let city = {
-          value: relations[i].trim(),
-          label: relations[i].trim()
-        };
-        cidadesRelacionadas0.push(city);
+    if (this.state.popUp[0].value.relatedCities !== null) {
+      let relations = this.state.popUp[0].value.relatedCities.split(",");
+
+      if (relations.length === 1 && relations[0] === "") {
+        cidadesRelacionadas0 = null;
+        flag = 1;
       }
-    }
 
+      else {
+        for (var i = 0; i < relations.length; i++) {
+          let city = {
+            value: relations[i].trim(),
+            label: relations[i].trim()
+          };
+          cidadesRelacionadas0.push(city);
+        }
+      }
+
+    }
+  
     this.setState({
       cidadesRelacionadas0: cidadesRelacionadas0
     });
