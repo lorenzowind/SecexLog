@@ -1,8 +1,9 @@
+require('dotenv/config');
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const routes = require("./routes");
-const { server } = require('./.env');
 
 const app = express();
 
@@ -13,8 +14,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 routes(app);
 
-app.listen(server.port, () => {
+app.listen(process.env.SERVER_PORT, () => {
   console.log(
-    `Backend executado e rodando em ${server.host} na porta ${server.port}\nCTRL + C para parar`
+    `Backend executado e rodando em ${process.env.SERVER_HOST} na porta ${process.env.SERVER_PORT}\nCTRL + C para parar`
   );
 });

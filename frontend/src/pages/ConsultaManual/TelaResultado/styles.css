@@ -1,6 +1,8 @@
 .tela-resultado_ {
   padding-top: 100px;
   padding-left: 15%;
+  margin: 0 auto;
+  margin-bottom: 100px;
 }
 
 .linha-1 {
@@ -8,15 +10,21 @@
   height: 150px;
 }
 .linha-1 .voltar {
+  width: 80px;
+  height: 80px;
   position: absolute;
   margin-top: 2%;
-}
-.linha-1 .voltar img:hover {
+  border-radius: 21px;
+  border: solid 1px #e6dfdf;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
+
 .linha-1 .resultado {
   position: absolute;
-  margin-left: 300px;
+  margin-left: 260px;
   margin-top: 40px;
 }
 .linha-1 .barra {
@@ -110,19 +118,94 @@
   margin-top: 60px;
   margin-left: 950px;
 }
-.linha-3 {
-  position: relative;
-  height: 300px;
-  width: 500px;
-}
-.linha-3 .cartao_trajeto {
-  position: absolute;
-  width: 800px;
-  height: 250px;
-  margin-left: 100px;
+
+.cartao_trajeto {
+  width: 80%;
+  max-width: 1028px;
+  height: 230px;
+  min-height: 27%;
   border-radius: 38px;
-  border: solid 1px #3dbec6;
+  border: solid 1px #707070;
   background-color: #ffffff;
+  display: flex;
+  overflow: hidden;
+}
+
+.cartao_trajeto:hover {
+  border: 1px solid #3dbec6;
+  transition: 0.2s;
+}
+
+.cartao_trajeto:hover hr {
+  border: 1px solid #40ccd6;
+  transition: 0.2s;
+}
+
+.cartao_trajeto h1 {
+  font-size: 24px;
+}
+
+.resultSaida {
+  text-align: right;
+}
+
+.resultIda0 .cidade h1#purple,
+.resultIda0 .modal h1#purple {
+  color: #633ef4;
+}
+
+.resultIda1 .purple h1 {
+  color: #633ef4;
+}
+
+.resultDestino {
+  text-align: left;
+  width: 200px;
+}
+
+.idaVoltaIcon img {
+  position: relative;
+  right: 40px;
+}
+
+.resultCenter {
+  text-align: center;
+  position: relative;
+  bottom: 7px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.vertical {
+  border: solid 1px #a0a0a0;
+}
+
+.cartao_trajeto img#button {
+  width: 80%;
+  margin-top: 25%;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.travelData h1 {
+  font-size: 18px;
+}
+
+.resultIda0 {
+  margin-bottom: 5%;
+}
+
+.cidade h1,
+.modal h1 {
+  font-size: 16px;
+  color: #9c9c9c;
+  font-weight: 550;
+}
+
+.preco h1 {
+  font-size: 32px;
+  margin-bottom: 8%;
+  margin-top: 20%;
 }
 
 .imagem_modal {
@@ -149,7 +232,7 @@
   margin-left: 400px;
 }
 
-.linha-4 {
+/* .linha-4 {
   position: relative;
 }
 .linha-4 .horarioSaida {
@@ -273,4 +356,4 @@
 .cidadeDestino h1,
 .modalDestino h1 {
   color: #633ef4;
-}
+} */

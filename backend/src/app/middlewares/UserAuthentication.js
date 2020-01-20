@@ -1,10 +1,13 @@
+require('dotenv/config');
+
 const passport = require('passport');
 const passportJwt = require('passport-jwt');
 const Sequelize = require('sequelize');
 
 const { User } = require('../models');
-const { authSecret } = require('../../.env');
 const { Strategy, ExtractJwt } = passportJwt;
+
+const authSecret = process.env.AUTH_SECRET
 
 module.exports = () => {
 

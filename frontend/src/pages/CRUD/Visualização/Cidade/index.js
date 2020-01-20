@@ -326,6 +326,7 @@ export default class Cidade extends Component {
       control: styles => ({
         ...styles,
         height: "43px",
+        width: "100%",
         borderColor: "#707070",
         padding: "0",
         overflowY: "scroll",
@@ -507,7 +508,29 @@ export default class Cidade extends Component {
                   theme={theme}
                   styles={selectStyle}
                 />
-                <h4 style={{ marginBottom: "4.2%" }}>{c.text.feriados}</h4>
+                <div className="coordenadas">
+                  <div className="latitude" style={{ marginLeft: "4.4%" }}>
+                    <h4>Latitude</h4>
+                    <input
+                      type="text"
+                      name="latitude"
+                      onChange={this.handleChange}
+                      style={{ width: "60%" }}
+                    />
+                  </div>
+                  <div className="longitude">
+                    <h4>Longitude</h4>
+                    <input
+                      type="text"
+                      name="longitude"
+                      style={{ width: "60%" }}
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </div>
+                <h4 style={{ marginBottom: "4.2%", marginTop: "6%" }}>
+                  {c.text.feriados}
+                </h4>
                 {this.state.holidays.map(i => (
                   <div className="feriados" key={i}>
                     <h4>{i}</h4>

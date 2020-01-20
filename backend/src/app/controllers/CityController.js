@@ -8,7 +8,11 @@ const Operation = Sequelize.Op;
 module.exports = {
   //Show all cities
   index(req, res) {
-    City.findAll()
+    City.findAll({
+      order: [
+        ['nome','ASC']
+      ]
+    })
       .then(cities => res.json(cities))
       .catch(err => { console.log("\n"+err+"\n"); res.status(500).send(err) });
   },

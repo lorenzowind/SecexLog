@@ -9,7 +9,9 @@ const Operation = Sequelize.Op;
 
 module.exports = {
   index(req, res) {
-    Holiday.findAll()
+    Holiday.findAll({
+      order: [["nome", "ASC"]]
+    })
       .then(holidays => res.json(holidays))
       .catch(err => res.status(500).send(err));
   },
@@ -29,7 +31,7 @@ module.exports = {
         }
       });
 
-      existsOrError(city, "A cidade não existe");
+      // existsOrError(city, "A cidade não existe");
       delete holiday.cidade;
       holiday.city_id = city.id;
     } catch (msg) {

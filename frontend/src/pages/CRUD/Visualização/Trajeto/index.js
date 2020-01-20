@@ -271,13 +271,19 @@ export default class Trajeto extends Component {
     this.setState(state);
   };
   handleChangeDuracao = ev => {
-    this.state.popUp[0].value.duration = ev.target.value;
+    const popUp = this.state.popUp;
+    popUp[0].value.duration = ev.target.value;
+    this.setState({ popUp: popUp });
   };
   handleChangeQuilometragem = ev => {
+    const popUp = this.state.popUp;
     this.state.popUp[0].value.mileage = ev.target.value;
+    this.setState({ popUp: popUp });
   };
   handleChangeValor = ev => {
+    const popUp = this.state.popUp;
     this.state.popUp[0].value.cost = ev.target.value;
+    this.setState({ popUp: popUp });
   };
 
   handleEditSubmit = async ev => {

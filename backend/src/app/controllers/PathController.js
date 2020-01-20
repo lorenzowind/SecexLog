@@ -170,10 +170,7 @@ module.exports = {
               ...path
             })
             .then(_ => res.status(204).send())
-            .catch(err => {
-              res.status(500).send(err);
-              console.log(err);
-            });
+            .catch(err => res.status(500).send(err));
         }
       })
       .catch(err => res.status(500).send(err));

@@ -1,9 +1,12 @@
+require('dotenv/config');
+
 const Sequelize = require('sequelize');
 const jwt = require('jwt-simple');
 
 const { User } = require('../../models');
-const { authSecret } = require('../../../.env');
 const { comparePsw } = require('../../utils/ProcessPassword');
+
+const authSecret  = process.env.AUTH_SECRET
 
 module.exports = {
 

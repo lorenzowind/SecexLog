@@ -32,6 +32,8 @@ export default class CrudCidade extends Component {
       nomeCidade: "",
       opCidadeBase: false,
       opCidadeAuditada: false,
+      latitude: "",
+      longitude: "",
       cidadesRelacionadas: null,
       initDataCheia: "",
       endDataCheia: "",
@@ -85,6 +87,8 @@ export default class CrudCidade extends Component {
       nome: this.state.nomeCidade,
       cBase: this.state.opCidadeBase,
       cAuditada: this.state.opCidadeAuditada,
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
       relations: cidades,
       initDataCheia: this.state.initDataCheia.toString(),
       endDataCheia: this.state.endDataCheia.toString(),
@@ -279,6 +283,16 @@ export default class CrudCidade extends Component {
       option: styles => ({ ...styles })
     };
 
+    const related = {
+      control: styles => ({
+        ...styles,
+        height: "43px",
+        width: "91%",
+        borderColor: "#b0b0b0"
+      }),
+      option: styles => ({ ...styles })
+    };
+
     return (
       <div
         className="body"
@@ -335,8 +349,31 @@ export default class CrudCidade extends Component {
                   name="cidadesRelacionadas"
                   onChange={this.handleCidadesRelacionadas}
                   theme={theme}
-                  styles={selectStyle}
+                  styles={related}
                 />
+              </div>
+
+              <div className="coordenadas">
+                <div className="latitude">
+                  <h2>Latitude</h2>
+                  <input
+                    type="text"
+                    id="text"
+                    name="latitude"
+                    onChange={this.onChange}
+                    style={{ width: "60%" }}
+                  />
+                </div>
+                <div className="longitude">
+                  <h2>Longitude</h2>
+                  <input
+                    type="text"
+                    id="text"
+                    name="longitude"
+                    style={{ width: "70%" }}
+                    onChange={this.onChange}
+                  />
+                </div>
               </div>
 
               <div className="flood">

@@ -33,6 +33,8 @@ class Trajeto {
     this.dataIda = dataIda_;
     this.dataVolta = dataVolta_;
     this.exists = exists_;
+    this.price = 0.0;
+    this.modal = null;
     this.path_id = path_id_;
   }
 }

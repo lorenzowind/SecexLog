@@ -15,6 +15,10 @@
   border: 1px solid #b0b0b0;
 }
 
+.coordenadas {
+  display: flex;
+}
+
 .opcao-modal input#option1 {
   width: 1.6em;
   height: 1.6em;
