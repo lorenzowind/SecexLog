@@ -7,10 +7,10 @@ import {
   KeyboardDatePicker
 } from "@material-ui/pickers";
 
-export default function MaterialUIPickers() {
+export default function MaterialUIPickers(props) {
   var now = new Date();
   let date =
-    now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + (now.getDate() + 1);
+    now.getFullYear() + "-" + (now.getMonth() + 1) + "-" + (now.getDate() + props.sum);
   const [selectedDate, setSelectedDate] = React.useState(new Date(date));
 
   const handleDateChange = date => {

@@ -360,11 +360,11 @@ export default class Tela_inicial extends React.Component {
 
               <div className="ida1">
                 <div>
-                  <DatePicker getDay={this.getDay.bind(this)} />
+                  <DatePicker getDay={this.getDay.bind(this)} sum={0} />
                 </div>
                 <hr />
                 <div>
-                  <DatePicker getDay={this.getDay.bind(this)} />
+                  <DatePicker getDay={this.getDay.bind(this)} sum={1} />
                 </div>
               </div>
               {this.operacao()}
