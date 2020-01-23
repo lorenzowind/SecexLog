@@ -4,6 +4,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 import Header from "../../components/HeaderTrajeto/index";
+import CurrencyInput from "../../../CRUD/Cadastro/components/CurrencyInput"
 
 import api from "../../../../services/api";
 
@@ -526,7 +527,7 @@ export default class Trajeto extends Component {
                   />
                   <div className="horario">
                     <input
-                      type="text"
+                      type="time"
                       placeholder="Horário"
                       name="hora"
                       id="embarqueHora"
@@ -549,7 +550,7 @@ export default class Trajeto extends Component {
                   <div className="duracao">
                     <h1>Duração do Trecho</h1>
                     <input
-                      type="text"
+                      type="number"
                       defaultValue={c.value.duration}
                       onChange={this.handleChangeDuracao}
                     />
@@ -557,7 +558,7 @@ export default class Trajeto extends Component {
                   <div className="quilometragem_">
                     <h1>Quilometragem (Km)</h1>
                     <input
-                      type="text"
+                      type="number"
                       defaultValue={c.value.mileage}
                       onChange={this.handleChangeQuilometragem}
                     />
@@ -566,8 +567,7 @@ export default class Trajeto extends Component {
                 <div className="linha_traj">
                   <div className="valor">
                     <h1>Valor do Trecho</h1>
-                    <input
-                      type="text"
+                    <CurrencyInput 
                       defaultValue={c.value.cost}
                       onChange={this.handleChangeValor}
                     />

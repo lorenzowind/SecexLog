@@ -70,10 +70,7 @@ export default class Feriado extends Component {
     this.setState({ days: day });
 
     const state = {
-      cidade:
-        this.state.nomeCidade === "Nacional"
-          ? "Nacional"
-          : this.state.nomeCidade,
+      cidade: this.state.nomeCidade,
       national: this.state.nomeCidade === "Nacional" ? true : false,
       nome: this.state.nome,
       init: this.state.initFeriado.toLocaleDateString(),
@@ -81,8 +78,6 @@ export default class Feriado extends Component {
         ? this.state.endFeriado.toLocaleDateString()
         : this.state.initFeriado.toLocaleDateString()
     };
-
-    console.log(state);
 
     await api
       .post("/holidays", state)
@@ -137,12 +132,13 @@ export default class Feriado extends Component {
             required
           >
             <option defaultValue="selected">Selecione uma cidade</option>
-            <option value="Nacional">Nacional</option>
-            {this.state.cidades.map((c, i) => (
-              <option key={i} value={c.nome}>
-                {c.nome}
-              </option>
-            ))}
+            {this.state.cidades.map((c, i) => {
+              if(c.nome !== "Nacional") {
+                return <option key={i} value={c.nome}>
+                  {c.nome}
+                </option>
+              }
+            })}
           </select>
 
           <h2>Nome do Feriado</h2>

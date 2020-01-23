@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import InputMask from "react-input-mask";
 
 import Header from "../../components/HeaderPrestador/index";
 
@@ -250,8 +251,8 @@ export default class Cidade extends Component {
               />
 
               <h4>{c.text.telefone}</h4>
-              <input
-                type="text"
+              <InputMask
+                mask="(99) 99999-9999"
                 name="telefone"
                 defaultValue={this.state.telefone}
                 style={inputStyles}

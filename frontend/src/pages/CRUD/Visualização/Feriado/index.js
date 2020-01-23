@@ -56,7 +56,7 @@ export default class Feriado extends Component {
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
 
-      if (aux.nacional) {
+      if (aux.national) {
         nacionais.push({ aux });
       } else {
         especificos.push({ aux });

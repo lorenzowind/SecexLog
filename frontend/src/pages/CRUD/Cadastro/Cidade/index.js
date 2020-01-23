@@ -121,7 +121,9 @@ export default class CrudCidade extends Component {
       let value = res.data[i].nome;
       let label = res.data[i].nome;
 
-      options.push({ value, label });
+      if (label !== "Nacional") {
+        options.push({ value, label });
+      }
     }
 
     this.setState({ options: options });

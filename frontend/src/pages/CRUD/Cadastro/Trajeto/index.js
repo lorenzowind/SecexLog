@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import CurrencyInput from "react-currency-masked-input";
+import CurrencyInput from "../components/CurrencyInput";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
@@ -49,7 +49,7 @@ export default class Trajeto extends Component {
 
       duracao: "",
       quilometragem: "",
-      valor: "",
+      valor: 0.0,
 
       local_embarque: "",
       local_desembarque: "",
@@ -218,7 +218,9 @@ export default class Trajeto extends Component {
       let value = res.data[i].nome;
       let label = res.data[i].nome;
 
-      cidades.push({ value, label });
+      if (label !== "Nacional") {
+        cidades.push({ value, label });
+      }
     }
 
     this.setState({ cidades: cidades });
@@ -397,7 +399,8 @@ export default class Trajeto extends Component {
                         <CurrencyInput 
                           name="valor"
                           id="valor"
-                          onChange={this.handleChangeText}
+                          placeholder="R$0,00"
+                          onChange={this.handleAmountChange}
                         />
                       </div>
                     </div>
@@ -410,7 +413,6 @@ export default class Trajeto extends Component {
                       placeholder=""
                       name="local_embarque"
                       id="local_embarque"
-                      onKeyDown='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'
                       onChange={this.handleChangeText}
                     />
                   </div>
@@ -421,7 +423,6 @@ export default class Trajeto extends Component {
                       placeholder=""
                       name="local_desembarque"
                       id="local_desembarque"
-                      onKeyDown='return ((event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || (event.charCode == 32))'
                       onChange={this.handleChangeText}
                     />
                   </div>

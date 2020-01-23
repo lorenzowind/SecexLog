@@ -67,20 +67,22 @@ export default class Cidade extends Component {
     let cont = 0;
     for (var i = 0; i < data.length; i++) {
       let aux = data[i];
-      let value = data[i].nome;
-      let label = data[i].nome;
-      options.push({ value, label });
+      if (aux.nome !== "Nacional") {
+        let value = data[i].nome;
+        let label = data[i].nome;
+        options.push({ value, label });
 
-      if (cont >= 0 && cont <= 3) {
-        city1.push({ aux });
-        cont++;
-      } else if (cont >= 4 && cont <= 7) {
-        city2.push({ aux });
-        cont++;
-      } else if (cont >= 8 && cont <= 11) {
-        city3.push({ aux });
-        cont++;
-        if (cont > 11) cont = 0;
+        if (cont >= 0 && cont <= 3) {
+          city1.push({ aux });
+          cont++;
+        } else if (cont >= 4 && cont <= 7) {
+          city2.push({ aux });
+          cont++;
+        } else if (cont >= 8 && cont <= 11) {
+          city3.push({ aux });
+          cont++;
+          if (cont > 11) cont = 0;
+        }
       }
     }
 
@@ -101,17 +103,18 @@ export default class Cidade extends Component {
       let cont = 0;
       for (var i = 0; i < data.length; i++) {
         let aux = data[i];
-
-        if (cont >= 0 && cont <= 3) {
-          city1.push({ aux });
-          cont++;
-        } else if (cont >= 4 && cont <= 7) {
-          city2.push({ aux });
-          cont++;
-        } else if (cont >= 8 && cont <= 11) {
-          city3.push({ aux });
-          cont++;
-          if (cont > 11) cont = 0;
+        if (aux.nome !== "Nacional") {
+          if (cont >= 0 && cont <= 3) {
+            city1.push({ aux });
+            cont++;
+          } else if (cont >= 4 && cont <= 7) {
+            city2.push({ aux });
+            cont++;
+          } else if (cont >= 8 && cont <= 11) {
+            city3.push({ aux });
+            cont++;
+            if (cont > 11) cont = 0;
+          }
         }
       }
 
@@ -523,6 +526,7 @@ export default class Cidade extends Component {
                       name="latitude"
                       onChange={this.handleChange}
                       style={{ width: "60%" }}
+                      value={c.text.latitude}
                     />
                   </div>
                   <div className="longitude">
@@ -532,6 +536,7 @@ export default class Cidade extends Component {
                       name="longitude"
                       style={{ width: "60%" }}
                       onChange={this.handleChange}
+                      value={c.text.longitude}
                     />
                   </div>
                 </div>
