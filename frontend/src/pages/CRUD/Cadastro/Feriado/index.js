@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FormControlLabel, Switch } from "@material-ui/core";
 
 import Header from "../components/HeaderFeriado/index";
 import Menu from "../../../../components/Menu/MenuLateral/index";
@@ -21,6 +22,7 @@ export default class Feriado extends Component {
       nome: "",
       initFeriado: "",
       endFeriado: "",
+      national: false,
 
       cidades: []
     };
@@ -61,8 +63,22 @@ export default class Feriado extends Component {
 
     state[name] = value;
 
+    console.log(state)
+
     this.setState(state);
   };
+
+  handleToggle = ev => {
+    const state = Object.assign({}, this.state);
+    const name = ev.target.name;
+    const checked = ev.target.checked;
+
+    state[name] = checked;
+
+    console.log(state)
+
+    this.setState(state);
+  }
 
   onSubmit = async ev => {
     ev.preventDefault();
@@ -70,8 +86,8 @@ export default class Feriado extends Component {
     this.setState({ days: day });
 
     const state = {
-      cidade: this.state.nomeCidade,
-      national: this.state.nomeCidade === "Nacional" ? true : false,
+      cidade: this.state.nomeCidade === "" ? "Nacional" : this.state.nomeCidade,
+      national: this.state.national,
       nome: this.state.nome,
       init: this.state.initFeriado.toLocaleDateString(),
       end: this.state.endFeriado
@@ -148,6 +164,18 @@ export default class Feriado extends Component {
             id="nomeFeriado"
             style={inputStyles}
             onChange={this.handleChange}
+          />
+
+          <FormControlLabel
+            control={
+              <Switch
+                checked={this.state.national} 
+                onChange={this.handleToggle} 
+                name="national"
+                color="primary"
+              />
+            }
+            label="Nacional"
           />
 
           <h2>Selecionar Dia</h2>

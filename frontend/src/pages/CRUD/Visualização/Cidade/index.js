@@ -140,6 +140,8 @@ export default class Cidade extends Component {
     let cAuditada = c.aux.cAuditada;
     let obsInterdicao = c.aux.obsInterdicao;
     let obsCidade = c.aux.obsCidade;
+    let latitute = c.aux.latitute;
+    let longitude = c.aux.longitude;
 
     let text = { h1, nome, cidadesRelacionadas, feriados, cheia };
     let value = {
@@ -149,7 +151,9 @@ export default class Cidade extends Component {
       cBase,
       cAuditada,
       obsInterdicao,
-      obsCidade
+      obsCidade,
+      latitute,
+      longitude
     };
 
     this.setState({ dateInit: initFlood, dateEnd: endFlood });
@@ -173,7 +177,7 @@ export default class Cidade extends Component {
     console.log(res.data);
 
     for (var i = 0; i < res.data.length; i++) {
-      if (this.state.popUp[0].value.id === res.data[i].city_id)
+      if (this.state.popUp[0].value.id === res.data[i].city_id || res.data[i].national == true)
         holidays.push(res.data[i].init + " - " + res.data[i].nome);
     }
 
@@ -249,7 +253,9 @@ export default class Cidade extends Component {
         cBase: this.state.popUp[0].value.cBase,
         cAuditada: this.state.popUp[0].value.cAuditada,
         obsInterdicao: this.state.popUp[0].value.obsInterdicao,
-        obsCidade: this.state.popUp[0].value.obsCidade
+        obsCidade: this.state.popUp[0].value.obsCidade,
+        latitute: this.state.popUp[0].value.latitute,
+        longitude: this.state.popUp[0].value.longitude
       };
     } else {
       state = {
@@ -260,7 +266,9 @@ export default class Cidade extends Component {
         cBase: this.state.popUp[0].value.cBase,
         cAuditada: this.state.popUp[0].value.cAuditada,
         obsInterdicao: this.state.popUp[0].value.obsInterdicao,
-        obsCidade: this.state.popUp[0].value.obsCidade
+        obsCidade: this.state.popUp[0].value.obsCidade,
+        latitute: this.state.popUp[0].value.latitute,
+        longitude: this.state.popUp[0].value.longitude
       };
     }
 
@@ -484,6 +492,7 @@ export default class Cidade extends Component {
           </div>
 
           {this.state.popUp.map((c, i) => (
+            console.log(c),
             <div className="popUp_city" key={i}>
               <div className="popUp_city_">
                 <div className="title">
@@ -526,7 +535,7 @@ export default class Cidade extends Component {
                       name="latitude"
                       onChange={this.handleChange}
                       style={{ width: "60%" }}
-                      value={c.text.latitude}
+                      value={c.value.latitute}
                     />
                   </div>
                   <div className="longitude">
@@ -536,7 +545,7 @@ export default class Cidade extends Component {
                       name="longitude"
                       style={{ width: "60%" }}
                       onChange={this.handleChange}
-                      value={c.text.longitude}
+                      value={c.value.longitude}
                     />
                   </div>
                 </div>

@@ -90,8 +90,8 @@ export default class CrudCidade extends Component {
       latitute: this.state.latitute,
       longitude: this.state.longitude,
       relations: cidades,
-      initDataCheia: this.state.initDataCheia.toString(),
-      endDataCheia: this.state.endDataCheia.toString(),
+      initDataCheia: this.state.initDataCheia.toLocaleDateString(),
+      endDataCheia: this.state.endDataCheia.toLocaleDateString(),
       obsInterdicao: this.state.obsInterdicao,
       obsCidade: this.state.obsCidade
     };
