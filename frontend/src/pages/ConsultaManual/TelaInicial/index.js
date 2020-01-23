@@ -58,7 +58,9 @@ export default class Tela_inicial extends React.Component {
       resultado: false,
       matriz_trajetos: null,
       cidades: null,
-      loading: false
+      loading: false,
+
+      testState: null
     };
   }
 
@@ -168,6 +170,58 @@ export default class Tela_inicial extends React.Component {
       var matriz_trajetos = new MatrizTrajetos(trajetos);
       this.setState({ resultado: true, matriz_trajetos: matriz_trajetos });
     }
+
+    const state = {
+      cityIda: "Manaus",
+      cityVolta: "Itacoatiara",
+      dateIda: "01/08/2020",
+      dateVolta: "09/08/2020",
+
+      paths: [
+        {
+          ida: [
+            {
+              date: "01/08/2020",
+              arrival: {
+                time: "10:00 AM",
+                week: "quinta-feira",
+                city: "Manaus",
+                modal: "Taxi Aereo"
+              },
+              distance: "30m",
+              departure: {
+                time: "12:00 AM",
+                week: "quinta-feira",
+                city: "Itacoatiara",
+                modal: "Taxi Aereo"
+              }
+            }
+          ],
+          volta: [
+            {
+              date: "09/08/2020",
+              arrival: {
+                time: "07:00 AM",
+                week: "sexta-feira",
+                city: "Itacoatiara",
+                modal: "Taxi Aereo"
+              },
+              distance: "30m",
+              departure: {
+                time: "15:00 PM",
+                week: "sexta-feira",
+                city: "Manaus",
+                modal: "Taxi Aereo"
+              }
+            }
+          ],
+          warrings: ["*Itacoatiara sem energia neste período"],
+          price: 800.0,
+          duration: 5
+        }
+      ]
+    };
+    this.setState({ testState: state, resultado: true });
   };
 
   componentDidMount() {
@@ -267,7 +321,8 @@ export default class Tela_inicial extends React.Component {
         <Redirect
           to={{
             pathname: "/consulta-manual",
-            state: { matriz_trajetos: this.state.matriz_trajetos }
+            state: { testState: this.state.testState }
+            // state: { matriz_trajetos: this.state.matriz_trajetos }
           }}
         />
       );

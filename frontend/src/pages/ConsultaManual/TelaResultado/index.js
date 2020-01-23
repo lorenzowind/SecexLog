@@ -6,9 +6,16 @@ import Loading from "../../../components/Loading/index";
 
 import idaIcone from "../../../assets/3_Resultado_da_Consulta/ir2.png";
 import voltaIcone from "../../../assets/3_Resultado_da_Consulta/ir-1.png";
+
 import rapidoIcone from "../../../assets/3_Resultado_da_Consulta/run1.png";
+import rapidoIconeHover from "../../../assets/3_Resultado_da_Consulta/run_2.png";
+
 import custoIcone from "../../../assets/3_Resultado_da_Consulta/PREÇO.png";
+import custoIconeHover from "../../../assets/3_Resultado_da_Consulta/PREÇO1.png";
+
 import seguroIcone from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA.png";
+import seguroIconeHover from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA_color.png";
+
 import filtroIcone from "../../../assets/3_Resultado_da_Consulta/filtro.png";
 import barraIcone from "../../../assets/3_Resultado_da_Consulta/Componente 34 – 1.png";
 import barraIcone2 from "../../../assets/3_Resultado_da_Consulta/Componente 48 – 1.png";
@@ -24,36 +31,44 @@ var key = 0;
 export default class Tela_resultado extends React.Component {
   constructor(props) {
     super(props);
+    if (!this.props.location.state) {
+      window.location.replace("/");
+    }
     this.state = {
-      trajetos: this.props.location.state.matriz_trajetos.trajetos,
-      load: false,
+      trajetos: this.props.location.state.testState,
+      load: true,
       paths: null,
       modalIcone: null,
       back: false
     };
   }
 
-  componentDidMount = () => {
+  componentWillMount = () => {
     this.loadPathData();
+    this.testState();
+  };
+
+  testState = () => {
+    const { trajetos } = this.state;
+
+    console.log(trajetos);
   };
 
   loadPathData = async () => {
-    this.setState({ load: false });
-
-    await setTimeout(() => {
-      api
-        .get("/paths")
-        .then(res => {
-          this.setState({ paths: res.data, load: true });
-
-          this.validation();
-          console.log(res);
-        })
-        .catch(err => {
-          alert(err.message);
-          window.location.replace("/");
-        });
-    }, 1200);
+    // this.setState({ load: false });
+    // await setTimeout(() => {
+    //   api
+    //     .get("/paths")
+    //     .then(res => {
+    //       this.setState({ paths: res.data, load: true });
+    //       this.validation();
+    //       console.log(res);
+    //     })
+    //     .catch(err => {
+    //       alert(err.message);
+    //       window.location.replace("/");
+    //     });
+    // }, 1200);
   };
 
   validation = () => {
@@ -124,7 +139,7 @@ export default class Tela_resultado extends React.Component {
   };
 
   render() {
-    const { back } = this.state;
+    const { back, trajetos } = this.state;
 
     if (back) return <Redirect to="/" />;
 
@@ -132,11 +147,11 @@ export default class Tela_resultado extends React.Component {
       return (
         <div className="tela-resultado">
           <div>{!this.state.load ? this.wait() : <Menu ativo={false} />}</div>
-          <div className="tela-resultado_">
-            <div className="linha-1">
-              <div className="voltar" onClick={this.back}>
-                <img src={voltaIcone} alt="" />
-              </div>
+          <div className="linha-1">
+            <div className="voltar" onClick={this.back}>
+              <img src={voltaIcone} alt="" />
+            </div>
+            <div style={{ margin: "0 auto" }}>
               <div className="resultado">
                 <h1>Escolha o modal para o trecho</h1>
               </div>
@@ -144,20 +159,263 @@ export default class Tela_resultado extends React.Component {
                 <img src={barraIcone} alt="" />
               </div>
             </div>
-            {this.state.trajetos.map((i, index) => (
+          </div>
+          <div className="tela-resultado_">
+            <div className="trajeto">
+              <div className="trajeto_">
+                <div className="linha-2">
+                  <div className="filtros">
+                    <div className="rapidoIcone">
+                      <img
+                        src={rapidoIcone}
+                        alt=""
+                        onClick={e =>
+                          e.currentTarget.src === rapidoIconeHover
+                            ? (e.currentTarget.src = rapidoIcone)
+                            : (e.currentTarget.src = rapidoIconeHover)
+                        }
+                      />
+                    </div>
+                    <div className="custoIcone">
+                      <img
+                        src={custoIcone}
+                        alt=""
+                        onClick={e =>
+                          e.currentTarget.src === custoIconeHover
+                            ? (e.currentTarget.src = custoIcone)
+                            : (e.currentTarget.src = custoIconeHover)
+                        }
+                      />
+                    </div>
+                    <div className="seguroIcone">
+                      <img
+                        src={seguroIcone}
+                        alt=""
+                        onClick={e =>
+                          e.currentTarget.src ===
+                          "http://localhost:3000/static/media/SEGURAN%C3%87A_color.fee7eb48.png"
+                            ? (e.currentTarget.src = seguroIcone)
+                            : (e.currentTarget.src = seguroIconeHover)
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="cidades">
+                    <div className="cidadeIda">
+                      {/* <h1>{i.cidadeIda}</h1> */}
+                      <h1>{trajetos.cityIda}</h1>
+                    </div>
+                    <div className="cidadeVolta">
+                      <h1>{trajetos.cityVolta}</h1>
+                      {/* <h1>{i.cidadeVolta}</h1> */}
+                    </div>
+                  </div>
+                  <div className="periodo">
+                    <div className="data">
+                      <h1>
+                        {trajetos.dateIda} - {trajetos.dateVolta}
+                      </h1>
+                      {/* <h1>
+                        {i.dataIda} - {i.dataVolta}
+                      </h1> */}
+                    </div>
+                  </div>
+                  <div className="filtro">
+                    <img src={filtroIcone} alt="" />
+                  </div>
+                </div>
+                {this.state.trajetos.paths.length > 0 ? (
+                  trajetos.paths.map((c, index) => (
+                    <div key={index}>
+                      <div className="cartao_trajeto">
+                        <div className="travelData" style={{ margin: "auto" }}>
+                          {c.ida.map((t, i) => (
+                            <div className="resultIda" key={i}>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center"
+                                }}
+                              >
+                                <div className="resultSaida">
+                                  <div className="horario">
+                                    <h1 style={{ width: "200px" }}>
+                                      {t.arrival.time},{" "}
+                                      {t.arrival.week.substr(0, 3)}
+                                    </h1>
+                                  </div>
+                                  <div className="cidade purple">
+                                    <h1>{t.arrival.city}</h1>
+                                  </div>
+                                  <div className="modal purple">
+                                    <h1>{t.arrival.modal}</h1>
+                                  </div>
+                                </div>
+                                <div className="resultCenter">
+                                  <div className="duracao">
+                                    <h1>{t.distance}</h1>
+                                  </div>
+                                  <div className="barraIcone2">
+                                    <img src={barraIcone2} alt="" />
+                                  </div>
+                                </div>
+                                <div className="resultDestino">
+                                  <div className="horario">
+                                    <h1 style={{ width: "200px" }}>
+                                      {t.departure.time},{" "}
+                                      {t.departure.week.substr(0, 3)}
+                                    </h1>
+                                  </div>
+                                  <div className="cidade">
+                                    <h1 id="purple">{t.departure.city}</h1>
+                                  </div>
+                                  <div className="modal">
+                                    <h1 id="purple">{t.departure.modal}</h1>
+                                  </div>
+                                </div>
+                                <div className="idaVoltaIcon">
+                                  <img src={idaIcone} alt="" />
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+
+                          {c.volta.map((t, i) => (
+                            <div className="resultVolta" key={i}>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  justifyContent: "center",
+                                  alignItems: "center"
+                                }}
+                              >
+                                <div className="resultSaida">
+                                  <div className="horario">
+                                    <h1 style={{ width: "200px" }}>
+                                      {t.arrival.time},{" "}
+                                      {t.arrival.week.substr(0, 3)}
+                                    </h1>
+                                  </div>
+                                  <div className="cidade">
+                                    <h1>{t.arrival.city}</h1>
+                                  </div>
+                                  <div className="modal">
+                                    <h1>{t.arrival.modal}</h1>
+                                  </div>
+                                </div>
+                                <div className="resultCenter">
+                                  <div className="duracao">
+                                    <h1>{t.distance}</h1>
+                                  </div>
+                                  <div className="barraIcone2">
+                                    <img src={barraIcone2} alt="" />
+                                  </div>
+                                </div>
+                                <div className="resultDestino">
+                                  <div className="horario">
+                                    <h1 style={{ width: "200px" }}>
+                                      {t.departure.time},{" "}
+                                      {t.departure.week.substr(0, 3)}
+                                    </h1>
+                                  </div>
+                                  <div className="cidade purple">
+                                    <h1>{t.departure.city}</h1>
+                                  </div>
+                                  <div className="modal purple">
+                                    <h1>{t.departure.modal}</h1>
+                                  </div>
+                                </div>
+                                <div className="idaVoltaIcon">
+                                  <img src={voltaIcone} alt="" />
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+
+                          <div className="travelDuration">
+                            <h1>
+                              Saída: {c.ida[0].date} - Retorno:{" "}
+                              {c.volta[c.volta.length - 1].date}{" "}
+                            </h1>
+                          </div>
+                          <div className="warrings">
+                            {c.warrings.map((t, i) => (
+                              <h1 key={t}>{t}</h1>
+                            ))}
+                          </div>
+                        </div>
+                        <hr className="vertical" />
+
+                        <div style={{ margin: "0 auto", textAlign: "center" }}>
+                          <div className="preco">
+                            <h1>R$ {c.price}</h1>
+                          </div>
+                          <div className="tempoViagem">
+                            <h1>{c.duration} dias úteis</h1>
+                          </div>
+                          <div className="selecionar">
+                            <img
+                              id="button"
+                              src={botaoSelecionar}
+                              alt="selecionar"
+                              onMouseOver={e =>
+                                (e.currentTarget.src = botaoSelecionarHover)
+                              }
+                              onMouseOut={e =>
+                                (e.currentTarget.src = botaoSelecionar)
+                              }
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="msg">
+                    <h1>Nenhum trajeto encontrado</h1>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* {this.state.trajetos.map((i, index) => (
               <div className="trajeto" key={index}>
                 {i.exists ? (
                   <div className="trajeto_">
                     <div className="linha-2">
                       <div className="filtros">
                         <div className="rapidoIcone">
-                          <img src={rapidoIcone} alt="" />
+                          <img
+                            src={rapidoIcone}
+                            alt=""
+                            onClick={e =>
+                              e.currentTarget.src === rapidoIconeHover
+                                ? (e.currentTarget.src = rapidoIcone)
+                                : (e.currentTarget.src = rapidoIconeHover)
+                            }
+                          />
                         </div>
                         <div className="custoIcone">
-                          <img src={custoIcone} alt="" />
+                          <img
+                            src={custoIcone}
+                            alt=""
+                            onClick={e =>
+                              e.currentTarget.src === custoIconeHover
+                                ? (e.currentTarget.src = custoIcone)
+                                : (e.currentTarget.src = custoIconeHover)
+                            }
+                          />
                         </div>
                         <div className="seguroIcone">
-                          <img src={seguroIcone} alt="" />
+                          <img
+                            src={seguroIcone}
+                            alt=""
+                            onClick={e =>
+                              e.currentTarget.src === seguroIconeHover
+                                ? (e.currentTarget.src = seguroIcone)
+                                : (e.currentTarget.src = seguroIconeHover)
+                            }
+                          />
                         </div>
                       </div>
                       <div className="cidades">
@@ -270,14 +528,14 @@ export default class Tela_resultado extends React.Component {
                           <h1>{i.cidadeVolta}</h1>
                         </div>
                       </div>
-                      <div className="msg">
-                        <h1>Nenhum trajeto encontrado</h1>
-                      </div>
+                    </div>
+                    <div className="msg">
+                      <h1>Nenhum trajeto encontrado</h1>
                     </div>
                   </div>
                 )}
               </div>
-            ))}
+            ))} */}
           </div>
         </div>
       );
