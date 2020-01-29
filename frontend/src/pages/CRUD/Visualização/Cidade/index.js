@@ -38,8 +38,8 @@ export default class Cidade extends Component {
       search: "",
       busca: false,
 
-      dateInit: new Date(),
-      dateEnd: new Date(),
+      dateInit: null,
+      dateEnd: null,
 
       options: [],
 
@@ -156,11 +156,16 @@ export default class Cidade extends Component {
       longitude
     };
 
-    this.setState({ dateInit: initFlood, dateEnd: endFlood });
-
     popUp.push({ text, value });
 
-    this.setState({ popUp: popUp, popUpStats: true });
+    this.setState({ 
+      dateInit: initFlood === "" ? 
+        undefined : initFlood.split(/\//).reverse().join('/'),
+      dateEnd: endFlood === "" ? 
+        undefined : endFlood.split(/\//).reverse().join('/'),
+      popUp: popUp, 
+      popUpStats: true 
+    });
 
     this.loadOpcoes();
     this.loadHolidays();
@@ -563,10 +568,10 @@ export default class Cidade extends Component {
                     <div className="init">
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
+                          value={this.state.dateInit}
                           format="dd/MM/yyyy"
                           disableToolbar
                           variant="inline"
-                          value={this.state.dateInit}
                           InputProps={{
                             disableUnderline: true
                           }}
@@ -578,10 +583,10 @@ export default class Cidade extends Component {
                     <div className="end">
                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <DatePicker
+                          value={this.state.dateEnd}
                           format="dd/MM/yyyy"
                           disableToolbar
                           variant="inline"
-                          value={this.state.dateEnd}
                           InputProps={{
                             disableUnderline: true
                           }}

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import CurrencyInput from "../components/CurrencyInput";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import ReactNumeric from 'react-numeric';
 
 import HeaderTrajeto from "../components/HeaderTrajeto/index";
 import Menu from "../../../../components/Menu/MenuLateral/index";
@@ -152,8 +152,10 @@ export default class Trajeto extends Component {
       departure: this.state.local_desembarque,
       linha: linha,
       contratado: contratado,
-      duration: this.state.duracao
+      duration: parseInt(this.state.duracao)
     };
+
+    console.log(json)
 
     let error = null;
 
@@ -396,11 +398,13 @@ export default class Trajeto extends Component {
                       </div>
                       <div className="valor_trecho">
                         <h1>Valor do Trecho</h1>
-                        <CurrencyInput 
-                          name="valor"
-                          id="valor"
-                          placeholder="R$0,00"
-                          onChange={this.handleAmountChange}
+                        <ReactNumeric
+                          value={this.state.valor}
+                          currencySymbol="R$"
+                          minimumValue="0"
+                          decimalCharacter=","
+                          digitGroupSeparator="."
+                          onChange={(e, value) => this.setState({ valor: value })}
                         />
                       </div>
                     </div>

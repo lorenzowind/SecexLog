@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import ReactNumeric from 'react-numeric';
 
 import Header from "../../components/HeaderTrajeto/index";
-import CurrencyInput from "../../../CRUD/Cadastro/components/CurrencyInput"
 
 import api from "../../../../services/api";
 
@@ -281,11 +281,6 @@ export default class Trajeto extends Component {
     this.state.popUp[0].value.mileage = ev.target.value;
     this.setState({ popUp: popUp });
   };
-  handleChangeValor = ev => {
-    const popUp = this.state.popUp;
-    this.state.popUp[0].value.cost = ev.target.value;
-    this.setState({ popUp: popUp });
-  };
 
   handleEditSubmit = async ev => {
     ev.preventDefault();
@@ -302,8 +297,6 @@ export default class Trajeto extends Component {
     var { dias } = this.state;
     var { horas } = this.state;
 
-    console.log(this.state.dia);
-    console.log(this.state.hora);
 
     if (this.state.dia !== "" && this.state.hora !== "") {
       dias.push(this.state.dia);
@@ -567,9 +560,17 @@ export default class Trajeto extends Component {
                 <div className="linha_traj">
                   <div className="valor">
                     <h1>Valor do Trecho</h1>
-                    <CurrencyInput 
-                      defaultValue={c.value.cost}
-                      onChange={this.handleChangeValor}
+                    <ReactNumeric
+                      value={c.value.cost}
+                      currencySymbol="R$"
+                      minimumValue="0"
+                      decimalCharacter=","
+                      digitGroupSeparator="."
+                      onChange={(e, value) => {
+                        const popUp = this.state.popUp;
+                        this.state.popUp[0].value.cost = value;
+                        this.setState({ popUp: popUp });
+                      }}
                     />
                   </div>
                   <div
