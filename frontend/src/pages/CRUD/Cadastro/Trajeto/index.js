@@ -135,8 +135,10 @@ export default class Trajeto extends Component {
     var { horas } = this.state;
 
     if (this.state.dia && this.state.hora) {
+      let hour = this.state.hora;
+      let hour2 = hour.replace(/^0(?:0:0?)?/, '');
       dias.push(this.state.dia);
-      horas.push(this.state.hora);
+      horas.push(hour2);
     }
 
     const json = {
@@ -192,8 +194,10 @@ export default class Trajeto extends Component {
     const { dias } = this.state;
     const { horas } = this.state;
 
+    let hour = hora.replace(/^0(?:0:0?)?/, '');
+
     dias.push(dia);
-    horas.push(hora);
+    horas.push(hour);
 
     this.setState({ dia: "", hora: "", dias, horas });
   };

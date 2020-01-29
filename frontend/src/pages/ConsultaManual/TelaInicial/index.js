@@ -13,7 +13,6 @@ import Loading from "../../../components/Loading";
 import api from "../../../services/api";
 
 import "./styles.css";
-import DayPicker from "react-day-picker";
 
 var Style = {
   display: "none"

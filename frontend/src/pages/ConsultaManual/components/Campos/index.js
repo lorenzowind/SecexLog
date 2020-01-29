@@ -5,6 +5,8 @@ import DatePicker from "../DatePicker/index";
 import "./styles.css";
 
 export default class Campos extends React.Component {
+  getDay = state => {};
+
   render() {
     const theme = theme => ({
       ...theme,
@@ -64,7 +66,7 @@ export default class Campos extends React.Component {
 
           <div className="ida">
             <div className="picker">
-              <DatePicker />
+              <DatePicker getDay={this.getDay.bind(this)} sum={0} />
             </div>
             <div
               style={{
@@ -74,7 +76,7 @@ export default class Campos extends React.Component {
               }}
             >
               <div className="picker">
-                <DatePicker />
+                <DatePicker getDay={this.getDay.bind(this)} sum={1}/>
               </div>
             </div>
           </div>
