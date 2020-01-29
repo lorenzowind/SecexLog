@@ -105,11 +105,13 @@ export default class Trajeto extends Component {
 
     const prestador = [];
 
-    for (var i = 0; i < 1; i++) {
+    for (var i = 0; i < res.data.length; i++) {
       let value = res.data[i].nome;
       let label = res.data[i].nome;
 
-      prestador.push({ value, label });
+      if (res.data[i].modal === this.state.modal ) {
+        prestador.push({ value, label });
+      }
     }
     this.setState({ prestador: prestador });
   };
@@ -383,7 +385,7 @@ export default class Trajeto extends Component {
                       <div className="duracao_trecho">
                         <h1>Duração do trecho</h1>
                         <input
-                          type="number"
+                          type="text"
                           placeholder=""
                           name="duracao"
                           id="duracao"

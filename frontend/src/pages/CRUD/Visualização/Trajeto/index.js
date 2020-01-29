@@ -543,7 +543,7 @@ export default class Trajeto extends Component {
                   <div className="duracao">
                     <h1>Duração do Trecho</h1>
                     <input
-                      type="number"
+                      type="text"
                       defaultValue={c.value.duration}
                       onChange={this.handleChangeDuracao}
                     />
