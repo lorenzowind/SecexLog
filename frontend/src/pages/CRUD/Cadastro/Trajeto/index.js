@@ -143,6 +143,9 @@ export default class Trajeto extends Component {
       horas.push(hour2);
     }
 
+    let duration = this.state.duracao;
+    let duration2 = duration.replace(/^0(?:0:0?)?/, '');
+
     const json = {
       initCidade: this.state.ida.value,
       endCidade: this.state.volta.value,
@@ -156,7 +159,7 @@ export default class Trajeto extends Component {
       departure: this.state.local_desembarque,
       linha: linha,
       contratado: contratado,
-      duration: parseInt(this.state.duracao)
+      duration: duration2
     };
 
     console.log(json)
@@ -386,7 +389,7 @@ export default class Trajeto extends Component {
                         <h1>Duração do trecho</h1>
                         <input
                           type="text"
-                          placeholder=""
+                          placeholder="00:00"
                           name="duracao"
                           id="duracao"
                           onChange={this.handleChangeText}
