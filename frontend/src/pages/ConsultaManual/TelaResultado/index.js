@@ -91,7 +91,7 @@ export default class Tela_resultado extends React.Component {
       init.setDate(init.getDate() + 1);
     }
 
-    return sum;
+    return sum - 1;
   };
 
   back = () => {
