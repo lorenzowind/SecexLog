@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import ReactNumeric from 'react-numeric';
+import InputMask from "react-input-mask";
 
 import Header from "../../components/HeaderTrajeto/index";
 
@@ -20,13 +21,13 @@ import "./styles.css";
 const animatedComponents = makeAnimated();
 
 const dias_semana = [
-  { value: "Domingo", label: "Domingo" },
-  { value: "Segunda-feira", label: "Segunda-feira" },
-  { value: "Terça-feira", label: "Terça-feira" },
-  { value: "Quarta-feira", label: "Quarta-feira" },
-  { value: "Quinta-feira", label: "Quinta-feira" },
-  { value: "Sexta-feira", label: "Sexta-feira" },
-  { value: "Sábado", label: "Sábado" }
+  { value: "domingo", label: "Domingo" },
+  { value: "segunda-feira", label: "Segunda-feira" },
+  { value: "terça-feira", label: "Terça-feira" },
+  { value: "quarta-feira", label: "Quarta-feira" },
+  { value: "quinta-feira", label: "Quinta-feira" },
+  { value: "sexta-feira", label: "Sexta-feira" },
+  { value: "sábado", label: "Sábado" }
 ];
 
 export default class Trajeto extends Component {
@@ -213,7 +214,15 @@ export default class Trajeto extends Component {
     let departure = c.departure;
     let arrival = c.arrival;
     let linha = c.linha;
-    let duration = c.duration;
+    let duration;
+
+    if (c.duration.length === 4) {
+      let tmp = "0" + c.duration;
+      duration = tmp;
+    }
+    else {
+      duration = c.duration;
+    }
 
     this.setState({ dias: dia, horas: hora });
 
@@ -303,6 +312,18 @@ export default class Trajeto extends Component {
       horas.push(this.state.hora);
     }
 
+    let duration = this.state.popUp[0].value.duration;
+    let duration2;
+
+    if (duration.charAt(0) == '0' && duration.charAt(1) == '0') {
+      let tmp = duration.split('');
+      tmp.splice(0, 1);
+      duration2 = tmp.join('');
+    }
+    else {
+      duration2 = duration.replace(/^0(?:0:0?)?/, '');
+    }
+
     const state = {
       initCidade: this.state.popUp[0].value.initCidade,
       endCidade: this.state.popUp[0].value.endCidade,
@@ -316,25 +337,22 @@ export default class Trajeto extends Component {
       arrival: this.state.popUp[0].value.arrival,
       linha: linha,
       contratado: contratado,
-      duration: this.state.popUp[0].value.duration
+      duration: duration2
     };
 
     let error = null;
 
-    console.log(JSON.stringify(state));
-
-    await api
+    console.log(await api
       .put(`/paths/${this.state.popUp[0].value.id}`, state)
       .then(() => {
         this.setState({ popUp: [] });
-        // window.location.reload();
+        window.location.reload();
       })
       .catch(err => {
         alert(err);
         error = err;
-      });
-
-    // if (!error) window.location.reload();
+      })
+    );
   };
 
   handleChange = ev => {
@@ -542,8 +560,8 @@ export default class Trajeto extends Component {
                 <div className="linha_traj">
                   <div className="duracao">
                     <h1>Duração do Trecho</h1>
-                    <input
-                      type="text"
+                    <InputMask
+                      mask="99:99"
                       defaultValue={c.value.duration}
                       onChange={this.handleChangeDuracao}
                     />

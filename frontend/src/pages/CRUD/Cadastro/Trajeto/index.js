@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import ReactNumeric from 'react-numeric';
+import InputMask from "react-input-mask";
 
 import HeaderTrajeto from "../components/HeaderTrajeto/index";
 import Menu from "../../../../components/Menu/MenuLateral/index";
@@ -18,13 +19,13 @@ import "./styles.css";
 const animatedComponents = makeAnimated();
 
 const dias_semana = [
-  { value: "Domingo", label: "Domingo" },
-  { value: "Segunda-feira", label: "Segunda-feira" },
-  { value: "Terça-feira", label: "Terça-feira" },
-  { value: "Quarta-feira", label: "Quarta-feira" },
-  { value: "Quinta-feira", label: "Quinta-feira" },
-  { value: "Sexta-feira", label: "Sexta-feira" },
-  { value: "Sábado", label: "Sábado" }
+  { value: "domingo", label: "Domingo" },
+  { value: "segunda-feira", label: "Segunda-feira" },
+  { value: "terça-feira", label: "Terça-feira" },
+  { value: "quarta-feira", label: "Quarta-feira" },
+  { value: "quinta-feira", label: "Quinta-feira" },
+  { value: "sexta-feira", label: "Sexta-feira" },
+  { value: "sábado", label: "Sábado" }
 ];
 
 export default class Trajeto extends Component {
@@ -137,14 +138,21 @@ export default class Trajeto extends Component {
     var { horas } = this.state;
 
     if (this.state.dia && this.state.hora) {
-      let hour = this.state.hora;
-      let hour2 = hour.replace(/^0(?:0:0?)?/, '');
       dias.push(this.state.dia);
-      horas.push(hour2);
+      horas.push(this.state.hora);
     }
 
     let duration = this.state.duracao;
-    let duration2 = duration.replace(/^0(?:0:0?)?/, '');
+    let duration2;
+
+    if (duration.charAt(0) == '0' && duration.charAt(1) == '0') {
+      let tmp = duration.split('');
+      tmp.splice(0, 1);
+      duration2 = tmp.join('');
+    }
+    else {
+      duration2 = duration.replace(/^0(?:0:0?)?/, '');
+    }
 
     const json = {
       initCidade: this.state.ida.value,
@@ -199,10 +207,8 @@ export default class Trajeto extends Component {
     const { dias } = this.state;
     const { horas } = this.state;
 
-    let hour = hora.replace(/^0(?:0:0?)?/, '');
-
     dias.push(dia);
-    horas.push(hour);
+    horas.push(hora);
 
     this.setState({ dia: "", hora: "", dias, horas });
   };
@@ -387,12 +393,11 @@ export default class Trajeto extends Component {
                     <div className="linha_">
                       <div className="duracao_trecho">
                         <h1>Duração do trecho</h1>
-                        <input
-                          type="text"
-                          placeholder="00:00"
+                        <InputMask
+                          mask="99:99"
                           name="duracao"
                           id="duracao"
-                          onChange={this.handleChangeText}
+                          onChange={this.onChange}
                         />
                       </div>
                       <div className="quilometragem">
