@@ -121,7 +121,22 @@
 }
 
 .linha-2 .cidades div {
-  margin-right: 15%;
+  margin-right: 10%;
+}
+
+.linha-2 .cidades img#flipped {
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+}
+
+.linha-2 .cidades img {
+  height: 40px;
+}
+
+.linha-2 .cidades button {
+  margin-right: 10%;
+  border: none;
+  cursor: pointer;
 }
 
 .cidades h1 {
@@ -162,6 +177,7 @@
   min-height: 262px;
   /* min-height: 27%; */
   margin-left: 4%;
+  margin-bottom: 20px;
   border-radius: 38px;
   border: solid 1px #707070;
   background-color: #ffffff;
@@ -407,29 +423,24 @@
 .linha-4 .botao_selecionar img:hover {
   cursor: pointer;
 }
-
 .tempoViagem {
   position: absolute;
   margin-top: 125px;
   margin-left: 650px;
 }
-
 .tempoViagem h1 {
   font-size: 20px;
 }
-
 .tipoModal {
   position: absolute;
   margin-top: 155px;
   margin-left: 675px;
 }
-
 .tipoModal h1 {
   font-size: 16px;
   font-weight: normal;
   color: #818181;
 }
-
 .cidadeSaida h1,
 .modalSaida h1,
 .cidadeDestino h1,

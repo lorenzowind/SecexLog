@@ -13,28 +13,18 @@ import Loading from "../../../components/Loading";
 import api from "../../../services/api";
 
 import "./styles.css";
+import DayPicker from "react-day-picker";
 
 var Style = {
   display: "none"
 };
 
 class Trajeto {
-  constructor(
-    cidadeIda_,
-    cidadeVolta_,
-    dataIda_,
-    dataVolta_,
-    exists_,
-    path_id_
-  ) {
-    this.cidadeIda = cidadeIda_;
-    this.cidadeVolta = cidadeVolta_;
-    this.dataIda = dataIda_;
-    this.dataVolta = dataVolta_;
-    this.exists = exists_;
-    this.price = 0.0;
-    this.modal = null;
-    this.path_id = path_id_;
+  constructor(cidadeIda_, dataIda_, cidadeVolta_, dataVolta_) {
+    this.cityDeparture = cidadeIda_;
+    this.dateDeparture = dataIda_;
+    this.cityRegress = cidadeVolta_;
+    this.dateRegress = dataVolta_;
   }
 }
 
@@ -129,16 +119,22 @@ export default class Tela_inicial extends React.Component {
       for (var i = 0; i < campos.length; i++) {
         var cidadeIda = campos[i].children[0].children[1].innerText;
         var cidadeVolta = campos[i].children[0].children[2].innerText;
-        console.log(cidadeIda);
-        console.log(cidadeVolta);
+
         var dataIda =
           ida[i].children[0].childNodes[0].childNodes[0].childNodes[0]
             .childNodes[0].value;
         var dataVolta =
           ida[i].children[1].childNodes[0].childNodes[0].childNodes[0]
-            .childNodes[0].value;
+            .childNodes[0].childNodes[0].value;
+        console.log(dataIda);
+        console.log(dataVolta);
         trajetos.push(
-          new Trajeto(cidadeIda, cidadeVolta, dataIda, dataVolta, false, [])
+          new Trajeto(
+            cidadeIda,
+            dataIda.substr(0, 5),
+            cidadeVolta,
+            dataVolta.substr(0, 5)
+          )
         );
         console.log(trajetos);
       }
@@ -161,7 +157,12 @@ export default class Tela_inicial extends React.Component {
           campos1[i].children[2].childNodes[0].childNodes[0].childNodes[0]
             .childNodes[0].value;
         trajetos.push(
-          new Trajeto(cidadeIda, cidadeVolta, dataIda, dataVolta, false, [])
+          new Trajeto(
+            cidadeIda,
+            dataIda.substr(0, 5),
+            cidadeVolta,
+            dataVolta.substr(0, 5)
+          )
         );
         console.log(trajetos);
       }
@@ -170,57 +171,57 @@ export default class Tela_inicial extends React.Component {
       this.setState({ resultado: true, matriz_trajetos: matriz_trajetos });
     }
 
-    const state = {
-      cityIda: "Manaus",
-      cityVolta: "Itacoatiara",
-      dateIda: "01/08/2020",
-      dateVolta: "09/08/2020",
+    // const state = {
+    //   cityIda: "Manaus",
+    //   cityVolta: "Itacoatiara",
+    //   dateIda: "01/08/2020",
+    //   dateVolta: "09/08/2020",
 
-      paths: [
-        {
-          ida: [
-            {
-              date: "01/08/2020",
-              arrival: {
-                time: "10:00 AM",
-                week: "quinta-feira",
-                city: "Manaus",
-                modal: "Taxi Aereo"
-              },
-              distance: "30m",
-              departure: {
-                time: "12:00 AM",
-                week: "quinta-feira",
-                city: "Itacoatiara",
-                modal: "Taxi Aereo"
-              }
-            }
-          ],
-          volta: [
-            {
-              date: "09/08/2020",
-              arrival: {
-                time: "07:00 AM",
-                week: "sexta-feira",
-                city: "Itacoatiara",
-                modal: "Taxi Aereo"
-              },
-              distance: "30m",
-              departure: {
-                time: "15:00 PM",
-                week: "sexta-feira",
-                city: "Manaus",
-                modal: "Taxi Aereo"
-              }
-            }
-          ],
-          warrings: ["*Itacoatiara sem energia neste período"],
-          price: 800.0,
-          duration: 5
-        }
-      ]
-    };
-    this.setState({ testState: state, resultado: true });
+    //   paths: [
+    //     {
+    //       ida: [
+    //         {
+    //           date: "01/08/2020",
+    //           arrival: {
+    //             time: "10:00 AM",
+    //             week: "quinta-feira",
+    //             city: "Manaus",
+    //             modal: "Taxi Aereo"
+    //           },
+    //           distance: "30m",
+    //           departure: {
+    //             time: "12:00 AM",
+    //             week: "quinta-feira",
+    //             city: "Itacoatiara",
+    //             modal: "Taxi Aereo"
+    //           }
+    //         }
+    //       ],
+    //       volta: [
+    //         {
+    //           date: "09/08/2020",
+    //           arrival: {
+    //             time: "07:00 AM",
+    //             week: "sexta-feira",
+    //             city: "Itacoatiara",
+    //             modal: "Taxi Aereo"
+    //           },
+    //           distance: "30m",
+    //           departure: {
+    //             time: "15:00 PM",
+    //             week: "sexta-feira",
+    //             city: "Manaus",
+    //             modal: "Taxi Aereo"
+    //           }
+    //         }
+    //       ],
+    //       warrings: ["*Itacoatiara sem energia neste período"],
+    //       price: 800.0,
+    //       duration: 5
+    //     }
+    //   ]
+    // };
+    // this.setState({ testState: state, resultado: true });
   };
 
   componentDidMount() {
@@ -320,8 +321,8 @@ export default class Tela_inicial extends React.Component {
         <Redirect
           to={{
             pathname: "/consulta-manual",
-            state: { testState: this.state.testState }
-            // state: { matriz_trajetos: this.state.matriz_trajetos }
+            // state: { testState: this.state.testState }
+            state: { matriz_trajetos: this.state.matriz_trajetos }
           }}
         />
       );
