@@ -89,10 +89,10 @@ export default class Feriado extends Component {
       cidade: this.state.nomeCidade === "" ? "Nacional" : this.state.nomeCidade,
       national: this.state.national,
       nome: this.state.nome,
-      init: this.state.initFeriado.toLocaleDateString(),
+      init: this.state.initFeriado.toLocaleDateString().substr(0, 5),
       end: this.state.endFeriado
-        ? this.state.endFeriado.toLocaleDateString()
-        : this.state.initFeriado.toLocaleDateString()
+        ? this.state.endFeriado.toLocaleDateString().substr(0, 5)
+        : this.state.initFeriado.toLocaleDateString().substr(0, 5)
     };
 
     await api
