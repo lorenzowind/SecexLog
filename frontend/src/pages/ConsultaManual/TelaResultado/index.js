@@ -91,7 +91,7 @@ export default class Tela_resultado extends React.Component {
       init.setDate(init.getDate() + 1);
     }
 
-    return sum - 1;
+    return sum;
   };
 
   back = () => {
@@ -101,9 +101,9 @@ export default class Tela_resultado extends React.Component {
   handleNext = () => {
     let { index, trajetos } = this.state;
 
-    console.log(trajetos.length < 2 || index >= 4);
-
-    this.setState({ index: ++index });
+    if (index < (trajetos.length - 1)) {
+      this.setState({ index: ++index });
+    }
   };
 
   handlePrev = () => {
@@ -191,7 +191,7 @@ export default class Tela_resultado extends React.Component {
                     </div>
                     <button
                       type="button"
-                      disabled={trajetos.length < 2 || index >= 4}
+                      disabled={trajetos.length > 1 ? index >= trajetos.length ? true : false : false }
                       onClick={this.handleNext}
                     >
                       <img src={voltaIcone} alt="" id="flipped" />
@@ -337,8 +337,11 @@ export default class Tela_resultado extends React.Component {
                           </div>
                           <div className="tempoViagem">
                             <h1>
-                              {this.usefullDays(c.going.date, c.back.date)} dias
-                              úteis
+                              {
+                                this.usefullDays(c.going.date, c.back.date) > 1 ? 
+                                this.usefullDays(c.going.date, c.back.date) + " dias úteis" :
+                                this.usefullDays(c.going.date, c.back.date) + " dia útil"
+                              }
                             </h1>
                           </div>
                           <div className="selecionar">
