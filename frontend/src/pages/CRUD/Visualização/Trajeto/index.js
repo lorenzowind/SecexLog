@@ -177,12 +177,8 @@ export default class Trajeto extends Component {
     const { dias } = this.state;
     const { horas } = this.state;
 
-    console.log(hora);
-
     dias.push(dia);
     horas.push(hora);
-
-    console.log(horas);
 
     this.setState({ dia: "", hora: "", dias, horas });
   };
@@ -253,8 +249,6 @@ export default class Trajeto extends Component {
       arrival,
       duration
     };
-
-    console.log(value);
 
     popUp.push({ text, value });
 
@@ -340,9 +334,7 @@ export default class Trajeto extends Component {
       duration: duration2
     };
 
-    let error = null;
-
-    console.log(await api
+    await api
       .put(`/paths/${this.state.popUp[0].value.id}`, state)
       .then(() => {
         this.setState({ popUp: [] });
@@ -350,9 +342,7 @@ export default class Trajeto extends Component {
       })
       .catch(err => {
         alert(err);
-        error = err;
-      })
-    );
+      });
   };
 
   handleChange = ev => {

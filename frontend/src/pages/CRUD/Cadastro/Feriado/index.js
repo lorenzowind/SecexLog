@@ -63,8 +63,6 @@ export default class Feriado extends Component {
 
     state[name] = value;
 
-    console.log(state)
-
     this.setState(state);
   };
 
@@ -74,8 +72,6 @@ export default class Feriado extends Component {
     const checked = ev.target.checked;
 
     state[name] = checked;
-
-    console.log(state)
 
     this.setState(state);
   }
@@ -102,7 +98,6 @@ export default class Feriado extends Component {
         alert(
           "Verifique se todos os dados estão inseridos corretamente ou se o nome do feriado já foi cadastrado"
         );
-        console.log(err);
         return;
       });
 
@@ -153,6 +148,9 @@ export default class Feriado extends Component {
                 return <option key={i} value={c.nome}>
                   {c.nome}
                 </option>
+              }
+              else {
+                return 0;
               }
             })}
           </select>

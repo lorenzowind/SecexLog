@@ -1,7 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router";
 
-import Menu from "../../../components/Menu/MenuLateral/index";
 import Loading from "../../../components/Loading/index";
 
 import idaIcone from "../../../assets/3_Resultado_da_Consulta/ir2.png";
@@ -26,8 +25,6 @@ import api from "../../../services/api";
 
 import "./styles.css";
 
-var key = 0;
-
 export default class Tela_resultado extends React.Component {
   constructor(props) {
     super(props);
@@ -47,15 +44,12 @@ export default class Tela_resultado extends React.Component {
 
   componentDidMount = () => {
     this.loadPathData();
-    this.testState();
+    //this.testState();
   };
 
-  testState = () => {
+  /*testState = () => {
     const { trajetos, matriz } = this.state;
-
-    console.log(JSON.stringify(matriz.trajetos));
-    console.log(trajetos);
-  };
+  };*/
 
   loadPathData = async () => {
     this.setState({ load: false });
@@ -63,9 +57,7 @@ export default class Tela_resultado extends React.Component {
       await api
         .post("/search", this.state.matriz.trajetos)
         .then(res => {
-          console.log(res.data);
           this.setState({ trajetos: res.data, load: true });
-          // this.validation();
         })
         .catch(err => {
           console.log(err);
@@ -84,7 +76,7 @@ export default class Tela_resultado extends React.Component {
 
     while (init.getDate() !== end.getDate()) {
       if (init.getDay() === 6 || init.getDay() === 0) {
-        sum = sum;
+        sum+=0;
       } else {
         sum++;
       }
@@ -114,8 +106,6 @@ export default class Tela_resultado extends React.Component {
 
   render() {
     const { back, trajetos, index } = this.state;
-
-    console.log(trajetos);
 
     if (back) return <Redirect to="/" />;
 
@@ -214,7 +204,6 @@ export default class Tela_resultado extends React.Component {
                     <div key={index}>
                       <div className="cartao_trajeto">
                         <div className="travelData" style={{ margin: "auto" }}>
-                          {/* {c.paths.map((t, i) => ( */}
                           <div className="resultIda">
                             <div
                               style={{
@@ -264,9 +253,6 @@ export default class Tela_resultado extends React.Component {
                               </div>
                             </div>
                           </div>
-                          {/* ))} */}
-
-                          {/* {c.paths.map((c, i) => ( */}
                           <div className="resultVolta">
                             <div
                               style={{
@@ -316,8 +302,6 @@ export default class Tela_resultado extends React.Component {
                               </div>
                             </div>
                           </div>
-                          {/* ))} */}
-
                           <div className="travelDuration">
                             <h1>
                               Saída: {c.going.date} - Retorno: {c.back.date}{" "}

@@ -179,10 +179,8 @@ export default class Cidade extends Component {
 
     const holidays = [];
 
-    console.log(res.data);
-
     for (var i = 0; i < res.data.length; i++) {
-      if (this.state.popUp[0].value.id === res.data[i].city_id || res.data[i].national == true)
+      if (this.state.popUp[0].value.id === res.data[i].city_id || res.data[i].national === true)
         holidays.push(res.data[i].init + " - " + res.data[i].nome);
     }
 
@@ -497,7 +495,6 @@ export default class Cidade extends Component {
           </div>
 
           {this.state.popUp.map((c, i) => (
-            console.log(c),
             <div className="popUp_city" key={i}>
               <div className="popUp_city_">
                 <div className="title">

@@ -6,7 +6,6 @@
 }
 
 .linha-1 {
-  /* position: relative; */
   height: 150px;
   width: 100%;
   padding-top: 100px;
@@ -28,16 +27,10 @@
 }
 
 .linha-1 .resultado {
-  /* position: absolute; */
-  /* margin-left: 260px; */
   margin-top: 40px;
   margin: auto;
 }
 .linha-1 .barra {
-  /* position: absolute; */
-  /* margin-left: 350px; */
-  /* margin-top: 100px; */
-  /* margin-top: 15px; */
   width: 300px;
   margin: auto;
 }
@@ -49,15 +42,8 @@
 .tela-resultado_ .trajeto {
   display: inline;
 }
-/* .nenhum_trajeto {
-  position: relative;
-  display: inline;
-} */
 
 .nenhum_trajeto_ {
-  /* margin-top: 50px;
-  height: 50px;
-  margin-left: 150px; */
   display: flex;
   margin: 0 auto;
 }
@@ -69,8 +55,6 @@
   margin-bottom: 20px;
 }
 .linha-2 .filtros {
-  /* height: 100px; */
-  /* width: 300px; */
   display: flex;
 }
 
@@ -103,12 +87,10 @@
 
 .linha-2 .filtros .custoIcone img {
   height: 60px;
-  /* margin-left: 100px; */
 }
 
 .linha-2 .filtros .seguroIcone img {
   height: 60px;
-  /* margin-left: 200px; */
 }
 
 .linha-2 .cidades {
@@ -116,7 +98,6 @@
   justify-content: center;
   align-items: center;
   height: 100px;
-  /* margin-top: 60px; */
   margin-left: 15%;
 }
 
@@ -150,12 +131,8 @@
   border: solid 1px #cecece;
   background-color: #e8e8eb;
 }
-.cidades .cidadeVolta {
-  /* margin-left: 200px; */
-}
 
 .linha-2 .periodo {
-  /* margin-top: 60px; */
   margin-left: 6%;
   margin-right: 6%;
 }
@@ -175,7 +152,6 @@
   width: 80%;
   max-width: 1028px;
   min-height: 262px;
-  /* min-height: 27%; */
   margin-left: 4%;
   margin-bottom: 20px;
   border-radius: 38px;
@@ -309,7 +285,6 @@
 }
 
 .msg h1 {
-  /* position: absolute; */
   text-align: center;
   width: 300px;
   font-size: 15px;
@@ -326,124 +301,3 @@
   margin-top: 10%;
   margin-right: 10%;
 }
-
-/* .linha-4 {
-  position: relative;
-}
-.linha-4 .horarioSaida {
-  position: absolute;
-  margin-top: 80px;
-  margin-left: 30px;
-}
-.linha-4 .horarioSaida h1 {
-  font-size: 15px;
-}
-.linha-4 .cidadeSaida {
-  position: absolute;
-  margin-top: 110px;
-  margin-left: 120px;
-}
-.linha-4 .cidadeSaida h1 {
-  font-size: 15px;
-  font-weight: normal;
-}
-.linha-4 .modalSaida {
-  position: absolute;
-  margin-top: 140px;
-  margin-left: 120px;
-}
-.linha-4 .modalSaida h1 {
-  font-size: 15px;
-  font-weight: normal;
-}
-.linha-4 .duracao {
-  position: absolute;
-  margin-top: 80px;
-  margin-left: 285px;
-}
-.linha-4 .duracao h1 {
-  font-size: 15px;
-  font-weight: normal;
-}
-.linha-4 .barraIcone2 {
-  position: absolute;
-  margin-top: 100px;
-  margin-left: 200px;
-}
-.linha-4 .horarioDestino {
-  position: absolute;
-  margin-top: 80px;
-  margin-left: 430px;
-}
-.linha-4 .horarioDestino h1 {
-  font-size: 15px;
-}
-.linha-4 .cidadeDestino {
-  position: absolute;
-  margin-top: 110px;
-  margin-left: 440px;
-}
-.linha-4 .cidadeDestino h1 {
-  font-size: 15px;
-  font-weight: normal;
-}
-.linha-4 .modalDestino {
-  position: absolute;
-  margin-top: 140px;
-  margin-left: 440px;
-}
-.linha-4 .modalDestino h1 {
-  font-size: 15px;
-  font-weight: normal;
-}
-.linha-4 .idaIcone {
-  position: absolute;
-  margin-top: 90px;
-  margin-left: 550px;
-}
-.linha-4 .linha_vertical {
-  position: absolute;
-  margin-left: 600px;
-  height: 250px;
-  width: 1px;
-  border: solid 1px #3dbec6;
-  background-color: #ffffff;
-}
-.linha-4 .preco {
-  position: absolute;
-  margin-top: 75px;
-  margin-left: 630px;
-}
-.linha-4 .botao_selecionar img {
-  margin-top: 160px;
-  margin-left: 630px;
-  height: 40px;
-  position: absolute;
-}
-.linha-4 .botao_selecionar img:hover {
-  cursor: pointer;
-}
-.tempoViagem {
-  position: absolute;
-  margin-top: 125px;
-  margin-left: 650px;
-}
-.tempoViagem h1 {
-  font-size: 20px;
-}
-.tipoModal {
-  position: absolute;
-  margin-top: 155px;
-  margin-left: 675px;
-}
-.tipoModal h1 {
-  font-size: 16px;
-  font-weight: normal;
-  color: #818181;
-}
-.cidadeSaida h1,
-.modalSaida h1,
-.cidadeDestino h1,
-.modalDestino h1 {
-  color: #633ef4;
-} */

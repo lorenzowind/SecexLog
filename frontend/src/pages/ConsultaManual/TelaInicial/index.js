@@ -13,7 +13,6 @@ import Loading from "../../../components/Loading";
 import api from "../../../services/api";
 
 import "./styles.css";
-import DayPicker from "react-day-picker";
 
 var Style = {
   display: "none"
@@ -127,8 +126,6 @@ export default class Tela_inicial extends React.Component {
         var dataVolta =
           ida[i].children[1].childNodes[0].childNodes[0].childNodes[0]
             .childNodes[0].childNodes[0].value;
-        console.log(dataIda);
-        console.log(dataVolta);
         trajetos.push(
           new Trajeto(
             cidadeIda,
@@ -137,7 +134,6 @@ export default class Tela_inicial extends React.Component {
             dataVolta.substr(0, 5)
           )
         );
-        console.log(trajetos);
       }
 
       var matriz_trajetos = new MatrizTrajetos(trajetos);
@@ -146,15 +142,15 @@ export default class Tela_inicial extends React.Component {
     } else {
       var campos1 = document.getElementsByClassName("ida1");
 
-      var trajetos = [];
+      trajetos = [];
 
-      for (var i = 0; i < campos1.length; i++) {
-        var cidadeIda = this.state.saida;
-        var cidadeVolta = this.state.destino;
-        var dataIda =
+      for (i = 0; i < campos1.length; i++) {
+        cidadeIda = this.state.saida;
+        cidadeVolta = this.state.destino;
+        dataIda =
           campos1[i].children[0].childNodes[0].childNodes[0].childNodes[0]
             .childNodes[0].value;
-        var dataVolta =
+        dataVolta =
           campos1[i].children[2].childNodes[0].childNodes[0].childNodes[0]
             .childNodes[0].value;
         trajetos.push(
@@ -165,10 +161,8 @@ export default class Tela_inicial extends React.Component {
             dataVolta.substr(0, 5)
           )
         );
-        console.log(trajetos);
       }
-      console.log(trajetos);
-      var matriz_trajetos = new MatrizTrajetos(trajetos);
+      matriz_trajetos = new MatrizTrajetos(trajetos);
       this.setState({ resultado: true, matriz_trajetos: matriz_trajetos });
     }
   };
@@ -194,19 +188,16 @@ export default class Tela_inicial extends React.Component {
     const { trajetos } = this.state;
     const Style1Element = {
       float: "left",
-      // marginLeft: "67%",
       marginTop: "5%"
     };
     const Style2Element = {
       display: "flex",
       float: "left",
-      // marginLeft: "54%",
       marginTop: "5%"
     };
     const StyleLastElement = {
       display: "flex",
       float: "left",
-      // marginLeft: "76%",
       marginTop: "5%"
     };
 
@@ -270,7 +261,6 @@ export default class Tela_inicial extends React.Component {
         <Redirect
           to={{
             pathname: "/consulta-manual",
-            // state: { testState: this.state.testState }
             state: { matriz_trajetos: this.state.matriz_trajetos }
           }}
         />
@@ -327,7 +317,6 @@ export default class Tela_inicial extends React.Component {
           ) : (
             <div className="campos1">
               <div className="cidade-saida1">
-                {/* <input type="text" name="cidade-saida" placeholder="Origem" /> */}
                 <div className="selectInitial saida">
                   <Select
                     className="basic-single"
@@ -343,11 +332,6 @@ export default class Tela_inicial extends React.Component {
               </div>
 
               <div className="cidade-destino1">
-                {/* <input
-                  type="text"
-                  name="cidade-destino"
-                  placeholder="Destino"
-                /> */}
                 <div className="selectInitial destino">
                   <Select
                     className="basic-single"

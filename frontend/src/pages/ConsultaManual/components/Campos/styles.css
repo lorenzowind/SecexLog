@@ -48,11 +48,9 @@
 
 .operacao2 {
   display: flex;
-  /* margin-right: 12%; */
 }
 
 .adicionar-cidade {
-  /* width: 60%; */
   min-width: 280px;
   float: left;
 }

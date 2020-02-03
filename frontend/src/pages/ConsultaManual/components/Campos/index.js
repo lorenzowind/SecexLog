@@ -35,7 +35,6 @@ export default class Campos extends React.Component {
           </div>
 
           <div className="cidade-saida">
-            {/* <input type="text" name="cidade-saida" placeholder="Origem" /> */}
             <div className="selectInitial saida dois">
               <Select
                 className="basic-single"
@@ -50,7 +49,6 @@ export default class Campos extends React.Component {
           </div>
 
           <div className="cidade-destino">
-            {/* <input type="text" name="cidade-destino" placeholder="Destino" /> */}
             <div className="selectInitial destino dois">
               <Select
                 className="basic-single"

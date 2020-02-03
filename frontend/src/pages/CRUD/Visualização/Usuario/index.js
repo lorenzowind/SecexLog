@@ -58,9 +58,6 @@ export default class CrudUsuario extends Component {
     this.loadData();
   }
 
-  //Métodos CRUD
-
-  //POST (CREATE usuário)
   handleSubmit = async ev => {
     ev.preventDefault();
 
@@ -91,7 +88,6 @@ export default class CrudUsuario extends Component {
     }
   };
 
-  //GET (READ dados na tabela)
   loadData = async () => {
     await api
       .get("/users")
@@ -114,7 +110,6 @@ export default class CrudUsuario extends Component {
       });
   };
 
-  //GET (READ dados de busca)
   handleSearch = async () => {
     if (this.state.busca) {
       this.loadData();
@@ -125,7 +120,6 @@ export default class CrudUsuario extends Component {
     }
   };
 
-  //PUT (UPDATE usuário)
   handleEditSubmit = async ev => {
     ev.preventDefault();
     var state = {};
@@ -153,8 +147,6 @@ export default class CrudUsuario extends Component {
         senha: this.state.editSenha
       };
     }
-
-    console.log(state);
 
     const isValid = this.validateEdit(state);
     if (isValid) {
@@ -184,7 +176,6 @@ export default class CrudUsuario extends Component {
     }
   };
 
-  //DELETE (DELETE usuário)
   handleDelete = async ev => {
     ev.preventDefault();
 
@@ -232,9 +223,6 @@ export default class CrudUsuario extends Component {
     window.location.reload(false);
   };
 
-  //FIM Métodos CRUD
-
-  //PopUps
   createPopUp = () => {
     let popUp = this.state.popUp;
 
@@ -257,7 +245,6 @@ export default class CrudUsuario extends Component {
     this.setState({ popUp: popUp, popUpStats: true });
   };
 
-  //PopUps
   editPopUp = c => {
     const id = c.id;
     const editNome = c.nome;

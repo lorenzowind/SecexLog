@@ -60,7 +60,6 @@ export default class Trajeto extends Component {
       modais: [],
       prestador: [],
       cidades: [],
-      dias: []
     };
   }
 
@@ -169,8 +168,6 @@ export default class Trajeto extends Component {
       contratado: contratado,
       duration: duration2
     };
-
-    console.log(json)
 
     let error = null;
 

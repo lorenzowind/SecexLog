@@ -16,7 +16,6 @@ import "moment/locale/pt-br";
 import "./styles.css";
 
 import Notif from "../../../../assets/6_Cadastro_de_Cidade_Trejetos/sino2.png";
-import { styles } from "material-ui-pickers/wrappers/InlineWrapper";
 
 const animatedComponents = makeAnimated();
 
@@ -62,9 +61,6 @@ export default class CrudCidade extends Component {
     }
   };
 
-  //Métodos CRUD
-
-  //POST (Create)
   onSubmit = async ev => {
     ev.preventDefault();
 
@@ -110,7 +106,6 @@ export default class CrudCidade extends Component {
     if (!error) window.location.reload();
   };
 
-  //GET (Read)
   loadOpcoes = async () => {
     const res = await api.get("/cities").catch(err => {
       alert(err.message);
@@ -130,8 +125,6 @@ export default class CrudCidade extends Component {
 
     this.setState({ options: options });
   };
-
-  //Fim Métodos CRUD
 
   onChange = ev => {
     const state = Object.assign({}, this.state);
@@ -277,15 +270,6 @@ export default class CrudCidade extends Component {
         primary: "#b0b0b0"
       }
     });
-
-    const selectStyle = {
-      control: styles => ({
-        ...styles,
-        height: "43px",
-        borderColor: "#b0b0b0"
-      }),
-      option: styles => ({ ...styles })
-    };
 
     const related = {
       control: styles => ({
