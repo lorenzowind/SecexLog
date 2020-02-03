@@ -3,9 +3,9 @@ import React, { Component } from "react";
 import Menu from "../../components/Menu/MenuLateral/index";
 import Loading from "../../components/Loading/index";
 
-import dashboard_ from "../../assets/5_Dashboard/dashboard.PNG"
+import dashboard_ from "../../assets/5_Dashboard/dashboard.png";
 
-import './styles.css'
+import "./styles.css";
 
 export default class Dashboard extends Component {
   state = {
@@ -18,11 +18,15 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    return( 
+    return (
       <div className="dashboard">
         <div>{!this.state.load ? this.wait() : <Menu ativo={true} />}</div>
-        <div className="center"><div className="image"><img src={dashboard_} alt=""/></div></div>
+        <div className="center">
+          <div className="image">
+            <img src={dashboard_} alt="" />
+          </div>
+        </div>
       </div>
-    )
+    );
   }
 }
