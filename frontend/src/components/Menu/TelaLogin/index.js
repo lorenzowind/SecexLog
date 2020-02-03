@@ -63,6 +63,12 @@ export default class Tela_login extends React.Component {
     el_1[0].style.display = "block";
   }
 
+  handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      this.evento_validarLogin(event);
+    }
+  }
+
   render() {
     const { login } = this.state;
 
@@ -85,7 +91,12 @@ export default class Tela_login extends React.Component {
         </div>
 
         <div className="senha">
-          <input type="password" name="senha" id="password" />
+          <input 
+            type="password" 
+            name="senha" 
+            id="password" 
+            onKeyDown={this.handleKeyDown}
+          />
         </div>
 
         <div style={{ display: "flex" }}>

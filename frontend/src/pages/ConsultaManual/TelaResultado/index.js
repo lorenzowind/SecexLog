@@ -44,12 +44,7 @@ export default class Tela_resultado extends React.Component {
 
   componentDidMount = () => {
     this.loadPathData();
-    //this.testState();
   };
-
-  /*testState = () => {
-    const { trajetos, matriz } = this.state;
-  };*/
 
   loadPathData = async () => {
     this.setState({ load: false });
