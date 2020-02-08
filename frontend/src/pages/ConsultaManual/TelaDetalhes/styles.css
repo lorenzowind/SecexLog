@@ -1,0 +1,175 @@
+.detalhes .container {
+  padding-left: 70px;
+}
+
+.lateralBar {
+  width: 38%;
+  max-width: 729px;
+  height: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  overflow-y: auto;
+}
+
+.lateralBar .header {
+  display: flex;
+}
+
+.header .voltar {
+  height: 50px;
+  width: 50px;
+  margin: 0;
+  position: absolute;
+  top: 3%;
+  left: 5%;
+}
+
+.header .voltar img {
+  height: 70%;
+}
+
+.header .content {
+  margin: 0 auto;
+  margin-top: 4%;
+}
+
+.header .content .img {
+  width: 220px;
+  margin: auto;
+}
+
+.header .content .img img {
+  width: 220px;
+}
+
+.lateralBar .subHeader {
+  width: 190px;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 3.5%;
+}
+
+.lateralBar .subHeader img {
+  height: 20px;
+}
+
+.lateralBar .subHeader h3 {
+  font-size: medium;
+}
+
+.lateralBar .subHeader h3#text {
+  margin-left: 4.1%;
+  margin-right: 2.1%;
+  color: #c5c5c5;
+}
+
+.lateralBar .card {
+  margin-left: 35%;
+  margin-top: 3.5%;
+}
+
+.lateralBar .card .title {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.lateralBar .card .title img {
+  height: 20px;
+  width: 20px;
+  position: static;
+  cursor: auto;
+  margin-right: 10px;
+}
+
+.lateralBar .card .title img#icons {
+  filter: grayscale(100%);
+}
+
+.lateralBar .card h4 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.lateralBar .card .content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lateralBar strong {
+  color: #797878;
+}
+
+.lateralBar .card .content h4 {
+  font-size: small;
+  color: #a4a4a4;
+}
+
+.lateralBar .card .content h2#timeComplement {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  /* margin-righ: 11%; */
+  float: right;
+  font-size: 18px;
+  color: #6ae8e5;
+}
+
+.lateralBar .card .content p#timeComplement {
+  margin-top: 32px;
+  margin-bottom: 15px;
+  margin-right: 11%;
+  float: right;
+  font-size: 15px;
+  color: #6ae8e5;
+}
+
+.lateralBar .card .content {
+  margin-left: 30px;
+}
+
+.lateralBar .card .content .subContent h2 {
+  margin: 0;
+  margin-right: 5%;
+  font-size: 22px;
+  line-height: 30px;
+  color: #a4a4a4;
+}
+
+.lateralBar .card .content .subContent {
+  display: flex;
+}
+
+.lateralBar .card .content .subContent p {
+  font-size: 12px;
+  width: 100px;
+}
+
+.lateralBar footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  margin: 0 auto;
+  color: #ff0606;
+}
+
+.lateralBar footer .content {
+  width: 80%;
+  margin: 0 auto 3% auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.lateralBar footer .content p {
+  font-size: 16px;
+}
+
+.lateralBar footer .buttons {
+  display: flex;
+  height: 30px;
+  margin: auto 0;
+}
+
+.lateralBar footer img {
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
+}

@@ -11,7 +11,7 @@
   padding-top: 100px;
   display: flex;
 }
-.linha-1 .voltar {
+.voltar {
   width: 80px;
   height: 80px;
   position: relative;
