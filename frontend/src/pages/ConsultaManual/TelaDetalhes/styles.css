@@ -126,7 +126,7 @@
 }
 
 .lateralBar .card .content {
-  margin-left: 30px;
+  margin-left: 45px;
 }
 
 .lateralBar .card .content .subContent h2 {
@@ -175,6 +175,7 @@
   width: 30px;
   height: 30px;
   margin-left: 15px;
+  cursor: pointer;
 }
 
 #mapaAmazonas {

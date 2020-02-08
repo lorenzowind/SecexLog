@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { saveAs } from "file-saver";
 
 import Menu from "../../../components/Menu/MainMenu/index";
 
@@ -8,20 +9,23 @@ import Calendar from "../../../assets/4_Detalhes_do_Trecho/cal.png";
 import Endings from "../../../assets/4_Detalhes_do_Trecho/Elipse 152.png";
 import Impressora from "../../../assets/4_Detalhes_do_Trecho/impressora.png";
 import Email from "../../../assets/4_Detalhes_do_Trecho/email2.png";
-import Map from '../../../assets/2_Tela_de_Consulta_Manual/MAPA.png'
+import Map from "../../../assets/2_Tela_de_Consulta_Manual/MAPA.png";
 
 import api from "../../../services/api";
 
 import "./styles.css";
+import ReactToPrint from "react-to-print";
+import Loading from "../../../components/Loading/index";
 
 export default class TelaDetalhes extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       latitudeDeparture: "",
       longitudeDeparture: "",
       latitudeArrival: "",
-      longitudeArrival: ""
+      longitudeArrival: "",
+      load: false
     };
   }
 
@@ -35,6 +39,8 @@ export default class TelaDetalhes extends Component {
 
     const departureCity = paths.going.departure.city;
     const arrivalCity = paths.going.arrival.city;
+
+    this.setState({ load: false });
 
     await setTimeout(() => {
       api
@@ -59,7 +65,8 @@ export default class TelaDetalhes extends Component {
               latitudeArrival,
               longitudeArrival,
               latitudeDeparture,
-              longitudeDeparture
+              longitudeDeparture,
+              load: true
             });
           });
         })
@@ -68,7 +75,7 @@ export default class TelaDetalhes extends Component {
           window.location.reload();
         });
     }, 1200);
-  }
+  };
 
   subtraiHora = (hrA, hrB) => {
     if (hrA.length != 5 || hrB.length != 5) return "00:00";
@@ -102,6 +109,17 @@ export default class TelaDetalhes extends Component {
     window.history.back();
   };
 
+  printPDF = async () => {
+    const { trajetos, id } = this.props.location.state;
+
+    await api.post("/create-pdf", trajetos[id]).then(() => {
+      api.get("/fetch-pdf", { responseType: "blob" }).then(res => {
+        const pdfBlob = new Blob([res.data], { type: "application/pdf" });
+        saveAs(pdfBlob, "detalhesTrecho.pdf");
+      });
+    });
+  };
+
   render() {
     const { id, pathId, trajetos } = this.props.location.state;
     const paths = trajetos[id].paths[pathId];
@@ -112,24 +130,26 @@ export default class TelaDetalhes extends Component {
     const latArr = Math.abs(parseFloat(this.state.latitudeArrival)) * 10;
 
     const departureMarkerStyle = {
-      marginLeft: (410 - lngDep) + 'px',
-      marginTop: (latDep * 4.25) + 120 + 'px',
-      width: '10px',
-      height: '10px',
-      position: 'absolute'
+      marginLeft: 410 - lngDep + "px",
+      marginTop: latDep * 4.25 + 120 + "px",
+      width: "10px",
+      height: "10px",
+      position: "absolute"
     };
 
     const arrivalMarkerStyle = {
-      marginLeft: (410 - lngArr) + 'px',
-      marginTop: (latArr * 4.25) + 120 + 'px',
-      width: '10px',
-      height: '10px',
-      position: 'absolute'
+      marginLeft: 410 - lngArr + "px",
+      marginTop: latArr * 4.25 + 120 + "px",
+      width: "10px",
+      height: "10px",
+      position: "absolute"
     };
 
     console.log(departureMarkerStyle);
     console.log(arrivalMarkerStyle);
-    
+
+    if (!this.state.load) return <Loading />;
+
     return (
       <div className="detalhes">
         <Menu />
@@ -230,23 +250,23 @@ export default class TelaDetalhes extends Component {
                 </div>
                 <div className="buttons">
                   <img src={Email} alt="" />
-                  <img src={Impressora} alt="" />
+                  <img src={Impressora} alt="" onClick={this.printPDF} />
                 </div>
               </div>
             </footer>
           </div>
           <div className="map">
-            <img src={Map} alt="" id="mapaAmazonas"/>
-            <img 
-              src={Endings} 
-              alt="" 
-              title={paths.back.departure.city} 
+            <img src={Map} alt="" id="mapaAmazonas" />
+            <img
+              src={Endings}
+              alt=""
+              title={paths.back.departure.city}
               style={departureMarkerStyle}
             />
-            <img 
-              src={Endings} 
-              alt="" 
-              title={paths.back.arrival.city} 
+            <img
+              src={Endings}
+              alt=""
+              title={paths.back.arrival.city}
               style={arrivalMarkerStyle}
             />
           </div>
