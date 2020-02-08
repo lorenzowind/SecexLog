@@ -8,12 +8,66 @@ import Calendar from "../../../assets/4_Detalhes_do_Trecho/cal.png";
 import Endings from "../../../assets/4_Detalhes_do_Trecho/Elipse 152.png";
 import Impressora from "../../../assets/4_Detalhes_do_Trecho/impressora.png";
 import Email from "../../../assets/4_Detalhes_do_Trecho/email2.png";
+import Map from '../../../assets/2_Tela_de_Consulta_Manual/MAPA.png'
+
+import api from "../../../services/api";
 
 import "./styles.css";
 
 export default class TelaDetalhes extends Component {
+  constructor (props) {
+    super(props);
+    this.state = {
+      latitudeDeparture: "",
+      longitudeDeparture: "",
+      latitudeArrival: "",
+      longitudeArrival: ""
+    };
+  }
+
   componentDidMount() {
-    console.log(this.props.location.state);
+    this.loadLatLng();
+  }
+
+  loadLatLng = async () => {
+    const { id, pathId, trajetos } = this.props.location.state;
+    const paths = trajetos[id].paths[pathId];
+
+    const departureCity = paths.going.departure.city;
+    const arrivalCity = paths.going.arrival.city;
+
+    await setTimeout(() => {
+      api
+        .get("/cities")
+        .then(res => {
+          let latitudeDeparture;
+          let longitudeDeparture;
+          let latitudeArrival;
+          let longitudeArrival;
+          res.data.forEach((element, index) => {
+            if (element.nome === departureCity) {
+              latitudeDeparture = element.latitute;
+              longitudeDeparture = element.longitude;
+            }
+
+            if (element.nome === arrivalCity) {
+              latitudeArrival = element.latitute;
+              longitudeArrival = element.longitude;
+            }
+
+            this.setState({
+              latitudeArrival,
+              longitudeArrival,
+              latitudeDeparture,
+              longitudeDeparture
+            });
+          });
+        })
+        .catch(err => {
+          alert(err);
+          window.location.reload();
+        });
+    }, 1200);
   }
 
   subtraiHora = (hrA, hrB) => {
@@ -52,6 +106,30 @@ export default class TelaDetalhes extends Component {
     const { id, pathId, trajetos } = this.props.location.state;
     const paths = trajetos[id].paths[pathId];
 
+    const lngDep = Math.abs(parseFloat(this.state.longitudeDeparture)) * 10;
+    const latDep = Math.abs(parseFloat(this.state.latitudeDeparture)) * 10;
+    const lngArr = Math.abs(parseFloat(this.state.longitudeArrival)) * 10;
+    const latArr = Math.abs(parseFloat(this.state.latitudeArrival)) * 10;
+
+    const departureMarkerStyle = {
+      marginLeft: (410 - lngDep) + 'px',
+      marginTop: (latDep * 4.25) + 120 + 'px',
+      width: '10px',
+      height: '10px',
+      position: 'absolute'
+    };
+
+    const arrivalMarkerStyle = {
+      marginLeft: (410 - lngArr) + 'px',
+      marginTop: (latArr * 4.25) + 120 + 'px',
+      width: '10px',
+      height: '10px',
+      position: 'absolute'
+    };
+
+    console.log(departureMarkerStyle);
+    console.log(arrivalMarkerStyle);
+    
     return (
       <div className="detalhes">
         <Menu />
@@ -156,6 +234,21 @@ export default class TelaDetalhes extends Component {
                 </div>
               </div>
             </footer>
+          </div>
+          <div className="map">
+            <img src={Map} alt="" id="mapaAmazonas"/>
+            <img 
+              src={Endings} 
+              alt="" 
+              title={paths.back.departure.city} 
+              style={departureMarkerStyle}
+            />
+            <img 
+              src={Endings} 
+              alt="" 
+              title={paths.back.arrival.city} 
+              style={arrivalMarkerStyle}
+            />
           </div>
         </div>
       </div>
