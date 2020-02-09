@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import { saveAs } from "file-saver";
+import ReactLoading from "react-loading";
 
 import Menu from "../../../components/Menu/MainMenu/index";
 
+import X from "../../../assets/1_Tela_de_Consulta_Automática/sair_secex.png";
 import voltaIcone from "../../../assets/3_Resultado_da_Consulta/ir-1.png";
 import Bar from "../../../assets/4_Detalhes_do_Trecho/Componente 50 – 1.png";
 import Calendar from "../../../assets/4_Detalhes_do_Trecho/cal.png";
@@ -14,7 +16,7 @@ import Map from "../../../assets/2_Tela_de_Consulta_Manual/MAPA.png";
 import api from "../../../services/api";
 
 import "./styles.css";
-import ReactToPrint from "react-to-print";
+
 import Loading from "../../../components/Loading/index";
 
 export default class TelaDetalhes extends Component {
@@ -25,12 +27,16 @@ export default class TelaDetalhes extends Component {
       longitudeDeparture: "",
       latitudeArrival: "",
       longitudeArrival: "",
-      load: false
+      load: false,
+      done: true
     };
   }
 
   componentDidMount() {
     this.loadLatLng();
+    console.log(
+      this.props.location.state.trajetos[this.props.location.state.id]
+    );
   }
 
   loadLatLng = async () => {
@@ -109,15 +115,60 @@ export default class TelaDetalhes extends Component {
     window.history.back();
   };
 
-  printPDF = async () => {
-    const { trajetos, id } = this.props.location.state;
+  openPopUp = () => {
+    const popUp = document.getElementsByClassName("popUpImpressao");
+    popUp[0].style.display = "block";
+  };
 
-    await api.post("/create-pdf", trajetos[id]).then(() => {
-      api.get("/fetch-pdf", { responseType: "blob" }).then(res => {
-        const pdfBlob = new Blob([res.data], { type: "application/pdf" });
-        saveAs(pdfBlob, "detalhesTrecho.pdf");
-      });
-    });
+  printPDF = async () => {
+    const { trajetos, id, pathId } = this.props.location.state;
+
+    const state = {
+      cityDeparture: trajetos[id].cityDeparture,
+      dateDeparture: trajetos[id].dateDeparture,
+      warnings: trajetos[id].warnings,
+      cityRegress: trajetos[id].cityRegress,
+      dateRegress: trajetos[id].dateRegress,
+      going: trajetos[id].paths[pathId].going,
+      back: trajetos[id].paths[pathId].back,
+      duration: trajetos[id].duration
+    };
+
+    this.setState({ done: false });
+
+    await setTimeout(() => {
+      api
+        .post("/create-pdf", state)
+        .then(() => {
+          api.get("/fetch-pdf", { responseType: "blob" }).then(res => {
+            const pdfBlob = new Blob([res.data], { type: "application/pdf" });
+            saveAs(pdfBlob, "detalhesTrecho.pdf");
+            this.setState({ done: true });
+          });
+        })
+        .catch(err => {
+          this.setState({ done: true });
+
+          const ERROR = document.getElementsByClassName("popUpImpressaoErro");
+
+          this.closePopUp();
+
+          ERROR[0].style.display = "block";
+        });
+    }, 1200);
+  };
+
+  closePopUp = () => {
+    const ERROR = document.getElementsByClassName("popUpImpressaoErro");
+    const popUp = document.getElementsByClassName("popUpImpressao");
+    popUp[0].style.display = "";
+    ERROR[0].style.display = "";
+  };
+
+  confirmPopUp = ev => {
+    ev.preventDefault();
+
+    this.printPDF();
   };
 
   render() {
@@ -250,7 +301,7 @@ export default class TelaDetalhes extends Component {
                 </div>
                 <div className="buttons">
                   <img src={Email} alt="" />
-                  <img src={Impressora} alt="" onClick={this.printPDF} />
+                  <img src={Impressora} alt="" onClick={this.openPopUp} />
                 </div>
               </div>
             </footer>
@@ -270,6 +321,35 @@ export default class TelaDetalhes extends Component {
               style={arrivalMarkerStyle}
             />
           </div>
+        </div>
+
+        <div className="popUpImpressao">
+          <header>
+            <img src={X} alt="fechar" onClick={this.closePopUp} />
+          </header>
+          <main>
+            <h1>Deseja realizar a impressão do roteiro da viagem?</h1>
+          </main>
+          <footer>
+            <button onClick={this.confirmPopUp}>Sim</button>
+            {!this.state.done ? (
+              <div className="loadingSpin">
+                <ReactLoading
+                  type={"spin"}
+                  color={"#292eec"}
+                  height={15}
+                  width={15}
+                />
+              </div>
+            ) : (
+              <div />
+            )}
+          </footer>
+        </div>
+
+        <div className="popUpImpressaoErro">
+          <img src={X} alt="fechar" onClick={this.closePopUp} />
+          <h1>Erro ao imprimir</h1>
         </div>
       </div>
     );

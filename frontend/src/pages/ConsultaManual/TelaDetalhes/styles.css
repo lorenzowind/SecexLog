@@ -184,3 +184,85 @@
   margin-left: 42%;
   margin-top: 5%;
 }
+
+.popUpImpressao {
+  width: 40%;
+  max-width: 762px;
+  height: 50%;
+  max-height: 479px;
+  padding: 30px;
+  background-color: #fff;
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  border-radius: 38px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  border: solid 1px #707070;
+  text-align: center;
+  z-index: 2;
+  display: none;
+}
+
+.popUpImpressao img {
+  height: 25px;
+  float: right;
+  cursor: pointer;
+}
+
+.popUpImpressao main {
+  margin: 10% 40px 10% 40px;
+}
+
+.popUpImpressao footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popUpImpressao button {
+  margin-top: 5%;
+  width: 20%;
+  max-width: 140px;
+  height: 30px;
+  max-height: 57px;
+  border-radius: 35px;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  background-image: linear-gradient(to right, #3dbec6 3%, #292eec);
+  cursor: pointer;
+}
+
+.popUpImpressao .loadingSpin {
+  position: relative;
+  top: 10px;
+  margin-left: 10px;
+}
+
+.popUpImpressaoErro {
+  width: 40%;
+  max-width: 665px;
+  height: 25%;
+  max-height: 200px;
+  padding: 30px;
+  background-color: #fff;
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  border-radius: 38px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  border: solid 1px #707070;
+  text-align: center;
+  z-index: 2;
+  display: none;
+}
+
+.popUpImpressaoErro img {
+  height: 25px;
+  float: right;
+  cursor: pointer;
+}
+
+.popUpImpressaoErro h1 {
+  margin: 10% 40px 10% 40px;
+}
