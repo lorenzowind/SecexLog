@@ -144,6 +144,7 @@ export default class TelaDetalhes extends Component {
             const pdfBlob = new Blob([res.data], { type: "application/pdf" });
             saveAs(pdfBlob, "detalhesTrecho.pdf");
             this.setState({ done: true });
+            this.closePopUp();
           });
         })
         .catch(err => {
