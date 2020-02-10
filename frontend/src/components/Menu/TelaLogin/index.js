@@ -47,7 +47,10 @@ export default class Tela_login extends React.Component {
           if (post) {
             el[0].style.display = "none";
             tela[0].style.display = "none";
+            let token_exp = new Date();
+            token_exp.setSeconds(new Date().getUTCSeconds() + 86400);
             localStorage.setItem("token", post.data.token);
+            localStorage.setItem("token_exp", token_exp);
             this.setState({ login: true, done: true });
           }
         })

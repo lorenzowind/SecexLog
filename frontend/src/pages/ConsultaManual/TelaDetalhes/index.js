@@ -3,6 +3,7 @@ import { saveAs } from "file-saver";
 import ReactLoading from "react-loading";
 
 import Menu from "../../../components/Menu/MainMenu/index";
+import CitiesPositions from "../utils/CitiesPositions";
 
 import X from "../../../assets/1_Tela_de_Consulta_Automática/sair_secex.png";
 import voltaIcone from "../../../assets/3_Resultado_da_Consulta/ir-1.png";
@@ -36,10 +37,6 @@ export default class TelaDetalhes extends Component {
 
   componentDidMount() {
     this.loadLatLng();
-    //console.log(this.props.location.state);
-    // console.log(
-    //   this.props.location.state.trajetos[this.props.location.state.id]
-    // );
   }
 
   onChange = ev => {
@@ -50,8 +47,6 @@ export default class TelaDetalhes extends Component {
     state[campo] = value;
 
     this.setState(state);
-
-    console.log(this.state.email);
   };
 
   loadLatLng = async () => {
@@ -99,7 +94,7 @@ export default class TelaDetalhes extends Component {
   };
 
   subtraiHora = (hrA, hrB) => {
-    if (hrA.length != 5 || hrB.length != 5) return "00:00";
+    if (hrA.length !== 5 || hrB.length !== 5) return "00:00";
 
     let temp = 0;
     let nova_h = 0;
@@ -115,13 +110,13 @@ export default class TelaDetalhes extends Component {
       nova_h++;
       temp = temp + 60;
     }
-    novo_m = temp.toString().length == 2 ? temp : "0" + temp;
+    novo_m = temp.toString().length === 2 ? temp : "0" + temp;
 
     temp = hora1 - hora2 - nova_h;
     while (temp < 0) {
       temp = temp + 24;
     }
-    nova_h = temp.toString().length == 2 ? temp : "0" + temp;
+    nova_h = temp.toString().length === 2 ? temp : "0" + temp;
 
     return nova_h + ":" + novo_m;
   };
@@ -192,8 +187,6 @@ export default class TelaDetalhes extends Component {
       back: trajetos[id].paths[pathId].back,
     };
 
-    console.log(data);
-
     this.setState({ done: false });
 
     await setTimeout(() => {
@@ -201,16 +194,21 @@ export default class TelaDetalhes extends Component {
         .post(`/create-pdf?email=${this.state.email}`, data)
         .then(() => {
           this.setState({ done: true });
-          alert('O trajeto foi enviado para o seu e-mail. Verifique a caixa de entrada e a caixa de spam');
+
+          this.closeEmailPopUp();
+
+          alert("O trajeto foi enviado para o seu e-mail. Verifique a caixa de entrada e a caixa de spam");
         })
         .catch(err => {
           this.setState({ done: true });
 
           const ERROR = document.getElementsByClassName("popUpEmailErro");
+          const txt = document.getElementById("popUpEmailAlertText");
 
           this.closeEmailPopUp();
 
           ERROR[0].style.display = "block";
+          txt.innerHTML = "Erro ao enviar o e-mail";
         });
     }, 1200);
   }
@@ -239,22 +237,18 @@ export default class TelaDetalhes extends Component {
     const { id, pathId, trajetos } = this.props.location.state;
     const paths = trajetos[id].paths[pathId];
 
-    const lngDep = Math.abs(parseFloat(this.state.longitudeDeparture)) * 10;
-    const latDep = Math.abs(parseFloat(this.state.latitudeDeparture)) * 10;
-    const lngArr = Math.abs(parseFloat(this.state.longitudeArrival)) * 10;
-    const latArr = Math.abs(parseFloat(this.state.latitudeArrival)) * 10;
 
     const departureMarkerStyle = {
-      marginLeft: 410 - lngDep + "px",
-      marginTop: latDep * 4.25 + 120 + "px",
+      marginLeft: CitiesPositions[paths.going.departure.city].left,
+      marginTop: CitiesPositions[paths.going.departure.city].top,
       width: "10px",
       height: "10px",
       position: "absolute"
     };
 
     const arrivalMarkerStyle = {
-      marginLeft: 410 - lngArr + "px",
-      marginTop: latArr * 4.25 + 120 + "px",
+      marginLeft: CitiesPositions[paths.going.arrival.city].left,
+      marginTop: CitiesPositions[paths.going.arrival.city].top,
       width: "10px",
       height: "10px",
       position: "absolute"
@@ -442,7 +436,7 @@ export default class TelaDetalhes extends Component {
                 id="popUpEmailSendButton"
                 onClick={this.sendEmail}
               />
-              {/* {!this.state.done ? (
+              {!this.state.done ? (
                 <div className="loadingSpin">
                   <ReactLoading
                     type={"spin"}
@@ -453,14 +447,14 @@ export default class TelaDetalhes extends Component {
                 </div>
               ) : (
                 <div />
-              )} */}
+              )}
             </div>
           </main>
         </div>
 
         <div className="popUpEmailErro">
           <img src={X} alt="fechar" onClick={this.closeEmailPopUp} />
-          <h1>Erro ao enviar para o e-mail</h1>
+          <h1 id="popUpEmailAlertText"></h1>
         </div>
       </div>
     );

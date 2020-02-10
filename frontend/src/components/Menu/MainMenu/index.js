@@ -1,7 +1,6 @@
 import React from "react";
 import DayPicker from "react-day-picker";
 
-import MenuBar from "../MenuBar/index";
 import { Link } from "react-router-dom";
 
 import secex_logo from "../../../assets/Menu/secex_logo.png";

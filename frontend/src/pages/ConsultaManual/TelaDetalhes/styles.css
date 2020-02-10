@@ -288,10 +288,14 @@
   height: 40px;
   width: 40px;
   position: static;
-  cursor: auto;
+  cursor: pointer;
   margin-top: 20px;
 }
 
 .popUpEmailErro h1 {
   margin-bottom: 40px;
+}
+
+.popUpEmail .loadingSpin {
+  top: 30px;
 }
