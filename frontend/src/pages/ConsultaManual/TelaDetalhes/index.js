@@ -12,6 +12,7 @@ import Endings from "../../../assets/4_Detalhes_do_Trecho/Elipse 152.png";
 import Impressora from "../../../assets/4_Detalhes_do_Trecho/impressora.png";
 import Email from "../../../assets/4_Detalhes_do_Trecho/email2.png";
 import Map from "../../../assets/2_Tela_de_Consulta_Manual/MAPA.png";
+import SendEmail from "../../../assets/4_Detalhes_do_Trecho/Componente 51 – 1.png";
 
 import api from "../../../services/api";
 
@@ -23,6 +24,7 @@ export default class TelaDetalhes extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      email: "",
       latitudeDeparture: "",
       longitudeDeparture: "",
       latitudeArrival: "",
@@ -34,10 +36,23 @@ export default class TelaDetalhes extends Component {
 
   componentDidMount() {
     this.loadLatLng();
-    console.log(
-      this.props.location.state.trajetos[this.props.location.state.id]
-    );
+    //console.log(this.props.location.state);
+    // console.log(
+    //   this.props.location.state.trajetos[this.props.location.state.id]
+    // );
   }
+
+  onChange = ev => {
+    const state = Object.assign({}, this.state);
+    const campo = ev.target.name;
+    const value = ev.target.value;
+
+    state[campo] = value;
+
+    this.setState(state);
+
+    console.log(this.state.email);
+  };
 
   loadLatLng = async () => {
     const { id, pathId, trajetos } = this.props.location.state;
@@ -115,8 +130,13 @@ export default class TelaDetalhes extends Component {
     window.history.back();
   };
 
-  openPopUp = () => {
+  openPrintPopUp = () => {
     const popUp = document.getElementsByClassName("popUpImpressao");
+    popUp[0].style.display = "block";
+  };
+
+  openEmailPopUp = () => {
+    const popUp = document.getElementsByClassName("popUpEmail");
     popUp[0].style.display = "block";
   };
 
@@ -144,6 +164,7 @@ export default class TelaDetalhes extends Component {
             const pdfBlob = new Blob([res.data], { type: "application/pdf" });
             saveAs(pdfBlob, "detalhesTrecho.pdf");
             this.setState({ done: true });
+            this.closePrintPopUp();
           });
         })
         .catch(err => {
@@ -151,21 +172,64 @@ export default class TelaDetalhes extends Component {
 
           const ERROR = document.getElementsByClassName("popUpImpressaoErro");
 
-          this.closePopUp();
+          this.closePrintPopUp();
 
           ERROR[0].style.display = "block";
         });
     }, 1200);
   };
 
-  closePopUp = () => {
+  sendEmail = async () => {
+    const { trajetos, id, pathId } = this.props.location.state;
+
+    const data = {
+      cityDeparture: trajetos[id].cityDeparture,
+      cityRegress: trajetos[id].cityRegress,
+      totalCost: trajetos[id].paths[pathId].totalCost,
+      totalMileage: trajetos[id].paths[pathId].totalMileage,
+      warnings: trajetos[id].warnings,
+      going: trajetos[id].paths[pathId].going,
+      back: trajetos[id].paths[pathId].back,
+    };
+
+    console.log(data);
+
+    this.setState({ done: false });
+
+    await setTimeout(() => {
+      api
+        .post(`/create-pdf?email=${this.state.email}`, data)
+        .then(() => {
+          this.setState({ done: true });
+          alert('O trajeto foi enviado para o seu e-mail. Verifique a caixa de entrada e a caixa de spam');
+        })
+        .catch(err => {
+          this.setState({ done: true });
+
+          const ERROR = document.getElementsByClassName("popUpEmailErro");
+
+          this.closeEmailPopUp();
+
+          ERROR[0].style.display = "block";
+        });
+    }, 1200);
+  }
+
+  closePrintPopUp = () => {
     const ERROR = document.getElementsByClassName("popUpImpressaoErro");
     const popUp = document.getElementsByClassName("popUpImpressao");
     popUp[0].style.display = "";
     ERROR[0].style.display = "";
   };
 
-  confirmPopUp = ev => {
+  closeEmailPopUp = () => {
+    const ERROR = document.getElementsByClassName("popUpEmailErro");
+    const popUp = document.getElementsByClassName("popUpEmail");
+    popUp[0].style.display = "";
+    ERROR[0].style.display = "";
+  };
+
+  confirmPrintPopUp = ev => {
     ev.preventDefault();
 
     this.printPDF();
@@ -195,9 +259,6 @@ export default class TelaDetalhes extends Component {
       height: "10px",
       position: "absolute"
     };
-
-    console.log(departureMarkerStyle);
-    console.log(arrivalMarkerStyle);
 
     if (!this.state.load) return <Loading />;
 
@@ -300,8 +361,8 @@ export default class TelaDetalhes extends Component {
                   ))}
                 </div>
                 <div className="buttons">
-                  <img src={Email} alt="" />
-                  <img src={Impressora} alt="" onClick={this.openPopUp} />
+                  <img src={Email} alt="" onClick={this.openEmailPopUp} />
+                  <img src={Impressora} alt="" onClick={this.openPrintPopUp} />
                 </div>
               </div>
             </footer>
@@ -325,13 +386,13 @@ export default class TelaDetalhes extends Component {
 
         <div className="popUpImpressao">
           <header>
-            <img src={X} alt="fechar" onClick={this.closePopUp} />
+            <img src={X} alt="fechar" onClick={this.closePrintPopUp} />
           </header>
           <main>
             <h1>Deseja realizar a impressão do roteiro da viagem?</h1>
           </main>
           <footer>
-            <button onClick={this.confirmPopUp}>Sim</button>
+            <button onClick={this.confirmPrintPopUp}>Sim</button>
             {!this.state.done ? (
               <div className="loadingSpin">
                 <ReactLoading
@@ -348,8 +409,58 @@ export default class TelaDetalhes extends Component {
         </div>
 
         <div className="popUpImpressaoErro">
-          <img src={X} alt="fechar" onClick={this.closePopUp} />
+          <img src={X} alt="fechar" onClick={this.closePrintPopUp} />
           <h1>Erro ao imprimir</h1>
+        </div>
+
+        <div className="popUpEmail" id="popUpEmail">
+          <header>
+            <img 
+              src={X} 
+              alt="fechar" 
+              onClick={this.closeEmailPopUp} 
+              id="popUpEmailXButton"
+            />
+          </header>
+          <main>
+            <h1 id="popUpEmailText">
+              Insira seu e-mail para receber o trajeto detalhado do trecho
+            </h1>
+            <div id="popUpEmailSend">
+              <input 
+                type="email"
+                placeholder="nome@email.com.br"
+                id="popUpEmailInput"
+                name="email"
+                onChange={this.onChange}
+                required
+              />
+              <img 
+                src={SendEmail}
+                alt="Enviar"
+                title="Enviar e-mail"
+                id="popUpEmailSendButton"
+                onClick={this.sendEmail}
+              />
+              {/* {!this.state.done ? (
+                <div className="loadingSpin">
+                  <ReactLoading
+                    type={"spin"}
+                    color={"#292eec"}
+                    height={15}
+                    width={15}
+                  />
+                </div>
+              ) : (
+                <div />
+              )} */}
+            </div>
+          </main>
+        </div>
+
+        <div className="popUpEmailErro">
+          <img src={X} alt="fechar" onClick={this.closeEmailPopUp} />
+          <h1>Erro ao enviar para o e-mail</h1>
         </div>
       </div>
     );
