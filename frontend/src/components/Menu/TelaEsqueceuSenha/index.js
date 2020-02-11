@@ -29,6 +29,12 @@ export default class TelaEsqueceuSenha extends React.Component {
         this.evento_sair();
     }
     
+    handleKeyDown = ev => {
+        if (ev.key === 'Enter') {
+          this.evento_enviarEmail(ev);
+        }
+    }
+
     render() {
         return (
             <div className="tela-esqueceu-senha">
@@ -46,7 +52,7 @@ export default class TelaEsqueceuSenha extends React.Component {
                 </div>
 
                 <div className="email">
-                    <input type="email" name="email"/>
+                    <input type="email" name="email" onKeyDown={this.handleKeyDown} />
                 </div>
 
                 <div className="botao_enviar_email">

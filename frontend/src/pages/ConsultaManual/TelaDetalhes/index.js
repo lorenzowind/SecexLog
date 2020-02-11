@@ -55,6 +55,7 @@ export default class TelaDetalhes extends Component {
 
     const departureCity = paths.going.departure.city;
     const arrivalCity = paths.going.arrival.city;
+    
 
     this.setState({ load: false });
 
@@ -203,12 +204,10 @@ export default class TelaDetalhes extends Component {
           this.setState({ done: true });
 
           const ERROR = document.getElementsByClassName("popUpEmailErro");
-          const txt = document.getElementById("popUpEmailAlertText");
 
           this.closeEmailPopUp();
 
           ERROR[0].style.display = "block";
-          txt.innerHTML = "Erro ao enviar o e-mail";
         });
     }, 1200);
   }
@@ -233,10 +232,15 @@ export default class TelaDetalhes extends Component {
     this.printPDF();
   };
 
+  handleKeyDown = ev => {
+    if (ev.key === 'Enter') {
+      this.sendEmail(ev);
+    }
+  }
+
   render() {
     const { id, pathId, trajetos } = this.props.location.state;
     const paths = trajetos[id].paths[pathId];
-
 
     const departureMarkerStyle = {
       marginLeft: CitiesPositions[paths.going.departure.city].left,
@@ -427,6 +431,7 @@ export default class TelaDetalhes extends Component {
                 id="popUpEmailInput"
                 name="email"
                 onChange={this.onChange}
+                onKeyDown={this.handleKeyDown}
                 required
               />
               <img 
@@ -454,7 +459,7 @@ export default class TelaDetalhes extends Component {
 
         <div className="popUpEmailErro">
           <img src={X} alt="fechar" onClick={this.closeEmailPopUp} />
-          <h1 id="popUpEmailAlertText"></h1>
+          <h1>Erro ao enviar o e-mail</h1>
         </div>
       </div>
     );
