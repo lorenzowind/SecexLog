@@ -207,7 +207,8 @@ export default class Tela_resultado extends React.Component {
                 </div>
                 {trajetos[index].paths.length > 0 ? (
                   trajetos[index].paths.map((c, i) => (
-                    <div key={i}>
+                    <div key={i} className="cardIcon" >
+                      <img src={c.back.modalImg} alt="" id="icon"/>
                       <div className="cartao_trajeto">
                         <div className="travelData" style={{ margin: "auto" }}>
                           <div className="resultIda">

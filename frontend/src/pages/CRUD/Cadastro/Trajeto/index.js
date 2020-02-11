@@ -136,11 +136,6 @@ export default class Trajeto extends Component {
     var { dias } = this.state;
     var { horas } = this.state;
 
-    // if (this.state.dia && this.state.hora) {
-    //   dias.push(this.state.dia);
-    //   horas.push(this.state.hora);
-    // }
-
     let duration = this.state.duracao;
     let duration2;
 

@@ -301,3 +301,12 @@
   margin-top: 10%;
   margin-right: 10%;
 }
+
+.cardIcon{
+  display: flex;
+}
+
+.cardIcon img#icon{
+  height: 50px;
+  /* margin-top: ; */
+}
