@@ -1,6 +1,6 @@
 .tela-resultado_ {
   padding-top: 50px;
-  padding-left: 15%;
+  padding-left: 10%;
   margin: 0 auto;
   margin-bottom: 100px;
 }
@@ -302,11 +302,24 @@
   margin-right: 10%;
 }
 
-.cardIcon{
+.cardIcon {
   display: flex;
+  /* width: 6000px; */
 }
 
-.cardIcon img#icon{
+.cardIcon img#icon {
   height: 50px;
-  /* margin-top: ; */
+  margin-top: 120px;
+}
+
+.linha-2 {
+  border-radius: 20px;
+  width: 800px;
+  height: 75px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.trajeto .data {
+  margin-left: 10px;
 }

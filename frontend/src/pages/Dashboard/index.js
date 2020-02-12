@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import Menu from "../../components/Menu/MenuLateral/index";
 import Loading from "../../components/Loading/index";
 
-import dashboard_ from "../../assets/5_Dashboard/dashboard.PNG";
+import dashboard_ from "../../assets/5_Dashboard/dashboard.png";
 
 import "./styles.css";
 

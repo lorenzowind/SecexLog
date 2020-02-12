@@ -2,18 +2,19 @@ import React from "react";
 import { Redirect, NavLink } from "react-router-dom";
 
 import Loading from "../../../components/Loading/index";
+import Menu from "../../../components/Menu/MainMenu/index";
 
 import idaIcone from "../../../assets/3_Resultado_da_Consulta/ir2.png";
 import voltaIcone from "../../../assets/3_Resultado_da_Consulta/ir-1.png";
 
-import rapidoIcone from "../../../assets/3_Resultado_da_Consulta/run1.png";
-import rapidoIconeHover from "../../../assets/3_Resultado_da_Consulta/run_2.png";
+// import rapidoIcone from "../../../assets/3_Resultado_da_Consulta/run1.png";
+// import rapidoIconeHover from "../../../assets/3_Resultado_da_Consulta/run_2.png";
 
-import custoIcone from "../../../assets/3_Resultado_da_Consulta/PREÇO.png";
-import custoIconeHover from "../../../assets/3_Resultado_da_Consulta/PREÇO1.png";
+// import custoIcone from "../../../assets/3_Resultado_da_Consulta/PREÇO.png";
+// import custoIconeHover from "../../../assets/3_Resultado_da_Consulta/PREÇO1.png";
 
-import seguroIcone from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA.png";
-import seguroIconeHover from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA_color.png";
+// import seguroIcone from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA.png";
+// import seguroIconeHover from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA_color.png";
 
 import filtroIcone from "../../../assets/3_Resultado_da_Consulta/filtro.png";
 import barraIcone from "../../../assets/3_Resultado_da_Consulta/Componente 34 – 1.png";
@@ -80,8 +81,7 @@ export default class Tela_resultado extends React.Component {
 
     if (sum > 0) {
       return sum - 1;
-    }
-    else {
+    } else {
       return sum;
     }
   };
@@ -112,6 +112,7 @@ export default class Tela_resultado extends React.Component {
     if (this.state.load === true) {
       return (
         <div className="tela-resultado">
+          <Menu />
           <div className="linha-1">
             <div className="voltar" onClick={this.back}>
               <img src={voltaIcone} alt="" />
@@ -129,7 +130,7 @@ export default class Tela_resultado extends React.Component {
             <div className="trajeto">
               <div className="trajeto_">
                 <div className="linha-2">
-                  <div className="filtros">
+                  {/* <div className="filtros">
                     <div className="rapidoIcone">
                       <img
                         src={rapidoIcone}
@@ -164,7 +165,7 @@ export default class Tela_resultado extends React.Component {
                         }
                       />
                     </div>
-                  </div>
+                  </div>*/}
                   <div className="cidades">
                     <button
                       type="button"
@@ -201,14 +202,14 @@ export default class Tela_resultado extends React.Component {
                       </h1>
                     </div>
                   </div>
-                  <div className="filtro">
+                  {/* <div className="filtro">
                     <img src={filtroIcone} alt="" />
-                  </div>
+                  </div> */}
                 </div>
                 {trajetos[index].paths.length > 0 ? (
                   trajetos[index].paths.map((c, i) => (
-                    <div key={i} className="cardIcon" >
-                      <img src={c.back.modalImg} alt="" id="icon"/>
+                    <div key={i} className="cardIcon">
+                      <img src={c.going.modalImg} alt="" id="icon" />
                       <div className="cartao_trajeto">
                         <div className="travelData" style={{ margin: "auto" }}>
                           <div className="resultIda">
