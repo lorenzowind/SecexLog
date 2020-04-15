@@ -191,14 +191,12 @@ export default class Cidade extends Component {
 
   loadOpcoes = () => {
     let cidadesRelacionadas0 = [];
-    let flag = 0;
 
     if (this.state.popUp[0].value.relatedCities !== null) {
       let relations = this.state.popUp[0].value.relatedCities.split(",");
 
       if (relations.length === 1 && relations[0] === "") {
         cidadesRelacionadas0 = null;
-        flag = 1;
       }
 
       else {

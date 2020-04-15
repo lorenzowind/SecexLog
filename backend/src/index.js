@@ -16,6 +16,6 @@ routes(app);
 
 app.listen(process.env.SERVER_PORT, () => {
   console.log(
-    `Backend executado e rodando em ${process.env.SERVER_HOST} na porta ${process.env.SERVER_PORT}\nCTRL + C para parar`
+    `Backend executado e rodando em ${process.env.SERVER_HOST} na porta ${process.env.SERVER_PORT}\nCTRL + C para parar\n`
   );
 });

@@ -1,0 +1,301 @@
+.detalhes .container {
+  padding-left: 70px;
+}
+
+.lateralBar {
+  width: 38%;
+  max-width: 729px;
+  height: 100%;
+  background-color: #ffffff;
+  position: fixed;
+  overflow-y: auto;
+}
+
+.lateralBar .header {
+  display: flex;
+}
+
+.header .voltar {
+  height: 50px;
+  width: 50px;
+  margin: 0;
+  position: absolute;
+  top: 3%;
+  left: 5%;
+}
+
+.header .voltar img {
+  height: 70%;
+}
+
+.header .content {
+  margin: 0 auto;
+  margin-top: 4%;
+}
+
+.header .content .img {
+  width: 220px;
+  margin: auto;
+}
+
+.header .content .img img {
+  width: 220px;
+}
+
+.lateralBar .subHeader {
+  width: 190px;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 3.5%;
+}
+
+.lateralBar .subHeader img {
+  height: 20px;
+}
+
+.lateralBar .subHeader h3 {
+  font-size: medium;
+}
+
+.lateralBar .subHeader h3#text {
+  margin-left: 4.1%;
+  margin-right: 2.1%;
+  color: #c5c5c5;
+}
+
+.lateralBar .card {
+  width: 80%;
+  /* margin-left: 35%; */
+  margin: 0 auto;
+  margin-top: 10%;
+}
+
+.lateralBar .card .title {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.lateralBar .card .title img {
+  height: 20px;
+  width: 20px;
+  position: static;
+  cursor: auto;
+  margin-right: 10px;
+}
+
+.lateralBar .card .title img#icons {
+  margin-left: 15px;
+  filter: grayscale(100%);
+}
+
+.lateralBar .card h4 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.lateralBar .card .content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lateralBar strong {
+  color: #797878;
+}
+
+.lateralBar .card .content h4 {
+  font-size: small;
+  color: #a4a4a4;
+}
+
+.lateralBar .card .content h2#timeComplement {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  /* margin-righ: 11%; */
+  float: right;
+  font-size: 18px;
+  color: #6ae8e5;
+}
+
+.lateralBar .card .content p#timeComplement {
+  margin-top: 32px;
+  margin-bottom: 15px;
+  margin-right: 11%;
+  float: right;
+  font-size: 15px;
+  color: #6ae8e5;
+}
+
+.lateralBar .card .content {
+  margin-left: 45px;
+}
+
+.lateralBar .card .content .subContent h2 {
+  margin: 0;
+  margin-right: 5%;
+  font-size: 22px;
+  line-height: 30px;
+  color: #a4a4a4;
+}
+
+.lateralBar .card .content .subContent {
+  display: flex;
+}
+
+.lateralBar .card .content .subContent p {
+  font-size: 12px;
+  width: 100px;
+}
+
+.lateralBar footer {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  margin: 0 auto;
+  color: #ff0606;
+}
+
+.lateralBar footer .content {
+  width: 80%;
+  margin: 0 auto 3% auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.lateralBar footer .content p {
+  font-size: 16px;
+}
+
+.lateralBar footer .buttons {
+  display: flex;
+  height: 30px;
+  margin: auto 0;
+}
+
+.lateralBar footer img {
+  width: 30px;
+  height: 30px;
+  margin-left: 15px;
+  cursor: pointer;
+}
+
+#mapaAmazonas {
+  width: 700px;
+  height: 450px;
+  margin-left: 42%;
+  margin-top: 5%;
+}
+
+.popUpImpressao, .popUpEmail {
+  width: 40%;
+  max-width: 762px;
+  height: 50%;
+  max-height: 479px;
+  padding: 30px;
+  background-color: #fff;
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  border-radius: 38px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  border: solid 1px #707070;
+  text-align: center;
+  z-index: 2;
+  display: none;
+}
+
+.popUpImpressao img, .popUpEmail img {
+  height: 25px;
+  float: right;
+  cursor: pointer;
+}
+
+.popUpImpressao main, .popUpEmail main {
+  margin: 10% 40px 10% 40px;
+}
+
+.popUpImpressao footer, .popUpEmail footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popUpImpressao button, .popUpEmail button {
+  margin-top: 5%;
+  width: 20%;
+  max-width: 140px;
+  height: 30px;
+  max-height: 57px;
+  border-radius: 35px;
+  border: none;
+  color: #fff;
+  font-size: 16px;
+  background-image: linear-gradient(to right, #3dbec6 3%, #292eec);
+  cursor: pointer;
+}
+
+.popUpImpressao .loadingSpin, .popUpEmail .loadingSpin {
+  position: relative;
+  top: 10px;
+  margin-left: 10px;
+}
+
+.popUpImpressaoErro, .popUpEmailErro {
+  width: 40%;
+  max-width: 665px;
+  height: 25%;
+  max-height: 200px;
+  padding: 30px;
+  background-color: #fff;
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  border-radius: 38px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  border: solid 1px #707070;
+  text-align: center;
+  z-index: 2;
+  display: none;
+}
+
+.popUpImpressaoErro img, .popUpEmailErro img {
+  height: 25px;
+  float: right;
+  cursor: pointer;
+}
+
+.popUpImpressaoErro h1, .popUpEmailErro h1 {
+  margin: 10% 40px 10% 40px;
+}
+
+#popUpEmailInput {
+  margin-top: 20px;
+  height: 38px;
+  width: 342px;
+  margin-right: 10px;
+  -webkit-border-radius: 50px;
+  -moz-border-radius: 50px;
+  border-radius: 50px;
+  padding: 20px;
+  border: 1px solid #b0b0b0;
+}
+
+#popUpEmailSend {
+  display: flex;
+  justify-content: space-between;
+}
+
+#popUpEmailSendButton {
+  height: 40px;
+  width: 40px;
+  position: static;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.popUpEmailErro h1 {
+  margin-bottom: 40px;
+}
+
+.popUpEmail .loadingSpin {
+  top: 30px;
+}

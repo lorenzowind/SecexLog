@@ -1,15 +1,12 @@
-"use strict";
+'use strict';
 module.exports = (sequelize, DataTypes) => {
-  const Holiday = sequelize.define(
-    "Holiday",
-    {
-      nome: DataTypes.STRING,
-      city_id: DataTypes.INTEGER,
-      init: DataTypes.STRING,
-      end: DataTypes.STRING
-    },
-    {}
-  );
+  const Holiday = sequelize.define('Holiday', {
+    nome: DataTypes.STRING,
+    city_id: DataTypes.INTEGER,
+    init: DataTypes.STRING,
+    end: DataTypes.STRING,
+    national: DataTypes.BOOLEAN
+  }, {});
   Holiday.associate = function(models) {
     // associations can be defined here
   };

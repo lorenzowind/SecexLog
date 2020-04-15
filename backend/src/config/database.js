@@ -4,7 +4,7 @@ module.exports = {
   username: ck.DB_USER,
   password: ck.DB_PASS,
   database: ck.DB_NAME,
-  host: ck.DB_HOST,
+  host: ck.localhost,
   dialect: 'mysql',
   // define: {
   //   timestamps: false

@@ -1,19 +1,20 @@
 import React from "react";
-import { Redirect } from "react-router";
+import { Redirect, NavLink } from "react-router-dom";
 
 import Loading from "../../../components/Loading/index";
+import Menu from "../../../components/Menu/MainMenu/index";
 
 import idaIcone from "../../../assets/3_Resultado_da_Consulta/ir2.png";
 import voltaIcone from "../../../assets/3_Resultado_da_Consulta/ir-1.png";
 
-import rapidoIcone from "../../../assets/3_Resultado_da_Consulta/run1.png";
-import rapidoIconeHover from "../../../assets/3_Resultado_da_Consulta/run_2.png";
+// import rapidoIcone from "../../../assets/3_Resultado_da_Consulta/run1.png";
+// import rapidoIconeHover from "../../../assets/3_Resultado_da_Consulta/run_2.png";
 
-import custoIcone from "../../../assets/3_Resultado_da_Consulta/PREÇO.png";
-import custoIconeHover from "../../../assets/3_Resultado_da_Consulta/PREÇO1.png";
+// import custoIcone from "../../../assets/3_Resultado_da_Consulta/PREÇO.png";
+// import custoIconeHover from "../../../assets/3_Resultado_da_Consulta/PREÇO1.png";
 
-import seguroIcone from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA.png";
-import seguroIconeHover from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA_color.png";
+// import seguroIcone from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA.png";
+// import seguroIconeHover from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA_color.png";
 
 import filtroIcone from "../../../assets/3_Resultado_da_Consulta/filtro.png";
 import barraIcone from "../../../assets/3_Resultado_da_Consulta/Componente 34 – 1.png";
@@ -71,14 +72,18 @@ export default class Tela_resultado extends React.Component {
 
     while (init.getDate() !== end.getDate()) {
       if (init.getDay() === 6 || init.getDay() === 0) {
-        sum+=0;
+        sum += 0;
       } else {
         sum++;
       }
       init.setDate(init.getDate() + 1);
     }
 
-    return sum - 1;
+    if (sum > 0) {
+      return sum - 1;
+    } else {
+      return sum;
+    }
   };
 
   back = () => {
@@ -88,7 +93,7 @@ export default class Tela_resultado extends React.Component {
   handleNext = () => {
     let { index, trajetos } = this.state;
 
-    if (index < (trajetos.length - 1)) {
+    if (index < trajetos.length - 1) {
       this.setState({ index: ++index });
     }
   };
@@ -107,6 +112,7 @@ export default class Tela_resultado extends React.Component {
     if (this.state.load === true) {
       return (
         <div className="tela-resultado">
+          <Menu />
           <div className="linha-1">
             <div className="voltar" onClick={this.back}>
               <img src={voltaIcone} alt="" />
@@ -124,7 +130,7 @@ export default class Tela_resultado extends React.Component {
             <div className="trajeto">
               <div className="trajeto_">
                 <div className="linha-2">
-                  <div className="filtros">
+                  {/* <div className="filtros">
                     <div className="rapidoIcone">
                       <img
                         src={rapidoIcone}
@@ -159,7 +165,7 @@ export default class Tela_resultado extends React.Component {
                         }
                       />
                     </div>
-                  </div>
+                  </div>*/}
                   <div className="cidades">
                     <button
                       type="button"
@@ -176,7 +182,13 @@ export default class Tela_resultado extends React.Component {
                     </div>
                     <button
                       type="button"
-                      disabled={trajetos.length > 1 ? index >= trajetos.length ? true : false : false }
+                      disabled={
+                        trajetos.length > 1
+                          ? index >= trajetos.length
+                            ? true
+                            : false
+                          : false
+                      }
                       onClick={this.handleNext}
                     >
                       <img src={voltaIcone} alt="" id="flipped" />
@@ -190,13 +202,14 @@ export default class Tela_resultado extends React.Component {
                       </h1>
                     </div>
                   </div>
-                  <div className="filtro">
+                  {/* <div className="filtro">
                     <img src={filtroIcone} alt="" />
-                  </div>
+                  </div> */}
                 </div>
                 {trajetos[index].paths.length > 0 ? (
-                  trajetos[index].paths.map((c, index) => (
-                    <div key={index}>
+                  trajetos[index].paths.map((c, i) => (
+                    <div key={i} className="cardIcon">
+                      <img src={c.going.modalImg} alt="" id="icon" />
                       <div className="cartao_trajeto">
                         <div className="travelData" style={{ margin: "auto" }}>
                           <div className="resultIda">
@@ -316,25 +329,36 @@ export default class Tela_resultado extends React.Component {
                           </div>
                           <div className="tempoViagem">
                             <h1>
-                              {
-                                this.usefullDays(c.going.date, c.back.date) > 1 ? 
-                                this.usefullDays(c.going.date, c.back.date) + " dias úteis" :
-                                this.usefullDays(c.going.date, c.back.date) + " dia útil"
-                              }
+                              {this.usefullDays(c.going.date, c.back.date) > 1
+                                ? this.usefullDays(c.going.date, c.back.date) +
+                                  " dias úteis"
+                                : this.usefullDays(c.going.date, c.back.date) +
+                                  " dia útil"}
                             </h1>
                           </div>
                           <div className="selecionar">
-                            <img
-                              id="button"
-                              src={botaoSelecionar}
-                              alt="selecionar"
-                              onMouseOver={e =>
-                                (e.currentTarget.src = botaoSelecionarHover)
-                              }
-                              onMouseOut={e =>
-                                (e.currentTarget.src = botaoSelecionar)
-                              }
-                            />
+                            <NavLink
+                              to={{
+                                pathname: "/consulta-manual/detalhes",
+                                state: {
+                                  id: index,
+                                  pathId: i,
+                                  trajetos: this.state.trajetos
+                                }
+                              }}
+                            >
+                              <img
+                                id="button"
+                                src={botaoSelecionar}
+                                alt="selecionar"
+                                onMouseOver={e =>
+                                  (e.currentTarget.src = botaoSelecionarHover)
+                                }
+                                onMouseOut={e =>
+                                  (e.currentTarget.src = botaoSelecionar)
+                                }
+                              />
+                            </NavLink>
                           </div>
                         </div>
                       </div>

@@ -28,6 +28,12 @@ module.exports = (sequelize, DataTypes) => {
     obsCidade: {
       type: DataTypes.TEXT
     },
+    latitute:{
+      type: DataTypes.STRING
+    },
+    longitude:{
+      type: DataTypes.STRING
+    }
     
   }, {
 

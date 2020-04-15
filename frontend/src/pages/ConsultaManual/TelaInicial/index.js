@@ -68,7 +68,7 @@ export default class Tela_inicial extends React.Component {
             if (element.nome !== "Nacional") {
               cidades.push({
                 label: element.nome,
-                value: element.nome
+                value: element.nome,
               });
             }
           });
@@ -162,6 +162,7 @@ export default class Tela_inicial extends React.Component {
           )
         );
       }
+
       matriz_trajetos = new MatrizTrajetos(trajetos);
       this.setState({ resultado: true, matriz_trajetos: matriz_trajetos });
     }

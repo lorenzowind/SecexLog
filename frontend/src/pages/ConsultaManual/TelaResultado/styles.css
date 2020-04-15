@@ -1,6 +1,6 @@
 .tela-resultado_ {
   padding-top: 50px;
-  padding-left: 15%;
+  padding-left: 10%;
   margin: 0 auto;
   margin-bottom: 100px;
 }
@@ -11,7 +11,7 @@
   padding-top: 100px;
   display: flex;
 }
-.linha-1 .voltar {
+.voltar {
   width: 80px;
   height: 80px;
   position: relative;
@@ -300,4 +300,26 @@
   align-items: center;
   margin-top: 10%;
   margin-right: 10%;
+}
+
+.cardIcon {
+  display: flex;
+  /* width: 6000px; */
+}
+
+.cardIcon img#icon {
+  height: 50px;
+  margin-top: 120px;
+}
+
+.linha-2 {
+  border-radius: 20px;
+  width: 800px;
+  height: 75px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+.trajeto .data {
+  margin-left: 10px;
 }

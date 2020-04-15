@@ -9,7 +9,7 @@ const PathController = require("./app/controllers/PathController");
 const ProviderController = require("./app/controllers/ProviderController");
 const HolidayController = require("./app/controllers/HolidayController");
 const ManualSearch = require("./app/controllers/services/ManualSearch");
-
+const TravelDetails = require("./app/controllers/services/TravelDetailsPDF");
 /* MIDDLEWARES */
 const UserAuthentication = require("./app/middlewares/UserAuthentication");
 const authAdmin = require("./app/middlewares/AdminAuthentication");
@@ -28,14 +28,12 @@ module.exports = app => {
   /* CADASTRAR USUÁRIO SEM PRECISAR DE AUTENTICAÇÃO*/
   app.route("/users/sa").post(UserController.store);
 
-  app
-    .route("/users")
+  app.route("/users")
     // .all(AuthUser.authenticate())
     .get((UserController.index))
     .post(UserController.store);
 
-  app
-    .route("/users/:data")
+  app.route("/users/:data")
     // .all(AuthUser.authenticate())
     .get((UserController.show))
     .put((UserController.update))
@@ -56,13 +54,11 @@ module.exports = app => {
 
   /* ROTAS DE CIDADES [SEM AUTENTICAÇÃO] */
 
-  app
-    .route("/cities")
+  app.route("/cities")
     .get(CityController.index)
     .post(CityController.store);
 
-  app
-    .route("/cities/:data")
+  app.route("/cities/:data")
     .get(CityController.show)
     .put(CityController.update)
     .delete(CityController.delete);
@@ -73,29 +69,25 @@ module.exports = app => {
 
   /* ROTAS DE FERIADO [SEM AUTENTICAÇÃO]*/
 
-  app
-    .route("/holidays")
+  app.route("/holidays")
     .get(HolidayController.index)
     .post(HolidayController.store);
 
   app.route("/holidays/:data").get(HolidayController.show);
 
-  app
-    .route("/holidays/:id")
+  app.route("/holidays/:id")
     .put(HolidayController.update)
     .delete(HolidayController.delete);
   /* ROTA DE PROVEDORES  */
 
-  app
-    .route("/providers")
+  app.route("/providers")
     // .all(AuthUser.authenticate())
     .get(ProviderController.index)
     .post(ProviderController.store);
 
   app.route("/providers/:data").get(ProviderController.show);
 
-  app
-    .route("/providers/:id")
+  app.route("/providers/:id")
     .put(ProviderController.update)
     .delete(ProviderController.delete);
   /* ROTAS DE TRAJETO [NÃO USAR - DEVE SER FINALIZADA*/
@@ -113,40 +105,34 @@ module.exports = app => {
 
   /* ROTAS DE TRAJETO SEM PROTEÇÃO */
 
-  app
-    .route("/paths")
+  app.route("/paths")
     .get(PathController.index)
     .post(PathController.store);
 
   app.route("/paths/:data").get(PathController.show);
 
-  app
-    .route("/paths/:id")
+  app.route("/paths/:id")
     .put(PathController.update)
     .delete(PathController.delete);
   /* ROTAS DE OPINIÕES */
 
-  app
-    .route("/opinions")
+  app.route("/opinions")
     .get(OpinionController.index)
     .post(OpinionController.store);
 
-  app
-    .route("/opinions/:id")
+  app.route("/opinions/:id")
     .get(OpinionController.show)
     .put(OpinionController.update)
     .delete(OpinionController.delete);
 
-  app
-    .route("/modals")
+  app.route("/modals")
     .all(AuthUser.authenticate())
     .get(ModalController.index)
     .post(authAdmin(ModalController.store));
 
   app.route("/modals/:data").get(ModalController.show);
 
-  app
-    .route("/modals/:id")
+  app.route("/modals/:id")
     .put(ModalController.update)
     .delete(ModalController.delete);
   /* ROTAS DE FERIADO [COM AUTENTICAÇÃO]*/
@@ -160,4 +146,8 @@ module.exports = app => {
   //    .get(authAdmin(HolidayController.show))
   //    .put(authAdmin(HolidayController.update))
   //    .delete(authAdmin(HolidayController.delete));
+
+  /* DETALHES DA VIAGEM (PDF) */
+  app.post("/create-pdf", TravelDetails.create);
+  app.get("/fetch-pdf", TravelDetails.fetch);
 };

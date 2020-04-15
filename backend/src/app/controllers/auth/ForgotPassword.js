@@ -1,5 +1,4 @@
-const Sequelize = require('sequelize');
-const crypto = require('crypto');
+require('dotenv/config');
 
 const { User } = require('../../models');
 const { generatePassword, cryptPsw } = require('../../utils/ProcessPassword');
@@ -18,12 +17,7 @@ module.exports = {
                 where: { email }
             })
 
-            if(!user) return res.status(400).send('Usuário não encontrado');
-
-            // const token = crypto.randomBytes(20).toString('hex');
-
-            // const now = new Date();
-            // now.setHours(now.getHours() + 1);
+            if (!user) return res.status(400).send('Usuário não encontrado');
 
             const newPass = generatePassword();
 
@@ -32,32 +26,24 @@ module.exports = {
                     id: user.id
                 }
             }).then(resultFromDB => {
-                if(resultFromDB)
-                {
+                if (resultFromDB) {
                     resultFromDB.update({
-                        // senhaResetToken: token,
-                        // senhaResetExpires: now,
                         senha: cryptPsw(newPass)
-                        
                     })
-                    .then(_ => res.status(204).send())
-                    .catch(err => res.status(500).send(err));
+                        .then(_ => res.status(204).send())
+                        .catch(err => res.status(500).send(err));
 
                 }
             })
-            .catch(err => res.status(500).send(err));
+                .catch(err => res.status(500).send(err));
 
             mailer.sendMail({
                 to: email,
-                from: 'aphoreofficial@gmail.com',
+                from: process.env.ACCOUNT_EMAIL,
                 template: '/auth/forgot_password',
+                subject: "SecexLog - Mudança de Senha",
                 context: { newPass, user }
-            }, (err) => {
-                if(err)
-                    return res.status(400).send(err)
-                
-                return res.send();
-            })  
+            })
 
         } catch (err) {
             console.log(err);
