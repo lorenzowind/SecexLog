@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-//import { saveAs } from "file-saver";
+import { saveAs } from "file-saver";
 import ReactLoading from "react-loading";
 
 import Menu from "../../../components/Menu/MainMenu/index";
@@ -158,7 +158,7 @@ export default class TelaDetalhes extends Component {
         .then(() => {
           api.get("/fetch-pdf", { responseType: "blob" }).then(res => {
             const pdfBlob = new Blob([res.data], { type: "application/pdf" });
-            //saveAs(pdfBlob, "detalhesTrecho.pdf");
+            saveAs(pdfBlob, "detalhesTrecho.pdf");
             this.setState({ done: true });
             this.closePrintPopUp();
           });
