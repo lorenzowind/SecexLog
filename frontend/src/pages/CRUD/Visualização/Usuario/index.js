@@ -15,11 +15,6 @@ import api from "../../../../services/api";
 var e = 0;
 var editedlogin = "";
 
-const token = localStorage.getItem("token");
-const header = {
-  headers: { Authorization: "bearer " + token }
-};
-
 export default class CrudUsuario extends Component {
   constructor(props) {
     super(props);
@@ -50,7 +45,7 @@ export default class CrudUsuario extends Component {
       editSenha: "",
 
       popUpStats: false,
-      load: false
+      load: false,
     };
   }
 
@@ -58,7 +53,7 @@ export default class CrudUsuario extends Component {
     this.loadData();
   }
 
-  handleSubmit = async ev => {
+  handleSubmit = async (ev) => {
     ev.preventDefault();
 
     const isValid = this.validate();
@@ -68,13 +63,13 @@ export default class CrudUsuario extends Component {
       login: this.state.login,
       email: this.state.email,
       cargo: this.state.cargo,
-      senha: this.state.senha
+      senha: this.state.senha,
     };
 
     var error = null;
 
     if (isValid) {
-      await api.post("/users", state).catch(err => {
+      await api.post("/users", state).catch((err) => {
         alert("Verifque se todos os dados estão inseridos corretamente");
         error = err;
       });
@@ -91,7 +86,7 @@ export default class CrudUsuario extends Component {
   loadData = async () => {
     await api
       .get("/users")
-      .then(res => {
+      .then((res) => {
         const row = this.state.row;
         for (var i = 0; i < res.data.length; i++) {
           row.push(res.data[i]);
@@ -99,7 +94,7 @@ export default class CrudUsuario extends Component {
 
         this.setState({ row: row, busca: false });
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.message === "Request failed with status code 401") {
           alert("Nível de acesso negado! Contate o administrador do sistema");
           window.location.replace("/menu");
@@ -120,7 +115,7 @@ export default class CrudUsuario extends Component {
     }
   };
 
-  handleEditSubmit = async ev => {
+  handleEditSubmit = async (ev) => {
     ev.preventDefault();
     var state = {};
 
@@ -136,7 +131,7 @@ export default class CrudUsuario extends Component {
         login: this.state.login,
         email: this.state.email,
         cargo: this.state.cargo,
-        senha: this.state.senha
+        senha: this.state.senha,
       };
     } else {
       state = {
@@ -144,13 +139,13 @@ export default class CrudUsuario extends Component {
         login: this.state.editLogin,
         email: this.state.editEmail,
         cargo: this.state.editCargo,
-        senha: this.state.editSenha
+        senha: this.state.editSenha,
       };
     }
 
     const isValid = this.validateEdit(state);
     if (isValid) {
-      await api.put(`/users/${this.state.id}`, state).catch(err => {
+      await api.put(`/users/${this.state.id}`, state).catch((err) => {
         alert(
           "Verifique se todos os dados foram inseridos corretamente e tente novamente"
         );
@@ -176,7 +171,7 @@ export default class CrudUsuario extends Component {
     }
   };
 
-  handleDelete = async ev => {
+  handleDelete = async (ev) => {
     ev.preventDefault();
 
     // eslint-disable-next-line
@@ -194,7 +189,7 @@ export default class CrudUsuario extends Component {
         login: this.state.login,
         email: this.state.email,
         cargo: this.state.cargo,
-        senha: this.state.senha
+        senha: this.state.senha,
       };
     } else {
       state = {
@@ -202,18 +197,18 @@ export default class CrudUsuario extends Component {
         login: this.state.editLogin,
         email: this.state.editEmail,
         cargo: this.state.editCargo,
-        senha: this.state.editSenha
+        senha: this.state.editSenha,
       };
     }
 
-    const res = await api.get("/users").catch(err => {
+    const res = await api.get("/users").catch((err) => {
       alert("Verifque se todos os dados estão inseridos corretamente");
     });
 
     // eslint-disable-next-line
     for (var i = 0; i < this.state.row.length; i++) {
       if (res.data[i].login === editedlogin) {
-        await api.delete(`/users/${res.data[i].id}`).catch(err => {
+        await api.delete(`/users/${res.data[i].id}`).catch((err) => {
           alert(err);
           window.location.reload(false);
         });
@@ -239,13 +234,13 @@ export default class CrudUsuario extends Component {
       login,
       email,
       cargo,
-      senha
+      senha,
     });
 
     this.setState({ popUp: popUp, popUpStats: true });
   };
 
-  editPopUp = c => {
+  editPopUp = (c) => {
     const id = c.id;
     const editNome = c.nome;
     const editLogin = c.login;
@@ -273,7 +268,7 @@ export default class CrudUsuario extends Component {
       login,
       email,
       cargo,
-      senha
+      senha,
     });
 
     this.setState({
@@ -289,11 +284,11 @@ export default class CrudUsuario extends Component {
       login: editLogin,
       email: editEmail,
       cargo: editCargo,
-      senha: editSenha
+      senha: editSenha,
     });
   };
 
-  handleChange = ev => {
+  handleChange = (ev) => {
     const state = Object.assign({}, this.state);
     const name = ev.target.name;
 
@@ -363,7 +358,7 @@ export default class CrudUsuario extends Component {
     return true;
   };
 
-  validateEdit = state => {
+  validateEdit = (state) => {
     let nameError = "";
     let loginError = "";
     let emailError = "";
@@ -424,7 +419,7 @@ export default class CrudUsuario extends Component {
     return true;
   };
 
-  createRow = state => {
+  createRow = (state) => {
     let row = this.state.row;
 
     row.push(state);
@@ -432,7 +427,7 @@ export default class CrudUsuario extends Component {
     this.setState({ row: row });
   };
 
-  handleClose = ev => {
+  handleClose = (ev) => {
     ev.preventDefault();
     this.setState({ popUp: [], editPopUp: [], popUpStats: false });
   };
@@ -451,7 +446,7 @@ export default class CrudUsuario extends Component {
                 id="text"
                 name="search"
                 onChange={this.handleChange}
-                onKeyDown={e => {
+                onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     this.handleSearch();
                   }
@@ -482,7 +477,7 @@ export default class CrudUsuario extends Component {
                 borderRadius: "34px",
                 border: "solid 1px #707070",
                 backgroundColor: "#ffffff",
-                overflow: "hidden"
+                overflow: "hidden",
               }}
             >
               <div className="tableUser">

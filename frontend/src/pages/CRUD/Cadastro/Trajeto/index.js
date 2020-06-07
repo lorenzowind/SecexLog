@@ -2,7 +2,7 @@ import React, { Component } from "react";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import ReactNumeric from 'react-numeric';
+import ReactNumeric from "react-numeric";
 import InputMask from "react-input-mask";
 
 import HeaderTrajeto from "../components/HeaderTrajeto/index";
@@ -25,7 +25,7 @@ const dias_semana = [
   { value: "quarta-feira", label: "Quarta-feira" },
   { value: "quinta-feira", label: "Quinta-feira" },
   { value: "sexta-feira", label: "Sexta-feira" },
-  { value: "sábado", label: "Sábado" }
+  { value: "sábado", label: "Sábado" },
 ];
 
 export default class Trajeto extends Component {
@@ -63,7 +63,7 @@ export default class Trajeto extends Component {
     };
   }
 
-  handleModais = modais => {
+  handleModais = (modais) => {
     var modal = document.getElementsByClassName("modal-selecionado");
     modal[0].style.display = "block";
 
@@ -75,12 +75,12 @@ export default class Trajeto extends Component {
     this.loadPrestador();
   };
 
-  handlePrestador = prestador => {
+  handlePrestador = (prestador) => {
     this.setState({ prestador_modal: prestador.value });
   };
 
   loadModais = async () => {
-    const res = await api.get("/modals").catch(err => {
+    const res = await api.get("/modals").catch((err) => {
       alert(err.message);
       window.location.reload(false);
     });
@@ -98,7 +98,7 @@ export default class Trajeto extends Component {
   };
 
   loadPrestador = async () => {
-    const res = await api.get("/providers").catch(err => {
+    const res = await api.get("/providers").catch((err) => {
       alert(err.message);
       window.location.reload(false);
     });
@@ -109,7 +109,7 @@ export default class Trajeto extends Component {
       let value = res.data[i].nome;
       let label = res.data[i].nome;
 
-      if (res.data[i].modal === this.state.modal ) {
+      if (res.data[i].modal === this.state.modal) {
         prestador.push({ value, label });
       }
     }
@@ -121,7 +121,7 @@ export default class Trajeto extends Component {
     this.loadModais();
   }
 
-  onSubmit = async ev => {
+  onSubmit = async (ev) => {
     ev.preventDefault();
 
     var linha, contratado;
@@ -139,13 +139,12 @@ export default class Trajeto extends Component {
     let duration = this.state.duracao;
     let duration2;
 
-    if (duration.charAt(0) == '0' && duration.charAt(1) == '0') {
-      let tmp = duration.split('');
+    if (duration.charAt(0) === "0" && duration.charAt(1) === "0") {
+      let tmp = duration.split("");
       tmp.splice(0, 1);
-      duration2 = tmp.join('');
-    }
-    else {
-      duration2 = duration.replace(/^0(?:0:0?)?/, '');
+      duration2 = tmp.join("");
+    } else {
+      duration2 = duration.replace(/^0(?:0:0?)?/, "");
     }
 
     const json = {
@@ -161,12 +160,12 @@ export default class Trajeto extends Component {
       departure: this.state.local_desembarque,
       linha: linha,
       contratado: contratado,
-      duration: duration2
+      duration: duration2,
     };
 
     let error = null;
 
-    await api.post("/paths", json).catch(err => {
+    await api.post("/paths", json).catch((err) => {
       alert(
         "Verifque se todos os dados estão inseridos corretamente ou se o trajeto já foi cadastrado"
       );
@@ -176,7 +175,7 @@ export default class Trajeto extends Component {
     if (!error) window.location.reload();
   };
 
-  handleChangeText = ev => {
+  handleChangeText = (ev) => {
     const state = Object.assign({}, this.state);
     const name = ev.target.name;
     const value = ev.target.value;
@@ -205,7 +204,7 @@ export default class Trajeto extends Component {
     this.setState({ dias, horas });
   };
 
-  onChange = ev => {
+  onChange = (ev) => {
     const state = Object.assign({}, this.state);
     const campo = ev.target.name;
     const value = ev.target.value;
@@ -216,7 +215,7 @@ export default class Trajeto extends Component {
   };
 
   loadCidades = async () => {
-    const res = await api.get("/cities").catch(err => {
+    const res = await api.get("/cities").catch((err) => {
       alert(err.message);
       window.location.reload(false);
     });
@@ -235,15 +234,15 @@ export default class Trajeto extends Component {
     this.setState({ cidades: cidades });
   };
 
-  handleCidadeIda = ida => {
+  handleCidadeIda = (ida) => {
     this.setState({ ida });
   };
 
-  handleCidadeVolta = volta => {
+  handleCidadeVolta = (volta) => {
     this.setState({ volta });
   };
 
-  handleDia = dia => {
+  handleDia = (dia) => {
     dia = dia.value;
 
     this.setState({ dia });
@@ -258,23 +257,23 @@ export default class Trajeto extends Component {
   render() {
     const { dias } = this.state;
 
-    const theme = theme => ({
+    const theme = (theme) => ({
       ...theme,
       borderRadius: "50px",
       colors: {
         ...theme.colors,
         primary25: "",
-        primary: "#707070"
-      }
+        primary: "#707070",
+      },
     });
 
     const selectStyle = {
-      control: styles => ({
+      control: (styles) => ({
         ...styles,
         height: "43px",
-        borderColor: "#707070"
+        borderColor: "#707070",
       }),
-      option: styles => ({ ...styles })
+      option: (styles) => ({ ...styles }),
     };
 
     return (
@@ -410,7 +409,9 @@ export default class Trajeto extends Component {
                           minimumValue="0"
                           decimalCharacter=","
                           digitGroupSeparator="."
-                          onChange={(e, value) => this.setState({ valor: value })}
+                          onChange={(e, value) =>
+                            this.setState({ valor: value })
+                          }
                         />
                       </div>
                     </div>

@@ -7,16 +7,6 @@ import Menu from "../../../components/Menu/MainMenu/index";
 import idaIcone from "../../../assets/3_Resultado_da_Consulta/ir2.png";
 import voltaIcone from "../../../assets/3_Resultado_da_Consulta/ir-1.png";
 
-// import rapidoIcone from "../../../assets/3_Resultado_da_Consulta/run1.png";
-// import rapidoIconeHover from "../../../assets/3_Resultado_da_Consulta/run_2.png";
-
-// import custoIcone from "../../../assets/3_Resultado_da_Consulta/PREÇO.png";
-// import custoIconeHover from "../../../assets/3_Resultado_da_Consulta/PREÇO1.png";
-
-// import seguroIcone from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA.png";
-// import seguroIconeHover from "../../../assets/3_Resultado_da_Consulta/SEGURANÇA_color.png";
-
-import filtroIcone from "../../../assets/3_Resultado_da_Consulta/filtro.png";
 import barraIcone from "../../../assets/3_Resultado_da_Consulta/Componente 34 – 1.png";
 import barraIcone2 from "../../../assets/3_Resultado_da_Consulta/Componente 48 – 1.png";
 import botaoSelecionar from "../../../assets/3_Resultado_da_Consulta/Componente 40 – 1.png";
@@ -39,7 +29,7 @@ export default class Tela_resultado extends React.Component {
       modalIcone: null,
       back: false,
 
-      index: 0
+      index: 0,
     };
   }
 
@@ -52,10 +42,10 @@ export default class Tela_resultado extends React.Component {
     setTimeout(async () => {
       await api
         .post("/search", this.state.matriz.trajetos)
-        .then(res => {
+        .then((res) => {
           this.setState({ trajetos: res.data, load: true });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     }, 1200);
@@ -217,7 +207,7 @@ export default class Tela_resultado extends React.Component {
                               style={{
                                 display: "flex",
                                 justifyContent: "center",
-                                alignItems: "center"
+                                alignItems: "center",
                               }}
                             >
                               <div className="resultSaida">
@@ -266,7 +256,7 @@ export default class Tela_resultado extends React.Component {
                               style={{
                                 display: "flex",
                                 justifyContent: "center",
-                                alignItems: "center"
+                                alignItems: "center",
                               }}
                             >
                               <div className="resultSaida">
@@ -343,18 +333,18 @@ export default class Tela_resultado extends React.Component {
                                 state: {
                                   id: index,
                                   pathId: i,
-                                  trajetos: this.state.trajetos
-                                }
+                                  trajetos: this.state.trajetos,
+                                },
                               }}
                             >
                               <img
                                 id="button"
                                 src={botaoSelecionar}
                                 alt="selecionar"
-                                onMouseOver={e =>
+                                onMouseOver={(e) =>
                                   (e.currentTarget.src = botaoSelecionarHover)
                                 }
-                                onMouseOut={e =>
+                                onMouseOut={(e) =>
                                   (e.currentTarget.src = botaoSelecionar)
                                 }
                               />
