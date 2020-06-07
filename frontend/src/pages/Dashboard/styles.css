@@ -1,6 +1,11 @@
 .dashboard {
   width: 100%;
   height: 100%;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .center {
@@ -27,22 +32,16 @@
   flex-wrap: wrap;
 }
 
-.column > * {
-  margin: 1em 0;
-}
-
 .dashboard .modal {
-  height: 250px;
-  width: 200px;
+  height: 150px;
+  width: 150px;
 
   margin: 2%;
 
-  border-radius: 38px;
-  -webkit-backdrop-filter: blur(30px);
-  backdrop-filter: blur(30px);
+  border-radius: 25px;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
 
-  font-size: 20px;
+  font-size: 15px;
   font-weight: normal;
   font-stretch: normal;
   font-style: normal;
@@ -64,10 +63,11 @@
 }
 
 .dashboard .modal img {
-  min-height: 100px;
-  min-width: 100px;
+  min-height: 50px;
+  min-width: 50px;
 
   margin: 20px;
+  margin-bottom: 0;
 }
 
 .dashboard .plane {
@@ -95,52 +95,56 @@
 }
 
 .dashboard .feedback {
-  width: 450px;
-  height: 180px;
+  width: 400px;
+  height: 150px;
 
   margin-left: 5%;
+  margin-bottom: 10px;
+  padding: 20px;
 
   border-radius: 38px;
 
   background-color: #fff;
+  overflow: hidden;
 }
 
-.dashboard .percentage {
-  width: 670px;
-  height: 180px;
+.dashboard .feedback .title {
+  width: 124px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+  line-height: 1.32;
 
-  border-radius: 38px;
+  margin-bottom: 10px;
 
-  background-color: #fff;
-}
-
-.dashboard .alert {
-  width: 670px;
-  height: 180px;
-
-  border-radius: 38px;
-
-  background-color: #6ae8e5;
-  font-size: 25px;
-  font-weight: normal;
-  font-stretch: normal;
-  font-style: normal;
-  line-height: 1.36;
-  letter-spacing: normal;
+  font-weight: bold;
   text-align: left;
   color: #292eec;
 }
 
-.dashboard .alert .center {
-  padding: 0 60px;
+.dashboard .feedback .content {
+  padding: 10px;
+  max-width: 380px;
 }
 
-.dashboard .alert img {
-  min-height: 100px;
-  min-width: 120px;
+.dashboard .percentage {
+  width: 400px;
+  height: 310px;
+
+  border-radius: 38px;
+  margin-bottom: 10px;
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-color: #fff;
 }
 
-.dashboard .alert p {
-  width: auto;
-  margin-left: 15%;
+.dashboard .percentage .content {
+  width: 350px;
+}
+
+.dashboard .percentage .content .progressP {
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
