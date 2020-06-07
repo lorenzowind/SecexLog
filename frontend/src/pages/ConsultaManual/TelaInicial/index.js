@@ -114,8 +114,6 @@ export default class Tela_inicial extends React.Component {
 
       var trajetos = [];
 
-      console.log(ida);
-
       for (var i = 0; i < campos.length; i++) {
         var cidadeIda = campos[i].children[0].children[1].innerText;
         var cidadeVolta = campos[i].children[0].children[2].innerText;

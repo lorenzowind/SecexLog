@@ -125,8 +125,6 @@ export default class Dashboard extends Component {
       api.get("/dashboard").then(({ data }) => {
         const { modals } = data;
         const { feedbacks } = data;
-
-        console.log(data);
         this.setState({
           modalCount: modals.count,
           modals: modals.types,
