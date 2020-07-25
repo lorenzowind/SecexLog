@@ -4,7 +4,8 @@ module.exports = {
   username: ck.DB_USER,
   password: ck.DB_PASS,
   database: ck.DB_NAME,
-  host: ck.localhost,
+  host: ck.DB_HOST,
+  port: ck.DB_PORT,
   dialect: 'mysql',
   // define: {
   //   timestamps: false
@@ -37,4 +38,3 @@ module.exports = {
 //     "operatorsAliases": false
 //   }
 // }
-

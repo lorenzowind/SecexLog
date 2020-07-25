@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const { Path, City, Holiday, Modal, Provider } = require("../../models");
+const { sortPaths } = require("../../utils/sortPaths")
 
 const Operation = Sequelize.Op;
 const daysInPt = [
@@ -290,6 +291,9 @@ module.exports = {
             })
         );
 
-        return res.status(200).send(data);
+        //query might be: cost or null
+        const sortedData = sortPaths(data, req.query.sort)
+
+        return res.status(200).send(sortedData);
     }
 }

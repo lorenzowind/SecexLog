@@ -10,7 +10,7 @@ function cryptPsw(password) {
   Recebe a senha digitada e a que está no database
 */
 function comparePsw(typedpass, password) {
-  //return typedpass === password;
+  // return typedpass === password;
   return bcrypt.compareSync(typedpass, password);
 }
 /*Gera uma senha aleatória para a recuperação de senha do usuário */

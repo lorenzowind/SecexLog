@@ -8,6 +8,7 @@ const CityController = require("./app/controllers/CityController");
 const PathController = require("./app/controllers/PathController");
 const ProviderController = require("./app/controllers/ProviderController");
 const HolidayController = require("./app/controllers/HolidayController");
+const DashboardController = require("./app/controllers/DashboardController");
 const ManualSearch = require("./app/controllers/services/ManualSearch");
 const TravelDetails = require("./app/controllers/services/TravelDetailsPDF");
 /* MIDDLEWARES */
@@ -135,6 +136,8 @@ module.exports = app => {
   app.route("/modals/:id")
     .put(ModalController.update)
     .delete(ModalController.delete);
+  
+  app.route("/dashboard").get(DashboardController.index);
   /* ROTAS DE FERIADO [COM AUTENTICAÇÃO]*/
 
   // app.route('/holidays')
