@@ -48,7 +48,7 @@ export default class Cidade extends Component {
 
       edit_status: false,
 
-      holidays: []
+      holidays: [],
     };
   }
 
@@ -122,7 +122,7 @@ export default class Cidade extends Component {
     }
   };
 
-  editPopUp = c => {
+  editPopUp = (c) => {
     let { popUp } = this.state;
 
     let h1 = "Editar Cidade";
@@ -153,18 +153,20 @@ export default class Cidade extends Component {
       obsInterdicao,
       obsCidade,
       latitute,
-      longitude
+      longitude,
     };
 
     popUp.push({ text, value });
 
-    this.setState({ 
-      dateInit: initFlood === "" ? 
-        undefined : initFlood.split(/\//).reverse().join('/'),
-      dateEnd: endFlood === "" ? 
-        undefined : endFlood.split(/\//).reverse().join('/'),
-      popUp: popUp, 
-      popUpStats: true 
+    this.setState({
+      dateInit:
+        initFlood === ""
+          ? undefined
+          : initFlood.split(/\//).reverse().join("/"),
+      dateEnd:
+        endFlood === "" ? undefined : endFlood.split(/\//).reverse().join("/"),
+      popUp: popUp,
+      popUpStats: true,
     });
 
     this.loadOpcoes();
@@ -172,7 +174,7 @@ export default class Cidade extends Component {
   };
 
   loadHolidays = async () => {
-    const res = await api.get("/holidays").catch(err => {
+    const res = await api.get("/holidays").catch((err) => {
       alert(err.message);
       window.location.reload(false);
     });
@@ -180,7 +182,10 @@ export default class Cidade extends Component {
     const holidays = [];
 
     for (var i = 0; i < res.data.length; i++) {
-      if (this.state.popUp[0].value.id === res.data[i].city_id || res.data[i].national === true)
+      if (
+        this.state.popUp[0].value.id === res.data[i].city_id ||
+        res.data[i].national === true
+      )
         holidays.push(res.data[i].init + " - " + res.data[i].nome);
     }
 
@@ -197,32 +202,29 @@ export default class Cidade extends Component {
 
       if (relations.length === 1 && relations[0] === "") {
         cidadesRelacionadas0 = null;
-      }
-
-      else {
+      } else {
         for (var i = 0; i < relations.length; i++) {
           let city = {
             value: relations[i].trim(),
-            label: relations[i].trim()
+            label: relations[i].trim(),
           };
           cidadesRelacionadas0.push(city);
         }
       }
-
     }
-  
+
     this.setState({
-      cidadesRelacionadas0: cidadesRelacionadas0
+      cidadesRelacionadas0: cidadesRelacionadas0,
     });
   };
 
-  handleClose = ev => {
+  handleClose = (ev) => {
     ev.preventDefault();
     this.setState({ edit_status: false });
     this.setState({ popUp: [], popUpStats: false });
   };
 
-  handleEditSubmit = async ev => {
+  handleEditSubmit = async (ev) => {
     ev.preventDefault();
 
     let cidadesRelacionadas = this.state.cidadesRelacionadas1;
@@ -256,7 +258,7 @@ export default class Cidade extends Component {
         obsInterdicao: this.state.popUp[0].value.obsInterdicao,
         obsCidade: this.state.popUp[0].value.obsCidade,
         latitute: this.state.popUp[0].value.latitute,
-        longitude: this.state.popUp[0].value.longitude
+        longitude: this.state.popUp[0].value.longitude,
       };
     } else {
       state = {
@@ -269,7 +271,7 @@ export default class Cidade extends Component {
         obsInterdicao: this.state.popUp[0].value.obsInterdicao,
         obsCidade: this.state.popUp[0].value.obsCidade,
         latitute: this.state.popUp[0].value.latitute,
-        longitude: this.state.popUp[0].value.longitude
+        longitude: this.state.popUp[0].value.longitude,
       };
     }
 
@@ -281,7 +283,7 @@ export default class Cidade extends Component {
         this.setState({ popUp: [] });
         window.location.reload();
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err);
         error = err;
       });
@@ -289,22 +291,22 @@ export default class Cidade extends Component {
     if (!error) window.location.reload();
   };
 
-  handleDelete = async ev => {
+  handleDelete = async (ev) => {
     ev.preventDefault();
 
     await api
       .delete(`/cities/${this.state.popUp[0].value.id}`)
       .then(window.location.reload())
-      .catch(err => {
+      .catch((err) => {
         alert(err);
       });
   };
 
-  handleDateChangeInit = date => {
+  handleDateChangeInit = (date) => {
     this.setState({ dateInit: date });
   };
 
-  handleDateChangeEnd = date => {
+  handleDateChangeEnd = (date) => {
     this.setState({ dateEnd: date });
   };
 
@@ -312,15 +314,17 @@ export default class Cidade extends Component {
     this.setState({ edit_status: true });
   };
 
-  handleCidadesRelacionadas = cidadesRelacionadas1 => {
+  handleCidadesRelacionadas = (cidadesRelacionadas1) => {
     this.setState({ cidadesRelacionadas1 });
   };
 
-  handleChange = ev => {
-    this.state.popUp[0].value.name = ev.target.value;
+  handleChange = (ev) => {
+    const popUp = this.state.popUp;
+    popUp[0].value.name = ev.target.value;
+    this.setState({ popUp: popUp });
   };
 
-  handleChange1 = ev => {
+  handleChange1 = (ev) => {
     const state = Object.assign({}, this.state);
     const campo = ev.target.name;
     const value = ev.target.value;
@@ -331,18 +335,18 @@ export default class Cidade extends Component {
   };
 
   render() {
-    const theme = theme => ({
+    const theme = (theme) => ({
       ...theme,
       borderRadius: "50px",
       colors: {
         ...theme.colors,
         primary25: "",
-        primary: "#707070"
-      }
+        primary: "#707070",
+      },
     });
 
     const selectStyle = {
-      control: styles => ({
+      control: (styles) => ({
         ...styles,
         height: "43px",
         width: "100%",
@@ -350,10 +354,10 @@ export default class Cidade extends Component {
         padding: "0",
         overflowY: "scroll",
         "::-webkit-scrollbar": {
-          display: "none"
-        }
+          display: "none",
+        },
       }),
-      option: styles => ({ ...styles })
+      option: (styles) => ({ ...styles }),
     };
 
     return (
@@ -386,7 +390,7 @@ export default class Cidade extends Component {
                 borderRadius: "34px",
                 border: "solid 1px #707070",
                 backgroundColor: "#ffffff",
-                overflow: "hidden"
+                overflow: "hidden",
               }}
             >
               <div className="listCity">
@@ -424,7 +428,7 @@ export default class Cidade extends Component {
                         width: "1px",
                         height: "100%",
                         display: "inline-block",
-                        marginTop: "3%"
+                        marginTop: "3%",
                       }}
                     />
 
@@ -458,7 +462,7 @@ export default class Cidade extends Component {
                         width: "1px",
                         height: "100%",
                         display: "inline-block",
-                        marginTop: "3%"
+                        marginTop: "3%",
                       }}
                     />
 
@@ -552,7 +556,7 @@ export default class Cidade extends Component {
                 <h4 style={{ marginBottom: "4.2%", marginTop: "6%" }}>
                   {c.text.feriados}
                 </h4>
-                {this.state.holidays.map(i => (
+                {this.state.holidays.map((i) => (
                   <div className="feriados" key={i}>
                     <h4>{i}</h4>
                   </div>
@@ -568,7 +572,7 @@ export default class Cidade extends Component {
                           disableToolbar
                           variant="inline"
                           InputProps={{
-                            disableUnderline: true
+                            disableUnderline: true,
                           }}
                           onChange={this.handleDateChangeInit}
                         />
@@ -583,7 +587,7 @@ export default class Cidade extends Component {
                           disableToolbar
                           variant="inline"
                           InputProps={{
-                            disableUnderline: true
+                            disableUnderline: true,
                           }}
                           onChange={this.handleDateChangeEnd}
                         />

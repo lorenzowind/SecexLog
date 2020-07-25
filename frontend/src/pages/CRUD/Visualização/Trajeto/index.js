@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-import ReactNumeric from 'react-numeric';
+import ReactNumeric from "react-numeric";
 import InputMask from "react-input-mask";
 
 import Header from "../../components/HeaderTrajeto/index";
@@ -27,7 +27,7 @@ const dias_semana = [
   { value: "quarta-feira", label: "Quarta-feira" },
   { value: "quinta-feira", label: "Quinta-feira" },
   { value: "sexta-feira", label: "Sexta-feira" },
-  { value: "sábado", label: "Sábado" }
+  { value: "sábado", label: "Sábado" },
 ];
 
 export default class Trajeto extends Component {
@@ -59,7 +59,7 @@ export default class Trajeto extends Component {
       edit_prest_status: false,
 
       modais: [],
-      prestadores: []
+      prestadores: [],
     };
   }
 
@@ -70,10 +70,10 @@ export default class Trajeto extends Component {
   loadData = async () => {
     api
       .get("/paths")
-      .then(res => {
+      .then((res) => {
         this.setState({ row: res.data, load: true, busca: false });
       })
-      .catch(err => {
+      .catch((err) => {
         if (err.message === "Request failed with status code 401") {
           alert("Nível de acesso negado! Contate o administrador do sistema");
           window.location.replace("/menu");
@@ -88,7 +88,7 @@ export default class Trajeto extends Component {
     if (this.state.busca) {
       this.loadData();
     } else {
-      const res = await api.get(`/paths/${this.state.search}`).catch(err => {
+      const res = await api.get(`/paths/${this.state.search}`).catch((err) => {
         if (err.message === "Request failed with status code 401") {
           alert("Nível de acesso negado! Contate o administrador do sistema");
           window.location.replace("/menu");
@@ -103,7 +103,7 @@ export default class Trajeto extends Component {
   };
 
   loadModais = async () => {
-    const res = await api.get("/modals").catch(err => {
+    const res = await api.get("/modals").catch((err) => {
       alert(err.message);
       window.location.reload(false);
     });
@@ -121,7 +121,7 @@ export default class Trajeto extends Component {
   };
 
   loadPrestador = async () => {
-    const res = await api.get("/providers").catch(err => {
+    const res = await api.get("/providers").catch((err) => {
       alert(err.message);
       window.location.reload(false);
     });
@@ -138,15 +138,15 @@ export default class Trajeto extends Component {
     this.setState({ prestadores: prestadores });
   };
 
-  handleModais = modais => {
+  handleModais = (modais) => {
     this.setState({ modal: modais.value });
   };
 
-  handlePrestador = prestador => {
+  handlePrestador = (prestador) => {
     this.setState({ prestador: prestador.value });
   };
 
-  handleDia = dia => {
+  handleDia = (dia) => {
     dia = dia.value;
 
     this.setState({ dia });
@@ -160,13 +160,13 @@ export default class Trajeto extends Component {
     this.setState({ edit_prest_status: true });
   };
 
-  handleDelete = async ev => {
+  handleDelete = async (ev) => {
     ev.preventDefault();
 
     await api
       .delete(`/paths/${this.state.popUp[0].value.id}`)
       .then(window.location.reload())
-      .catch(err => {
+      .catch((err) => {
         alert(err);
       });
   };
@@ -183,7 +183,7 @@ export default class Trajeto extends Component {
     this.setState({ dia: "", hora: "", dias, horas });
   };
 
-  editPopUp = c => {
+  editPopUp = (c) => {
     let { popUp } = this.state;
 
     let h1 = "Editar Trajeto";
@@ -197,11 +197,11 @@ export default class Trajeto extends Component {
     let endCidade = c.endCidade;
     let modal = {
       label: c.modal,
-      value: c.modal
+      value: c.modal,
     };
     let prestNome = {
       label: c.prestNome,
-      value: c.prestNome
+      value: c.prestNome,
     };
     let dia = c.dia;
     let hora = c.hora;
@@ -215,8 +215,7 @@ export default class Trajeto extends Component {
     if (c.duration.length === 4) {
       let tmp = "0" + c.duration;
       duration = tmp;
-    }
-    else {
+    } else {
       duration = c.duration;
     }
 
@@ -232,7 +231,7 @@ export default class Trajeto extends Component {
       cidades,
       tp_modal,
       prestador,
-      diaHora
+      diaHora,
     };
 
     let value = {
@@ -247,7 +246,7 @@ export default class Trajeto extends Component {
       cost,
       departure,
       arrival,
-      duration
+      duration,
     };
 
     popUp.push({ text, value });
@@ -258,14 +257,14 @@ export default class Trajeto extends Component {
     this.setState({ popUp: popUp, popUpStats: true });
   };
 
-  handleClose = ev => {
+  handleClose = (ev) => {
     ev.preventDefault();
     this.setState({ edit_modal_status: false });
     this.setState({ edit_prest_status: false });
     this.setState({ popUp: [] });
   };
 
-  handleChangeText = ev => {
+  handleChangeText = (ev) => {
     const state = Object.assign({}, this.state);
     const name = ev.target.name;
     const value = ev.target.value;
@@ -274,18 +273,18 @@ export default class Trajeto extends Component {
 
     this.setState(state);
   };
-  handleChangeDuracao = ev => {
+  handleChangeDuracao = (ev) => {
     const popUp = this.state.popUp;
     popUp[0].value.duration = ev.target.value;
     this.setState({ popUp: popUp });
   };
-  handleChangeQuilometragem = ev => {
+  handleChangeQuilometragem = (ev) => {
     const popUp = this.state.popUp;
-    this.state.popUp[0].value.mileage = ev.target.value;
+    popUp[0].value.mileage = ev.target.value;
     this.setState({ popUp: popUp });
   };
 
-  handleEditSubmit = async ev => {
+  handleEditSubmit = async (ev) => {
     ev.preventDefault();
 
     var linha, contratado;
@@ -300,7 +299,6 @@ export default class Trajeto extends Component {
     var { dias } = this.state;
     var { horas } = this.state;
 
-
     if (this.state.dia !== "" && this.state.hora !== "") {
       dias.push(this.state.dia);
       horas.push(this.state.hora);
@@ -309,13 +307,12 @@ export default class Trajeto extends Component {
     let duration = this.state.popUp[0].value.duration;
     let duration2;
 
-    if (duration.charAt(0) == '0' && duration.charAt(1) == '0') {
-      let tmp = duration.split('');
+    if (duration.charAt(0) === "0" && duration.charAt(1) === "0") {
+      let tmp = duration.split("");
       tmp.splice(0, 1);
-      duration2 = tmp.join('');
-    }
-    else {
-      duration2 = duration.replace(/^0(?:0:0?)?/, '');
+      duration2 = tmp.join("");
+    } else {
+      duration2 = duration.replace(/^0(?:0:0?)?/, "");
     }
 
     const state = {
@@ -331,7 +328,7 @@ export default class Trajeto extends Component {
       arrival: this.state.popUp[0].value.arrival,
       linha: linha,
       contratado: contratado,
-      duration: duration2
+      duration: duration2,
     };
 
     await api
@@ -340,12 +337,12 @@ export default class Trajeto extends Component {
         this.setState({ popUp: [] });
         window.location.reload();
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err);
       });
   };
 
-  handleChange = ev => {
+  handleChange = (ev) => {
     const state = Object.assign({}, this.state);
     const name = ev.target.name;
 
@@ -363,27 +360,27 @@ export default class Trajeto extends Component {
     const imgStyles = {
       height: "38px",
       position: "relative",
-      top: "3px"
+      top: "3px",
     };
 
-    const theme = theme => ({
+    const theme = (theme) => ({
       ...theme,
       borderRadius: "50px",
       colors: {
         ...theme.colors,
         primary25: "",
-        primary: "#707070"
-      }
+        primary: "#707070",
+      },
     });
 
     const selectStyle = {
-      control: styles => ({
+      control: (styles) => ({
         ...styles,
         height: "43px",
         borderColor: "#707070",
-        overflow: "hidden"
+        overflow: "hidden",
       }),
-      option: styles => ({ ...styles })
+      option: (styles) => ({ ...styles }),
     };
 
     const { dias } = this.state;
@@ -418,7 +415,7 @@ export default class Trajeto extends Component {
                 borderRadius: "34px",
                 border: "solid 1px #707070",
                 backgroundColor: "#ffffff",
-                overflow: "hidden"
+                overflow: "hidden",
               }}
             >
               <div className="listCity" style={{ overflowY: "auto" }}>
@@ -576,7 +573,7 @@ export default class Trajeto extends Component {
                       digitGroupSeparator="."
                       onChange={(e, value) => {
                         const popUp = this.state.popUp;
-                        this.state.popUp[0].value.cost = value;
+                        popUp[0].value.cost = value;
                         this.setState({ popUp: popUp });
                       }}
                     />

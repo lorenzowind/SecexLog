@@ -15,7 +15,7 @@ import api from "../../../services/api";
 import "./styles.css";
 
 var Style = {
-  display: "none"
+  display: "none",
 };
 
 class Trajeto {
@@ -48,7 +48,7 @@ export default class Tela_inicial extends React.Component {
       cidades: null,
       loading: false,
 
-      testState: null
+      testState: null,
     };
   }
 
@@ -62,7 +62,7 @@ export default class Tela_inicial extends React.Component {
     await setTimeout(() => {
       api
         .get("/cities")
-        .then(res => {
+        .then((res) => {
           let cidades = [];
           res.data.forEach((element, index) => {
             if (element.nome !== "Nacional") {
@@ -74,16 +74,16 @@ export default class Tela_inicial extends React.Component {
           });
           this.setState({ loading: true, cidades });
         })
-        .catch(err => {
+        .catch((err) => {
           alert(err);
           window.location.reload();
         });
     }, 1200);
   };
 
-  evento_adicionarTrajeto = e => {
+  evento_adicionarTrajeto = (e) => {
     let novo_trajeto = {
-      num: this.trajetos.length + 1
+      num: this.trajetos.length + 1,
     };
 
     this.trajetos.push(novo_trajeto);
@@ -95,7 +95,7 @@ export default class Tela_inicial extends React.Component {
     }
   };
 
-  evento_retirarTrajeto = e => {
+  evento_retirarTrajeto = (e) => {
     if (this.trajetos.length > 1) {
       this.trajetos.pop();
 
@@ -113,8 +113,6 @@ export default class Tela_inicial extends React.Component {
       var ida = document.getElementsByClassName("ida");
 
       var trajetos = [];
-
-      console.log(ida);
 
       for (var i = 0; i < campos.length; i++) {
         var cidadeIda = campos[i].children[0].children[1].innerText;
@@ -174,7 +172,7 @@ export default class Tela_inicial extends React.Component {
     }
   }
 
-  getDay = state => {};
+  getDay = (state) => {};
 
   handleChange = (cidade, name) => {
     cidade = cidade.value;
@@ -189,17 +187,17 @@ export default class Tela_inicial extends React.Component {
     const { trajetos } = this.state;
     const Style1Element = {
       float: "left",
-      marginTop: "5%"
+      marginTop: "5%",
     };
     const Style2Element = {
       display: "flex",
       float: "left",
-      marginTop: "5%"
+      marginTop: "5%",
     };
     const StyleLastElement = {
       display: "flex",
       float: "left",
-      marginTop: "5%"
+      marginTop: "5%",
     };
 
     if (trajetos.length === 1) {
@@ -262,31 +260,31 @@ export default class Tela_inicial extends React.Component {
         <Redirect
           to={{
             pathname: "/consulta-manual",
-            state: { matriz_trajetos: this.state.matriz_trajetos }
+            state: { matriz_trajetos: this.state.matriz_trajetos },
           }}
         />
       );
     }
 
-    const theme = theme => ({
+    const theme = (theme) => ({
       ...theme,
 
       colors: {
         ...theme.colors,
         primary25: "",
-        primary: "#b0b0b0"
-      }
+        primary: "#b0b0b0",
+      },
     });
 
     const selectStyle = {
-      control: styles => ({
+      control: (styles) => ({
         ...styles,
         outline: "none",
         height: "61px",
         width: "97%",
-        border: "none"
+        border: "none",
       }),
-      option: styles => ({ ...styles })
+      option: (styles) => ({ ...styles }),
     };
 
     return this.state.loading ? (
