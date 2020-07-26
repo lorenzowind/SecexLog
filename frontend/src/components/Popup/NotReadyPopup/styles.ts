@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { shade } from 'polished';
 
 export const Background = styled.div`
   position: absolute;
@@ -21,6 +20,7 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  width: auto;
 
   border: solid 1px #707070;
   border-radius: 35px;
@@ -32,10 +32,15 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px 120px;
+  text-align: center;
+  padding: 40px 20px;
+  width: 75%;
 
   > button {
+    width: 50%;
+
     &:first-child {
+      width: auto;
       right: 0;
       top: 0;
       margin: 16px 20px 0 0;
@@ -43,39 +48,12 @@ export const Content = styled.div`
       border: 0;
       background: transparent;
     }
-
-    &:last-child {
-      background: #6ae8e5;
-      border-radius: 50%;
-      border: 0;
-      padding: 8px 16px;
-      align-self: flex-end;
-      margin-right: -80px;
-
-      &:hover {
-        background: ${shade(0.1, '#6ae8e5')};
-      }
-    }
   }
 
   strong {
     color: #818181;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 500;
     margin-bottom: 30px;
-  }
-
-  div {
-    height: 60px;
-    margin-bottom: 30px;
-  }
-  form {
-    display: flex;
-    width: 140%;
-
-    textarea {
-      width: 100%;
-      height: 200px;
-    }
   }
 `;
