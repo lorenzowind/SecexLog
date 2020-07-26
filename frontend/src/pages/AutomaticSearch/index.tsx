@@ -19,7 +19,7 @@ import Button from '../../components/Button';
 import DateInput from '../../components/DateInput';
 
 import logoSecex from '../../assets/logo-secex.png';
-import progressBar from '../../assets/progressBar-1.png';
+import progressBar from '../../assets/progressBar.png';
 import iconGo from '../../assets/icon-go.png';
 import iconBack from '../../assets/icon-back.png';
 import iconCalendar from '../../assets/icon-calendar.png';
@@ -89,7 +89,7 @@ const AutomaticSearch: React.FC = () => {
 
             {pathsData.map(path => (
               <Select name="cityBack" icon={iconBack} key={path.index}>
-                <option value="0">Selecione a cidade de volta</option>
+                <option value="0">Selecione a cidade para auditoria</option>
                 {cities.map((city, index) => (
                   <option key={index} value={index + 1}>
                     {city}
