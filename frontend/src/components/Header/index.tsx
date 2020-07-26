@@ -4,6 +4,7 @@ import { Container } from './styles';
 
 import SignInPopup from '../Popup/SignInPopup';
 import OpinionPopup from '../Popup/OpinionPopup';
+import ForgotPasswordPopup from '../Popup/ForgotPasswordPopup';
 
 import logoTce from '../../assets/ManualSearch/logo-tce.png';
 
@@ -14,6 +15,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const [signInPopupActive, setSignInPopupActive] = useState(false);
   const [opinionPopupActive, setOpinionPopupActive] = useState(false);
+  const [forgotPasswordPopupActive, setForgotPasswordPopupActive] = useState(
+    false,
+  );
 
   return (
     <>
@@ -22,7 +26,16 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
       )}
 
       {signInPopupActive && (
-        <SignInPopup setSignInPopupActive={setSignInPopupActive} />
+        <SignInPopup
+          setSignInPopupActive={setSignInPopupActive}
+          setForgotPasswordPopupActive={setForgotPasswordPopupActive}
+        />
+      )}
+
+      {forgotPasswordPopupActive && (
+        <ForgotPasswordPopup
+          setForgotPasswordPopupActive={setForgotPasswordPopupActive}
+        />
       )}
 
       <Container>

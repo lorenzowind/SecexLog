@@ -13,9 +13,13 @@ import IconPassword from '../../../assets/ManualSearch/icon-password.png';
 
 interface Props {
   setSignInPopupActive(isActive: boolean): void;
+  setForgotPasswordPopupActive(isActive: boolean): void;
 }
 
-const SignInPopup: React.FC<Props> = ({ setSignInPopupActive }) => {
+const SignInPopup: React.FC<Props> = ({
+  setSignInPopupActive,
+  setForgotPasswordPopupActive,
+}) => {
   const formRef = useRef<FormHandles>(null);
 
   const [dataError, setDataError] = useState(false);
@@ -48,13 +52,18 @@ const SignInPopup: React.FC<Props> = ({ setSignInPopupActive }) => {
               type="password"
               placeholder="Senha"
             />
+
+            <OptionsContainer>
+              <button
+                type="button"
+                onClick={() => setForgotPasswordPopupActive(true)}
+              >
+                Esqueceu sua senha?
+              </button>
+
+              <Button type="submit">Logar</Button>
+            </OptionsContainer>
           </Form>
-
-          <OptionsContainer>
-            <button type="button">Esqueceu sua senha?</button>
-
-            <Button type="button">Logar</Button>
-          </OptionsContainer>
         </Content>
       </Container>
     </Background>
