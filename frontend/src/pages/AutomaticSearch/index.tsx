@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { FiArrowLeft } from 'react-icons/fi';
 
 import api from '../../services/api';
 
@@ -45,7 +47,6 @@ const AutomaticSearch: React.FC = () => {
     }
 
     loadCities();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDecreasePathNumber = () => {
@@ -78,7 +79,6 @@ const AutomaticSearch: React.FC = () => {
             <Select name="cityGo" icon={iconGo}>
               <option value="0">Selecione a cidade de ida</option>
               {cities.map((city, index) => (
-                // eslint-disable-next-line react/no-array-index-key
                 <option key={index} value={index + 1}>
                   {city}
                 </option>
@@ -89,7 +89,6 @@ const AutomaticSearch: React.FC = () => {
               <Select name="cityBack" icon={iconBack} key={path.index}>
                 <option value="0">Selecione a cidade de volta</option>
                 {cities.map((city, index) => (
-                  // eslint-disable-next-line react/no-array-index-key
                   <option key={index} value={index + 1}>
                     {city}
                   </option>
@@ -129,7 +128,10 @@ const AutomaticSearch: React.FC = () => {
         </OptionsContainer>
 
         <ButtonsContainer>
-          <button type="button">Consulta Manual</button>
+          <Link to="/">
+            <FiArrowLeft size={24} />
+            Consulta Manual
+          </Link>
 
           <Button type="button">Consultar</Button>
         </ButtonsContainer>

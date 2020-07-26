@@ -88,7 +88,7 @@ export const CalendarInput = styled.div`
 
 export const OptionsContainer = styled.div`
   margin-bottom: 70px;
-  margin-left: 30%;
+  margin-left: 20%;
 
   ul {
     display: flex;
@@ -120,15 +120,26 @@ export const OptionsContainer = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+
+  a {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    border: 0;
+    color: #707070;
+    text-decoration: none;
+    font-size: 20px;
+    white-space: nowrap;
+    margin-right: 30px;
+
+    svg {
+      margin-right: 8px;
+    }
+  }
 
   button {
-    margin: 0 30px;
-
-    &:first-child {
-      border: 0;
-      color: #707070;
-      font-size: 20px;
-      white-space: nowrap;
-    }
+    margin-left: 30px;
   }
 `;
