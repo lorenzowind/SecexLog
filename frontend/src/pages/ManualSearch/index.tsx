@@ -89,6 +89,12 @@ const ManualSearch: React.FC = () => {
 
               <Select name="cityGo" icon={iconGo}>
                 <option value="0">Selecione a cidade de ida</option>
+                {cities.map((city, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <option key={index} value={index + 1}>
+                    {city}
+                  </option>
+                ))}
               </Select>
 
               <Select name="cityBack" icon={iconBack}>

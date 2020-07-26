@@ -1,7 +1,16 @@
 import styled from 'styled-components';
 
+export const Background = styled.div`
+  position: absolute;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.2);
+  width: 100%;
+  height: 100%;
+`;
+
 export const Container = styled.div`
   position: absolute;
+  z-index: 1;
   right: 0;
   top: 0;
   margin: 90px 190px 0 0;
@@ -13,6 +22,13 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   padding: 45px 30px 10px 30px;
+
+  strong {
+    position: absolute;
+    top: 0;
+    padding: 30px 0 0 20px;
+    color: #ff2d2d;
+  }
 
   > button {
     right: 0;

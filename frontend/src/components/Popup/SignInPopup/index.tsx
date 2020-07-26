@@ -1,8 +1,8 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
-import { Container, OptionsContainer, Content } from './styles';
+import { Background, Container, OptionsContainer, Content } from './styles';
 
 import Input from '../../Input';
 import Button from '../../Button';
@@ -18,40 +18,46 @@ interface Props {
 const SignInPopup: React.FC<Props> = ({ setSignInPopupActive }) => {
   const formRef = useRef<FormHandles>(null);
 
+  const [dataError, setDataError] = useState(false);
+
   const handleSignIn = useCallback(() => {
     console.log('Working...');
   }, []);
 
   return (
-    <Container>
-      <Content>
-        <button type="button" onClick={() => setSignInPopupActive(false)}>
-          <img src={IconClose} alt="Close" />
-        </button>
+    <Background>
+      <Container>
+        <Content>
+          <button type="button" onClick={() => setSignInPopupActive(false)}>
+            <img src={IconClose} alt="Close" />
+          </button>
 
-        <Form ref={formRef} onSubmit={handleSignIn}>
-          <Input
-            name="login"
-            icon={IconUser}
-            type="text"
-            placeholder="Nome do usuário"
-          />
+          {dataError && <strong>Nome ou senha incorreta!</strong>}
 
-          <Input
-            name="password"
-            icon={IconPassword}
-            type="password"
-            placeholder="Senha"
-          />
-        </Form>
+          <Form ref={formRef} onSubmit={handleSignIn}>
+            <Input
+              name="login"
+              icon={IconUser}
+              type="text"
+              placeholder="Nome do usuário"
+            />
 
-        <OptionsContainer>
-          <button type="button">Esqueceu sua senha?</button>
+            <Input
+              name="password"
+              icon={IconPassword}
+              type="password"
+              placeholder="Senha"
+            />
+          </Form>
 
-          <Button type="button">Logar</Button>
-        </OptionsContainer>
-      </Content>
-    </Container>
+          <OptionsContainer>
+            <button type="button">Esqueceu sua senha?</button>
+
+            <Button type="button">Logar</Button>
+          </OptionsContainer>
+        </Content>
+      </Container>
+    </Background>
   );
 };
 

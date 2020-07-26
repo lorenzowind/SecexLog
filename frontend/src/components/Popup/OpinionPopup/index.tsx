@@ -1,12 +1,41 @@
 import React from 'react';
 
-import { Container } from './styles';
+import { Background, FullContainer, Container, Content } from './styles';
 
-const OpinionPopup: React.FC = () => {
+import Select from '../../Select';
+
+import IconClose from '../../../assets/ManualSearch/icon-close.png';
+import IconSend from '../../../assets/ManualSearch/icon-send.png';
+
+interface Props {
+  setOpinionPopupActive(isActive: boolean): void;
+}
+
+const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
   return (
-    <Container>
-      <h1>OpinionPopup</h1>
-    </Container>
+    <Background>
+      <FullContainer>
+        <Container>
+          <Content>
+            <button type="button" onClick={() => setOpinionPopupActive(false)}>
+              <img src={IconClose} alt="Close" />
+            </button>
+
+            <strong>Dê sua opinião!</strong>
+
+            <Select name="subject">
+              <option value="0">Selecione um assunto</option>
+            </Select>
+
+            <textarea placeholder="Opinião..." />
+
+            <button type="button">
+              <img src={IconSend} alt="Send" />
+            </button>
+          </Content>
+        </Container>
+      </FullContainer>
+    </Background>
   );
 };
 

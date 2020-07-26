@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Container } from './styles';
 
 import SignInPopup from '../Popup/SignInPopup';
+import OpinionPopup from '../Popup/OpinionPopup';
 
 import logoTce from '../../assets/ManualSearch/logo-tce.png';
 
@@ -12,21 +13,30 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
   const [signInPopupActive, setSignInPopupActive] = useState(false);
+  const [opinionPopupActive, setOpinionPopupActive] = useState(false);
 
   return (
-    <Container>
+    <>
+      {opinionPopupActive && (
+        <OpinionPopup setOpinionPopupActive={setOpinionPopupActive} />
+      )}
+
       {signInPopupActive && (
         <SignInPopup setSignInPopupActive={setSignInPopupActive} />
       )}
 
-      <button type="button">Dê sua Opinião</button>
+      <Container>
+        <button type="button" onClick={() => setOpinionPopupActive(true)}>
+          Dê sua Opinião
+        </button>
 
-      <button type="button" onClick={() => setSignInPopupActive(true)}>
-        Login
-      </button>
+        <button type="button" onClick={() => setSignInPopupActive(true)}>
+          Login
+        </button>
 
-      <img src={logoTce} alt="TCE" />
-    </Container>
+        <img src={logoTce} alt="TCE" />
+      </Container>
+    </>
   );
 };
 
