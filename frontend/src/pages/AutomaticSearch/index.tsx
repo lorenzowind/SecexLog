@@ -31,6 +31,8 @@ interface PathData {
 
 const AutomaticSearch: React.FC = () => {
   const [cities, setCities] = useState<String[]>([]);
+  const [initialDate, setInitialDate] = useState<Date>(new Date());
+  const [finalDate, setFinalDate] = useState<Date>(new Date());
   const [pathsData, setPathsData] = useState<PathData[]>([
     {
       index: 1,
@@ -99,12 +101,12 @@ const AutomaticSearch: React.FC = () => {
 
           <section>
             <CalendarInput>
-              <DateInput />
+              <DateInput date={initialDate} setDate={setInitialDate} />
               <img src={iconCalendar} alt="Icon" />
             </CalendarInput>
 
             <CalendarInput>
-              <DateInput />
+              <DateInput date={finalDate} setDate={setFinalDate} />
               <img src={iconCalendar} alt="Icon" />
             </CalendarInput>
           </section>

@@ -3,21 +3,25 @@ import ptLocale from 'date-fns/locale/pt';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers';
 
-const DateInput: React.FC = () => {
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date(),
-  );
+interface Props {
+  date: Date;
+  setDate(date: Date): void;
+}
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+const DateInput: React.FC<Props> = ({ date, setDate }) => {
+  const handleDateChange = (value: Date | null) => {
+    if (value) {
+      setDate(value);
+    }
   };
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptLocale}>
       <DatePicker
         disableToolbar
         variant="inline"
         format="dd/MM/yyyy"
-        value={selectedDate}
+        value={date}
         onChange={handleDateChange}
       />
     </MuiPickersUtilsProvider>

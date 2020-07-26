@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 
@@ -53,6 +53,22 @@ const ManualSearch: React.FC = () => {
     loadCities();
   }, []);
 
+  const handleSetDate = useCallback((path: PathData, value: Date) => {
+    setPathsData(state =>
+      state.map(element => {
+        if (element === path) {
+          return {
+            cityBack: path.cityBack,
+            cityGo: path.cityGo,
+            index: path.index,
+            date: value,
+          };
+        }
+        return element;
+      }),
+    );
+  }, []);
+
   const handleDecreasePathNumber = () => {
     if (pathsData.length > 1) {
       setPathsData(state => state.slice(0, pathsData.length - 1));
@@ -88,7 +104,7 @@ const ManualSearch: React.FC = () => {
                 {` ${path.index}`}
               </strong>
 
-              <Select name="cityGo" icon={iconGo}>
+              <Select name="cityGo" value={path.cityGo} icon={iconGo}>
                 <option value="0">Selecione a cidade de ida</option>
                 {cities.map((city, index) => (
                   <option key={index} value={index + 1}>
@@ -97,7 +113,7 @@ const ManualSearch: React.FC = () => {
                 ))}
               </Select>
 
-              <Select name="cityBack" icon={iconBack}>
+              <Select name="cityBack" value={path.cityBack} icon={iconBack}>
                 <option value="0">Selecione a cidade de volta</option>
                 {cities.map((city, index) => (
                   <option key={index} value={index + 1}>
@@ -107,7 +123,10 @@ const ManualSearch: React.FC = () => {
               </Select>
 
               <CalendarInput>
-                <DateInput />
+                <DateInput
+                  date={path.date}
+                  setDate={value => handleSetDate(path, value)}
+                />
                 <img src={iconCalendar} alt="Icon" />
               </CalendarInput>
             </section>
