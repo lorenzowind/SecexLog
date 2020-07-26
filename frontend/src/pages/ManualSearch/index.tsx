@@ -18,11 +18,11 @@ import Select from '../../components/Select';
 import Button from '../../components/Button';
 import DateInput from '../../components/DateInput';
 
-import logoSecex from '../../assets/ManualSearch/logo-secex.png';
-import progressBar from '../../assets/ManualSearch/progressBar-1.png';
-import iconGo from '../../assets/ManualSearch/icon-go.png';
-import iconBack from '../../assets/ManualSearch/icon-back.png';
-import iconCalendar from '../../assets/ManualSearch/icon-calendar.png';
+import logoSecex from '../../assets/logo-secex.png';
+import progressBar from '../../assets/progressBar-1.png';
+import iconGo from '../../assets/icon-go.png';
+import iconBack from '../../assets/icon-back.png';
+import iconCalendar from '../../assets/icon-calendar.png';
 
 interface PathData {
   index: number;
@@ -116,12 +116,14 @@ const ManualSearch: React.FC = () => {
 
         <OptionsContainer>
           <ul>
-            <li>
-              <button type="button" onClick={handleDecreasePathNumber}>
-                <b>-</b>
-                Retirar cidade
-              </button>
-            </li>
+            {pathsData.length > 1 && (
+              <li>
+                <button type="button" onClick={handleDecreasePathNumber}>
+                  <b>-</b>
+                  Retirar cidade
+                </button>
+              </li>
+            )}
             <li>
               <button type="button" onClick={handleIncreasePathNumber}>
                 <b>+</b>

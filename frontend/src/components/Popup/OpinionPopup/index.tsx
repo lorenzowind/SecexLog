@@ -7,8 +7,8 @@ import { Background, FullContainer, Container, Content } from './styles';
 import Select from '../../Select';
 import Textarea from '../../Textarea';
 
-import IconClose from '../../../assets/ManualSearch/icon-close.png';
-import IconSend from '../../../assets/ManualSearch/icon-send.png';
+import IconClose from '../../../assets/icon-close.png';
+import IconSend from '../../../assets/icon-send.png';
 
 interface Props {
   setOpinionPopupActive(isActive: boolean): void;

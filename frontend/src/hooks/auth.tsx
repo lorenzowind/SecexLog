@@ -4,12 +4,12 @@ import api from '../services/api';
 interface SignInCredentials {
   // login: User name to sign in
   login: string;
-  password: string;
+  senha: string;
 }
 
 interface AuthState {
-  token: string;
   user: object;
+  token: string;
 }
 
 interface AuthContextData {
@@ -32,13 +32,14 @@ const AuthProvider: React.FC = ({ children }) => {
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ login, password }) => {
+  const signIn = useCallback(async ({ login, senha }) => {
     const response = await api.post<AuthState>('login', {
       login,
-      password,
+      senha,
     });
 
-    const { token, user } = response.data;
+    const user = response.data;
+    const { token } = response.data;
 
     localStorage.setItem('@SecexLog:token', token);
     localStorage.setItem('@SecexLog:user', JSON.stringify(user));

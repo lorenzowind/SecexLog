@@ -7,7 +7,7 @@ import { Background, FullContainer, Container, Content } from './styles';
 import Input from '../../Input';
 import Button from '../../Button';
 
-import IconClose from '../../../assets/ManualSearch/icon-close.png';
+import IconClose from '../../../assets/icon-close.png';
 
 interface Props {
   setForgotPasswordPopupActive(isActive: boolean): void;
