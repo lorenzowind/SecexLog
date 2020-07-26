@@ -49,6 +49,13 @@ export const Content = styled.div`
   justify-content: space-between;
   overflow-y: auto;
 
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   height: 100%;
   width: 100%;
 
@@ -115,11 +122,12 @@ export const Content = styled.div`
       display: flex;
       align-items: center;
       justify-content: flex-start;
+      flex-direction: column;
 
       border: 0;
       background: transparent;
       width: 100%;
-      padding: 10px 0 0 20px;
+      padding-top: 10px;
 
       img {
         width: 35px;
@@ -130,6 +138,12 @@ export const Content = styled.div`
         font-size: 20px;
         color: #fff;
         padding-left: 20px;
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        padding: 10px 0 20px 20px;
       }
     }
   }

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 
 import { ContainerClosed, ContainerOpened, Content } from './styles';
 
+import Calendar from '../CalendarMenu';
+
 import iconSecex from '../../assets/icon-secex.png';
 import logoSecex from '../../assets/logo-secex-2.png';
 import iconCrud from '../../assets/icon-crud.png';
@@ -44,8 +46,11 @@ const Menu: React.FC = () => {
               </button>
 
               <section>
-                <img src={iconCalendar} alt="Calendar" />
-                <strong>Calendário</strong>
+                <nav>
+                  <img src={iconCalendar} alt="Calendar" />
+                  <strong>Calendário</strong>
+                </nav>
+                <Calendar />
               </section>
             </nav>
 
