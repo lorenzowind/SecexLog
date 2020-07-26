@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { ContainerClosed, ContainerOpened, Content } from './styles';
 
@@ -47,10 +48,12 @@ const Menu: React.FC = () => {
             </aside>
 
             <nav>
-              <button type="button">
-                <img src={iconCrud} alt="Crud" />
-                <strong>Cadastro</strong>
-              </button>
+              <Link to="listing-data ">
+                <button type="button">
+                  <img src={iconCrud} alt="Crud" />
+                  <strong>Cadastro</strong>
+                </button>
+              </Link>
 
               <button
                 type="button"
@@ -126,9 +129,11 @@ const Menu: React.FC = () => {
             </aside>
 
             <nav>
-              <button type="button">
-                <img src={iconCrud} alt="Crud" />
-              </button>
+              <Link to="listing-data ">
+                <button type="button">
+                  <img src={iconCrud} alt="Crud" />
+                </button>
+              </Link>
 
               <button
                 type="button"

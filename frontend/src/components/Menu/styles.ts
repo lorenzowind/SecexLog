@@ -80,6 +80,10 @@ export const Content = styled.div`
     }
   }
 
+  a {
+    text-decoration: none;
+  }
+
   button {
     display: flex;
     align-items: center;

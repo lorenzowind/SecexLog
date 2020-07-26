@@ -1,11 +1,15 @@
 import React from 'react';
 
-import { Container } from './styles';
+import { Container, Content } from './styles';
+
+import loadingGif from '../../assets/loading.gif';
 
 const Loading: React.FC = () => {
   return (
     <Container>
-      <h1>Loading</h1>
+      <Content>
+        <img src={loadingGif} alt="Loading" />
+      </Content>
     </Container>
   );
 };

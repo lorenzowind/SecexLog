@@ -11,6 +11,7 @@ import { Background, Container, OptionsContainer, Content } from './styles';
 
 import Input from '../../Input';
 import Button from '../../Button';
+import Loading from '../../Loading';
 
 import IconClose from '../../../assets/icon-close.png';
 import IconUser from '../../../assets/icon-user.png';
@@ -34,6 +35,7 @@ const SignInPopup: React.FC<Props> = ({
   const history = useHistory();
 
   const [dataError, setDataError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
@@ -50,9 +52,13 @@ const SignInPopup: React.FC<Props> = ({
           abortEarly: false,
         });
 
+        setLoading(true);
+
         await signIn({
           login: data.login,
           senha: data.password,
+        }).then(() => {
+          setLoading(false);
         });
 
         addToast({
@@ -80,44 +86,48 @@ const SignInPopup: React.FC<Props> = ({
   );
 
   return (
-    <Background>
-      <Container>
-        <Content>
-          <button type="button" onClick={() => setSignInPopupActive(false)}>
-            <img src={IconClose} alt="Close" />
-          </button>
+    <>
+      {loading && <Loading />}
 
-          {dataError && <strong>Nome ou senha incorreta!</strong>}
+      <Background>
+        <Container>
+          <Content>
+            <button type="button" onClick={() => setSignInPopupActive(false)}>
+              <img src={IconClose} alt="Close" />
+            </button>
 
-          <Form ref={formRef} onSubmit={handleSignIn}>
-            <Input
-              name="login"
-              icon={IconUser}
-              type="text"
-              placeholder="Nome do usuário"
-            />
+            {dataError && <strong>Nome ou senha incorreta!</strong>}
 
-            <Input
-              name="password"
-              icon={IconPassword}
-              type="password"
-              placeholder="Senha"
-            />
+            <Form ref={formRef} onSubmit={handleSignIn}>
+              <Input
+                name="login"
+                icon={IconUser}
+                type="text"
+                placeholder="Nome do usuário"
+              />
 
-            <OptionsContainer>
-              <button
-                type="button"
-                onClick={() => setForgotPasswordPopupActive(true)}
-              >
-                Esqueceu sua senha?
-              </button>
+              <Input
+                name="password"
+                icon={IconPassword}
+                type="password"
+                placeholder="Senha"
+              />
 
-              <Button type="submit">Logar</Button>
-            </OptionsContainer>
-          </Form>
-        </Content>
-      </Container>
-    </Background>
+              <OptionsContainer>
+                <button
+                  type="button"
+                  onClick={() => setForgotPasswordPopupActive(true)}
+                >
+                  Esqueceu sua senha?
+                </button>
+
+                <Button type="submit">Logar</Button>
+              </OptionsContainer>
+            </Form>
+          </Content>
+        </Container>
+      </Background>
+    </>
   );
 };
 
