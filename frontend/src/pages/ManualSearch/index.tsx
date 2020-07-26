@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   Container,
@@ -20,7 +20,41 @@ import iconGo from '../../assets/ManualSearch/icon-go.png';
 import iconBack from '../../assets/ManualSearch/icon-back.png';
 import iconCalendar from '../../assets/ManualSearch/icon-calendar.png';
 
+interface PathData {
+  index: number;
+  cityGo: string;
+  cityBack: string;
+  date: Date;
+}
+
 const ManualSearch: React.FC = () => {
+  const [pathsData, setPathsData] = useState<PathData[]>([
+    {
+      index: 1,
+      cityGo: '',
+      cityBack: '',
+      date: new Date(),
+    },
+  ]);
+
+  const handleDecreasePathNumber = () => {
+    if (pathsData.length > 1) {
+      setPathsData(state => state.slice(0, pathsData.length - 1));
+    }
+  };
+
+  const handleIncreasePathNumber = () => {
+    setPathsData([
+      ...pathsData,
+      {
+        index: pathsData.length + 1,
+        cityGo: '',
+        cityBack: '',
+        date: new Date(),
+      },
+    ]);
+  };
+
   return (
     <Container>
       <Header />
@@ -31,33 +65,42 @@ const ManualSearch: React.FC = () => {
         <img src={progressBar} alt="ProgressBar" />
 
         <InputsContainer>
-          <section>
-            <strong>Trajeto 1</strong>
+          {pathsData.map(path => (
+            <section key={path.index}>
+              <strong>
+                Trajeto
+                {` ${path.index}`}
+              </strong>
 
-            <Select name="cityGo" icon={iconGo}>
-              <option value="0">Selecione a cidade de ida</option>
-            </Select>
+              <Select name="cityGo" icon={iconGo}>
+                <option value="0">Selecione a cidade de ida</option>
+              </Select>
 
-            <Select name="cityBack" icon={iconBack}>
-              <option value="0">Selecione a cidade de volta</option>
-            </Select>
+              <Select name="cityBack" icon={iconBack}>
+                <option value="0">Selecione a cidade de volta</option>
+              </Select>
 
-            <CalendarInput>
-              <DateInput />
-              <img src={iconCalendar} alt="Icon" />
-            </CalendarInput>
-          </section>
+              <CalendarInput>
+                <DateInput />
+                <img src={iconCalendar} alt="Icon" />
+              </CalendarInput>
+            </section>
+          ))}
         </InputsContainer>
 
         <OptionsContainer>
           <ul>
             <li>
-              <b>-</b>
-              Retirar cidade
+              <button type="button" onClick={handleDecreasePathNumber}>
+                <b>-</b>
+                Retirar cidade
+              </button>
             </li>
             <li>
-              <b>+</b>
-              Mais cidades para auditar
+              <button type="button" onClick={handleIncreasePathNumber}>
+                <b>+</b>
+                Mais cidades para auditar
+              </button>
             </li>
           </ul>
         </OptionsContainer>

@@ -84,17 +84,20 @@ export const OptionsContainer = styled.div`
     list-style: none;
 
     li {
-      display: flex;
-      align-items: center;
+      button {
+        display: flex;
+        align-items: center;
 
-      cursor: pointer;
-      margin-right: 40px;
-      font-size: 20px;
+        margin-right: 40px;
+        font-size: 20px;
+        color: #818181;
+        border: 0;
 
-      b {
-        margin-right: 10px;
-        color: #cccccc;
-        font-size: 30px;
+        b {
+          margin-right: 10px;
+          color: #cccccc;
+          font-size: 30px;
+        }
       }
     }
   }
