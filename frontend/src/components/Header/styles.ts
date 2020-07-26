@@ -9,7 +9,7 @@ export const Container = styled.div`
   position: absolute;
   padding: 20px 70px 0 0;
 
-  button {
+  > button {
     border: 0;
     height: max-content;
     font-size: 20px;

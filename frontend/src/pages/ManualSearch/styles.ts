@@ -87,6 +87,7 @@ export const OptionsContainer = styled.div`
       button {
         display: flex;
         align-items: center;
+        background: transparent;
 
         margin-right: 40px;
         font-size: 20px;
@@ -114,6 +115,7 @@ export const ButtonsContainer = styled.div`
       border: 0;
       color: #707070;
       font-size: 20px;
+      white-space: nowrap;
     }
   }
 `;

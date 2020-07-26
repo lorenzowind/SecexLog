@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+import api from '../../services/api';
 
 import {
   Container,
@@ -28,6 +30,7 @@ interface PathData {
 }
 
 const ManualSearch: React.FC = () => {
+  const [cities, setCities] = useState<String[]>([]);
   const [pathsData, setPathsData] = useState<PathData[]>([
     {
       index: 1,
@@ -36,6 +39,18 @@ const ManualSearch: React.FC = () => {
       date: new Date(),
     },
   ]);
+
+  // Get cities from API to load the select component
+  useEffect(() => {
+    async function loadCities() {
+      const response = await api.get('cities');
+
+      setCities(response.data);
+    }
+
+    loadCities();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleDecreasePathNumber = () => {
     if (pathsData.length > 1) {
@@ -57,7 +72,7 @@ const ManualSearch: React.FC = () => {
 
   return (
     <Container>
-      <Header />
+      <Header isAuthenticated={false} />
 
       <Content>
         <img src={logoSecex} alt="SecexLog" />
@@ -78,6 +93,12 @@ const ManualSearch: React.FC = () => {
 
               <Select name="cityBack" icon={iconBack}>
                 <option value="0">Selecione a cidade de volta</option>
+                {cities.map((city, index) => (
+                  // eslint-disable-next-line react/no-array-index-key
+                  <option key={index} value={index + 1}>
+                    {city}
+                  </option>
+                ))}
               </Select>
 
               <CalendarInput>
@@ -106,7 +127,7 @@ const ManualSearch: React.FC = () => {
         </OptionsContainer>
 
         <ButtonsContainer>
-          <button type="button">Cancelar</button>
+          <button type="button">Consulta Automatizada</button>
 
           <Button type="button">Consultar</Button>
         </ButtonsContainer>
