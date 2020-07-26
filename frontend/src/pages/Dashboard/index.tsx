@@ -7,11 +7,13 @@ import Menu from '../../components/Menu';
 
 const Dashboard: React.FC = () => {
   return (
-    <Container>
+    <>
       <Header isAuthenticated />
 
       <Menu />
-    </Container>
+
+      <Container />
+    </>
   );
 };
 

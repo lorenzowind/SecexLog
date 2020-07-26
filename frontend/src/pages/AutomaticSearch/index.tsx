@@ -78,7 +78,7 @@ const AutomaticSearch: React.FC = () => {
 
         <InputsContainer>
           <aside>
-            <Select name="cityGo" icon={iconGo}>
+            <Select icon={iconGo}>
               <option value="0">Selecione a cidade de ida</option>
               {cities.map((city, index) => (
                 <option key={index} value={index + 1}>
@@ -88,7 +88,7 @@ const AutomaticSearch: React.FC = () => {
             </Select>
 
             {pathsData.map(path => (
-              <Select name="cityBack" icon={iconBack} key={path.index}>
+              <Select icon={iconBack} key={path.index}>
                 <option value="0">Selecione a cidade para auditoria</option>
                 {cities.map((city, index) => (
                   <option key={index} value={index + 1}>

@@ -104,7 +104,7 @@ const ManualSearch: React.FC = () => {
                 {` ${path.index}`}
               </strong>
 
-              <Select name="cityGo" value={path.cityGo} icon={iconGo}>
+              <Select value={path.cityGo} icon={iconGo}>
                 <option value="0">Selecione a cidade de ida</option>
                 {cities.map((city, index) => (
                   <option key={index} value={index + 1}>
@@ -113,7 +113,7 @@ const ManualSearch: React.FC = () => {
                 ))}
               </Select>
 
-              <Select name="cityBack" value={path.cityBack} icon={iconBack}>
+              <Select value={path.cityBack} icon={iconBack}>
                 <option value="0">Selecione a cidade de volta</option>
                 {cities.map((city, index) => (
                   <option key={index} value={index + 1}>

@@ -48,7 +48,7 @@ const Menu: React.FC = () => {
             </aside>
 
             <nav>
-              <Link to="listing-data ">
+              <Link to="listing-data">
                 <button type="button">
                   <img src={iconCrud} alt="Crud" />
                   <strong>Cadastro</strong>
@@ -129,7 +129,7 @@ const Menu: React.FC = () => {
             </aside>
 
             <nav>
-              <Link to="listing-data ">
+              <Link to="listing-data">
                 <button type="button">
                   <img src={iconCrud} alt="Crud" />
                 </button>

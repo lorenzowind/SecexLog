@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
@@ -64,9 +65,15 @@ const Header: React.FC<HeaderProps> = ({ isAuthenticated }) => {
             </button>
           </>
         ) : (
-          <button type="button" onClick={handleSignOut}>
-            Logout
-          </button>
+          <>
+            <button type="button">
+              <Link to="dashboard">Dashboard</Link>
+            </button>
+
+            <button type="button" onClick={handleSignOut}>
+              Logout
+            </button>
+          </>
         )}
         <img src={logoTce} alt="TCE" />
       </Container>

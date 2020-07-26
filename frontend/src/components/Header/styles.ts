@@ -15,10 +15,16 @@ export const Container = styled.div`
   align-items: center;
 
   width: 100%;
+  height: 100px;
   position: absolute;
   padding: 20px 70px 0 0;
 
   animation: ${appearFromTop} 1s;
+
+  a {
+    text-decoration: none;
+    color: #818181;
+  }
 
   > button {
     border: 0;

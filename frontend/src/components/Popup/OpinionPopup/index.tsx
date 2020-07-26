@@ -32,7 +32,7 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
 
             <strong>Dê sua opinião!</strong>
 
-            <Select name="subject">
+            <Select>
               <option value="0">Selecione um assunto</option>
               <option value="1">Sistema</option>
               <option value="2">Cidades</option>
