@@ -63,12 +63,15 @@ const ListingData: React.FC = () => {
 
   const handleSearchUsers = useCallback(
     (data: { searchUser: string }) => {
-      setSearchUsers(data.searchUser);
+      setLoadingPartial(true);
       if (!data.searchUser) {
-        handleGetUsers();
+        setSearchUsers('');
+      } else {
+        setSearchUsers(data.searchUser);
       }
+      setLoadingPartial(false);
     },
-    [handleGetUsers, setSearchUsers],
+    [setSearchUsers],
   );
 
   useEffect(() => {
@@ -134,6 +137,7 @@ const ListingData: React.FC = () => {
           <th>Email</th>
           <th>Cargo</th>
           <th>Senha</th>
+          <th />
         </tr>
       </thead>
       <tbody>

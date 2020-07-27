@@ -29,7 +29,13 @@ export const Container = styled.table`
     text-align: left;
     font-size: 20px;
     padding: 0 10px 10px 10px;
-    width: 120px;
+    max-width: 120px;
+    min-width: 120px;
+
+    &:last-child {
+      max-width: 60px;
+      min-width: 60px;
+    }
   }
 
   td {
