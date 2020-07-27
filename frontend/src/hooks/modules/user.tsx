@@ -115,9 +115,31 @@ const UserProvider: React.FC = ({ children }) => {
     [addToast, token],
   );
 
-  const removeUser = useCallback(async (id: number) => {
-    console.log('Working...');
-  }, []);
+  const removeUser = useCallback(
+    async (id: number) => {
+      try {
+        const response = await api.delete(`users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response) {
+          addToast({
+            type: 'success',
+            title: 'Usuário removido com sucesso!',
+          });
+        }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na remoção',
+          description: 'Ocorreu um erro na remoção do usuário.',
+        });
+      }
+    },
+    [addToast, token],
+  );
 
   return (
     <UserContext.Provider

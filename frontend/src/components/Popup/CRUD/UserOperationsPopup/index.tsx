@@ -39,7 +39,7 @@ const UserOperationsPopup: React.FC<Props> = ({
 
   const [loadingPartial, setLoadingPartial] = useState(false);
 
-  const { insertUser, updateUser, getUsers } = useUser();
+  const { insertUser, updateUser, removeUser, getUsers } = useUser();
 
   const handleRefreshUsers = useCallback(async () => {
     await getUsers().then(() => {
@@ -101,9 +101,13 @@ const UserOperationsPopup: React.FC<Props> = ({
     [handleRefreshUsers, insertUser, updateUser, user],
   );
 
-  const handleDeleteUser = useCallback(() => {
-    console.log('Working...');
-  }, []);
+  const handleDeleteUser = useCallback(async () => {
+    if (user) {
+      await removeUser(user.id).then(() => {
+        handleRefreshUsers();
+      });
+    }
+  }, [handleRefreshUsers, removeUser, user]);
 
   return (
     <>
@@ -173,9 +177,18 @@ const UserOperationsPopup: React.FC<Props> = ({
                 />
 
                 <section>
-                  <button type="button" onClick={handleDeleteUser}>
-                    <img src={IconTrash} alt="Trash" />
-                  </button>
+                  {user ? (
+                    <button type="button" onClick={handleDeleteUser}>
+                      <img src={IconTrash} alt="Trash" />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setUserOperationsPopupActive(false)}
+                    >
+                      Cancelar
+                    </button>
+                  )}
 
                   <Button type="submit">
                     {operation === 'editar' ? 'Salvar' : 'Criar'}

@@ -72,6 +72,8 @@ export const Content = styled.div`
       &:first-child {
         border: 0;
         background: transparent;
+        color: #707070;
+        font-size: 20px;
 
         img {
           width: 45px;
