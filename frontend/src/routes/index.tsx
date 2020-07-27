@@ -7,6 +7,8 @@ import ManualSearch from '../pages/ManualSearch';
 import AutomaticSearch from '../pages/AutomaticSearch';
 import ResultSearch from '../pages/ResultSearch';
 
+import Error from '../pages/Error';
+
 // Authenticated Routes
 import Dashboard from '../pages/Dashboard';
 import ListingData from '../pages/CRUD/ListingData';
@@ -31,6 +33,8 @@ const Routes: React.FC = () => (
     <Route path="/modal-form" component={ModalForm} isPrivate />
     <Route path="/path-form" component={PathForm} isPrivate />
     <Route path="/provider-form" component={ProviderForm} isPrivate />
+
+    <Route path="*" component={Error} />
   </Switch>
 );
 

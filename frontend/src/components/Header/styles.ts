@@ -32,5 +32,6 @@ export const Container = styled.div`
     font-size: 20px;
     color: #818181;
     margin: 0 70px 0 0;
+    background: transparent;
   }
 `;

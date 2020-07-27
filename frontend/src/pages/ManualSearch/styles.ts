@@ -1,4 +1,22 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+
+const appearFromLeft = keyframes`
+  from {
+    transform: translateX(-100px);
+  }
+  to {
+    transform: translateX(0);
+  }
+`;
+
+const handleAppearSection = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`;
 
 export const Container = styled.div`
   height: 100vh;
@@ -6,6 +24,8 @@ export const Container = styled.div`
   display: flex;
   align-items: stretch;
   overflow: hidden;
+
+  animation: ${appearFromLeft} 1s;
 `;
 
 export const Content = styled.div`
@@ -26,6 +46,22 @@ export const InputsContainer = styled.div`
   margin-bottom: 50px;
   overflow-y: auto;
 
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
   section {
     display: flex;
     flex-direction: row;
@@ -34,6 +70,8 @@ export const InputsContainer = styled.div`
     width: 100%;
     flex-wrap: wrap;
     margin: 25px 0;
+
+    animation: ${handleAppearSection} 1s;
 
     strong {
       margin: 0 20px;
