@@ -1,12 +1,14 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 
-import { useUser } from '../../../hooks/modules/user';
+import { useUser, UserState } from '../../../hooks/modules/user';
 
 import { Container, DataSection } from './styles';
 
 import Header from '../../../components/Header';
 import Menu from '../../../components/Menu';
 import Table from '../../../components/Table';
+
+import UserOperationsPopup from '../../../components/Popup/CRUD/UserOperationsPopup';
 
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';
@@ -28,7 +30,20 @@ interface ModuleHeaderProps {
     | 'trajeto';
 }
 
+interface UserOperationsPopupProps {
+  operation: 'criar' | 'editar';
+  user?: UserState;
+}
+
 const ListingData: React.FC = () => {
+  const [userOperationsPopupActive, setUserOperationsPopupActive] = useState(
+    true,
+  );
+
+  const [userOperationsPopup, setUserOperationsPopup] = useState<
+    UserOperationsPopupProps
+  >({ operation: 'criar' });
+
   const { users, getUsers } = useUser();
 
   const handleGetUsers = useCallback(async () => {
@@ -69,7 +84,17 @@ const ListingData: React.FC = () => {
           Adicionar
           {` ${singularName}`}
         </strong>
-        <button type="button">+</button>
+        <button
+          type="button"
+          onClick={() => {
+            setUserOperationsPopupActive(true);
+            setUserOperationsPopup({
+              operation: 'criar',
+            });
+          }}
+        >
+          +
+        </button>
       </section>
     </>
   );
@@ -94,7 +119,16 @@ const ListingData: React.FC = () => {
             <td>{user.cargo}</td>
             <td>{'*'.repeat(user.senha.length)}</td>
             <td>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => {
+                  setUserOperationsPopupActive(true);
+                  setUserOperationsPopup({
+                    operation: 'editar',
+                    user,
+                  });
+                }}
+              >
                 <img src={iconEdit} alt="Edit" />
               </button>
             </td>
@@ -106,6 +140,14 @@ const ListingData: React.FC = () => {
 
   return (
     <>
+      {userOperationsPopupActive && (
+        <UserOperationsPopup
+          operation={userOperationsPopup.operation}
+          user={userOperationsPopup.user}
+          setUserOperationsPopupActive={setUserOperationsPopupActive}
+        />
+      )}
+
       <Header isAuthenticated />
 
       <Menu />
