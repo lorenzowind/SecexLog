@@ -35,10 +35,20 @@ export const Content = styled.div`
   justify-content: center;
 
   width: 100%;
-  margin: 50px 0;
+  margin: 100px 0;
 
   > img {
     margin-bottom: 50px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    overflow-y: auto;
+    width: 100%;
   }
 `;
 

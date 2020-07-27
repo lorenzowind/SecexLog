@@ -14,6 +14,7 @@ export const Container = styled.div`
   justify-content: flex-end;
   align-items: center;
 
+  z-index: 2;
   width: 100%;
   height: 100px;
   position: absolute;

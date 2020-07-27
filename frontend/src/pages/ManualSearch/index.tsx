@@ -1,6 +1,8 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
+import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 
 import api from '../../services/api';
 
@@ -32,6 +34,8 @@ interface PathData {
 }
 
 const ManualSearch: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
   const [cities, setCities] = useState<String[]>([]);
   const [pathsData, setPathsData] = useState<PathData[]>([
     {
@@ -87,6 +91,10 @@ const ManualSearch: React.FC = () => {
     ]);
   };
 
+  const handleSearch = useCallback(() => {
+    console.log('Working...');
+  }, []);
+
   return (
     <Container>
       <Header isAuthenticated={false} />
@@ -96,70 +104,84 @@ const ManualSearch: React.FC = () => {
 
         <img src={progressBar} alt="ProgressBar" />
 
-        <InputsContainer>
-          {pathsData.map(path => (
-            <section key={path.index}>
-              <strong>
-                Trajeto
-                {` ${path.index}`}
-              </strong>
+        <Form ref={formRef} onSubmit={handleSearch}>
+          <InputsContainer>
+            {pathsData.map(path => (
+              <section key={`path-${String(path.index)}`}>
+                <strong>
+                  Trajeto
+                  {` ${path.index}`}
+                </strong>
 
-              <Select value={path.cityGo} icon={iconGo}>
-                <option value="0">Selecione a cidade de ida</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={index + 1}>
-                    {city}
+                <Select
+                  defaultValue="Selecione a cidade de ida"
+                  name={`ida-${path.index}`}
+                  icon={iconGo}
+                >
+                  <option value="Selecione a cidade de ida" disabled>
+                    Selecione a cidade de ida
                   </option>
-                ))}
-              </Select>
+                  {cities.map((city, index) => (
+                    <option key={`go-${String(index)}`} value={String(city)}>
+                      {city}
+                    </option>
+                  ))}
+                </Select>
 
-              <Select value={path.cityBack} icon={iconBack}>
-                <option value="0">Selecione a cidade de volta</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={index + 1}>
-                    {city}
+                <Select
+                  defaultValue="Selecione a cidade de volta"
+                  name={`volta-${path.index}`}
+                  icon={iconBack}
+                >
+                  <option value="Selecione a cidade de volta" disabled>
+                    Selecione a cidade de volta
                   </option>
-                ))}
-              </Select>
+                  {cities.map((city, index) => (
+                    <option key={`back-${String(index)}`} value={String(city)}>
+                      {city}
+                    </option>
+                  ))}
+                </Select>
 
-              <CalendarInput>
-                <DateInput
-                  date={path.date}
-                  setDate={value => handleSetDate(path, value)}
-                />
-                <img src={iconCalendar} alt="Icon" />
-              </CalendarInput>
-            </section>
-          ))}
-        </InputsContainer>
+                <CalendarInput>
+                  <DateInput
+                    date={path.date}
+                    setDate={value => handleSetDate(path, value)}
+                  />
+                  <img src={iconCalendar} alt="Icon" />
+                </CalendarInput>
+              </section>
+            ))}
+          </InputsContainer>
 
-        <OptionsContainer>
-          <ul>
-            {pathsData.length > 1 && (
+          <OptionsContainer>
+            <ul>
+              {pathsData.length > 1 && (
+                <li>
+                  <button type="button" onClick={handleDecreasePathNumber}>
+                    <b>-</b>
+                    Retirar cidade
+                  </button>
+                </li>
+              )}
               <li>
-                <button type="button" onClick={handleDecreasePathNumber}>
-                  <b>-</b>
-                  Retirar cidade
+                <button type="button" onClick={handleIncreasePathNumber}>
+                  <b>+</b>
+                  Mais cidades para auditar
                 </button>
               </li>
-            )}
-            <li>
-              <button type="button" onClick={handleIncreasePathNumber}>
-                <b>+</b>
-                Mais cidades para auditar
-              </button>
-            </li>
-          </ul>
-        </OptionsContainer>
+            </ul>
+          </OptionsContainer>
 
-        <ButtonsContainer>
-          <Link to="automatic-search">
-            <FiArrowLeft size={24} />
-            Consulta Automatizada
-          </Link>
+          <ButtonsContainer>
+            <Link to="automatic-search">
+              <FiArrowLeft size={24} />
+              Consulta Automatizada
+            </Link>
 
-          <Button type="button">Consultar</Button>
-        </ButtonsContainer>
+            <Button type="button">Consultar</Button>
+          </ButtonsContainer>
+        </Form>
       </Content>
     </Container>
   );

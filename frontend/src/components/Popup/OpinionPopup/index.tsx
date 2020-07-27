@@ -26,28 +26,36 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
       <FullContainer>
         <Container>
           <Content>
-            <button type="button" onClick={() => setOpinionPopupActive(false)}>
-              <img src={IconClose} alt="Close" />
-            </button>
-
-            <strong>Dê sua opinião!</strong>
-
-            <Select>
-              <option value="0">Selecione um assunto</option>
-              <option value="1">Sistema</option>
-              <option value="2">Cidades</option>
-              <option value="3">Modais</option>
-              <option value="4">Prestador de serviços</option>
-              <option value="5">Trajetos</option>
-            </Select>
-
             <Form ref={formRef} onSubmit={handleSend}>
-              <Textarea name="opinion" placeholder="Opinião..." />
-            </Form>
+              <button
+                type="button"
+                onClick={() => setOpinionPopupActive(false)}
+              >
+                <img src={IconClose} alt="Close" />
+              </button>
 
-            <button type="button">
-              <img src={IconSend} alt="Send" />
-            </button>
+              <strong>Dê sua opinião!</strong>
+              <Select name="assunto" defaultValue="Selecione um assunto">
+                <option value="Selecione um assunto" disabled>
+                  Selecione um assunto
+                </option>
+                <option value="Sistema">Sistema</option>
+                <option value="Cidades">Cidades</option>
+                <option value="Modais">Modais</option>
+                <option value="Prestador de serviços">
+                  Prestador de serviços
+                </option>
+                <option value="Trajetos">Trajetos</option>
+              </Select>
+
+              <section>
+                <Textarea name="opiniao" placeholder="Opinião..." />
+              </section>
+
+              <button type="submit">
+                <img src={IconSend} alt="Send" />
+              </button>
+            </Form>
           </Content>
         </Container>
       </FullContainer>

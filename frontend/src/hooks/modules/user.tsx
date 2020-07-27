@@ -5,7 +5,7 @@ import api from '../../services/api';
 import { useAuth } from '../auth';
 import { useToast } from '../toast';
 
-export interface UserCreatingAndUpdatingData {
+export interface UserOperationsData {
   nome: string;
   login: string;
   email: string;
@@ -13,7 +13,7 @@ export interface UserCreatingAndUpdatingData {
   senha: string;
 }
 
-export interface UserState extends UserCreatingAndUpdatingData {
+export interface UserState extends UserOperationsData {
   id: number;
 }
 
@@ -22,8 +22,8 @@ interface UserContextData {
   clearUsers(): void;
   getUsers(): Promise<void>;
   getUsersByName(nome: string): Promise<void>;
-  insertUser(user: UserCreatingAndUpdatingData): Promise<void>;
-  updateUser(id: string, user: UserCreatingAndUpdatingData): Promise<void>;
+  insertUser(user: UserOperationsData): Promise<void>;
+  updateUser(id: string, user: UserOperationsData): Promise<void>;
   removeUser(id: string): Promise<void>;
 }
 
@@ -63,12 +63,12 @@ const UserProvider: React.FC = ({ children }) => {
     console.log('Working...');
   }, []);
 
-  const insertUser = useCallback(async (user: UserCreatingAndUpdatingData) => {
+  const insertUser = useCallback(async (user: UserOperationsData) => {
     console.log('Working...');
   }, []);
 
   const updateUser = useCallback(
-    async (id: string, user: UserCreatingAndUpdatingData) => {
+    async (id: string, user: UserOperationsData) => {
       console.log('Working...');
     },
     [],

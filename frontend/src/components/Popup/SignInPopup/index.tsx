@@ -1,8 +1,10 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { useHistory } from 'react-router-dom';
+
+import getValidationErrors from '../../../utils/getValidationErrors';
 
 import { useAuth } from '../../../hooks/auth';
 import { useToast } from '../../../hooks/toast';
@@ -11,7 +13,7 @@ import { Background, Container, OptionsContainer, Content } from './styles';
 
 import Input from '../../Input';
 import Button from '../../Button';
-import Loading from '../../Loading';
+import LoadingPage from '../../Loading/LoadingPage';
 
 import IconClose from '../../../assets/icon-close.png';
 import IconUser from '../../../assets/icon-user.png';
@@ -24,7 +26,7 @@ interface Props {
 
 interface SignInFormData {
   login: string;
-  password: string;
+  senha: string;
 }
 
 const SignInPopup: React.FC<Props> = ({
@@ -34,8 +36,8 @@ const SignInPopup: React.FC<Props> = ({
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
 
-  const [dataError, setDataError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [dataError, setDataError] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(false);
 
   const { signIn } = useAuth();
   const { addToast } = useToast();
@@ -43,22 +45,24 @@ const SignInPopup: React.FC<Props> = ({
   const handleSignIn = useCallback(
     async (data: SignInFormData) => {
       try {
+        formRef.current?.setErrors({});
+
         const schema = Yup.object().shape({
           login: Yup.string().required('Nome de usuário obrigatório'),
-          password: Yup.string().min(6, 'Senha obrigatória'),
+          senha: Yup.string().min(6, 'Senha obrigatória'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        setLoading(true);
+        setLoadingPage(true);
 
         await signIn({
           login: data.login,
-          senha: data.password,
+          senha: data.senha,
         }).then(() => {
-          setLoading(false);
+          setLoadingPage(false);
         });
 
         addToast({
@@ -68,10 +72,13 @@ const SignInPopup: React.FC<Props> = ({
 
         history.push('/dashboard');
       } catch (err) {
-        setLoading(false);
+        setLoadingPage(false);
+        // setDataError(true);
 
         if (err instanceof Yup.ValidationError) {
-          setDataError(true);
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
 
           return;
         }
@@ -81,15 +88,15 @@ const SignInPopup: React.FC<Props> = ({
           title: 'Erro na autenticação',
           description: 'Ocorreu um erro ao fazer login, cheque as credenciais.',
         });
-        setSignInPopupActive(false);
+        // setSignInPopupActive(false);
       }
     },
-    [addToast, history, setSignInPopupActive, signIn],
+    [addToast, history, signIn],
   );
 
   return (
     <>
-      {loading && <Loading />}
+      {loadingPage && <LoadingPage />}
 
       <Background>
         <Container>
@@ -98,7 +105,7 @@ const SignInPopup: React.FC<Props> = ({
               <img src={IconClose} alt="Close" />
             </button>
 
-            {dataError && <strong>Nome ou senha incorreta!</strong>}
+            {/* dataError && <strong>Nome ou senha incorreta!</strong> */}
 
             <Form ref={formRef} onSubmit={handleSignIn}>
               <Input
@@ -109,7 +116,7 @@ const SignInPopup: React.FC<Props> = ({
               />
 
               <Input
-                name="password"
+                name="senha"
                 icon={IconPassword}
                 type="password"
                 placeholder="Senha"

@@ -1,4 +1,9 @@
-import React, { TextareaHTMLAttributes, useEffect, useRef } from 'react';
+import React, {
+  TextareaHTMLAttributes,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useField } from '@unform/core';
 
 import { Container } from './styles';
@@ -10,7 +15,9 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
 const Textarea: React.FC<TextareaProps> = ({ name, ...rest }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const { fieldName, defaultValue, registerField } = useField(name);
+  const [isFocused, setIsFocused] = useState(false);
+
+  const { fieldName, defaultValue, error, registerField } = useField(name);
 
   useEffect(() => {
     registerField({
@@ -20,7 +27,17 @@ const Textarea: React.FC<TextareaProps> = ({ name, ...rest }) => {
     });
   }, [fieldName, registerField]);
 
-  return <Container defaultValue={defaultValue} ref={textareaRef} {...rest} />;
+  return (
+    <Container
+      isErrored={!!error}
+      isFocused={isFocused}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+      defaultValue={defaultValue}
+      ref={textareaRef}
+      {...rest}
+    />
+  );
 };
 
 export default Textarea;

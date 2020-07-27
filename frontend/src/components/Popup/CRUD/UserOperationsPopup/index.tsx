@@ -1,13 +1,17 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
+import * as Yup from 'yup';
 
-import { UserState } from '../../../../hooks/modules/user';
+import getValidationErrors from '../../../../utils/getValidationErrors';
+
+import { UserState, UserOperationsData } from '../../../../hooks/modules/user';
+import { useToast } from '../../../../hooks/toast';
 
 import Input from '../../../Input';
 import Button from '../../../Button';
 import Select from '../../../Select';
-import Loading from '../../../Loading';
+import LoadingPartial from '../../../Loading/LoadingPartial';
 
 import { Background, FullContainer, Container, Content } from './styles';
 
@@ -30,11 +34,54 @@ const UserOperationsPopup: React.FC<Props> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
 
-  const [loading, setLoading] = useState(false);
+  const [loadingPartial, setLoadingPartial] = useState(false);
 
-  const handleCreateOrUpdateUser = useCallback(() => {
-    console.log('Working...');
-  }, []);
+  const { addToast } = useToast();
+
+  const handleCreateOrUpdateUser = useCallback(
+    async (data: UserOperationsData) => {
+      try {
+        setLoadingPartial(true);
+
+        formRef.current?.setErrors({});
+
+        const schema = Yup.object().shape({
+          nome: Yup.string().required('Nome obrigatório'),
+          login: Yup.string().required('Login obrigatório'),
+          cargo: Yup.mixed().test('match', 'Cargo obrigatório', () => {
+            return data.cargo !== 'Selecione um cargo';
+          }),
+          email: Yup.string()
+            .required('E-mail obrigatório')
+            .email('Insira um email válido'),
+          senha: Yup.string().min(6, 'Senha obrigatória'),
+        });
+
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+      } catch (err) {
+        setLoadingPartial(false);
+
+        if (err instanceof Yup.ValidationError) {
+          const errors = getValidationErrors(err);
+
+          formRef.current?.setErrors(errors);
+
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: user ? 'Erro na alteração' : 'Erro na criação',
+          description: `Ocorreu um erro na ${
+            user ? 'criação' : 'alteração'
+          } do usuário, cheque os campos.`,
+        });
+      }
+    },
+    [addToast, user],
+  );
 
   const handleDeleteUser = useCallback(() => {
     console.log('Working...');
@@ -42,7 +89,7 @@ const UserOperationsPopup: React.FC<Props> = ({
 
   return (
     <>
-      {loading && <Loading />}
+      {loadingPartial && <LoadingPartial />}
 
       <Background>
         <FullContainer>
@@ -62,26 +109,41 @@ const UserOperationsPopup: React.FC<Props> = ({
 
               <Form ref={formRef} onSubmit={handleCreateOrUpdateUser}>
                 <strong>Nome</strong>
-                <Input name="nome" type="text" defaultValue={user?.nome} />
+                <Input
+                  name="nome"
+                  type="text"
+                  defaultValue={user ? user.nome : ''}
+                />
 
                 <strong>Login</strong>
-                <Input name="login" type="text" defaultValue={user?.login} />
+                <Input
+                  name="login"
+                  type="text"
+                  defaultValue={user ? user.login : ''}
+                />
 
                 <strong>Cargo</strong>
-                <Select>
+                <Select
+                  name="cargo"
+                  defaultValue={user ? user.cargo : 'Selecione um cargo'}
+                >
                   {user?.cargo ? (
-                    <option selected>{user.cargo}</option>
+                    <option value={user.cargo}>{user.cargo}</option>
                   ) : (
-                    <option selected disabled>
+                    <option value="Selecione um cargo" disabled>
                       Selecione um cargo
                     </option>
                   )}
-                  <option value="1">Administrador</option>
-                  <option value="2">Usuário</option>
+                  <option value="Administrador">Administrador</option>
+                  <option value="Usuário">Usuário</option>
                 </Select>
 
                 <strong>Email</strong>
-                <Input name="email" type="email" defaultValue={user?.email} />
+                <Input
+                  name="email"
+                  type="email"
+                  defaultValue={user ? user.email : ''}
+                />
 
                 <strong>Senha</strong>
                 <Input

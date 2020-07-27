@@ -2,9 +2,9 @@ import React from 'react';
 
 import { Container, Content } from './styles';
 
-import loadingGif from '../../assets/loading.gif';
+import loadingGif from '../../../assets/loading.gif';
 
-const Loading: React.FC = () => {
+const LoadingPage: React.FC = () => {
   return (
     <Container>
       <Content>
@@ -14,4 +14,4 @@ const Loading: React.FC = () => {
   );
 };
 
-export default Loading;
+export default LoadingPage;

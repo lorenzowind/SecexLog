@@ -7,6 +7,7 @@ import { Container, DataSection } from './styles';
 import Header from '../../../components/Header';
 import Menu from '../../../components/Menu';
 import Table from '../../../components/Table';
+import LoadingPartial from '../../../components/Loading/LoadingPartial';
 
 import UserOperationsPopup from '../../../components/Popup/CRUD/UserOperationsPopup';
 
@@ -37,17 +38,21 @@ interface UserOperationsPopupProps {
 
 const ListingData: React.FC = () => {
   const [userOperationsPopupActive, setUserOperationsPopupActive] = useState(
-    true,
+    false,
   );
-
   const [userOperationsPopup, setUserOperationsPopup] = useState<
     UserOperationsPopupProps
-  >({ operation: 'criar' });
+  >({} as UserOperationsPopupProps);
+
+  const [loadingPartial, setLoadingPartial] = useState(false);
 
   const { users, getUsers } = useUser();
 
   const handleGetUsers = useCallback(async () => {
-    await getUsers();
+    setLoadingPartial(true);
+    await getUsers().then(() => {
+      setLoadingPartial(true);
+    });
   }, [getUsers]);
 
   useEffect(() => {
@@ -140,6 +145,8 @@ const ListingData: React.FC = () => {
 
   return (
     <>
+      {loadingPartial && <LoadingPartial />}
+
       {userOperationsPopupActive && (
         <UserOperationsPopup
           operation={userOperationsPopup.operation}
