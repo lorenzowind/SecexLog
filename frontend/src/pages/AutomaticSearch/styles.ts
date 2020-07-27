@@ -93,6 +93,7 @@ export const InputsContainer = styled.div`
     div {
       height: 57px;
       margin: 0 15px;
+      animation: ${handleAppearSection} 1s;
     }
   }
 `;

@@ -7,13 +7,23 @@ interface SignInCredentials {
   senha: string;
 }
 
-interface AuthState {
-  user: object;
+export interface UserResponse {
+  id: number;
+  login: string;
+  nome: string;
+  email: string;
+  cargo: string;
+  iat: number;
+  exp: number;
   token: string;
 }
 
-interface AuthContextData {
-  user: object;
+interface AuthState {
+  user: UserResponse;
+  token: string;
+}
+
+interface AuthContextData extends AuthState {
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
 }
@@ -33,7 +43,7 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(async ({ login, senha }) => {
-    const response = await api.post<AuthState>('login', {
+    const response = await api.post<UserResponse>('login', {
       login,
       senha,
     });
@@ -41,8 +51,8 @@ const AuthProvider: React.FC = ({ children }) => {
     const user = response.data;
     const { token } = response.data;
 
-    localStorage.setItem('@SecexLog:token', token);
     localStorage.setItem('@SecexLog:user', JSON.stringify(user));
+    localStorage.setItem('@SecexLog:token', token);
 
     setData({ token, user });
   }, []);
@@ -55,7 +65,14 @@ const AuthProvider: React.FC = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{
+        token: data.token,
+        user: data.user,
+        signIn,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

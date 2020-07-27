@@ -23,7 +23,7 @@ const NotReadyPopup: React.FC<Props> = ({ setNotReadyPopupActive }) => {
             <strong>Funcionalidade ainda não desenvolvida!</strong>
 
             <Button type="button" onClick={() => setNotReadyPopupActive(false)}>
-              Ok
+              OK
             </Button>
           </Content>
         </Container>

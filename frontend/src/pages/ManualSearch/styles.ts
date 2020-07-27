@@ -103,7 +103,7 @@ export const CalendarInput = styled.div`
     width: 95px;
     background: transparent;
     border: 0;
-    color: #818181;
+    color: #6c6c80;
     font-size: 18px;
     padding: 0;
 
