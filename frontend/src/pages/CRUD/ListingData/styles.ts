@@ -38,25 +38,27 @@ export const DataSection = styled.div`
   }
 
   > div {
-    margin: 20px 0 40px 0;
-    display: flex;
-    justify-content: center;
+    form {
+      margin: 20px 0 40px 0;
+      display: flex;
+      justify-content: center;
 
-    width: max-content;
-    border-radius: 29px;
-    border: solid 1px #707070;
-    background-color: #ffffff;
+      width: max-content;
+      border-radius: 29px;
+      border: solid 1px #707070;
+      background-color: #ffffff;
 
-    input {
-      border: 0;
-      padding: 8px 8px 8px 16px;
-      background: transparent;
-    }
+      div {
+        border: 0;
+        padding: 8px 8px 8px 16px;
+        background: transparent;
+      }
 
-    button {
-      border: 0;
-      background: transparent;
-      padding: 8px 16px 8px 8px;
+      button {
+        border: 0;
+        background: transparent;
+        padding: 8px 16px 8px 8px;
+      }
     }
   }
 

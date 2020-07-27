@@ -19,9 +19,8 @@ export interface UserState extends UserOperationsData {
 
 interface UserContextData {
   users: UserState[];
-  clearUsers(): void;
+  setSearchUsers(searchUser: string): void;
   getUsers(): Promise<void>;
-  getUsersByName(nome: string): Promise<void>;
   insertUser(user: UserOperationsData): Promise<void>;
   updateUser(id: number, user: UserOperationsData): Promise<void>;
   removeUser(id: number): Promise<void>;
@@ -31,17 +30,20 @@ const UserContext = createContext<UserContextData>({} as UserContextData);
 
 const UserProvider: React.FC = ({ children }) => {
   const [users, setUsers] = useState<UserState[]>([]);
+  const [search, setSearch] = useState('');
 
   const { token } = useAuth();
   const { addToast } = useToast();
 
-  const clearUsers = useCallback(() => {
-    setUsers([]);
+  const setSearchUsers = useCallback(searchUser => {
+    setSearch(searchUser);
   }, []);
 
   const getUsers = useCallback(async () => {
     try {
-      const response = await api.get('users', {
+      const query = search ? `users/${search}` : 'users';
+
+      const response = await api.get(query, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -57,11 +59,7 @@ const UserProvider: React.FC = ({ children }) => {
         description: 'Ocorreu um erro na listagem dos usuários.',
       });
     }
-  }, [addToast, token]);
-
-  const getUsersByName = useCallback(async (nome: string) => {
-    console.log('Working...');
-  }, []);
+  }, [addToast, search, token]);
 
   const insertUser = useCallback(
     async (user: UserOperationsData) => {
@@ -145,9 +143,8 @@ const UserProvider: React.FC = ({ children }) => {
     <UserContext.Provider
       value={{
         users,
-        clearUsers,
+        setSearchUsers,
         getUsers,
-        getUsersByName,
         insertUser,
         removeUser,
         updateUser,

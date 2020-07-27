@@ -1,4 +1,6 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { Form } from '@unform/web';
+import { FormHandles } from '@unform/core';
 
 import { useUser, UserState } from '../../../hooks/modules/user';
 
@@ -6,6 +8,7 @@ import { Container, DataSection } from './styles';
 
 import Header from '../../../components/Header';
 import Menu from '../../../components/Menu';
+import Input from '../../../components/Input';
 import Table from '../../../components/Table';
 import LoadingPartial from '../../../components/Loading/LoadingPartial';
 
@@ -37,6 +40,8 @@ interface UserOperationsPopupProps {
 }
 
 const ListingData: React.FC = () => {
+  const formRef = useRef<FormHandles>(null);
+
   const [userOperationsPopupActive, setUserOperationsPopupActive] = useState(
     false,
   );
@@ -46,7 +51,7 @@ const ListingData: React.FC = () => {
 
   const [loadingPartial, setLoadingPartial] = useState(false);
 
-  const { users, getUsers } = useUser();
+  const { users, getUsers, setSearchUsers } = useUser();
 
   const handleGetUsers = useCallback(async () => {
     setLoadingPartial(true);
@@ -55,6 +60,16 @@ const ListingData: React.FC = () => {
       setLoadingPartial(false);
     });
   }, [getUsers]);
+
+  const handleSearchUsers = useCallback(
+    (data: { searchUser: string }) => {
+      setSearchUsers(data.searchUser);
+      if (!data.searchUser) {
+        handleGetUsers();
+      }
+    },
+    [handleGetUsers, setSearchUsers],
+  );
 
   useEffect(() => {
     handleGetUsers();
@@ -72,17 +87,21 @@ const ListingData: React.FC = () => {
         Pesquisar
         {` ${pluralName}`}
       </strong>
+
       <div>
-        <input
-          type="text"
-          placeholder={
-            singularName.charAt(0).toUpperCase() +
-            singularName.slice(1).concat('...')
-          }
-        />
-        <button type="button">
-          <img src={iconSearch} alt="Search" />
-        </button>
+        <Form ref={formRef} onSubmit={handleSearchUsers}>
+          <Input
+            name="searchUser"
+            type="text"
+            placeholder={
+              singularName.charAt(0).toUpperCase() +
+              singularName.slice(1).concat('...')
+            }
+          />
+          <button type="submit">
+            <img src={iconSearch} alt="Search" />
+          </button>
+        </Form>
       </div>
 
       <section>
@@ -97,6 +116,7 @@ const ListingData: React.FC = () => {
             setUserOperationsPopup({
               operation: 'criar',
             });
+            setSearchUsers('');
           }}
         >
           +
