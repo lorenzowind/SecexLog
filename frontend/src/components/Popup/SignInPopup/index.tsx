@@ -68,6 +68,8 @@ const SignInPopup: React.FC<Props> = ({
 
         history.push('/dashboard');
       } catch (err) {
+        setLoading(false);
+
         if (err instanceof Yup.ValidationError) {
           setDataError(true);
 

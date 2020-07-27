@@ -21,6 +21,7 @@ interface UserContextData {
   users: UserState[];
   clearUsers(): void;
   getUsers(): Promise<void>;
+  getUsersByName(nome: string): Promise<void>;
   insertUser(user: UserCreatingAndUpdatingData): Promise<void>;
   updateUser(id: string, user: UserCreatingAndUpdatingData): Promise<void>;
   removeUser(id: string): Promise<void>;
@@ -39,6 +40,26 @@ const UserProvider: React.FC = ({ children }) => {
   }, []);
 
   const getUsers = useCallback(async () => {
+    try {
+      const response = await api.get('users', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response) {
+        setUsers(response.data);
+      }
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: 'Listing error',
+        description: 'An error occurred to get the users.',
+      });
+    }
+  }, [addToast, token]);
+
+  const getUsersByName = useCallback(async (nome: string) => {
     console.log('Working...');
   }, []);
 
@@ -63,6 +84,7 @@ const UserProvider: React.FC = ({ children }) => {
         users,
         clearUsers,
         getUsers,
+        getUsersByName,
         insertUser,
         removeUser,
         updateUser,
