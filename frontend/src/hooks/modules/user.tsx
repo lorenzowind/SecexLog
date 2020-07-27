@@ -51,7 +51,7 @@ const UserProvider: React.FC = ({ children }) => {
 
       if (response) {
         setUsers(response.data);
-        console.log(search, response.data.length);
+
         if (search && response.data.length === 0) {
           addToast({
             type: 'info',

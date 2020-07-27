@@ -62,12 +62,12 @@ const ListingData: React.FC = () => {
   }, [getUsers]);
 
   const handleSearchUsers = useCallback(
-    (data: { searchUser: string }) => {
+    (data: { searchData: string }) => {
       setLoadingPartial(true);
-      if (!data.searchUser) {
+      if (!data.searchData) {
         setSearchUsers('');
       } else {
-        setSearchUsers(data.searchUser);
+        setSearchUsers(data.searchData);
       }
       setLoadingPartial(false);
     },
@@ -92,9 +92,20 @@ const ListingData: React.FC = () => {
       </strong>
 
       <div>
-        <Form ref={formRef} onSubmit={handleSearchUsers}>
+        <Form
+          ref={formRef}
+          onSubmit={e => {
+            switch (singularName) {
+              case 'usuário':
+                handleSearchUsers(e);
+                break;
+              default:
+                break;
+            }
+          }}
+        >
           <Input
-            name="searchUser"
+            name="searchData"
             type="text"
             placeholder={
               singularName.charAt(0).toUpperCase() +
@@ -115,11 +126,17 @@ const ListingData: React.FC = () => {
         <button
           type="button"
           onClick={() => {
-            setUserOperationsPopupActive(true);
-            setUserOperationsPopup({
-              operation: 'criar',
-            });
-            setSearchUsers('');
+            switch (singularName) {
+              case 'usuário':
+                setUserOperationsPopupActive(true);
+                setUserOperationsPopup({
+                  operation: 'criar',
+                });
+                setSearchUsers('');
+                break;
+              default:
+                break;
+            }
           }}
         >
           +
@@ -168,6 +185,69 @@ const ListingData: React.FC = () => {
     </Table>
   );
 
+  const CitiesTable: React.FC = () => (
+    <Table>
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Nome</th>
+          <th>Nome</th>
+        </tr>
+      </thead>
+      <tbody>
+        {users.map(user => (
+          <tr key={user.id}>
+            <td>
+              {user.nome}
+              <button
+                type="button"
+                onClick={() => {
+                  setUserOperationsPopupActive(true);
+                  setUserOperationsPopup({
+                    operation: 'editar',
+                    user,
+                  });
+                }}
+              >
+                <img src={iconEdit} alt="Edit" />
+              </button>
+            </td>
+            <td>
+              {user.nome}
+              <button
+                type="button"
+                onClick={() => {
+                  setUserOperationsPopupActive(true);
+                  setUserOperationsPopup({
+                    operation: 'editar',
+                    user,
+                  });
+                }}
+              >
+                <img src={iconEdit} alt="Edit" />
+              </button>
+            </td>
+            <td>
+              {user.nome}
+              <button
+                type="button"
+                onClick={() => {
+                  setUserOperationsPopupActive(true);
+                  setUserOperationsPopup({
+                    operation: 'editar',
+                    user,
+                  });
+                }}
+              >
+                <img src={iconEdit} alt="Edit" />
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+
   return (
     <>
       {loadingPartial && <LoadingPartial />}
@@ -187,6 +267,11 @@ const ListingData: React.FC = () => {
       <Container>
         <DataSection>
           <ModuleHeader pluralName="usuários" singularName="usuário" />
+          <UsersTable />
+        </DataSection>
+
+        <DataSection>
+          <ModuleHeader pluralName="cidades" singularName="cidade" />
           <UsersTable />
         </DataSection>
       </Container>
