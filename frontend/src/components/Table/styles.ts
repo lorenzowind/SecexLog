@@ -34,7 +34,7 @@ export const Container = styled.table`
 
   td {
     font-size: 18px;
-    padding: 5px 10px;
+    padding: 0 10px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -42,7 +42,6 @@ export const Container = styled.table`
     min-width: 120px;
 
     &:last-child {
-      padding: 5px;
       max-width: 60px;
       min-width: 60px;
     }

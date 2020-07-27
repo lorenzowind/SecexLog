@@ -50,8 +50,9 @@ const ListingData: React.FC = () => {
 
   const handleGetUsers = useCallback(async () => {
     setLoadingPartial(true);
+
     await getUsers().then(() => {
-      setLoadingPartial(true);
+      setLoadingPartial(false);
     });
   }, [getUsers]);
 

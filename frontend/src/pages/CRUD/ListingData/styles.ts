@@ -17,7 +17,6 @@ export const Container = styled.div`
 
   animation: ${appearFromTop} 1s;
 
-  margin-left: -10%;
   padding-top: 100px;
 `;
 

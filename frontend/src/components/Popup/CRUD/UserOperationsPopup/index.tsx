@@ -5,8 +5,11 @@ import * as Yup from 'yup';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
-import { UserState, UserOperationsData } from '../../../../hooks/modules/user';
-import { useToast } from '../../../../hooks/toast';
+import {
+  UserState,
+  UserOperationsData,
+  useUser,
+} from '../../../../hooks/modules/user';
 
 import Input from '../../../Input';
 import Button from '../../../Button';
@@ -36,7 +39,14 @@ const UserOperationsPopup: React.FC<Props> = ({
 
   const [loadingPartial, setLoadingPartial] = useState(false);
 
-  const { addToast } = useToast();
+  const { insertUser, updateUser, getUsers } = useUser();
+
+  const handleRefreshUsers = useCallback(async () => {
+    await getUsers().then(() => {
+      setLoadingPartial(false);
+      setUserOperationsPopupActive(false);
+    });
+  }, [getUsers, setUserOperationsPopupActive]);
 
   const handleCreateOrUpdateUser = useCallback(
     async (data: UserOperationsData) => {
@@ -60,6 +70,24 @@ const UserOperationsPopup: React.FC<Props> = ({
         await schema.validate(data, {
           abortEarly: false,
         });
+
+        const userData: UserOperationsData = {
+          nome: data.nome,
+          login: data.login,
+          cargo: data.cargo,
+          email: data.email,
+          senha: data.senha,
+        };
+
+        if (user) {
+          await updateUser(user.id, userData).then(() => {
+            handleRefreshUsers();
+          });
+        } else {
+          await insertUser(userData).then(() => {
+            handleRefreshUsers();
+          });
+        }
       } catch (err) {
         setLoadingPartial(false);
 
@@ -67,20 +95,10 @@ const UserOperationsPopup: React.FC<Props> = ({
           const errors = getValidationErrors(err);
 
           formRef.current?.setErrors(errors);
-
-          return;
         }
-
-        addToast({
-          type: 'error',
-          title: user ? 'Erro na alteração' : 'Erro na criação',
-          description: `Ocorreu um erro na ${
-            user ? 'criação' : 'alteração'
-          } do usuário, cheque os campos.`,
-        });
       }
     },
-    [addToast, user],
+    [handleRefreshUsers, insertUser, updateUser, user],
   );
 
   const handleDeleteUser = useCallback(() => {

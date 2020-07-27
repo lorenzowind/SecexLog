@@ -23,8 +23,8 @@ interface UserContextData {
   getUsers(): Promise<void>;
   getUsersByName(nome: string): Promise<void>;
   insertUser(user: UserOperationsData): Promise<void>;
-  updateUser(id: string, user: UserOperationsData): Promise<void>;
-  removeUser(id: string): Promise<void>;
+  updateUser(id: number, user: UserOperationsData): Promise<void>;
+  removeUser(id: number): Promise<void>;
 }
 
 const UserContext = createContext<UserContextData>({} as UserContextData);
@@ -53,8 +53,8 @@ const UserProvider: React.FC = ({ children }) => {
     } catch (err) {
       addToast({
         type: 'error',
-        title: 'Listing error',
-        description: 'An error occurred to get the users.',
+        title: 'Erro na listagem',
+        description: 'Ocorreu um erro na listagem dos usuários.',
       });
     }
   }, [addToast, token]);
@@ -63,18 +63,59 @@ const UserProvider: React.FC = ({ children }) => {
     console.log('Working...');
   }, []);
 
-  const insertUser = useCallback(async (user: UserOperationsData) => {
-    console.log('Working...');
-  }, []);
+  const insertUser = useCallback(
+    async (user: UserOperationsData) => {
+      try {
+        const response = await api.post('users', user, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-  const updateUser = useCallback(
-    async (id: string, user: UserOperationsData) => {
-      console.log('Working...');
+        if (response) {
+          addToast({
+            type: 'success',
+            title: 'Usuário criado com sucesso!',
+          });
+        }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na criação',
+          description: 'Ocorreu um erro na criação do usuário.',
+        });
+      }
     },
-    [],
+    [addToast, token],
   );
 
-  const removeUser = useCallback(async (id: string) => {
+  const updateUser = useCallback(
+    async (id: number, user: UserOperationsData) => {
+      try {
+        const response = await api.put(`users/${id}`, user, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response) {
+          addToast({
+            type: 'success',
+            title: 'Usuário alterado com sucesso!',
+          });
+        }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na alteração',
+          description: 'Ocorreu um erro na alteração do usuário.',
+        });
+      }
+    },
+    [addToast, token],
+  );
+
+  const removeUser = useCallback(async (id: number) => {
     console.log('Working...');
   }, []);
 
