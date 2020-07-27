@@ -1,6 +1,7 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { Props } from './index';
 
-export const Container = styled.table`
+export const Container = styled.table<Props>`
   border-radius: 25px;
   border: solid 1px #707070;
   background-color: #ffffff;
@@ -29,13 +30,42 @@ export const Container = styled.table`
     text-align: left;
     font-size: 20px;
     padding: 0 10px 10px 10px;
-    max-width: 120px;
-    min-width: 120px;
 
-    &:last-child {
-      max-width: 60px;
-      min-width: 60px;
-    }
+    ${props => {
+      switch (props.module) {
+        case 'usuário':
+          return css`
+            max-width: 120px;
+            min-width: 120px;
+
+            &:last-child {
+              max-width: 60px;
+              min-width: 60px;
+            }
+          `;
+        case 'cidade':
+          return css`
+            max-width: 170px;
+            min-width: 170px;
+
+            &:nth-child(2) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+
+            &:nth-child(4) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+
+            &:nth-child(6) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+          `;
+        default:
+      }
+    }}
   }
 
   td {
@@ -44,13 +74,42 @@ export const Container = styled.table`
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
-    max-width: 120px;
-    min-width: 120px;
 
-    &:last-child {
-      max-width: 60px;
-      min-width: 60px;
-    }
+    ${props => {
+      switch (props.module) {
+        case 'usuário':
+          return css`
+            max-width: 120px;
+            min-width: 120px;
+
+            &:last-child {
+              max-width: 60px;
+              min-width: 60px;
+            }
+          `;
+        case 'cidade':
+          return css`
+            max-width: 170px;
+            min-width: 170px;
+
+            &:nth-child(2) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+
+            &:nth-child(4) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+
+            &:nth-child(6) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+          `;
+        default:
+      }
+    }}
   }
 
   button {

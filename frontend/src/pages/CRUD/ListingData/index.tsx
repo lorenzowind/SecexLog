@@ -3,6 +3,7 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
 import { useUser, UserState } from '../../../hooks/modules/user';
+import { useCity, CityState } from '../../../hooks/modules/city';
 
 import { Container, DataSection } from './styles';
 
@@ -32,11 +33,21 @@ interface ModuleHeaderProps {
     | 'provedor'
     | 'modal'
     | 'trajeto';
+  name: 'User' | 'City' | 'Holiday' | 'Provider' | 'Modal' | 'Path';
 }
 
 interface UserOperationsPopupProps {
   operation: 'criar' | 'editar';
   user?: UserState;
+}
+
+interface SearchData {
+  searchUser?: string;
+  searchCity?: string;
+  searchHoliday?: string;
+  searchProvider?: string;
+  searchModal?: string;
+  searchPath?: string;
 }
 
 const ListingData: React.FC = () => {
@@ -52,6 +63,7 @@ const ListingData: React.FC = () => {
   const [loadingPartial, setLoadingPartial] = useState(false);
 
   const { users, getUsers, setSearchUsers } = useUser();
+  const { cities, getCities, setSearchCities } = useCity();
 
   const handleGetUsers = useCallback(async () => {
     setLoadingPartial(true);
@@ -61,26 +73,50 @@ const ListingData: React.FC = () => {
     });
   }, [getUsers]);
 
+  const handleGetCities = useCallback(async () => {
+    setLoadingPartial(true);
+
+    await getCities().then(() => {
+      setLoadingPartial(false);
+    });
+  }, [getCities]);
+
   const handleSearchUsers = useCallback(
-    (data: { searchData: string }) => {
+    (data: SearchData, module: ModuleHeaderProps) => {
       setLoadingPartial(true);
-      if (!data.searchData) {
-        setSearchUsers('');
-      } else {
-        setSearchUsers(data.searchData);
+
+      switch (module.singularName) {
+        case 'usuário':
+          if (!data.searchUser) {
+            setSearchUsers('');
+          } else {
+            setSearchUsers(data.searchUser);
+          }
+          break;
+        case 'cidade':
+          if (!data.searchCity) {
+            setSearchCities('');
+          } else {
+            setSearchCities(data.searchCity);
+          }
+          break;
+        default:
+          break;
       }
       setLoadingPartial(false);
     },
-    [setSearchUsers],
+    [setSearchCities, setSearchUsers],
   );
 
   useEffect(() => {
     handleGetUsers();
-  }, [handleGetUsers]);
+    handleGetCities();
+  }, [handleGetCities, handleGetUsers]);
 
   const ModuleHeader: React.FC<ModuleHeaderProps> = ({
     singularName,
     pluralName,
+    name,
   }) => (
     <>
       <h1>{pluralName.charAt(0).toUpperCase() + pluralName.slice(1)}</h1>
@@ -94,18 +130,13 @@ const ListingData: React.FC = () => {
       <div>
         <Form
           ref={formRef}
-          onSubmit={e => {
-            switch (singularName) {
-              case 'usuário':
-                handleSearchUsers(e);
-                break;
-              default:
-                break;
-            }
-          }}
+          onSubmit={
+            e => handleSearchUsers(e, { pluralName, singularName, name })
+            // eslint-disable-next-line react/jsx-curly-newline
+          }
         >
           <Input
-            name="searchData"
+            name={`search${name}`}
             type="text"
             placeholder={
               singularName.charAt(0).toUpperCase() +
@@ -146,7 +177,7 @@ const ListingData: React.FC = () => {
   );
 
   const UsersTable: React.FC = () => (
-    <Table>
+    <Table module="usuário">
       <thead>
         <tr>
           <th>Usuário</th>
@@ -186,64 +217,59 @@ const ListingData: React.FC = () => {
   );
 
   const CitiesTable: React.FC = () => (
-    <Table>
+    <Table module="cidade">
       <thead>
         <tr>
           <th>Nome</th>
+          <th />
           <th>Nome</th>
+          <th />
           <th>Nome</th>
+          <th />
         </tr>
       </thead>
       <tbody>
-        {users.map(user => (
-          <tr key={user.id}>
-            <td>
-              {user.nome}
-              <button
-                type="button"
-                onClick={() => {
-                  setUserOperationsPopupActive(true);
-                  setUserOperationsPopup({
-                    operation: 'editar',
-                    user,
-                  });
-                }}
-              >
-                <img src={iconEdit} alt="Edit" />
-              </button>
-            </td>
-            <td>
-              {user.nome}
-              <button
-                type="button"
-                onClick={() => {
-                  setUserOperationsPopupActive(true);
-                  setUserOperationsPopup({
-                    operation: 'editar',
-                    user,
-                  });
-                }}
-              >
-                <img src={iconEdit} alt="Edit" />
-              </button>
-            </td>
-            <td>
-              {user.nome}
-              <button
-                type="button"
-                onClick={() => {
-                  setUserOperationsPopupActive(true);
-                  setUserOperationsPopup({
-                    operation: 'editar',
-                    user,
-                  });
-                }}
-              >
-                <img src={iconEdit} alt="Edit" />
-              </button>
-            </td>
-          </tr>
-        ))}
+        {cities.map((_city, index, array) => {
+          let current = index;
+
+          if (current !== 0) {
+            current += 2;
+          }
+          return (
+            <tr key={`${index}-${index + 1}-${index + 2}`}>
+              {array[current] && (
+                <>
+                  <td>{array[current].nome}</td>
+                  <td>
+                    <button type="button" onClick={() => {}}>
+                      <img src={iconEdit} alt="Edit" />
+                    </button>
+                  </td>
+                </>
+              )}
+              {array[current + 1] && (
+                <>
+                  <td>{array[current + 1].nome}</td>
+                  <td>
+                    <button type="button" onClick={() => {}}>
+                      <img src={iconEdit} alt="Edit" />
+                    </button>
+                  </td>
+                </>
+              )}
+              {array[current + 2] && (
+                <>
+                  <td>{array[current + 2].nome}</td>
+                  <td>
+                    <button type="button" onClick={() => {}}>
+                      <img src={iconEdit} alt="Edit" />
+                    </button>
+                  </td>
+                </>
+              )}
+            </tr>
+          );
+        })}
       </tbody>
     </Table>
   );
@@ -266,13 +292,21 @@ const ListingData: React.FC = () => {
 
       <Container>
         <DataSection>
-          <ModuleHeader pluralName="usuários" singularName="usuário" />
+          <ModuleHeader
+            pluralName="usuários"
+            singularName="usuário"
+            name="User"
+          />
           <UsersTable />
         </DataSection>
 
         <DataSection>
-          <ModuleHeader pluralName="cidades" singularName="cidade" />
-          <UsersTable />
+          <ModuleHeader
+            pluralName="cidades"
+            singularName="cidade"
+            name="City"
+          />
+          <CitiesTable />
         </DataSection>
       </Container>
     </>
