@@ -29,7 +29,7 @@ export const Container = styled.table<Props>`
   th {
     text-align: left;
     font-size: 20px;
-    padding: 0 10px 10px 10px;
+    padding: 0 10px 5px 10px;
 
     ${props => {
       switch (props.module) {

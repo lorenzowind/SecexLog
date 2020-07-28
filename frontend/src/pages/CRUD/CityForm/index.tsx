@@ -16,7 +16,7 @@ import Input from '../../../components/Input';
 import Textarea from '../../../components/Textarea';
 import Button from '../../../components/Button';
 import SwitchInput from '../../../components/SwitchInput';
-import DateRangeInput from '../../../components/DateRangeInput';
+import DateRangeInput, { RangeState } from '../../../components/DateRangeInput';
 import MultiSelect, { Option } from '../../../components/MultiSelect';
 import LoadingPartial from '../../../components/Loading/LoadingPartial';
 import LoadingPage from '../../../components/Loading/LoadingPage';
@@ -32,11 +32,11 @@ const CityForm: React.FC = () => {
   const [isBaseCity, setIsBaseCity] = useState(false);
   const [isRelatedCity, setIsRelatedCity] = useState(false);
   const [isInterdicted, setIsInterdicted] = useState(false);
-
-  const [daysFloods, setDayFloods] = useState<Date[]>([]);
+  const [rangeFlood, setRangeFlood] = useState<RangeState>({} as RangeState);
   const [selectedRelatedCities, setSelectedRelatedCities] = useState<Option[]>(
     [],
   );
+
   const [citiesSelect, setCitiesSelect] = useState<Option[]>([]);
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -95,10 +95,16 @@ const CityForm: React.FC = () => {
           latitute: data.latitute,
           longitude: data.longitude,
           obsCidade: data.obsCidade,
+          initDataCheia: rangeFlood.from
+            ? rangeFlood.from.toLocaleDateString('pt-BR')
+            : '',
+          endDataCheia: rangeFlood.to
+            ? rangeFlood.to.toLocaleDateString('pt-BR')
+            : '',
           relations: selectedRelatedCities
             .map(relatedCity => relatedCity.value)
             .join(', '),
-          obsInterdicao: data.obsInterdicao,
+          obsInterdicao: isInterdicted ? data.obsInterdicao : '',
         };
 
         setLoadingPage(true);
@@ -118,7 +124,15 @@ const CityForm: React.FC = () => {
         }
       }
     },
-    [history, insertCity, isBaseCity, isRelatedCity, selectedRelatedCities],
+    [
+      history,
+      insertCity,
+      isBaseCity,
+      isInterdicted,
+      isRelatedCity,
+      rangeFlood,
+      selectedRelatedCities,
+    ],
   );
 
   return (
@@ -162,6 +176,7 @@ const CityForm: React.FC = () => {
               <nav>
                 <strong>Adicionar cidades relacionadas</strong>
                 <MultiSelect
+                  defaultValue="Selecione"
                   options={citiesSelect}
                   setSelectedOptions={setSelectedRelatedCities}
                 />
@@ -170,7 +185,7 @@ const CityForm: React.FC = () => {
               <div>
                 <nav>
                   <strong>Latitude</strong>
-                  <Input name="latitude" type="number" step="any" />
+                  <Input name="latitute" type="number" step="any" />
                 </nav>
                 <nav>
                   <strong>Longitude</strong>
@@ -180,8 +195,8 @@ const CityForm: React.FC = () => {
 
               <strong>Adicionar períodos de cheias de rios</strong>
               <DateRangeInput
-                selectedDays={daysFloods}
-                setSelectDays={setDayFloods}
+                rangeDays={rangeFlood}
+                setRangeDays={setRangeFlood}
               />
 
               <div>

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import DayPicker, { DateUtils } from 'react-day-picker';
+import DayPicker, { DateUtils, RangeModifier } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
 import { Container, Content } from './styles';
@@ -10,33 +10,39 @@ import {
   WEEKDAYS_SHORT,
 } from '../../utils/dayPickerConfig';
 
+export type RangeState = RangeModifier;
+
 interface Props {
-  selectedDays: Date[];
-  setSelectDays: React.Dispatch<React.SetStateAction<Date[]>>;
+  rangeDays: RangeState;
+  setRangeDays: React.Dispatch<React.SetStateAction<RangeState>>;
 }
 
-const DateRangeInput: React.FC<Props> = ({ selectedDays, setSelectDays }) => {
+const DateRangeInput: React.FC<Props> = ({ rangeDays, setRangeDays }) => {
+  const modifiers = {
+    state: rangeDays.from,
+    end: rangeDays.to,
+  };
+  const numberMonths = 2;
+
   const handleDayClick = useCallback(
-    (day, { selected }) => {
-      if (selected) {
-        const selectedIndex = selectedDays.findIndex(selectedDay =>
-          DateUtils.isSameDay(selectedDay, day),
-        );
-        setSelectDays(state =>
-          state.filter((_day, index) => index !== selectedIndex),
-        );
-      } else {
-        setSelectDays([...selectedDays, day]);
-      }
+    day => {
+      const range = DateUtils.addDayToRange(day, rangeDays);
+      setRangeDays(range);
     },
-    [selectedDays, setSelectDays],
+    [rangeDays, setRangeDays],
   );
 
   return (
     <Container>
       <Content>
         <DayPicker
-          selectedDays={selectedDays}
+          className="Selectable"
+          numberOfMonths={numberMonths}
+          selectedDays={[
+            rangeDays.from,
+            { from: rangeDays.from, to: rangeDays.to },
+          ]}
+          modifiers={modifiers}
           onDayClick={handleDayClick}
           months={MONTHS}
           weekdaysLong={WEEKDAYS_LONG}
