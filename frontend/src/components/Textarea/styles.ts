@@ -6,7 +6,6 @@ interface ContainerProps {
 }
 
 export const Container = styled.textarea<ContainerProps>`
-  background: transparent;
   color: #6c6c80;
   font-size: 18px;
   resize: none;

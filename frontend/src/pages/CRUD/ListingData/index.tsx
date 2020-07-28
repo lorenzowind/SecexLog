@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
@@ -52,6 +53,8 @@ interface SearchData {
 
 const ListingData: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+
+  const [goCityForm, setGoCityForm] = useState(false);
 
   const [userOperationsPopupActive, setUserOperationsPopupActive] = useState(
     false,
@@ -161,6 +164,9 @@ const ListingData: React.FC = () => {
                   operation: 'criar',
                 });
                 setSearchUsers('');
+                break;
+              case 'cidade':
+                setGoCityForm(true);
                 break;
               default:
                 break;
@@ -274,6 +280,8 @@ const ListingData: React.FC = () => {
   return (
     <>
       {loadingPartial && <LoadingPartial />}
+
+      {goCityForm && <Redirect push to="city-form" />}
 
       {userOperationsPopupActive && (
         <UserOperationsPopup
