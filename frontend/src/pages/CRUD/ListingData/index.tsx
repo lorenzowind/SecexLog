@@ -70,29 +70,13 @@ const ListingData: React.FC = () => {
   const { cities, getCities, setSearchCities } = useCity();
   const { holidays, getHolidays, setSearchHolidays } = useHoliday();
 
-  const handleGetUsers = useCallback(async () => {
+  const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getUsers().then(() => {
+    await Promise.all([getUsers(), getCities(), getHolidays()]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getUsers]);
-
-  const handleGetCities = useCallback(async () => {
-    setLoadingPartial(true);
-
-    await getCities().then(() => {
-      setLoadingPartial(false);
-    });
-  }, [getCities]);
-
-  const handleGetHolidays = useCallback(async () => {
-    setLoadingPartial(true);
-
-    await getHolidays().then(() => {
-      setLoadingPartial(false);
-    });
-  }, [getHolidays]);
+  }, [getCities, getHolidays, getUsers]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -129,10 +113,8 @@ const ListingData: React.FC = () => {
   );
 
   useEffect(() => {
-    handleGetUsers();
-    handleGetCities();
-    handleGetHolidays();
-  }, [handleGetCities, handleGetHolidays, handleGetUsers]);
+    handleGetData();
+  }, [handleGetData]);
 
   const ModuleHeader: React.FC<ModuleHeaderProps> = ({
     singularName,
