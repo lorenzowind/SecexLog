@@ -81,7 +81,7 @@ const ListingData: React.FC = () => {
     });
   }, [getCities]);
 
-  const handleSearchUsers = useCallback(
+  const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
       setLoadingPartial(true);
 
@@ -130,10 +130,7 @@ const ListingData: React.FC = () => {
       <div>
         <Form
           ref={formRef}
-          onSubmit={
-            e => handleSearchUsers(e, { pluralName, singularName, name })
-            // eslint-disable-next-line react/jsx-curly-newline
-          }
+          onSubmit={e => handleSearch(e, { pluralName, singularName, name })}
         >
           <Input
             name={`search${name}`}
@@ -233,7 +230,7 @@ const ListingData: React.FC = () => {
           let current = index;
 
           if (current !== 0) {
-            current += 2;
+            current += 2 * current;
           }
           return (
             <tr key={`${index}-${index + 1}-${index + 2}`}>

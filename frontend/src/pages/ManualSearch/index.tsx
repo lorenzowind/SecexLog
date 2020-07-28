@@ -117,6 +117,7 @@ const ManualSearch: React.FC = () => {
   return (
     <>
       {loadingPartial && <LoadingPartial />}
+
       <Container>
         <Header isAuthenticated={false} />
 

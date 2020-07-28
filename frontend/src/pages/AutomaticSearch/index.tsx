@@ -4,7 +4,7 @@ import { FiArrowLeft } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
-import api from '../../services/api';
+import { useCity } from '../../hooks/modules/city';
 
 import {
   Container,
@@ -19,6 +19,7 @@ import Header from '../../components/Header';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
 import DateInput from '../../components/DateInput';
+import LoadingPartial from '../../components/Loading/LoadingPartial';
 
 import logoSecex from '../../assets/logo-secex.png';
 import progressBar from '../../assets/progressBar.png';
@@ -34,7 +35,7 @@ interface PathData {
 const AutomaticSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const [cities, setCities] = useState<String[]>([]);
+  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [initialDate, setInitialDate] = useState<Date>(new Date());
   const [finalDate, setFinalDate] = useState<Date>(new Date());
   const [pathsData, setPathsData] = useState<PathData[]>([
@@ -43,17 +44,35 @@ const AutomaticSearch: React.FC = () => {
       cityBack: '',
     },
   ]);
+  const [loadingPartial, setLoadingPartial] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Get cities from API to load the select component
+  const { cities, getCities } = useCity();
+
+  const handleGetCities = useCallback(async () => {
+    setLoadingPartial(true);
+
+    await getCities().then(() => {
+      setLoadingPartial(false);
+    });
+  }, [getCities]);
+
   useEffect(() => {
-    async function loadCities() {
-      const response = await api.get('cities');
+    setCitiesSelect(
+      cities.map(city =>
+        city.nome.length > 25
+          ? city.nome.substring(0, 25).concat('...')
+          : city.nome,
+      ),
+    );
+  }, [cities]);
 
-      setCities(response.data);
+  useEffect(() => {
+    if (!isLoaded) {
+      handleGetCities();
+      setIsLoaded(true);
     }
-
-    loadCities();
-  }, []);
+  }, [handleGetCities, isLoaded]);
 
   const handleDecreasePathNumber = () => {
     if (pathsData.length > 1) {
@@ -76,94 +95,101 @@ const AutomaticSearch: React.FC = () => {
   }, []);
 
   return (
-    <Container>
-      <Header isAuthenticated={false} />
+    <>
+      {loadingPartial && <LoadingPartial />}
 
-      <Content>
-        <img src={logoSecex} alt="SecexLog" />
+      <Container>
+        <Header isAuthenticated={false} />
 
-        <img src={progressBar} alt="ProgressBar" />
+        <Content>
+          <img src={logoSecex} alt="SecexLog" />
 
-        <Form ref={formRef} onSubmit={handleSearch}>
-          <InputsContainer>
-            <aside>
-              <Select
-                defaultValue="Selecione a cidade de ida"
-                icon={iconGo}
-                name="ida"
-              >
-                <option value="Selecione a cidade de ida" disabled>
-                  Selecione a cidade de ida
-                </option>
-                {cities.map((city, index) => (
-                  <option key={`go-${String(index)}`} value={String(city)}>
-                    {city}
-                  </option>
-                ))}
-              </Select>
+          <img src={progressBar} alt="ProgressBar" />
 
-              {pathsData.map(path => (
+          <Form ref={formRef} onSubmit={handleSearch}>
+            <InputsContainer>
+              <aside>
                 <Select
-                  defaultValue="Selecione a cidade para auditoria"
-                  icon={iconBack}
-                  key={`path-${String(path.index)}`}
-                  name={`volta-${path.index}`}
+                  defaultValue="Selecione a cidade de ida"
+                  icon={iconGo}
+                  name="ida"
                 >
-                  <option value="Selecione a cidade para auditoria" disabled>
-                    Selecione a cidade para auditoria
+                  <option value="Selecione a cidade de ida" disabled>
+                    Selecione a cidade de ida
                   </option>
-                  {cities.map((city, index) => (
-                    <option key={`back-${String(index)}`} value={String(city)}>
+                  {citiesSelect.map((city, index) => (
+                    <option key={`go-${String(index)}`} value={String(city)}>
                       {city}
                     </option>
                   ))}
                 </Select>
-              ))}
-            </aside>
 
-            <section>
-              <CalendarInput>
-                <DateInput date={initialDate} setDate={setInitialDate} />
-                <img src={iconCalendar} alt="Icon" />
-              </CalendarInput>
+                {pathsData.map(path => (
+                  <Select
+                    defaultValue="Selecione a cidade para auditoria"
+                    icon={iconBack}
+                    key={`path-${String(path.index)}`}
+                    name={`volta-${path.index}`}
+                  >
+                    <option value="Selecione a cidade para auditoria" disabled>
+                      Selecione a cidade para auditoria
+                    </option>
+                    {citiesSelect.map((city, index) => (
+                      <option
+                        key={`back-${String(index)}`}
+                        value={String(city)}
+                      >
+                        {city}
+                      </option>
+                    ))}
+                  </Select>
+                ))}
+              </aside>
 
-              <CalendarInput>
-                <DateInput date={finalDate} setDate={setFinalDate} />
-                <img src={iconCalendar} alt="Icon" />
-              </CalendarInput>
-            </section>
-          </InputsContainer>
+              <section>
+                <CalendarInput>
+                  <DateInput date={initialDate} setDate={setInitialDate} />
+                  <img src={iconCalendar} alt="Icon" />
+                </CalendarInput>
 
-          <OptionsContainer>
-            <ul>
-              {pathsData.length > 1 && (
+                <CalendarInput>
+                  <DateInput date={finalDate} setDate={setFinalDate} />
+                  <img src={iconCalendar} alt="Icon" />
+                </CalendarInput>
+              </section>
+            </InputsContainer>
+
+            <OptionsContainer>
+              <ul>
+                {pathsData.length > 1 && (
+                  <li>
+                    <button type="button" onClick={handleDecreasePathNumber}>
+                      <b>-</b>
+                      Retirar cidade
+                    </button>
+                  </li>
+                )}
                 <li>
-                  <button type="button" onClick={handleDecreasePathNumber}>
-                    <b>-</b>
-                    Retirar cidade
+                  <button type="button" onClick={handleIncreasePathNumber}>
+                    <b>+</b>
+                    Mais cidades para auditar
                   </button>
                 </li>
-              )}
-              <li>
-                <button type="button" onClick={handleIncreasePathNumber}>
-                  <b>+</b>
-                  Mais cidades para auditar
-                </button>
-              </li>
-            </ul>
-          </OptionsContainer>
+              </ul>
+            </OptionsContainer>
 
-          <ButtonsContainer>
-            <Link to="/">
-              <FiArrowLeft size={24} />
-              Consulta Manual
-            </Link>
+            <ButtonsContainer>
+              <Link to="/">
+                <FiArrowLeft size={24} />
+                Consulta Manual
+              </Link>
 
-            <Button type="submit">Consultar</Button>
-          </ButtonsContainer>
-        </Form>
-      </Content>
-    </Container>
+              <Button type="submit">Consultar</Button>
+            </ButtonsContainer>
+          </Form>
+        </Content>
+      </Container>
+    </>
   );
 };
 
