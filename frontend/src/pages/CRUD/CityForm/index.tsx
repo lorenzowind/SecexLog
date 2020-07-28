@@ -1,4 +1,5 @@
 import React, { useRef, useCallback, useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
@@ -26,6 +27,8 @@ import iconBell from '../../../assets/icon-bell.png';
 const CityForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
+  const history = useHistory();
+
   const [isBaseCity, setIsBaseCity] = useState(false);
   const [isRelatedCity, setIsRelatedCity] = useState(false);
   const [isInterdicted, setIsInterdicted] = useState(false);
@@ -40,7 +43,7 @@ const CityForm: React.FC = () => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { cities, getCities } = useCity();
+  const { cities, getCities, insertCity } = useCity();
 
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
@@ -52,18 +55,16 @@ const CityForm: React.FC = () => {
 
   useEffect(() => {
     setCitiesSelect(
-      cities
-        .filter(city => city.cAuditada)
-        .map(city => {
-          const name =
-            city.nome.length > 20
-              ? city.nome.substring(0, 20).concat('...')
-              : city.nome;
-          return {
-            value: name,
-            label: name,
-          };
-        }),
+      cities.map(city => {
+        const name =
+          city.nome.length > 20
+            ? city.nome.substring(0, 20).concat('...')
+            : city.nome;
+        return {
+          value: name,
+          label: name,
+        };
+      }),
     );
   }, [cities]);
 
@@ -87,8 +88,26 @@ const CityForm: React.FC = () => {
           abortEarly: false,
         });
 
-        console.log(data);
-        console.log(selectedRelatedCities, daysFloods);
+        const cityData: CityOperationsData = {
+          cAuditada: isRelatedCity,
+          cBase: isBaseCity,
+          nome: data.nome,
+          latitute: data.latitute,
+          longitude: data.longitude,
+          obsCidade: data.obsCidade,
+          relations: selectedRelatedCities
+            .map(relatedCity => relatedCity.value)
+            .join(', '),
+          obsInterdicao: data.obsInterdicao,
+        };
+
+        setLoadingPage(true);
+
+        await insertCity(cityData).then(() => {
+          setLoadingPage(false);
+        });
+
+        history.push('/listing-data');
       } catch (err) {
         setLoadingPage(false);
 
@@ -99,7 +118,7 @@ const CityForm: React.FC = () => {
         }
       }
     },
-    [daysFloods, selectedRelatedCities],
+    [history, insertCity, isBaseCity, isRelatedCity, selectedRelatedCities],
   );
 
   return (
@@ -151,11 +170,11 @@ const CityForm: React.FC = () => {
               <div>
                 <nav>
                   <strong>Latitude</strong>
-                  <Input name="latitude" type="number" />
+                  <Input name="latitude" type="number" step="any" />
                 </nav>
                 <nav>
                   <strong>Longitude</strong>
-                  <Input name="longitude" type="number" />
+                  <Input name="longitude" type="number" step="any" />
                 </nav>
               </div>
 
@@ -175,7 +194,11 @@ const CityForm: React.FC = () => {
               </div>
 
               <strong>Observação</strong>
-              <Textarea name="observacao" />
+              {isInterdicted ? (
+                <Textarea name="obsInterdicao" />
+              ) : (
+                <Textarea name="obsInterdicao" disabled />
+              )}
 
               <aside>
                 <Button type="submit">Criar</Button>
