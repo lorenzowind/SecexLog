@@ -26,6 +26,13 @@ export const Container = styled.table<Props>`
     background: #555;
   }
 
+  ${props =>
+    props.module === 'feriado' &&
+    css`
+      display: flex;
+      flex-direction: row;
+    `}
+
   th {
     text-align: left;
     font-size: 20px;
@@ -59,6 +66,21 @@ export const Container = styled.table<Props>`
             }
 
             &:nth-child(6) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+          `;
+        case 'feriado':
+          return css`
+            max-width: 280px;
+            min-width: 280px;
+
+            &:nth-child(2) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+
+            &:nth-child(4) {
               max-width: 50px;
               min-width: 50px;
             }
@@ -103,6 +125,21 @@ export const Container = styled.table<Props>`
             }
 
             &:nth-child(6) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+          `;
+        case 'feriado':
+          return css`
+            max-width: 280px;
+            min-width: 280px;
+
+            &:nth-child(2) {
+              max-width: 50px;
+              min-width: 50px;
+            }
+
+            &:nth-child(4) {
               max-width: 50px;
               min-width: 50px;
             }

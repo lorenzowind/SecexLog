@@ -5,6 +5,7 @@ import { FormHandles } from '@unform/core';
 
 import { useUser, UserState } from '../../../hooks/modules/user';
 import { useCity, CityState } from '../../../hooks/modules/city';
+import { useHoliday, HolidayState } from '../../../hooks/modules/holiday';
 
 import { Container, DataSection } from './styles';
 
@@ -67,6 +68,7 @@ const ListingData: React.FC = () => {
 
   const { users, getUsers, setSearchUsers } = useUser();
   const { cities, getCities, setSearchCities } = useCity();
+  const { holidays, getHolidays, setSearchHolidays } = useHoliday();
 
   const handleGetUsers = useCallback(async () => {
     setLoadingPartial(true);
@@ -83,6 +85,14 @@ const ListingData: React.FC = () => {
       setLoadingPartial(false);
     });
   }, [getCities]);
+
+  const handleGetHolidays = useCallback(async () => {
+    setLoadingPartial(true);
+
+    await getHolidays().then(() => {
+      setLoadingPartial(false);
+    });
+  }, [getHolidays]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -103,18 +113,26 @@ const ListingData: React.FC = () => {
             setSearchCities(data.searchCity);
           }
           break;
+        case 'feriado':
+          if (!data.searchHoliday) {
+            setSearchHolidays('');
+          } else {
+            setSearchHolidays(data.searchHoliday);
+          }
+          break;
         default:
           break;
       }
       setLoadingPartial(false);
     },
-    [setSearchCities, setSearchUsers],
+    [setSearchCities, setSearchHolidays, setSearchUsers],
   );
 
   useEffect(() => {
     handleGetUsers();
     handleGetCities();
-  }, [handleGetCities, handleGetUsers]);
+    handleGetHolidays();
+  }, [handleGetCities, handleGetHolidays, handleGetUsers]);
 
   const ModuleHeader: React.FC<ModuleHeaderProps> = ({
     singularName,
@@ -277,6 +295,55 @@ const ListingData: React.FC = () => {
     </Table>
   );
 
+  const HolidaysTable: React.FC = () => (
+    <Table module="feriado">
+      <div>
+        <thead>
+          <tr>
+            <th>Nacionais</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {holidays
+            .filter(holiday => holiday.national)
+            .map(holidayNational => (
+              <tr key={holidayNational.id}>
+                <td>{holidayNational.nome}</td>
+                <td>
+                  <button type="button" onClick={() => {}}>
+                    <img src={iconEdit} alt="Edit" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </div>
+      <div>
+        <thead>
+          <tr>
+            <th>Específicos</th>
+            <th />
+          </tr>
+        </thead>
+        <tbody>
+          {holidays
+            .filter(holiday => !holiday.national)
+            .map(holidaySpecific => (
+              <tr key={holidaySpecific.id}>
+                <td>{holidaySpecific.nome}</td>
+                <td>
+                  <button type="button" onClick={() => {}}>
+                    <img src={iconEdit} alt="Edit" />
+                  </button>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </div>
+    </Table>
+  );
+
   return (
     <>
       {loadingPartial && <LoadingPartial />}
@@ -312,6 +379,15 @@ const ListingData: React.FC = () => {
             name="City"
           />
           <CitiesTable />
+        </DataSection>
+
+        <DataSection>
+          <ModuleHeader
+            pluralName="feriados"
+            singularName="feriado"
+            name="Holiday"
+          />
+          <HolidaysTable />
         </DataSection>
       </Container>
     </>
