@@ -29,6 +29,7 @@
       "prettier"
   ],
   "rules": {
+    "camelcase": "off",
     "no-unused-expressions": "off",
     "jsx-a11y/control-has-associated-label": "off",
     "consistent-return": "off",
