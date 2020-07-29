@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { ValidationError } from 'yup';
 
 interface Errors {

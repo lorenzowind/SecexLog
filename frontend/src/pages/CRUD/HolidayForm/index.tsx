@@ -26,7 +26,7 @@ import LoadingPage from '../../../components/Loading/LoadingPage';
 
 import iconCrud from '../../../assets/icon-crud-2.png';
 
-const CityForm: React.FC = () => {
+const HolidayForm: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const history = useHistory();
@@ -208,4 +208,4 @@ const CityForm: React.FC = () => {
   );
 };
 
-export default CityForm;
+export default HolidayForm;

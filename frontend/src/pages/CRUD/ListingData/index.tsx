@@ -70,6 +70,7 @@ const ListingData: React.FC = () => {
   // states to control going to forms ------------------------------------------
   const [goCityForm, setGoCityForm] = useState(false);
   const [goHolidayForm, setGoHolidayForm] = useState(false);
+  const [goModalForm, setGoModalForm] = useState(false);
   // ---------------------------------------------------------------------------
 
   // states to manage the popups -----------------------------------------------
@@ -212,6 +213,9 @@ const ListingData: React.FC = () => {
                 break;
               case 'feriado':
                 setGoHolidayForm(true);
+                break;
+              case 'modal':
+                setGoModalForm(true);
                 break;
               default:
                 break;
@@ -477,6 +481,7 @@ const ListingData: React.FC = () => {
 
       {goCityForm && <Redirect push to="city-form" />}
       {goHolidayForm && <Redirect push to="holiday-form" />}
+      {goModalForm && <Redirect push to="modal-form" />}
 
       {/* jsx conditions to call the popups -------------------------------- */}
       {userOperationsPopupActive && (
