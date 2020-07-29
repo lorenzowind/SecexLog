@@ -207,12 +207,15 @@ const CityForm: React.FC = () => {
                 <img src={iconBell} alt="Bell" />
               </div>
 
-              <strong>Observação</strong>
+              <strong>Observação da Interdição</strong>
               {isInterdicted ? (
                 <Textarea name="obsInterdicao" />
               ) : (
                 <Textarea name="obsInterdicao" disabled />
               )}
+
+              <strong>Observação da cidade</strong>
+              <Textarea name="obsCidade" />
 
               <aside>
                 <Button type="submit">Criar</Button>

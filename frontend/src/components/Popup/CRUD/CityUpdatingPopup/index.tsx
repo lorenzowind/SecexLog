@@ -45,10 +45,10 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const [selectedRelatedCities, setSelectedRelatedCities] = useState<Option[]>(
     () => {
       if (city.relations) {
-        city.relations.split(', ').map(relatedCity => {
+        return city.relations.split(',').map(relatedCity => {
           return {
-            value: relatedCity,
-            label: relatedCity,
+            value: relatedCity.trim(),
+            label: relatedCity.trim(),
           };
         });
       }
@@ -90,12 +90,14 @@ const CityUpdatingPopup: React.FC<Props> = ({
           cAuditada: isAuditatedCity,
           cBase: isBaseCity,
           nome: data.nome,
+          latitute: data.latitute,
+          longitude: data.longitude,
           relations: selectedRelatedCities
             .map(relatedCity => relatedCity.value)
             .join(', '),
           initDataCheia: isNewFlood ? data.initDataCheia : city.initDataCheia,
           endDataCheia: isNewFlood ? data.endDataCheia : city.endDataCheia,
-          obsInterdicao: !isInterdicted ? '' : city.obsInterdicao,
+          obsInterdicao: !isInterdicted ? '' : data.obsInterdicao,
         };
 
         await updateCity(city.id, cityData).then(() => {
@@ -186,6 +188,20 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   options={citiesSelect}
                 />
 
+                <strong>Latitude</strong>
+                <Input
+                  name="latitute"
+                  type="text"
+                  defaultValue={city.latitute}
+                />
+
+                <strong>Longitude</strong>
+                <Input
+                  name="longitude"
+                  type="text"
+                  defaultValue={city.longitude}
+                />
+
                 <strong>Cidade base</strong>
                 <SwitchInput
                   isChecked={isBaseCity}
@@ -202,11 +218,21 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   setIsChecked={setIsInterdicted}
                 />
 
+                {!isInterdicted ? (
+                  <Input name="obsInterdicao" type="text" disabled />
+                ) : (
+                  <Input
+                    name="obsInterdicao"
+                    type="text"
+                    defaultValue={city.obsInterdicao}
+                  />
+                )}
+
                 <strong>Feriados</strong>
                 {holidays
                   .filter(holiday => holiday.city_id === city.id)
                   .map(cityHoliday => (
-                    <h2>
+                    <h2 key={cityHoliday.nome}>
                       {cityHoliday.init.substring(0, 5).concat(' - ')}
                       {cityHoliday.nome}
                     </h2>
