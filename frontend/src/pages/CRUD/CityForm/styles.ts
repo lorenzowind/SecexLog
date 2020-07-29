@@ -24,6 +24,7 @@ export const Container = styled.div`
 export const Content = styled.div`
   display: flex;
   flex-direction: column;
+  width: 700px;
 
   > img {
     position: absolute;
@@ -116,6 +117,13 @@ export const InputsContainer = styled.div`
             }
           }
         }
+      }
+    }
+
+    > section {
+      > div {
+        justify-content: center;
+        padding: 20px 0 30px 0;
       }
     }
 

@@ -7,7 +7,7 @@ import { useToast } from '../toast';
 
 export interface HolidayOperationsData {
   nome: string;
-  city_id: number;
+  cidade: string;
   init: string;
   end: string;
   national: boolean;

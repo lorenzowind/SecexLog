@@ -56,6 +56,7 @@ const ListingData: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const [goCityForm, setGoCityForm] = useState(false);
+  const [goHolidayForm, setGoHolidayForm] = useState(false);
 
   const [userOperationsPopupActive, setUserOperationsPopupActive] = useState(
     false,
@@ -167,6 +168,9 @@ const ListingData: React.FC = () => {
                 break;
               case 'cidade':
                 setGoCityForm(true);
+                break;
+              case 'feriado':
+                setGoHolidayForm(true);
                 break;
               default:
                 break;
@@ -331,6 +335,7 @@ const ListingData: React.FC = () => {
       {loadingPartial && <LoadingPartial />}
 
       {goCityForm && <Redirect push to="city-form" />}
+      {goHolidayForm && <Redirect push to="holiday-form" />}
 
       {userOperationsPopupActive && (
         <UserOperationsPopup

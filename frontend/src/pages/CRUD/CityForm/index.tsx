@@ -56,13 +56,9 @@ const CityForm: React.FC = () => {
   useEffect(() => {
     setCitiesSelect(
       cities.map(city => {
-        const name =
-          city.nome.length > 20
-            ? city.nome.substring(0, 20).concat('...')
-            : city.nome;
         return {
-          value: name,
-          label: name,
+          value: city.nome,
+          label: city.nome,
         };
       }),
     );
@@ -81,7 +77,7 @@ const CityForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome de usuário obrigatório'),
+          nome: Yup.string().required('Nome da cidade obrigatório'),
         });
 
         await schema.validate(data, {
@@ -193,11 +189,13 @@ const CityForm: React.FC = () => {
                 </nav>
               </div>
 
-              <strong>Adicionar períodos de cheias de rios</strong>
-              <DateRangeInput
-                rangeDays={rangeFlood}
-                setRangeDays={setRangeFlood}
-              />
+              <section>
+                <strong>Adicionar períodos de cheias de rios</strong>
+                <DateRangeInput
+                  rangeDays={rangeFlood}
+                  setRangeDays={setRangeFlood}
+                />
+              </section>
 
               <div>
                 <strong>Interdição de trecho</strong>
