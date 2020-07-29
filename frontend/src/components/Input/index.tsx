@@ -7,9 +7,16 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   icon?: string;
   isDisabled?: boolean;
+  onChangeValue?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Input: React.FC<InputProps> = ({ name, icon, isDisabled, ...rest }) => {
+const Input: React.FC<InputProps> = ({
+  name,
+  icon,
+  isDisabled,
+  onChangeValue,
+  ...rest
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -36,6 +43,11 @@ const Input: React.FC<InputProps> = ({ name, icon, isDisabled, ...rest }) => {
         onBlur={() => setIsFocused(false)}
         defaultValue={defaultValue}
         ref={inputRef}
+        onChange={e => {
+          if (onChangeValue) {
+            onChangeValue(e.target.value);
+          }
+        }}
         {...rest}
       />
     </Container>

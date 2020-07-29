@@ -39,6 +39,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const formRef = useRef<FormHandles>(null);
 
   const [isNewFlood, setIsNewFlood] = useState(!city.initDataCheia);
+  const [positionateFlood, setPositionateFlood] = useState(false);
+  const [initFlood, setInitFlood] = useState('');
+  const [endFlood, setEndFlood] = useState('');
   const [isBaseCity, setIsBaseCity] = useState(city.cBase);
   const [isAuditatedCity, setIsAuditatedCity] = useState(city.cAuditada);
   const [isInterdicted, setIsInterdicted] = useState(!!city.obsInterdicao);
@@ -86,6 +89,17 @@ const CityUpdatingPopup: React.FC<Props> = ({
           abortEarly: false,
         });
 
+        let auxInitFlood = initFlood;
+        let auxEndFlood = endFlood;
+
+        if (isNewFlood && !positionateFlood) {
+          auxInitFlood = '';
+          auxEndFlood = '';
+        } else if (!isNewFlood) {
+          auxInitFlood = city.initDataCheia ? city.initDataCheia : '';
+          auxEndFlood = city.endDataCheia ? city.endDataCheia : '';
+        }
+
         const cityData: CityOperationsData = {
           cAuditada: isAuditatedCity,
           cBase: isBaseCity,
@@ -93,10 +107,12 @@ const CityUpdatingPopup: React.FC<Props> = ({
           latitute: data.latitute,
           longitude: data.longitude,
           relations: selectedRelatedCities
-            .map(relatedCity => relatedCity.value)
-            .join(', '),
-          initDataCheia: isNewFlood ? data.initDataCheia : city.initDataCheia,
-          endDataCheia: isNewFlood ? data.endDataCheia : city.endDataCheia,
+            ? selectedRelatedCities
+                .map(relatedCity => relatedCity.value)
+                .join(', ')
+            : '',
+          initDataCheia: auxInitFlood,
+          endDataCheia: auxEndFlood,
           obsInterdicao: !isInterdicted ? '' : data.obsInterdicao,
         };
 
@@ -115,11 +131,14 @@ const CityUpdatingPopup: React.FC<Props> = ({
     },
     [
       city,
+      endFlood,
       handleRefreshCities,
+      initFlood,
       isAuditatedCity,
       isBaseCity,
       isInterdicted,
       isNewFlood,
+      positionateFlood,
       selectedRelatedCities,
       updateCity,
     ],
@@ -269,19 +288,48 @@ const CityUpdatingPopup: React.FC<Props> = ({
 
                 <strong>Período de cheia</strong>
                 {isNewFlood ? (
-                  <aside>
-                    <Input
-                      name="initDataCheia"
-                      type="text"
-                      placeholder="Início"
-                    />
-                    <img src={IconGo} alt="Go" />
-                    <Input name="endDataCheia" type="text" placeholder="Fim" />
+                  <>
+                    <aside>
+                      <Input
+                        name="initDataCheia"
+                        type="text"
+                        onChangeValue={setInitFlood}
+                        placeholder="Início"
+                      />
+                      <img src={IconGo} alt="Go" />
+                      <Input
+                        name="endDataCheia"
+                        type="text"
+                        onChangeValue={setEndFlood}
+                        placeholder="Fim"
+                      />
 
-                    <button type="button">
-                      <h3>+</h3>
-                    </button>
-                  </aside>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (initFlood && endFlood) {
+                            setPositionateFlood(true);
+                          }
+                        }}
+                      >
+                        <h3>+</h3>
+                      </button>
+                    </aside>
+                    {positionateFlood && (
+                      <nav>
+                        <button
+                          type="button"
+                          onClick={() => setPositionateFlood(false)}
+                        >
+                          <h4>X</h4>
+                        </button>
+                        <h2>
+                          {initFlood.substring(0, 5).concat(' até ')}
+                          {endFlood.substring(0, 5)}
+                        </h2>
+                      </nav>
+                    )}
+                  </>
                 ) : (
                   <>
                     <aside>
