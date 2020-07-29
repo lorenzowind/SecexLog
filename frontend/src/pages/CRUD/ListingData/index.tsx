@@ -17,6 +17,7 @@ import LoadingPartial from '../../../components/Loading/LoadingPartial';
 
 import UserOperationsPopup from '../../../components/Popup/CRUD/UserOperationsPopup';
 import CityUpdatingPopup from '../../../components/Popup/CRUD/CityUpdatingPopup';
+import HolidayUpdatingPopup from '../../../components/Popup/CRUD/HolidayUpdatingPopup';
 
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';
@@ -48,6 +49,11 @@ interface CityUpdatingPopupProps {
   city: CityState;
 }
 
+interface HolidayUpdatingPopupProps {
+  type: 'Nacional' | 'Específico';
+  holiday: HolidayState;
+}
+
 interface SearchData {
   searchUser?: string;
   searchCity?: string;
@@ -60,9 +66,12 @@ interface SearchData {
 const ListingData: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
+  // states to control going to forms ------------------------------------------
   const [goCityForm, setGoCityForm] = useState(false);
   const [goHolidayForm, setGoHolidayForm] = useState(false);
+  // ---------------------------------------------------------------------------
 
+  // states to manage the popups -----------------------------------------------
   const [userOperationsPopupActive, setUserOperationsPopupActive] = useState(
     false,
   );
@@ -73,12 +82,21 @@ const ListingData: React.FC = () => {
   const [cityUpdatingPopup, setCityUpdatingPopup] = useState<
     CityUpdatingPopupProps
   >({} as CityUpdatingPopupProps);
+  const [holidayUpdatingPopupActive, setHolidayUpdatingPopupActive] = useState(
+    false,
+  );
+  const [holidayUpdatingPopup, setHolidayUpdatingPopup] = useState<
+    HolidayUpdatingPopupProps
+  >({} as HolidayUpdatingPopupProps);
+  // ---------------------------------------------------------------------------
 
-  const [loadingPartial, setLoadingPartial] = useState(false);
-
+  // module hooks to make API operations ---------------------------------------
   const { users, getUsers, setSearchUsers } = useUser();
   const { cities, getCities, setSearchCities } = useCity();
   const { holidays, getHolidays, setSearchHolidays } = useHoliday();
+  // ---------------------------------------------------------------------------
+
+  const [loadingPartial, setLoadingPartial] = useState(false);
 
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
@@ -330,7 +348,16 @@ const ListingData: React.FC = () => {
               <tr key={holidayNational.id}>
                 <td>{holidayNational.nome}</td>
                 <td>
-                  <button type="button" onClick={() => {}}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setHolidayUpdatingPopupActive(true);
+                      setHolidayUpdatingPopup({
+                        type: 'Nacional',
+                        holiday: holidayNational,
+                      });
+                    }}
+                  >
                     <img src={iconEdit} alt="Edit" />
                   </button>
                 </td>
@@ -352,7 +379,16 @@ const ListingData: React.FC = () => {
               <tr key={holidaySpecific.id}>
                 <td>{holidaySpecific.nome}</td>
                 <td>
-                  <button type="button" onClick={() => {}}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setHolidayUpdatingPopupActive(true);
+                      setHolidayUpdatingPopup({
+                        type: 'Específico',
+                        holiday: holidaySpecific,
+                      });
+                    }}
+                  >
                     <img src={iconEdit} alt="Edit" />
                   </button>
                 </td>
@@ -370,6 +406,7 @@ const ListingData: React.FC = () => {
       {goCityForm && <Redirect push to="city-form" />}
       {goHolidayForm && <Redirect push to="holiday-form" />}
 
+      {/* jsx conditions to call the popups -------------------------------- */}
       {userOperationsPopupActive && (
         <UserOperationsPopup
           operation={userOperationsPopup.operation}
@@ -383,6 +420,14 @@ const ListingData: React.FC = () => {
           setCityUpdatingPopupActive={setCityUpdatingPopupActive}
         />
       )}
+      {holidayUpdatingPopupActive && (
+        <HolidayUpdatingPopup
+          type={holidayUpdatingPopup.type}
+          holiday={holidayUpdatingPopup.holiday}
+          setHolidayUpdatingPopupActive={setHolidayUpdatingPopupActive}
+        />
+      )}
+      {/* ------------------------------------------------------------------ */}
 
       <Header isAuthenticated />
 

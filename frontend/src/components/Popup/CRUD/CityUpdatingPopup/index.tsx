@@ -114,6 +114,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
           initDataCheia: auxInitFlood,
           endDataCheia: auxEndFlood,
           obsInterdicao: !isInterdicted ? '' : data.obsInterdicao,
+          obsCidade: data.obsCidade,
         };
 
         await updateCity(city.id, cityData).then(() => {
@@ -201,6 +202,23 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   <Input name="nome" type="text" defaultValue={city.nome} />
                 </div>
 
+                <section>
+                  <aside>
+                    <strong>Cidade base</strong>
+                    <SwitchInput
+                      isChecked={isBaseCity}
+                      setIsChecked={setIsBaseCity}
+                    />
+                  </aside>
+                  <aside>
+                    <strong>Cidade auditada</strong>
+                    <SwitchInput
+                      isChecked={isAuditatedCity}
+                      setIsChecked={setIsAuditatedCity}
+                    />
+                  </aside>
+                </section>
+
                 <div>
                   <strong>Cidades relacionadas</strong>
                   <MultiSelect
@@ -230,61 +248,6 @@ const CityUpdatingPopup: React.FC<Props> = ({
                     />
                   </nav>
                 </section>
-
-                <section>
-                  <aside>
-                    <strong>Cidade base</strong>
-                    <SwitchInput
-                      isChecked={isBaseCity}
-                      setIsChecked={setIsBaseCity}
-                    />
-                  </aside>
-                  <aside>
-                    <strong>Cidade auditada</strong>
-                    <SwitchInput
-                      isChecked={isAuditatedCity}
-                      setIsChecked={setIsAuditatedCity}
-                    />
-                  </aside>
-                </section>
-                <section>
-                  <aside>
-                    <strong>Cidade interditada</strong>
-                    <SwitchInput
-                      isChecked={isInterdicted}
-                      setIsChecked={setIsInterdicted}
-                    />
-                  </aside>
-                </section>
-                <div>
-                  {!isInterdicted ? (
-                    <Input
-                      name="obsInterdicao"
-                      type="text"
-                      disabled
-                      isDisabled
-                    />
-                  ) : (
-                    <Input
-                      name="obsInterdicao"
-                      type="text"
-                      defaultValue={city.obsInterdicao}
-                    />
-                  )}
-                </div>
-                {holidays.filter(holid => holid.city_id === city.id).length ? (
-                  <div>
-                    <strong>Feriados</strong>
-                    {holidays
-                      .filter(holiday => holiday.city_id === city.id)
-                      .map(cityHoliday => (
-                        <h2 key={cityHoliday.nome}>
-                          {cityHoliday.init.substring(0, 5).concat(' - ')}
-                          {cityHoliday.nome}
-                        </h2>
-                      ))}
-                  </div>
-                ) : null}
 
                 <strong>Período de cheia</strong>
                 {isNewFlood ? (
@@ -364,6 +327,57 @@ const CityUpdatingPopup: React.FC<Props> = ({
                     </nav>
                   </>
                 )}
+
+                <section>
+                  <aside>
+                    <strong>Cidade interditada</strong>
+                    <SwitchInput
+                      isChecked={isInterdicted}
+                      setIsChecked={setIsInterdicted}
+                    />
+                  </aside>
+                </section>
+                <div>
+                  {!isInterdicted ? (
+                    <Input
+                      name="obsInterdicao"
+                      type="text"
+                      disabled
+                      isDisabled
+                    />
+                  ) : (
+                    <Input
+                      name="obsInterdicao"
+                      type="text"
+                      defaultValue={city.obsInterdicao}
+                    />
+                  )}
+                </div>
+
+                <div>
+                  <strong>Observação da cidade</strong>
+                  <Input
+                    name="obsCidade"
+                    type="text"
+                    defaultValue={city.obsCidade}
+                  />
+                </div>
+
+                {holidays.filter(holid => holid.city_id === city.id).length ? (
+                  <div>
+                    <section>
+                      <strong>Feriados específicos</strong>
+                      {holidays
+                        .filter(holiday => holiday.city_id === city.id)
+                        .map(cityHoliday => (
+                          <h2 key={cityHoliday.nome}>
+                            {cityHoliday.init.substring(0, 5).concat(' - ')}
+                            {cityHoliday.nome}
+                          </h2>
+                        ))}
+                    </section>
+                  </div>
+                ) : null}
 
                 <section>
                   <button type="button" onClick={handleDeleteCity}>

@@ -23,19 +23,22 @@ module.exports = {
 
     try {
       existsOrError(holiday.nome, "O nome do feriado deve ser informado");
-      existsOrError(holiday.cidade, "O nome da cidade deve ser informado");
+      // existsOrError(holiday.cidade, "O nome da cidade deve ser informado");
       existsOrError(holiday.init, "O inicio do feriado deve ser informado");
       existsOrError(holiday.end, "O fim do feriado deve ser informado");
 
-      const city = await City.findOne({
-        where: {
-          nome: holiday.cidade
-        }
-      });
+      if (!holiday.national) {
+        const city = await City.findOne({
+          where: {
+            nome: holiday.cidade
+          }
+        });
 
-      existsOrError(city, "A cidade não existe");
-      delete holiday.cidade;
-      holiday.city_id = city.id;
+        existsOrError(city, "A cidade não existe");
+        
+        delete holiday.cidade;
+        holiday.city_id = city.id;
+      }
     } catch (msg) {
       return res.status(400).send(msg);
     }
@@ -100,19 +103,22 @@ module.exports = {
 
     try {
       existsOrError(holiday.nome, "O nome do feriado deve ser informado");
-      existsOrError(holiday.cidade, "O nome da cidade deve ser informado");
+      // existsOrError(holiday.cidade, "O nome da cidade deve ser informado");
       existsOrError(holiday.init, "O inicio do feriado deve ser informado");
       existsOrError(holiday.end, "O fim do feriado deve ser informado");
 
-      const city = await City.findOne({
-        where: {
-          nome: holiday.cidade
-        }
-      });
+      if (!holiday.national) {
+        const city = await City.findOne({
+          where: {
+            nome: holiday.cidade
+          }
+        });
 
-      existsOrError(city, "A cidade não existe");
-      delete holiday.cidade;
-      holiday.city_id = city.id;
+        existsOrError(city, "A cidade não existe");
+        
+        delete holiday.cidade;
+        holiday.city_id = city.id;
+      }
     } catch (msg) {
       return res.status(400).send(msg);
     }

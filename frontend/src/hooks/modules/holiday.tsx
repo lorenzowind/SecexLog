@@ -7,7 +7,7 @@ import { useToast } from '../toast';
 
 export interface HolidayOperationsData {
   nome: string;
-  cidade: string;
+  cidade?: string;
   city_id?: number;
   init: string;
   end: string;
@@ -100,7 +100,7 @@ const HolidayProvider: React.FC = ({ children }) => {
   const updateHoliday = useCallback(
     async (id: number, holiday: HolidayOperationsData) => {
       try {
-        const response = await api.put(`holiday/${id}`, holiday, {
+        const response = await api.put(`holidays/${id}`, holiday, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

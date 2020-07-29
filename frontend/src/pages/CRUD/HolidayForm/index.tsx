@@ -69,37 +69,44 @@ const CityForm: React.FC = () => {
       try {
         formRef.current?.setErrors({});
 
-        const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome de feriado obrigatório'),
-          cidade: Yup.mixed().test(
-            'match',
-            'Nome da cidade obrigatório',
-            () => {
-              return data.cidade !== 'Selecione cidade';
-            },
-          ),
-        });
+        let schema;
+
+        if (!isNational) {
+          schema = Yup.object().shape({
+            nome: Yup.string().required('Nome de feriado obrigatório'),
+            cidade: Yup.mixed().test(
+              'match',
+              'Nome da cidade obrigatório',
+              () => {
+                return data.cidade !== 'Selecione cidade';
+              },
+            ),
+          });
+        } else {
+          schema = Yup.object().shape({
+            nome: Yup.string().required('Nome de feriado obrigatório'),
+          });
+        }
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        if (rangeHoliday.from && !rangeHoliday.to) {
-          setRangeHoliday({
-            from: rangeHoliday.from,
-            to: rangeHoliday.from,
-          });
+        const auxRangeHoliday = rangeHoliday;
+
+        if (auxRangeHoliday.from && !auxRangeHoliday.to) {
+          auxRangeHoliday.to = auxRangeHoliday.from;
         }
 
         const holidayData: HolidayOperationsData = {
           nome: data.nome,
-          cidade: data.cidade,
+          cidade: !isNational ? data.cidade : '',
           national: isNational,
-          init: rangeHoliday.from
-            ? rangeHoliday.from.toLocaleDateString('pt-BR')
+          init: auxRangeHoliday.from
+            ? auxRangeHoliday.from.toLocaleDateString('pt-BR')
             : '',
-          end: rangeHoliday.to
-            ? rangeHoliday.to.toLocaleDateString('pt-BR')
+          end: auxRangeHoliday.to
+            ? auxRangeHoliday.to.toLocaleDateString('pt-BR')
             : '',
         };
 
@@ -146,16 +153,33 @@ const CityForm: React.FC = () => {
 
                 <strong>Nome da Cidade</strong>
                 <div>
-                  <Select defaultValue="Selecione cidade" name="cidade">
-                    <option value="Selecione cidade" disabled>
-                      Selecione cidade
-                    </option>
-                    {citiesSelect.map((city, index) => (
-                      <option key={String(index)} value={String(city)}>
-                        {city}
+                  {!isNational ? (
+                    <Select defaultValue="Selecione cidade" name="cidade">
+                      <option value="Selecione cidade" disabled>
+                        Selecione cidade
                       </option>
-                    ))}
-                  </Select>
+                      {citiesSelect.map((city, index) => (
+                        <option key={String(index)} value={String(city)}>
+                          {city}
+                        </option>
+                      ))}
+                    </Select>
+                  ) : (
+                    <Select
+                      defaultValue="Selecione cidade"
+                      name="cidade"
+                      disabled
+                    >
+                      <option value="Selecione cidade" disabled>
+                        Selecione cidade
+                      </option>
+                      {citiesSelect.map((city, index) => (
+                        <option key={String(index)} value={String(city)}>
+                          {city}
+                        </option>
+                      ))}
+                    </Select>
+                  )}
 
                   <nav>
                     <SwitchInput
