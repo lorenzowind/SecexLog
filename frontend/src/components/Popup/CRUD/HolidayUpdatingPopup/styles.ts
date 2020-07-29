@@ -63,9 +63,9 @@ export const Content = styled.div`
     font-weight: 600;
   }
 
-  h3 {
+  h4 {
     color: #707070;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 500;
   }
 
@@ -77,31 +77,10 @@ export const Content = styled.div`
 
   form {
     > div {
-      margin: 10px 0;
-
-      > section {
-        height: 80px;
-        overflow-y: auto;
-
-        &::-webkit-scrollbar {
-          width: 7px;
-        }
-
-        &::-webkit-scrollbar-track {
-          background: #f1f1f1;
-        }
-
-        &::-webkit-scrollbar-thumb {
-          background: #888;
-        }
-
-        &::-webkit-scrollbar-thumb:hover {
-          background: #555;
-        }
-      }
-
+      margin: 20px 0;
       > div {
         margin-top: 5px;
+        height: 50px;
       }
     }
 

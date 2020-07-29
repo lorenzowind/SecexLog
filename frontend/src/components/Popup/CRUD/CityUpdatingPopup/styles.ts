@@ -63,9 +63,9 @@ export const Content = styled.div`
     font-weight: 600;
   }
 
-  h3 {
+  h4 {
     color: #707070;
-    font-size: 32px;
+    font-size: 24px;
     font-weight: 500;
   }
 
