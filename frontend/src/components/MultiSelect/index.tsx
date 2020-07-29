@@ -9,14 +9,16 @@ export interface Option {
 }
 
 interface Props {
-  defaultValue: string;
+  placeholder: string;
   options: Option[];
+  defaultValues?: Option[];
   setSelectedOptions(options: Option[]): void;
 }
 
 const MultiSelect: React.FC<Props> = ({
-  defaultValue,
+  placeholder,
   options,
+  defaultValues,
   setSelectedOptions,
 }) => {
   const handleChange = useCallback(
@@ -32,7 +34,8 @@ const MultiSelect: React.FC<Props> = ({
         isMulti
         options={options}
         onChange={handleChange}
-        placeholder={defaultValue}
+        placeholder={placeholder}
+        defaultValue={defaultValues}
       />
     </Container>
   );

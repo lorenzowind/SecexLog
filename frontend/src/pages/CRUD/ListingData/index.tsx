@@ -16,6 +16,7 @@ import Table from '../../../components/Table';
 import LoadingPartial from '../../../components/Loading/LoadingPartial';
 
 import UserOperationsPopup from '../../../components/Popup/CRUD/UserOperationsPopup';
+import CityUpdatingPopup from '../../../components/Popup/CRUD/CityUpdatingPopup';
 
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';
@@ -43,6 +44,10 @@ interface UserOperationsPopupProps {
   user?: UserState;
 }
 
+interface CityUpdatingPopupProps {
+  city: CityState;
+}
+
 interface SearchData {
   searchUser?: string;
   searchCity?: string;
@@ -64,6 +69,10 @@ const ListingData: React.FC = () => {
   const [userOperationsPopup, setUserOperationsPopup] = useState<
     UserOperationsPopupProps
   >({} as UserOperationsPopupProps);
+  const [cityUpdatingPopupActive, setCityUpdatingPopupActive] = useState(false);
+  const [cityUpdatingPopup, setCityUpdatingPopup] = useState<
+    CityUpdatingPopupProps
+  >({} as CityUpdatingPopupProps);
 
   const [loadingPartial, setLoadingPartial] = useState(false);
 
@@ -248,7 +257,15 @@ const ListingData: React.FC = () => {
                 <>
                   <td>{array[current].nome}</td>
                   <td>
-                    <button type="button" onClick={() => {}}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCityUpdatingPopupActive(true);
+                        setCityUpdatingPopup({
+                          city: array[current],
+                        });
+                      }}
+                    >
                       <img src={iconEdit} alt="Edit" />
                     </button>
                   </td>
@@ -258,7 +275,15 @@ const ListingData: React.FC = () => {
                 <>
                   <td>{array[current + 1].nome}</td>
                   <td>
-                    <button type="button" onClick={() => {}}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCityUpdatingPopupActive(true);
+                        setCityUpdatingPopup({
+                          city: array[current + 1],
+                        });
+                      }}
+                    >
                       <img src={iconEdit} alt="Edit" />
                     </button>
                   </td>
@@ -268,7 +293,15 @@ const ListingData: React.FC = () => {
                 <>
                   <td>{array[current + 2].nome}</td>
                   <td>
-                    <button type="button" onClick={() => {}}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCityUpdatingPopupActive(true);
+                        setCityUpdatingPopup({
+                          city: array[current + 2],
+                        });
+                      }}
+                    >
                       <img src={iconEdit} alt="Edit" />
                     </button>
                   </td>
@@ -342,6 +375,12 @@ const ListingData: React.FC = () => {
           operation={userOperationsPopup.operation}
           user={userOperationsPopup.user}
           setUserOperationsPopupActive={setUserOperationsPopupActive}
+        />
+      )}
+      {cityUpdatingPopupActive && (
+        <CityUpdatingPopup
+          city={cityUpdatingPopup.city}
+          setCityUpdatingPopupActive={setCityUpdatingPopupActive}
         />
       )}
 

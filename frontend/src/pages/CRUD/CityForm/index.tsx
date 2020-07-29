@@ -30,7 +30,7 @@ const CityForm: React.FC = () => {
   const history = useHistory();
 
   const [isBaseCity, setIsBaseCity] = useState(false);
-  const [isRelatedCity, setIsRelatedCity] = useState(false);
+  const [isAuditatedCity, setIsAuditatedCity] = useState(false);
   const [isInterdicted, setIsInterdicted] = useState(false);
   const [rangeFlood, setRangeFlood] = useState<RangeState>({} as RangeState);
   const [selectedRelatedCities, setSelectedRelatedCities] = useState<Option[]>(
@@ -85,7 +85,7 @@ const CityForm: React.FC = () => {
         });
 
         const cityData: CityOperationsData = {
-          cAuditada: isRelatedCity,
+          cAuditada: isAuditatedCity,
           cBase: isBaseCity,
           nome: data.nome,
           latitute: data.latitute,
@@ -123,10 +123,11 @@ const CityForm: React.FC = () => {
     [
       history,
       insertCity,
+      isAuditatedCity,
       isBaseCity,
       isInterdicted,
-      isRelatedCity,
-      rangeFlood,
+      rangeFlood.from,
+      rangeFlood.to,
       selectedRelatedCities,
     ],
   );
@@ -161,8 +162,8 @@ const CityForm: React.FC = () => {
                   </section>
                   <section>
                     <SwitchInput
-                      isChecked={isRelatedCity}
-                      setIsChecked={setIsRelatedCity}
+                      isChecked={isAuditatedCity}
+                      setIsChecked={setIsAuditatedCity}
                     />
                     <h2>Cidade Auditada</h2>
                   </section>
@@ -172,7 +173,7 @@ const CityForm: React.FC = () => {
               <nav>
                 <strong>Adicionar cidades relacionadas</strong>
                 <MultiSelect
-                  defaultValue="Selecione"
+                  placeholder="Selecione"
                   options={citiesSelect}
                   setSelectedOptions={setSelectedRelatedCities}
                 />

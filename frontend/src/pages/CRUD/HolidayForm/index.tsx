@@ -84,6 +84,13 @@ const CityForm: React.FC = () => {
           abortEarly: false,
         });
 
+        if (rangeHoliday.from && !rangeHoliday.to) {
+          setRangeHoliday({
+            from: rangeHoliday.from,
+            to: rangeHoliday.from,
+          });
+        }
+
         const holidayData: HolidayOperationsData = {
           nome: data.nome,
           cidade: data.cidade,
