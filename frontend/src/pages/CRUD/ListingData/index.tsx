@@ -365,7 +365,7 @@ const ListingData: React.FC = () => {
 
   return (
     <>
-      {loadingPartial && <LoadingPartial />}
+      {loadingPartial && <LoadingPartial zIndex={1} />}
 
       {goCityForm && <Redirect push to="city-form" />}
       {goHolidayForm && <Redirect push to="holiday-form" />}

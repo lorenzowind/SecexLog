@@ -134,7 +134,7 @@ const CityForm: React.FC = () => {
 
   return (
     <>
-      {loadingPartial && <LoadingPartial />}
+      {loadingPartial && <LoadingPartial zIndex={1} />}
       {loadingPage && <LoadingPage />}
 
       <Header isAuthenticated />

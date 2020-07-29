@@ -116,7 +116,7 @@ const ManualSearch: React.FC = () => {
 
   return (
     <>
-      {loadingPartial && <LoadingPartial />}
+      {loadingPartial && <LoadingPartial zIndex={1} />}
 
       <Container>
         <Header isAuthenticated={false} />

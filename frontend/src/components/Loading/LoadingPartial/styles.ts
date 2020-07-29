@@ -1,5 +1,9 @@
 import styled, { keyframes } from 'styled-components';
 
+export interface Props {
+  zIndex: number;
+}
+
 const appearWithFade = keyframes`
   from {
     opacity: 0;
@@ -9,9 +13,9 @@ const appearWithFade = keyframes`
   }
 `;
 
-export const Container = styled.div`
+export const Container = styled.div<Props>`
   position: fixed;
-  z-index: 1;
+  z-index: ${props => props.zIndex};
   width: 100%;
   height: 100%;
   background-color: rgba(255, 255, 255, 0.2);

@@ -111,7 +111,7 @@ const UserOperationsPopup: React.FC<Props> = ({
 
   return (
     <>
-      {loadingPartial && <LoadingPartial />}
+      {loadingPartial && <LoadingPartial zIndex={4} />}
 
       <Background>
         <FullContainer>
