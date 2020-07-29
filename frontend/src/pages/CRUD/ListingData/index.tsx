@@ -6,6 +6,7 @@ import { FormHandles } from '@unform/core';
 import { useUser, UserState } from '../../../hooks/modules/user';
 import { useCity, CityState } from '../../../hooks/modules/city';
 import { useHoliday, HolidayState } from '../../../hooks/modules/holiday';
+import { useModal, ModalState } from '../../../hooks/modules/modal';
 
 import { Container, DataSection } from './styles';
 
@@ -94,6 +95,7 @@ const ListingData: React.FC = () => {
   const { users, getUsers, setSearchUsers } = useUser();
   const { cities, getCities, setSearchCities } = useCity();
   const { holidays, getHolidays, setSearchHolidays } = useHoliday();
+  const { modals, getModals, setSearchModals } = useModal();
   // ---------------------------------------------------------------------------
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -101,10 +103,15 @@ const ListingData: React.FC = () => {
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await Promise.all([getUsers(), getCities(), getHolidays()]).then(() => {
+    await Promise.all([
+      getUsers(),
+      getCities(),
+      getHolidays(),
+      getModals(),
+    ]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getCities, getHolidays, getUsers]);
+  }, [getCities, getHolidays, getModals, getUsers]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -132,12 +139,19 @@ const ListingData: React.FC = () => {
             setSearchHolidays(data.searchHoliday);
           }
           break;
+        case 'modal':
+          if (!data.searchModal) {
+            setSearchModals('');
+          } else {
+            setSearchModals(data.searchModal);
+          }
+          break;
         default:
           break;
       }
       setLoadingPartial(false);
     },
-    [setSearchCities, setSearchHolidays, setSearchUsers],
+    [setSearchCities, setSearchHolidays, setSearchModals, setSearchUsers],
   );
 
   useEffect(() => {
@@ -399,6 +413,64 @@ const ListingData: React.FC = () => {
     </Table>
   );
 
+  const ModalsTable: React.FC = () => (
+    <Table module="cidade">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th />
+          <th>Nome</th>
+          <th />
+          <th>Nome</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {modals.map((_city, index, array) => {
+          let current = index;
+
+          if (current !== 0) {
+            current += 2 * current;
+          }
+          return (
+            <tr key={`${index}-${index + 1}-${index + 2}`}>
+              {array[current] && (
+                <>
+                  <td>{array[current].name}</td>
+                  <td>
+                    <button type="button" onClick={() => {}}>
+                      <img src={iconEdit} alt="Edit" />
+                    </button>
+                  </td>
+                </>
+              )}
+              {array[current + 1] && (
+                <>
+                  <td>{array[current + 1].name}</td>
+                  <td>
+                    <button type="button" onClick={() => {}}>
+                      <img src={iconEdit} alt="Edit" />
+                    </button>
+                  </td>
+                </>
+              )}
+              {array[current + 2] && (
+                <>
+                  <td>{array[current + 2].name}</td>
+                  <td>
+                    <button type="button" onClick={() => {}}>
+                      <img src={iconEdit} alt="Edit" />
+                    </button>
+                  </td>
+                </>
+              )}
+            </tr>
+          );
+        })}
+      </tbody>
+    </Table>
+  );
+
   return (
     <>
       {loadingPartial && <LoadingPartial zIndex={1} />}
@@ -459,6 +531,11 @@ const ListingData: React.FC = () => {
             name="Holiday"
           />
           <HolidaysTable />
+        </DataSection>
+
+        <DataSection>
+          <ModuleHeader pluralName="modais" singularName="modal" name="Modal" />
+          <ModalsTable />
         </DataSection>
       </Container>
     </>
