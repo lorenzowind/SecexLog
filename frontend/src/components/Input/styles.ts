@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 interface ContainerProps {
   isFocused: boolean;
   isErrored: boolean;
+  isDisabled?: boolean;
 }
 
 export const Container = styled.div<ContainerProps>`
@@ -16,6 +17,12 @@ export const Container = styled.div<ContainerProps>`
 
   display: flex;
   align-items: center;
+
+  ${props =>
+    props.isDisabled &&
+    css`
+      background: #d8d7d7;
+    `}
 
   ${props =>
     props.isErrored &&

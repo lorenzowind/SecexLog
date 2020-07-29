@@ -177,89 +177,143 @@ const CityUpdatingPopup: React.FC<Props> = ({
               <h1>Editar Cidade</h1>
 
               <Form ref={formRef} onSubmit={handleUpdateCity}>
-                <strong>Nome</strong>
-                <Input name="nome" type="text" defaultValue={city.nome} />
+                <div>
+                  <strong>Nome</strong>
+                  <Input name="nome" type="text" defaultValue={city.nome} />
+                </div>
 
-                <strong>Cidades relacionadas</strong>
-                <MultiSelect
-                  placeholder="Selecione"
-                  setSelectedOptions={setSelectedRelatedCities}
-                  defaultValues={selectedRelatedCities}
-                  options={citiesSelect}
-                />
-
-                <strong>Latitude</strong>
-                <Input
-                  name="latitute"
-                  type="text"
-                  defaultValue={city.latitute}
-                />
-
-                <strong>Longitude</strong>
-                <Input
-                  name="longitude"
-                  type="text"
-                  defaultValue={city.longitude}
-                />
-
-                <strong>Cidade base</strong>
-                <SwitchInput
-                  isChecked={isBaseCity}
-                  setIsChecked={setIsBaseCity}
-                />
-                <strong>Cidade auditada</strong>
-                <SwitchInput
-                  isChecked={isAuditatedCity}
-                  setIsChecked={setIsAuditatedCity}
-                />
-                <strong>Cidade interditada</strong>
-                <SwitchInput
-                  isChecked={isInterdicted}
-                  setIsChecked={setIsInterdicted}
-                />
-
-                {!isInterdicted ? (
-                  <Input name="obsInterdicao" type="text" disabled />
-                ) : (
-                  <Input
-                    name="obsInterdicao"
-                    type="text"
-                    defaultValue={city.obsInterdicao}
+                <div>
+                  <strong>Cidades relacionadas</strong>
+                  <MultiSelect
+                    placeholder="Selecione"
+                    setSelectedOptions={setSelectedRelatedCities}
+                    defaultValues={selectedRelatedCities}
+                    options={citiesSelect}
                   />
-                )}
+                </div>
 
-                <strong>Feriados</strong>
-                {holidays
-                  .filter(holiday => holiday.city_id === city.id)
-                  .map(cityHoliday => (
-                    <h2 key={cityHoliday.nome}>
-                      {cityHoliday.init.substring(0, 5).concat(' - ')}
-                      {cityHoliday.nome}
-                    </h2>
-                  ))}
+                <section>
+                  <nav>
+                    <strong>Latitude</strong>
+                    <Input
+                      name="latitute"
+                      type="text"
+                      defaultValue={city.latitute}
+                    />
+                  </nav>
+
+                  <nav>
+                    <strong>Longitude</strong>
+                    <Input
+                      name="longitude"
+                      type="text"
+                      defaultValue={city.longitude}
+                    />
+                  </nav>
+                </section>
+
+                <section>
+                  <aside>
+                    <strong>Cidade base</strong>
+                    <SwitchInput
+                      isChecked={isBaseCity}
+                      setIsChecked={setIsBaseCity}
+                    />
+                  </aside>
+                  <aside>
+                    <strong>Cidade auditada</strong>
+                    <SwitchInput
+                      isChecked={isAuditatedCity}
+                      setIsChecked={setIsAuditatedCity}
+                    />
+                  </aside>
+                </section>
+                <section>
+                  <aside>
+                    <strong>Cidade interditada</strong>
+                    <SwitchInput
+                      isChecked={isInterdicted}
+                      setIsChecked={setIsInterdicted}
+                    />
+                  </aside>
+                </section>
+                <div>
+                  {!isInterdicted ? (
+                    <Input
+                      name="obsInterdicao"
+                      type="text"
+                      disabled
+                      isDisabled
+                    />
+                  ) : (
+                    <Input
+                      name="obsInterdicao"
+                      type="text"
+                      defaultValue={city.obsInterdicao}
+                    />
+                  )}
+                </div>
+                {holidays.filter(holid => holid.city_id === city.id).length ? (
+                  <div>
+                    <strong>Feriados</strong>
+                    {holidays
+                      .filter(holiday => holiday.city_id === city.id)
+                      .map(cityHoliday => (
+                        <h2 key={cityHoliday.nome}>
+                          {cityHoliday.init.substring(0, 5).concat(' - ')}
+                          {cityHoliday.nome}
+                        </h2>
+                      ))}
+                  </div>
+                ) : null}
 
                 <strong>Período de cheia</strong>
                 {isNewFlood ? (
-                  <>
-                    <Input name="initDataCheia" type="text" />
+                  <aside>
+                    <Input
+                      name="initDataCheia"
+                      type="text"
+                      placeholder="Início"
+                    />
                     <img src={IconGo} alt="Go" />
-                    <Input name="endDataCheia" type="text" />
-                    <h3>+</h3>
-                  </>
+                    <Input name="endDataCheia" type="text" placeholder="Fim" />
+
+                    <button type="button">
+                      <h3>+</h3>
+                    </button>
+                  </aside>
                 ) : (
                   <>
-                    <Input name="initDataCheia" type="text" disabled />
-                    <img src={IconGo} alt="Go" />
-                    <Input name="endDataCheia" type="text" disabled />
-                    <h4>+</h4>
-                    <button type="button" onClick={() => setIsNewFlood(true)}>
-                      X
-                    </button>
-                    <h2>
-                      {city.initDataCheia &&
-                        city.initDataCheia.substring(0, 5).concat(' até ')}
-                      {city.endDataCheia && city.endDataCheia.substring(0, 5)}
-                    </h2>
+                    <aside>
+                      <Input
+                        name="initDataCheia"
+                        type="text"
+                        disabled
+                        isDisabled
+                        placeholder="Início"
+                      />
+                      <img src={IconGo} alt="Go" />
+                      <Input
+                        name="endDataCheia"
+                        type="text"
+                        disabled
+                        isDisabled
+                        placeholder="Fim"
+                      />
+                      <button type="button">
+                        <h3>+</h3>
+                      </button>
+                    </aside>
+                    <nav>
+                      <button type="button" onClick={() => setIsNewFlood(true)}>
+                        <h4>X</h4>
+                      </button>
+                      <h2>
+                        {city.initDataCheia &&
+                          city.initDataCheia.substring(0, 5).concat(' até ')}
+                        {city.endDataCheia && city.endDataCheia.substring(0, 5)}
+                      </h2>
+                    </nav>
                   </>
                 )}
 

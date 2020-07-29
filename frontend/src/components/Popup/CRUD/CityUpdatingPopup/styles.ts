@@ -30,6 +30,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
   padding: 40px 40px;
+  width: 500px;
 
   > button {
     &:first-child {
@@ -49,6 +50,25 @@ export const Content = styled.div`
     margin-bottom: 20px;
   }
 
+  h2 {
+    color: #707070;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 5px 0;
+  }
+
+  h3 {
+    color: #707070;
+    font-size: 36px;
+    font-weight: 600;
+  }
+
+  h3 {
+    color: #707070;
+    font-size: 32px;
+    font-weight: 500;
+  }
+
   strong {
     color: #707070;
     font-size: 20px;
@@ -56,6 +76,73 @@ export const Content = styled.div`
   }
 
   form {
+    > div {
+      margin: 10px 0;
+
+      > div {
+        margin-top: 5px;
+      }
+    }
+
+    > section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+
+      > aside {
+        strong {
+          margin-right: 10px;
+        }
+      }
+
+      nav {
+        display: flex;
+        flex-direction: column;
+
+        > div {
+          width: 180px;
+          margin-top: 5px;
+        }
+      }
+    }
+
+    > aside {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      margin-bottom: 20px;
+
+      > div {
+        width: 150px;
+      }
+
+      > img {
+        margin: 0 10px;
+      }
+
+      > button {
+        display: flex;
+        align-items: center;
+        margin-left: 20px;
+        border: 0;
+        background: transparent;
+      }
+    }
+
+    > nav {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      margin-top: -10px;
+
+      > button {
+        > h4 {
+          margin-right: 10px;
+        }
+      }
+    }
+
     button {
       &:first-child {
         border: 0;
