@@ -17,15 +17,18 @@ const Route: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const isAuthenticated = useCallback((): boolean => {
     if (user) {
-      return new Date().getUTCSeconds() <= user.exp;
+      if (Math.floor(Date.now() / 1000) > user.exp) {
+        signOut();
+        return false;
+      }
+      return true;
     }
-
     return false;
-  }, [user]);
+  }, [signOut, user]);
 
   return (
     <ReactDOMRoute

@@ -137,7 +137,7 @@ module.exports = {
           resultFromDB
             .update({
               ...usuario,
-              // senha: cryptPsw(usuario.senha)
+              senha: cryptPsw(usuario.senha)
             })
             .then(_ => res.status(204).send())
             .catch(err => {
