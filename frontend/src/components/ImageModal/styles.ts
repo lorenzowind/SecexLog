@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 interface Props {
   isSelected: boolean;
+  imageSize: number;
 }
 
 export const Container = styled.div<Props>`
@@ -9,14 +10,14 @@ export const Container = styled.div<Props>`
   justify-content: center;
   align-items: center;
 
-  width: 75px;
-  height: 75px;
+  width: ${props => props.imageSize}px;
+  height: ${props => props.imageSize}px;
   border-radius: 50%;
   background: ${props => (props.isSelected ? '#292eec' : 'transparent')};
 
   img {
-    width: 75px;
-    height: 75px;
+    width: ${props => props.imageSize}px;
+    height: ${props => props.imageSize}px;
     padding: 2px;
     border-radius: 50%;
   }

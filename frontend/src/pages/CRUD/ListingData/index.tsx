@@ -19,6 +19,7 @@ import LoadingPartial from '../../../components/Loading/LoadingPartial';
 import UserOperationsPopup from '../../../components/Popup/CRUD/UserOperationsPopup';
 import CityUpdatingPopup from '../../../components/Popup/CRUD/CityUpdatingPopup';
 import HolidayUpdatingPopup from '../../../components/Popup/CRUD/HolidayUpdatingPopup';
+import ModalUpdatingPopup from '../../../components/Popup/CRUD/ModalUpdatingPopup';
 
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';
@@ -53,6 +54,10 @@ interface CityUpdatingPopupProps {
 interface HolidayUpdatingPopupProps {
   type: 'Nacional' | 'Específico';
   holiday: HolidayState;
+}
+
+interface ModalUpdatingPopupProps {
+  modal: ModalState;
 }
 
 interface SearchData {
@@ -90,6 +95,12 @@ const ListingData: React.FC = () => {
   const [holidayUpdatingPopup, setHolidayUpdatingPopup] = useState<
     HolidayUpdatingPopupProps
   >({} as HolidayUpdatingPopupProps);
+  const [modalUpdatingPopupActive, setModalUpdatingPopupActive] = useState(
+    false,
+  );
+  const [modalUpdatingPopup, setModalUpdatingPopup] = useState<
+    ModalUpdatingPopupProps
+  >({} as ModalUpdatingPopupProps);
   // ---------------------------------------------------------------------------
 
   // module hooks to make API operations ---------------------------------------
@@ -442,7 +453,15 @@ const ListingData: React.FC = () => {
                 <>
                   <td>{array[current].name}</td>
                   <td>
-                    <button type="button" onClick={() => {}}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setModalUpdatingPopupActive(true);
+                        setModalUpdatingPopup({
+                          modal: array[current],
+                        });
+                      }}
+                    >
                       <img src={iconEdit} alt="Edit" />
                     </button>
                   </td>
@@ -452,7 +471,15 @@ const ListingData: React.FC = () => {
                 <>
                   <td>{array[current + 1].name}</td>
                   <td>
-                    <button type="button" onClick={() => {}}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setModalUpdatingPopupActive(true);
+                        setModalUpdatingPopup({
+                          modal: array[current + 1],
+                        });
+                      }}
+                    >
                       <img src={iconEdit} alt="Edit" />
                     </button>
                   </td>
@@ -462,7 +489,15 @@ const ListingData: React.FC = () => {
                 <>
                   <td>{array[current + 2].name}</td>
                   <td>
-                    <button type="button" onClick={() => {}}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setModalUpdatingPopupActive(true);
+                        setModalUpdatingPopup({
+                          modal: array[current + 2],
+                        });
+                      }}
+                    >
                       <img src={iconEdit} alt="Edit" />
                     </button>
                   </td>
@@ -502,6 +537,12 @@ const ListingData: React.FC = () => {
           type={holidayUpdatingPopup.type}
           holiday={holidayUpdatingPopup.holiday}
           setHolidayUpdatingPopupActive={setHolidayUpdatingPopupActive}
+        />
+      )}
+      {modalUpdatingPopupActive && (
+        <ModalUpdatingPopup
+          modal={modalUpdatingPopup.modal}
+          setModalUpdatingPopupActive={setModalUpdatingPopupActive}
         />
       )}
       {/* ------------------------------------------------------------------ */}

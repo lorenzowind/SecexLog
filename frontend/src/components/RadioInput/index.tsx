@@ -10,6 +10,7 @@ import { useStyles } from './styles';
 interface Props {
   name: string;
   options: string[];
+  defaultValue?: string;
   onChangeValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -28,10 +29,15 @@ function StyledRadio(props: RadioProps) {
   );
 }
 
-const RadioInput: React.FC<Props> = ({ name, options, onChangeValue }) => {
+const RadioInput: React.FC<Props> = ({
+  name,
+  options,
+  onChangeValue,
+  defaultValue,
+}) => {
   return (
     <FormControl component="fieldset">
-      <RadioGroup name={name}>
+      <RadioGroup name={name} defaultValue={defaultValue}>
         {options.map(option => (
           <FormControlLabel
             value={option}

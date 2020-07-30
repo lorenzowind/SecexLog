@@ -145,6 +145,7 @@ const ModalForm: React.FC = () => {
                       onClick={() => handleClickModalImage(index)}
                     >
                       <ImageModal
+                        imageSize={75}
                         imageModal={imageModal.url}
                         isSelected={imageModal.isSelected}
                       />
