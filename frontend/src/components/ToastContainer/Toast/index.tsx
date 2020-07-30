@@ -1,10 +1,7 @@
 import React, { useEffect } from 'react';
-import {
-  FiAlertCircle,
-  FiCheckCircle,
-  FiInfo,
-  FiXCircle,
-} from 'react-icons/fi';
+import { FiAlertCircle, FiCheckCircle, FiInfo } from 'react-icons/fi';
+
+import iconClose from '../../../assets/icon-close.png';
 
 import { ToastMessage, useToast } from '../../../hooks/toast';
 
@@ -46,7 +43,7 @@ const Toast: React.FC<ToastProps> = ({ message, style }) => {
         {message.description && <p>{message.description}</p>}
 
         <button onClick={() => removeToast(message.id)} type="button">
-          <FiXCircle size={16} />
+          <img src={iconClose} alt="Close" />
         </button>
       </div>
     </Container>

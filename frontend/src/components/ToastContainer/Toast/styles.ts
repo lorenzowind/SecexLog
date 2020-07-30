@@ -54,12 +54,17 @@ export const Container = styled(animated.div)<ContainerProps>`
 
   button {
     position: absolute;
-    right: 16px;
-    top: 19px;
-    opacity: 0.6;
+    right: 12px;
+    top: 12px;
+    opacity: 0.8;
     border: 0;
     background: transparent;
     color: inherit;
+
+    img {
+      width: 18px;
+      height: 18px;
+    }
   }
 
   ${props =>
