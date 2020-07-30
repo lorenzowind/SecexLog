@@ -21,6 +21,7 @@ import UserOperationsPopup from '../../../components/Popup/CRUD/UserOperationsPo
 import CityUpdatingPopup from '../../../components/Popup/CRUD/CityUpdatingPopup';
 import HolidayUpdatingPopup from '../../../components/Popup/CRUD/HolidayUpdatingPopup';
 import ModalUpdatingPopup from '../../../components/Popup/CRUD/ModalUpdatingPopup';
+import ProviderUpdatingPopup from '../../../components/Popup/CRUD/ProviderUpdatingPopup';
 
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';
@@ -59,6 +60,10 @@ interface HolidayUpdatingPopupProps {
 
 interface ModalUpdatingPopupProps {
   modal: ModalState;
+}
+
+interface ProviderUpdatingPopupProps {
+  provider: ProviderState;
 }
 
 interface SearchData {
@@ -103,6 +108,13 @@ const ListingData: React.FC = () => {
   const [modalUpdatingPopup, setModalUpdatingPopup] = useState<
     ModalUpdatingPopupProps
   >({} as ModalUpdatingPopupProps);
+  const [
+    providerUpdatingPopupActive,
+    setProviderUpdatingPopupActive,
+  ] = useState(false);
+  const [providerUpdatingPopup, setProviderUpdatingPopup] = useState<
+    ProviderUpdatingPopupProps
+  >({} as ProviderUpdatingPopupProps);
   // ---------------------------------------------------------------------------
 
   // module hooks to make API operations ---------------------------------------
@@ -133,36 +145,36 @@ const ListingData: React.FC = () => {
     (data: SearchData, module: ModuleHeaderProps) => {
       setLoadingPartial(true);
 
-      switch (module.singularName) {
-        case 'usuário':
+      switch (module.name) {
+        case 'User':
           if (!data.searchUser) {
             setSearchUsers('');
           } else {
             setSearchUsers(data.searchUser);
           }
           break;
-        case 'cidade':
+        case 'City':
           if (!data.searchCity) {
             setSearchCities('');
           } else {
             setSearchCities(data.searchCity);
           }
           break;
-        case 'feriado':
+        case 'Holiday':
           if (!data.searchHoliday) {
             setSearchHolidays('');
           } else {
             setSearchHolidays(data.searchHoliday);
           }
           break;
-        case 'modal':
+        case 'Modal':
           if (!data.searchModal) {
             setSearchModals('');
           } else {
             setSearchModals(data.searchModal);
           }
           break;
-        case 'prestador':
+        case 'Provider':
           if (!data.searchProvider) {
             setSearchProviders('');
           } else {
@@ -549,7 +561,15 @@ const ListingData: React.FC = () => {
             <td>{provider.email}</td>
             <td>{provider.modal}</td>
             <td>
-              <button type="button" onClick={() => {}}>
+              <button
+                type="button"
+                onClick={() => {
+                  setProviderUpdatingPopupActive(true);
+                  setProviderUpdatingPopup({
+                    provider,
+                  });
+                }}
+              >
                 <img src={iconEdit} alt="Edit" />
               </button>
             </td>
@@ -593,6 +613,12 @@ const ListingData: React.FC = () => {
         <ModalUpdatingPopup
           modal={modalUpdatingPopup.modal}
           setModalUpdatingPopupActive={setModalUpdatingPopupActive}
+        />
+      )}
+      {providerUpdatingPopupActive && (
+        <ProviderUpdatingPopup
+          provider={providerUpdatingPopup.provider}
+          setProviderUpdatingPopupActive={setProviderUpdatingPopupActive}
         />
       )}
       {/* ------------------------------------------------------------------ */}
