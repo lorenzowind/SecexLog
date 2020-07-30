@@ -11,6 +11,7 @@ import {
   ProviderOperationsData,
 } from '../../../hooks/modules/provider';
 import { useModal } from '../../../hooks/modules/modal';
+import { useToast } from '../../../hooks/toast';
 
 import { Container, Content, InputsContainer } from './styles';
 
@@ -38,6 +39,7 @@ const ProviderForm: React.FC = () => {
 
   const { insertProvider } = useProvider();
   const { modals, getModals } = useModal();
+  const { addToast } = useToast();
 
   const handleGetModals = useCallback(async () => {
     setLoadingPartial(true);
@@ -70,14 +72,7 @@ const ProviderForm: React.FC = () => {
           modal: Yup.mixed().test('match', 'Nome do modal obrigatório', () => {
             return data.modal !== 'Selecione modal';
           }),
-          preferenceTxt: Yup.mixed().test(
-            'match',
-            'Preferência obrigatória',
-            () => {
-              return data.preferenceTxt !== 'Selecione preferência';
-            },
-          ),
-          preference: Yup.string().required('Campo obrigatório'),
+          preferenceTxt: Yup.string().required('Preferência obrigatório'),
         });
 
         await schema.validate(data, {
@@ -108,9 +103,14 @@ const ProviderForm: React.FC = () => {
 
           formRef.current?.setErrors(errors);
         }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na criação do prestador',
+        });
       }
     },
-    [history, insertProvider],
+    [addToast, history, insertProvider],
   );
 
   return (
@@ -130,46 +130,59 @@ const ProviderForm: React.FC = () => {
 
           <InputsContainer>
             <Form ref={formRef} onSubmit={handleCreate}>
-              <strong>Nome do Prestador</strong>
-              <Input name="nome" type="text" />
+              <div>
+                <strong>Nome do Prestador</strong>
+                <Input name="nome" type="text" />
+              </div>
 
-              <strong>Telefone</strong>
-              <Input name="telefone" type="text" />
+              <section>
+                <div>
+                  <strong>Telefone</strong>
+                  <Input name="telefone" type="text" />
+                </div>
+                <div>
+                  <strong>Email</strong>
+                  <Input name="email" type="email" />
+                </div>
+              </section>
 
-              <strong>Email</strong>
-              <Input name="email" type="email" />
-
-              <strong>Modal</strong>
-              <Select defaultValue="Selecione modal" name="modal">
-                <option value="Selecione modal" disabled>
-                  Selecione modal
-                </option>
-                {modalsSelect.map((modal, index) => (
-                  <option key={String(index)} value={String(modal)}>
-                    {modal}
+              <div>
+                <strong>Modal</strong>
+                <Select defaultValue="Selecione modal" name="modal">
+                  <option value="Selecione modal" disabled>
+                    Selecione modal
                   </option>
-                ))}
-              </Select>
+                  {modalsSelect.map((modal, index) => (
+                    <option key={String(index)} value={String(modal)}>
+                      {modal}
+                    </option>
+                  ))}
+                </Select>
+              </div>
 
-              <strong>Você prefere</strong>
-              <Select
-                defaultValue="Selecione modal"
-                name="modal"
-                onChange={e => setPreferenceSelected(e.currentTarget.value)}
-              >
-                <option value="Selecione modal" disabled>
-                  Selecione preferência
-                </option>
-                <option value="CPF">CPF</option>
-                <option value="CNPJ">CNPJ</option>
-              </Select>
+              <section>
+                <div>
+                  <strong>Você prefere</strong>
+                  <Select
+                    defaultValue="Selecione modal"
+                    name="preference"
+                    onChange={e => setPreferenceSelected(e.currentTarget.value)}
+                  >
+                    <option value="Selecione modal" disabled>
+                      Selecione preferência
+                    </option>
+                    <option value="CPF">CPF</option>
+                    <option value="CNPJ">CNPJ</option>
+                  </Select>
+                </div>
 
-              {preferenceSelected && (
-                <>
-                  <strong>{preferenceSelected}</strong>
-                  <Input name="preferenceTxt" type="text" />
-                </>
-              )}
+                {preferenceSelected && (
+                  <div>
+                    <strong>{preferenceSelected}</strong>
+                    <Input name="preferenceTxt" type="text" />
+                  </div>
+                )}
+              </section>
 
               <aside>
                 <Button type="submit">Criar</Button>

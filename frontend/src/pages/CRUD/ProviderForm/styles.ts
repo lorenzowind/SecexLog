@@ -57,4 +57,27 @@ export const InputsContainer = styled.div`
     font-size: 20px;
     font-weight: 600;
   }
+
+  form {
+    > div {
+      > div {
+        margin: 10px 0 30px 0;
+        height: 50px;
+      }
+    }
+
+    > section {
+      display: flex;
+      flex-direction: row;
+
+      > div {
+        > div {
+          margin: 10px 0 30px 0;
+          height: 50px;
+          width: 340px;
+          margin-right: 20px;
+        }
+      }
+    }
+  }
 `;
