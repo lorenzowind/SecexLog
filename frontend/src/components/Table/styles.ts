@@ -50,7 +50,7 @@ export const Container = styled.table<Props>`
               min-width: 60px;
             }
           `;
-        case 'cidade':
+        case 'cidade' || 'modal':
           return css`
             max-width: 170px;
             min-width: 170px;
@@ -109,7 +109,7 @@ export const Container = styled.table<Props>`
               min-width: 60px;
             }
           `;
-        case 'cidade':
+        case 'cidade' || 'modal':
           return css`
             max-width: 170px;
             min-width: 170px;
