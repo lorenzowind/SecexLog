@@ -87,6 +87,7 @@ export const Container = styled.table<Props>`
             }
           `;
         case 'prestador':
+        case 'trajeto':
           return css`
             max-width: 150px;
             min-width: 150px;
@@ -157,6 +158,7 @@ export const Container = styled.table<Props>`
             }
           `;
         case 'prestador':
+        case 'trajeto':
           return css`
             max-width: 150px;
             min-width: 150px;

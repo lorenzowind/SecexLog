@@ -8,6 +8,7 @@ import { useCity, CityState } from '../../../hooks/modules/city';
 import { useHoliday, HolidayState } from '../../../hooks/modules/holiday';
 import { useModal, ModalState } from '../../../hooks/modules/modal';
 import { useProvider, ProviderState } from '../../../hooks/modules/provider';
+import { usePath, PathState } from '../../../hooks/modules/path';
 
 import { Container, DataSection } from './styles';
 
@@ -123,6 +124,7 @@ const ListingData: React.FC = () => {
   const { holidays, getHolidays, setSearchHolidays } = useHoliday();
   const { modals, getModals, setSearchModals } = useModal();
   const { providers, getProviders, setSearchProviders } = useProvider();
+  const { paths, getPaths, setSearchPaths } = usePath();
   // ---------------------------------------------------------------------------
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -136,10 +138,11 @@ const ListingData: React.FC = () => {
       getHolidays(),
       getModals(),
       getProviders(),
+      getPaths(),
     ]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getCities, getHolidays, getModals, getProviders, getUsers]);
+  }, [getCities, getHolidays, getModals, getPaths, getProviders, getUsers]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -181,6 +184,13 @@ const ListingData: React.FC = () => {
             setSearchProviders(data.searchProvider);
           }
           break;
+        case 'Path':
+          if (!data.searchPath) {
+            setSearchPaths('');
+          } else {
+            setSearchPaths(data.searchPath);
+          }
+          break;
         default:
           break;
       }
@@ -190,6 +200,7 @@ const ListingData: React.FC = () => {
       setSearchCities,
       setSearchHolidays,
       setSearchModals,
+      setSearchPaths,
       setSearchProviders,
       setSearchUsers,
     ],
@@ -579,6 +590,35 @@ const ListingData: React.FC = () => {
     </Table>
   );
 
+  const PathsTable: React.FC = () => (
+    <Table module="trajeto">
+      <thead>
+        <tr>
+          <th>Origem</th>
+          <th>Destino</th>
+          <th>Modal</th>
+          <th>Prestador</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {paths.map(path => (
+          <tr key={path.id}>
+            <td>{path.initCidade}</td>
+            <td>{path.endCidade}</td>
+            <td>{path.modal}</td>
+            <td>{path.prestNome}</td>
+            <td>
+              <button type="button" onClick={() => {}}>
+                <img src={iconEdit} alt="Edit" />
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+
   return (
     <>
       {loadingPartial && <LoadingPartial zIndex={1} />}
@@ -667,6 +707,15 @@ const ListingData: React.FC = () => {
             name="Provider"
           />
           <ProvidersTable />
+        </DataSection>
+
+        <DataSection>
+          <ModuleHeader
+            pluralName="trajetos"
+            singularName="trajeto"
+            name="Path"
+          />
+          <PathsTable />
         </DataSection>
       </Container>
     </>
