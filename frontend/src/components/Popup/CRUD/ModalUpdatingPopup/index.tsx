@@ -13,7 +13,6 @@ import {
   ModalOperationsData,
   ModalState,
 } from '../../../../hooks/modules/modal';
-import { useToast } from '../../../../hooks/toast';
 
 import Button from '../../../Button';
 import Input from '../../../Input';
@@ -62,7 +61,6 @@ const ModalUpdatingPopup: React.FC<Props> = ({
   const [loadingPartial, setLoadingPartial] = useState(false);
 
   const { updateModal, removeModal, getModals } = useModal();
-  const { addToast } = useToast();
 
   const handleClickModalImage = useCallback((index: number) => {
     setArrayModalImages(state =>
@@ -125,15 +123,9 @@ const ModalUpdatingPopup: React.FC<Props> = ({
 
           formRef.current?.setErrors(errors);
         }
-
-        addToast({
-          type: 'error',
-          title: 'Erro na alteração do modal',
-        });
       }
     },
     [
-      addToast,
       arrayModalImages,
       cheapModal,
       fastModal,

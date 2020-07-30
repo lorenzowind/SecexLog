@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   Route as ReactDOMRoute,
   RouteProps as ReactDOMRouteProps,
@@ -19,11 +19,19 @@ const Route: React.FC<RouteProps> = ({
 }) => {
   const { user } = useAuth();
 
+  const isAuthenticated = useCallback((): boolean => {
+    if (user) {
+      return new Date().getUTCSeconds() <= user.exp;
+    }
+
+    return false;
+  }, [user]);
+
   return (
     <ReactDOMRoute
       {...rest}
       render={({ location }) => {
-        return isPrivate === !!user ? (
+        return isPrivate === isAuthenticated() ? (
           <Component />
         ) : (
           <Redirect
