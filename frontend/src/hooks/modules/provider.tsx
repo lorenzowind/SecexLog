@@ -10,7 +10,8 @@ export interface ProviderOperationsData {
   telefone: string;
   email: string;
   modal: string;
-  preference: string;
+  preference: 'CPF' | 'CNPJ';
+  preferenceTxt: string;
 }
 
 export interface ProviderState extends ProviderOperationsData {

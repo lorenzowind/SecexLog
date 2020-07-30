@@ -50,7 +50,8 @@ export const Container = styled.table<Props>`
               min-width: 60px;
             }
           `;
-        case 'cidade' || 'modal':
+        case 'cidade':
+        case 'modal':
           return css`
             max-width: 170px;
             min-width: 170px;
@@ -83,6 +84,16 @@ export const Container = styled.table<Props>`
             &:nth-child(4) {
               max-width: 50px;
               min-width: 50px;
+            }
+          `;
+        case 'provedor':
+          return css`
+            max-width: 150px;
+            min-width: 150px;
+
+            &:last-child {
+              max-width: 60px;
+              min-width: 60px;
             }
           `;
         default:
@@ -109,7 +120,8 @@ export const Container = styled.table<Props>`
               min-width: 60px;
             }
           `;
-        case 'cidade' || 'modal':
+        case 'cidade':
+        case 'modal':
           return css`
             max-width: 170px;
             min-width: 170px;
@@ -142,6 +154,16 @@ export const Container = styled.table<Props>`
             &:nth-child(4) {
               max-width: 50px;
               min-width: 50px;
+            }
+          `;
+        case 'provedor':
+          return css`
+            max-width: 150px;
+            min-width: 150px;
+
+            &:last-child {
+              max-width: 60px;
+              min-width: 60px;
             }
           `;
         default:

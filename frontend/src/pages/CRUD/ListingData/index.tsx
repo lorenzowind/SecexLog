@@ -7,6 +7,7 @@ import { useUser, UserState } from '../../../hooks/modules/user';
 import { useCity, CityState } from '../../../hooks/modules/city';
 import { useHoliday, HolidayState } from '../../../hooks/modules/holiday';
 import { useModal, ModalState } from '../../../hooks/modules/modal';
+import { useProvider, ProviderState } from '../../../hooks/modules/provider';
 
 import { Container, DataSection } from './styles';
 
@@ -108,6 +109,7 @@ const ListingData: React.FC = () => {
   const { cities, getCities, setSearchCities } = useCity();
   const { holidays, getHolidays, setSearchHolidays } = useHoliday();
   const { modals, getModals, setSearchModals } = useModal();
+  const { providers, getProviders, setSearchProviders } = useProvider();
   // ---------------------------------------------------------------------------
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -120,10 +122,11 @@ const ListingData: React.FC = () => {
       getCities(),
       getHolidays(),
       getModals(),
+      getProviders(),
     ]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getCities, getHolidays, getModals, getUsers]);
+  }, [getCities, getHolidays, getModals, getProviders, getUsers]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -158,12 +161,25 @@ const ListingData: React.FC = () => {
             setSearchModals(data.searchModal);
           }
           break;
+        case 'provedor':
+          if (!data.searchProvider) {
+            setSearchProviders('');
+          } else {
+            setSearchProviders(data.searchProvider);
+          }
+          break;
         default:
           break;
       }
       setLoadingPartial(false);
     },
-    [setSearchCities, setSearchHolidays, setSearchModals, setSearchUsers],
+    [
+      setSearchCities,
+      setSearchHolidays,
+      setSearchModals,
+      setSearchProviders,
+      setSearchUsers,
+    ],
   );
 
   useEffect(() => {
@@ -429,7 +445,7 @@ const ListingData: React.FC = () => {
   );
 
   const ModalsTable: React.FC = () => (
-    <Table module="cidade">
+    <Table module="modal">
       <thead>
         <tr>
           <th>Nome</th>
@@ -510,6 +526,35 @@ const ListingData: React.FC = () => {
     </Table>
   );
 
+  const ProvidersTable: React.FC = () => (
+    <Table module="provedor">
+      <thead>
+        <tr>
+          <th>Nome</th>
+          <th>Telefone</th>
+          <th>Email</th>
+          <th>Modal</th>
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {providers.map(provider => (
+          <tr key={provider.id}>
+            <td>{provider.nome}</td>
+            <td>{provider.telefone}</td>
+            <td>{provider.email}</td>
+            <td>{provider.modal}</td>
+            <td>
+              <button type="button" onClick={() => {}}>
+                <img src={iconEdit} alt="Edit" />
+              </button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </Table>
+  );
+
   return (
     <>
       {loadingPartial && <LoadingPartial zIndex={1} />}
@@ -582,6 +627,15 @@ const ListingData: React.FC = () => {
         <DataSection>
           <ModuleHeader pluralName="modais" singularName="modal" name="Modal" />
           <ModalsTable />
+        </DataSection>
+
+        <DataSection>
+          <ModuleHeader
+            pluralName="provedores"
+            singularName="provedor"
+            name="Provider"
+          />
+          <ProvidersTable />
         </DataSection>
       </Container>
     </>
