@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 import getArrayModalImages, {
@@ -112,9 +113,16 @@ const ModalUpdatingPopup: React.FC<Props> = ({
           imgUrl: auxModalImage ? auxModalImage.url : '',
         };
 
-        await updateModal(modal.id, modalData).then(() => {
-          handleRefreshModals();
-        });
+        const { id, ...auxModal } = modal;
+
+        if (!isEqual(modalData, auxModal)) {
+          await updateModal(id, modalData).then(() => {
+            handleRefreshModals();
+          });
+        } else {
+          setLoadingPartial(false);
+          setModalUpdatingPopupActive(false);
+        }
       } catch (err) {
         setLoadingPartial(false);
 
@@ -130,8 +138,9 @@ const ModalUpdatingPopup: React.FC<Props> = ({
       cheapModal,
       fastModal,
       handleRefreshModals,
-      modal.id,
+      modal,
       safeModal,
+      setModalUpdatingPopupActive,
       updateModal,
     ],
   );

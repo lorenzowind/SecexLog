@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -122,9 +123,16 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
           cidade: type === 'Nacional' ? undefined : data.cidade,
         };
 
-        await updateHoliday(holiday.id, holidayData).then(() => {
-          handleRefreshHolidays();
-        });
+        const { id, ...auxHoliday } = holiday;
+
+        if (!isEqual(holidayData, auxHoliday)) {
+          await updateHoliday(id, holidayData).then(() => {
+            handleRefreshHolidays();
+          });
+        } else {
+          setLoadingPartial(false);
+          setHolidayUpdatingPopupActive(false);
+        }
       } catch (err) {
         setLoadingPartial(false);
 
@@ -141,6 +149,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
       holiday,
       initDate,
       isNewDate,
+      setHolidayUpdatingPopupActive,
       type,
       updateHoliday,
     ],

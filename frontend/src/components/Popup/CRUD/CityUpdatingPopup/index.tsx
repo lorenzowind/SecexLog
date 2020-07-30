@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -117,9 +118,16 @@ const CityUpdatingPopup: React.FC<Props> = ({
           obsCidade: data.obsCidade,
         };
 
-        await updateCity(city.id, cityData).then(() => {
-          handleRefreshCities();
-        });
+        const { id, ...auxCity } = city;
+
+        if (!isEqual(cityData, auxCity)) {
+          await updateCity(id, cityData).then(() => {
+            handleRefreshCities();
+          });
+        } else {
+          setLoadingPartial(false);
+          setCityUpdatingPopupActive(false);
+        }
       } catch (err) {
         setLoadingPartial(false);
 
@@ -141,6 +149,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
       isNewFlood,
       positionateFlood,
       selectedRelatedCities,
+      setCityUpdatingPopupActive,
       updateCity,
     ],
   );

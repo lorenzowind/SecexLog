@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -80,9 +81,16 @@ const UserOperationsPopup: React.FC<Props> = ({
         };
 
         if (user) {
-          await updateUser(user.id, userData).then(() => {
-            handleRefreshUsers();
-          });
+          const { id, ...auxUser } = user;
+
+          if (!isEqual(userData, auxUser)) {
+            await updateUser(id, userData).then(() => {
+              handleRefreshUsers();
+            });
+          } else {
+            setLoadingPartial(false);
+            setUserOperationsPopupActive(false);
+          }
         } else {
           await insertUser(userData).then(() => {
             handleRefreshUsers();
@@ -98,7 +106,13 @@ const UserOperationsPopup: React.FC<Props> = ({
         }
       }
     },
-    [handleRefreshUsers, insertUser, updateUser, user],
+    [
+      handleRefreshUsers,
+      insertUser,
+      setUserOperationsPopupActive,
+      updateUser,
+      user,
+    ],
   );
 
   const handleDeleteUser = useCallback(async () => {

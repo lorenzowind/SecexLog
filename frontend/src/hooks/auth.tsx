@@ -2,7 +2,6 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 import api from '../services/api';
 
 interface SignInCredentials {
-  // login: User name to sign in
   login: string;
   senha: string;
 }

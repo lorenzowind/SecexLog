@@ -2,6 +2,7 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
+import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -81,9 +82,16 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
           preference: provider.preference,
         };
 
-        await updateProvider(provider.id, providerData).then(() => {
-          handleRefreshProviders();
-        });
+        const { id, ...auxProvider } = provider;
+
+        if (!isEqual(providerData, auxProvider)) {
+          await updateProvider(id, providerData).then(() => {
+            handleRefreshProviders();
+          });
+        } else {
+          setLoadingPartial(false);
+          setProviderUpdatingPopupActive(false);
+        }
       } catch (err) {
         setLoadingPartial(false);
 
@@ -94,7 +102,12 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
         }
       }
     },
-    [handleRefreshProviders, provider, updateProvider],
+    [
+      handleRefreshProviders,
+      provider,
+      setProviderUpdatingPopupActive,
+      updateProvider,
+    ],
   );
 
   const handleDeleteProvider = useCallback(async () => {
