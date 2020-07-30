@@ -29,6 +29,7 @@
       "prettier"
   ],
   "rules": {
+    "react/jsx-wrap-multilines": "off",
     "camelcase": "off",
     "no-unused-expressions": "off",
     "jsx-a11y/control-has-associated-label": "off",

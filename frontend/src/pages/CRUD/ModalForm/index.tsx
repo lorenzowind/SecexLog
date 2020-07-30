@@ -10,6 +10,7 @@ import getArrayModalImages, {
 } from '../../../utils/getArrayModalImages';
 
 import { useModal, ModalOperationsData } from '../../../hooks/modules/modal';
+import { useToast } from '../../../hooks/toast';
 
 import { Container, Content, InputsContainer } from './styles';
 
@@ -17,6 +18,7 @@ import Header from '../../../components/Header';
 import Menu from '../../../components/Menu';
 import Input from '../../../components/Input';
 import ImageModal from '../../../components/ImageModal';
+import RadioInput from '../../../components/RadioInput';
 import Button from '../../../components/Button';
 import LoadingPage from '../../../components/Loading/LoadingPage';
 
@@ -27,17 +29,16 @@ const ModalForm: React.FC = () => {
 
   const history = useHistory();
 
-  const [isSafe, setIsSafe] = useState(false);
-  const [isCheap, setIsCheap] = useState(false);
-  const [isFast, setIsFast] = useState(false);
-
-  const [modalImageUrl, setModalImageUrl] = useState('');
+  const [safeModal, setSafeModal] = useState('');
+  const [cheapModal, setCheapModal] = useState('');
+  const [fastModal, setFastModal] = useState('');
 
   const [arrayModalImages, setArrayModalImages] = useState(getArrayModalImages);
 
   const [loadingPage, setLoadingPage] = useState(false);
 
   const { insertModal } = useModal();
+  const { addToast } = useToast();
 
   const handleClickModalImage = useCallback((index: number) => {
     setArrayModalImages(state =>
@@ -57,19 +58,27 @@ const ModalForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          name: Yup.string().required('Nome de feriado obrigatório'),
+          name: Yup.string().required('Nome do modal obrigatório'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
+        if (!safeModal || !cheapModal || !fastModal) {
+          throw new Error();
+        }
+
+        const auxModalImage = arrayModalImages.find(
+          modalImage => modalImage.isSelected,
+        );
+
         const ModalData: ModalOperationsData = {
           name: data.name,
-          safety: isSafe,
-          cost: isCheap,
-          fast: isFast,
-          imgUrl: modalImageUrl,
+          safety: safeModal === 'Sim',
+          cost: cheapModal === 'Sim',
+          fast: fastModal === 'Sim',
+          imgUrl: auxModalImage ? auxModalImage.url : '',
         };
 
         setLoadingPage(true);
@@ -87,9 +96,22 @@ const ModalForm: React.FC = () => {
 
           formRef.current?.setErrors(errors);
         }
+
+        addToast({
+          type: 'error',
+          title: 'Erro na criação do modal',
+        });
       }
     },
-    [history, insertModal, isCheap, isFast, isSafe, modalImageUrl],
+    [
+      addToast,
+      arrayModalImages,
+      cheapModal,
+      fastModal,
+      history,
+      insertModal,
+      safeModal,
+    ],
   );
 
   return (
@@ -110,7 +132,7 @@ const ModalForm: React.FC = () => {
             <Form ref={formRef} onSubmit={handleCreate}>
               <section>
                 <strong>Nome do modal</strong>
-                <Input name="nome" type="text" />
+                <Input name="name" type="text" />
               </section>
 
               <section>
@@ -129,6 +151,37 @@ const ModalForm: React.FC = () => {
                     </button>
                   ))}
                 </nav>
+              </section>
+
+              <section>
+                <strong>Esse modal é seguro?</strong>
+                <section>
+                  <RadioInput
+                    name="safety"
+                    options={['Sim', 'Não']}
+                    onChangeValue={setSafeModal}
+                  />
+                </section>
+              </section>
+              <section>
+                <strong>Esse modal é de baixo custo?</strong>
+                <section>
+                  <RadioInput
+                    name="cost"
+                    options={['Sim', 'Não']}
+                    onChangeValue={setCheapModal}
+                  />
+                </section>
+              </section>
+              <section>
+                <strong>Esse modal é rápido?</strong>
+                <section>
+                  <RadioInput
+                    name="speed"
+                    options={['Sim', 'Não']}
+                    onChangeValue={setFastModal}
+                  />
+                </section>
               </section>
 
               <aside>

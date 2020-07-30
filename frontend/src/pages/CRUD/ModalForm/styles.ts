@@ -76,12 +76,21 @@ export const InputsContainer = styled.div`
         display: flex;
         flex-wrap: wrap;
         width: 350px;
-        margin-top: 10px;
+        margin: 10px 0 20px 0;
 
         > button {
           border: 0;
           background: transparent;
           margin: 5px 10px 5px 0;
+        }
+      }
+
+      > section {
+        margin: 10px 0 15px 0;
+
+        span {
+          font-size: 18px;
+          font-weight: 400;
         }
       }
     }
