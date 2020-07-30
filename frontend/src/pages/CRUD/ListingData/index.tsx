@@ -30,14 +30,14 @@ interface ModuleHeaderProps {
     | 'usuários'
     | 'cidades'
     | 'feriados'
-    | 'provedores'
+    | 'prestadores'
     | 'modais'
     | 'trajetos';
   singularName:
     | 'usuário'
     | 'cidade'
     | 'feriado'
-    | 'provedor'
+    | 'prestador'
     | 'modal'
     | 'trajeto';
   name: 'User' | 'City' | 'Holiday' | 'Provider' | 'Modal' | 'Path';
@@ -77,6 +77,7 @@ const ListingData: React.FC = () => {
   const [goCityForm, setGoCityForm] = useState(false);
   const [goHolidayForm, setGoHolidayForm] = useState(false);
   const [goModalForm, setGoModalForm] = useState(false);
+  const [goProviderForm, setGoProviderForm] = useState(false);
   // ---------------------------------------------------------------------------
 
   // states to manage the popups -----------------------------------------------
@@ -161,7 +162,7 @@ const ListingData: React.FC = () => {
             setSearchModals(data.searchModal);
           }
           break;
-        case 'provedor':
+        case 'prestador':
           if (!data.searchProvider) {
             setSearchProviders('');
           } else {
@@ -243,6 +244,9 @@ const ListingData: React.FC = () => {
                 break;
               case 'modal':
                 setGoModalForm(true);
+                break;
+              case 'prestador':
+                setGoProviderForm(true);
                 break;
               default:
                 break;
@@ -527,7 +531,7 @@ const ListingData: React.FC = () => {
   );
 
   const ProvidersTable: React.FC = () => (
-    <Table module="provedor">
+    <Table module="prestador">
       <thead>
         <tr>
           <th>Nome</th>
@@ -562,6 +566,7 @@ const ListingData: React.FC = () => {
       {goCityForm && <Redirect push to="city-form" />}
       {goHolidayForm && <Redirect push to="holiday-form" />}
       {goModalForm && <Redirect push to="modal-form" />}
+      {goProviderForm && <Redirect push to="provider-form" />}
 
       {/* jsx conditions to call the popups -------------------------------- */}
       {userOperationsPopupActive && (
@@ -631,8 +636,8 @@ const ListingData: React.FC = () => {
 
         <DataSection>
           <ModuleHeader
-            pluralName="provedores"
-            singularName="provedor"
+            pluralName="prestadores"
+            singularName="prestador"
             name="Provider"
           />
           <ProvidersTable />

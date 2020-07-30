@@ -58,7 +58,7 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         if (search && response.data.length === 0) {
           addToast({
             type: 'info',
-            title: 'Nenhum provedor encontrado',
+            title: 'Nenhum prestador encontrado',
           });
         }
       }
@@ -66,7 +66,7 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
       addToast({
         type: 'error',
         title: 'Erro na listagem',
-        description: 'Ocorreu um erro na listagem dos provedores.',
+        description: 'Ocorreu um erro na listagem dos prestadores.',
       });
     }
   }, [addToast, search, token]);
@@ -83,14 +83,14 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         if (response) {
           addToast({
             type: 'success',
-            title: 'Provedor criado com sucesso!',
+            title: 'Prestador criado com sucesso!',
           });
         }
       } catch (err) {
         addToast({
           type: 'error',
           title: 'Erro na criação',
-          description: 'Ocorreu um erro na criação do provedor.',
+          description: 'Ocorreu um erro na criação do prestador.',
         });
       }
     },
@@ -109,14 +109,14 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         if (response) {
           addToast({
             type: 'success',
-            title: 'Provedor alterado com sucesso!',
+            title: 'Prestador alterado com sucesso!',
           });
         }
       } catch (err) {
         addToast({
           type: 'error',
           title: 'Erro na alteração',
-          description: 'Ocorreu um erro na alteração do provedor.',
+          description: 'Ocorreu um erro na alteração do prestador.',
         });
       }
     },
@@ -135,14 +135,14 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         if (response) {
           addToast({
             type: 'success',
-            title: 'Provedor removido com sucesso!',
+            title: 'Prestador removido com sucesso!',
           });
         }
       } catch (err) {
         addToast({
           type: 'error',
           title: 'Erro na remoção',
-          description: 'Ocorreu um erro na remoção do provedor.',
+          description: 'Ocorreu um erro na remoção do prestador.',
         });
       }
     },

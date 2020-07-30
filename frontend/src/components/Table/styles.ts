@@ -86,7 +86,7 @@ export const Container = styled.table<Props>`
               min-width: 50px;
             }
           `;
-        case 'provedor':
+        case 'prestador':
           return css`
             max-width: 150px;
             min-width: 150px;
@@ -156,7 +156,7 @@ export const Container = styled.table<Props>`
               min-width: 50px;
             }
           `;
-        case 'provedor':
+        case 'prestador':
           return css`
             max-width: 150px;
             min-width: 150px;
