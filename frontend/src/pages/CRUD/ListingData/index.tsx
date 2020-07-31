@@ -84,6 +84,7 @@ const ListingData: React.FC = () => {
   const [goHolidayForm, setGoHolidayForm] = useState(false);
   const [goModalForm, setGoModalForm] = useState(false);
   const [goProviderForm, setGoProviderForm] = useState(false);
+  const [goPathForm, setGoPathForm] = useState(false);
   // ---------------------------------------------------------------------------
 
   // states to manage the popups -----------------------------------------------
@@ -270,6 +271,9 @@ const ListingData: React.FC = () => {
                 break;
               case 'prestador':
                 setGoProviderForm(true);
+                break;
+              case 'trajeto':
+                setGoPathForm(true);
                 break;
               default:
                 break;
@@ -627,6 +631,7 @@ const ListingData: React.FC = () => {
       {goHolidayForm && <Redirect push to="holiday-form" />}
       {goModalForm && <Redirect push to="modal-form" />}
       {goProviderForm && <Redirect push to="provider-form" />}
+      {goPathForm && <Redirect push to="path-form" />}
 
       {/* jsx conditions to call the popups -------------------------------- */}
       {userOperationsPopupActive && (

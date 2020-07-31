@@ -33,6 +33,11 @@ interface Props extends CityUpdatingPopupProps {
   setCityUpdatingPopupActive(isActive: boolean): void;
 }
 
+interface FilteredHoliday {
+  init: string;
+  nome: string;
+}
+
 const CityUpdatingPopup: React.FC<Props> = ({
   city,
   setCityUpdatingPopupActive,
@@ -61,6 +66,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
   );
 
   const [citiesSelect, setCitiesSelect] = useState<Option[]>([]);
+  const [filteredHolidays, setFilteredHolidays] = useState<FilteredHoliday[]>(
+    [],
+  );
 
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -167,6 +175,19 @@ const CityUpdatingPopup: React.FC<Props> = ({
       setLoadingPartial(false);
     });
   }, [getCities, getHolidays]);
+
+  useEffect(() => {
+    setFilteredHolidays(
+      holidays
+        .filter(holiday => holiday.city_id === city.id)
+        .map(cityHoliday => {
+          return {
+            init: cityHoliday.init,
+            nome: cityHoliday.nome,
+          };
+        }),
+    );
+  }, [city.id, holidays]);
 
   useEffect(() => {
     setCitiesSelect(
@@ -372,18 +393,16 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   />
                 </div>
 
-                {holidays.filter(holid => holid.city_id === city.id).length ? (
+                {filteredHolidays.length ? (
                   <div>
                     <section>
                       <strong>Feriados específicos</strong>
-                      {holidays
-                        .filter(holiday => holiday.city_id === city.id)
-                        .map(cityHoliday => (
-                          <h2 key={cityHoliday.nome}>
-                            {cityHoliday.init.substring(0, 5).concat(' - ')}
-                            {cityHoliday.nome}
-                          </h2>
-                        ))}
+                      {filteredHolidays.map(holiday => (
+                        <h2 key={holiday.nome}>
+                          {holiday.init.substring(0, 5).concat(' - ')}
+                          {holiday.nome}
+                        </h2>
+                      ))}
                     </section>
                   </div>
                 ) : null}

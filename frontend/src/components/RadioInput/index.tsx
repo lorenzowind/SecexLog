@@ -40,6 +40,7 @@ const RadioInput: React.FC<Props> = ({
       <RadioGroup name={name} defaultValue={defaultValue}>
         {options.map(option => (
           <FormControlLabel
+            key={String(option)}
             value={option}
             control={
               <StyledRadio
