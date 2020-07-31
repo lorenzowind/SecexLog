@@ -46,8 +46,11 @@ const PathUpdatingPopup: React.FC<Props> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
 
-  const [categoryPath, setCategoryPath] = useState('');
+  const [categoryPath, setCategoryPath] = useState(
+    path.linha ? 'Linha' : 'Contratado',
+  );
   const [modalSelected, setModalSelected] = useState('');
+  const [providerSelected, setProviderSelected] = useState('');
 
   const [arrivalWeekDay, setArrivalWeekDay] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
@@ -59,7 +62,9 @@ const PathUpdatingPopup: React.FC<Props> = ({
   const [defaultSelectedGoCity, setDefaultSelectedGoCity] = useState('');
   const [defaultSelectedBackCity, setDefaultSelectedBackCity] = useState('');
   const [defaultSelectedModal, setDefaultSelectedModal] = useState('');
-  const [defaultSelectedProvider, setDefaultSelectedProvider] = useState('');
+  const [defaultSelectedProvider, setDefaultSelectedProvider] = useState<
+    FilteredProvider
+  >({} as FilteredProvider);
 
   const [modalsSelect, setModalsSelect] = useState<String[]>([]);
   const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
@@ -125,7 +130,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
           abortEarly: false,
         });
 
-        if (!categoryPath || !arrivalWeekDay || !arrivalTime) {
+        if (!categoryPath || !arrivalWeekDayArray || !arrivalTimeArray) {
           throw new Error();
         }
 
@@ -166,9 +171,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
       }
     },
     [
-      arrivalTime,
       arrivalTimeArray,
-      arrivalWeekDay,
       arrivalWeekDayArray,
       categoryPath,
       handleRefreshPaths,
@@ -217,25 +220,16 @@ const PathUpdatingPopup: React.FC<Props> = ({
       }),
     );
 
-    const foundGoCity = cities.find(city => city.nome === path.initCidade);
-    const foundBackCity = cities.find(city => city.nome === path.endCidade);
-    const foundModal = modals.find(modal => modal.name === path.modal);
-    const foundProvider = providers.find(
-      provider => provider.nome === path.prestNome,
-    );
+    setDefaultSelectedGoCity(path.initCidade);
+    setDefaultSelectedBackCity(path.endCidade);
+    setDefaultSelectedModal(path.modal);
+    setDefaultSelectedProvider({
+      modal: path.modal,
+      nome: path.prestNome,
+    });
 
-    if (foundGoCity) {
-      setDefaultSelectedGoCity(foundGoCity.nome);
-    }
-    if (foundBackCity) {
-      setDefaultSelectedBackCity(foundBackCity.nome);
-    }
-    if (foundModal) {
-      setDefaultSelectedModal(foundModal.name);
-    }
-    if (foundProvider) {
-      setDefaultSelectedProvider(foundProvider.nome);
-    }
+    setModalSelected(path.modal);
+    setProviderSelected(path.prestNome);
   }, [cities, modals, path, providers]);
 
   useEffect(() => {
@@ -281,7 +275,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                         .filter(city => city !== defaultSelectedGoCity)
                         .map(differentCity => (
                           <option
-                            key={String(differentCity)}
+                            key={`go-${differentCity}`}
                             value={String(differentCity)}
                           >
                             {differentCity}
@@ -308,7 +302,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                         .filter(city => city !== defaultSelectedBackCity)
                         .map(differentCity => (
                           <option
-                            key={String(differentCity)}
+                            key={`back-${differentCity}`}
                             value={String(differentCity)}
                           >
                             {differentCity}
@@ -355,27 +349,27 @@ const PathUpdatingPopup: React.FC<Props> = ({
                       <option value="Selecione prestador" disabled>
                         Selecione prestador
                       </option>
-                      <option
-                        key={String(defaultSelectedProvider)}
-                        selected
-                        value={String(defaultSelectedProvider)}
-                      >
-                        {defaultSelectedProvider}
-                      </option>
+                      {defaultSelectedProvider.modal === modalSelected && (
+                        <option
+                          key={String(defaultSelectedProvider.nome)}
+                          selected
+                          value={String(defaultSelectedProvider.nome)}
+                        >
+                          {defaultSelectedProvider.nome}
+                        </option>
+                      )}
                       {providersSelect
-                        .filter(
-                          provider => provider.nome !== defaultSelectedProvider,
-                        )
+                        .filter(provider => provider.nome !== providerSelected)
                         .filter(
                           differentProvider =>
                             differentProvider.modal === modalSelected,
                         )
                         .map(specificProvider => (
                           <option
-                            key={String(specificProvider)}
-                            value={String(specificProvider)}
+                            key={String(specificProvider.nome)}
+                            value={String(specificProvider.nome)}
                           >
-                            {specificProvider}
+                            {specificProvider.nome}
                           </option>
                         ))}
                     </Select>
@@ -419,7 +413,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                   {arrivalWeekDayArray && (
                     <section>
                       {arrivalWeekDayArray.map((day, index) => (
-                        <article key={String(day)}>
+                        <article key={`${index} - ${String(day)}`}>
                           <button
                             type="button"
                             onClick={() => handleRemoveArrivalPair(index)}

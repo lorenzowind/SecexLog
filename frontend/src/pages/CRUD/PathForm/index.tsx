@@ -142,7 +142,7 @@ const PathForm: React.FC = () => {
           abortEarly: false,
         });
 
-        if (!categoryPath || !arrivalWeekDay || !arrivalTime) {
+        if (!categoryPath || !arrivalWeekDayArray || !arrivalTimeArray) {
           throw new Error();
         }
 
@@ -186,9 +186,7 @@ const PathForm: React.FC = () => {
     },
     [
       addToast,
-      arrivalTime,
       arrivalTimeArray,
-      arrivalWeekDay,
       arrivalWeekDayArray,
       categoryPath,
       history,
