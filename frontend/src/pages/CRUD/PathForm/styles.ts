@@ -38,16 +38,37 @@ export const Content = styled.div`
     margin-top: 10px;
   }
 
+  h2 {
+    color: #707070;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 5px 0;
+  }
+
+  h3 {
+    color: #707070;
+    font-size: 36px;
+    font-weight: 600;
+  }
+
+  h4 {
+    color: #707070;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
   hr {
     margin: 5px 0 35px 0;
   }
 
-  aside {
-    display: flex;
-    justify-content: flex-end;
+  form {
+    > aside {
+      display: flex;
+      justify-content: flex-end;
 
-    button {
-      width: 30%;
+      button {
+        width: 30%;
+      }
     }
   }
 `;
@@ -59,23 +80,87 @@ export const InputsContainer = styled.div`
   }
 
   form {
-    > div {
+    div {
+      > div {
+        margin: 10px 0 30px 0;
+
+        > nav {
+          display: flex;
+          flex-direction: row;
+
+          > button {
+            border: 0;
+            background: transparent;
+            margin-right: 10px;
+          }
+        }
+      }
+
+      aside {
+        display: flex;
+
+        > div {
+          margin: 10px 20px 0 0;
+          height: 50px;
+          width: 220px;
+        }
+
+        > button {
+          border: 0;
+          background: transparent;
+        }
+      }
+
+      section {
+        margin: 10px 0 30px 0;
+        display: flex;
+        align-items: center;
+
+        span {
+          font-size: 18px;
+          font-weight: 400;
+        }
+
+        > img {
+          height: 38px;
+        }
+
+        div {
+          display: flex;
+          flex-direction: row;
+          height: 50px;
+          width: 310px;
+        }
+      }
+    }
+
+    > nav {
       > div {
         margin: 10px 0 30px 0;
         height: 50px;
       }
     }
 
-    > section {
+    section {
       display: flex;
       flex-direction: row;
+      justify-content: space-between;
 
-      > div {
+      nav {
+        width: 220px;
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        input[type='number'] {
+          -moz-appearance: textfield;
+        }
+
         > div {
           margin: 10px 0 30px 0;
-          height: 50px;
-          width: 340px;
-          margin-right: 20px;
         }
       }
     }

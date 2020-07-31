@@ -207,121 +207,165 @@ const PathForm: React.FC = () => {
 
           <InputsContainer>
             <Form ref={formRef} onSubmit={handleCreate}>
-              <strong>Adicionar cidades do trajeto</strong>
-              <Select defaultValue="Selecione cidade origem" name="initCidade">
-                <option value="Selecione cidade origem" disabled>
-                  Selecione cidade origem
-                </option>
-                {citiesSelect.map(city => (
-                  <option key={`go-${city}`} value={String(city)}>
-                    {city}
-                  </option>
-                ))}
-              </Select>
+              <div>
+                <strong>Adicionar cidades do trajeto</strong>
+                <section>
+                  <Select
+                    defaultValue="Selecione cidade origem"
+                    name="initCidade"
+                  >
+                    <option value="Selecione cidade origem" disabled>
+                      Selecione cidade origem
+                    </option>
+                    {citiesSelect.map(city => (
+                      <option key={`go-${city}`} value={String(city)}>
+                        {city}
+                      </option>
+                    ))}
+                  </Select>
 
-              <img src={IconGo} alt="Go" />
+                  <img src={IconGo} alt="Go" />
 
-              <Select defaultValue="Selecione cidade destino" name="endCidade">
-                <option value="Selecione cidade destino" disabled>
-                  Selecione cidade destino
-                </option>
-                {citiesSelect.map(city => (
-                  <option key={`back-${city}`} value={String(city)}>
-                    {city}
-                  </option>
-                ))}
-              </Select>
+                  <Select
+                    defaultValue="Selecione cidade destino"
+                    name="endCidade"
+                  >
+                    <option value="Selecione cidade destino" disabled>
+                      Selecione cidade destino
+                    </option>
+                    {citiesSelect.map(city => (
+                      <option key={`back-${city}`} value={String(city)}>
+                        {city}
+                      </option>
+                    ))}
+                  </Select>
+                </section>
+              </div>
 
-              <strong>Escolha o Modal para este trajeto</strong>
-              <Select
-                defaultValue="Selecione modal"
-                name="preference"
-                onChange={e => setModalSelected(e.currentTarget.value)}
-              >
-                <option value="Selecione modal" disabled>
-                  Selecione modal
-                </option>
-                {modalsSelect.map(modal => (
-                  <option key={String(modal)} value={String(modal)}>
-                    {modal}
+              <nav>
+                <strong>Escolha o Modal para este trajeto</strong>
+                <Select
+                  defaultValue="Selecione modal"
+                  name="preference"
+                  onChange={e => setModalSelected(e.currentTarget.value)}
+                >
+                  <option value="Selecione modal" disabled>
+                    Selecione modal
                   </option>
-                ))}
-              </Select>
+                  {modalsSelect.map(modal => (
+                    <option key={String(modal)} value={String(modal)}>
+                      {modal}
+                    </option>
+                  ))}
+                </Select>
+              </nav>
 
               {modalSelected && (
                 <>
-                  <Select defaultValue="Selecione prestador" name="prestNome">
-                    <option value="Selecione prestador" disabled>
-                      Selecione prestador
-                    </option>
-                    {providersSelect
-                      .filter(provider => provider.modal === modalSelected)
-                      .map(specificProvider => (
-                        <option
-                          key={String(specificProvider.nome)}
-                          value={String(specificProvider.nome)}
-                        >
-                          {specificProvider.nome}
-                        </option>
-                      ))}
-                  </Select>
-
-                  <strong>Dia e hora de embarque</strong>
-                  <Input
-                    name="weekDay"
-                    type="text"
-                    placeholder="Dia"
-                    onChangeValue={setArrivalWeekDay}
-                  />
-                  <Input
-                    name="time"
-                    type="text"
-                    placeholder="Hora"
-                    onChangeValue={setArrivalTime}
-                  />
-                  <button type="button" onClick={handleInsertArrivalPair}>
-                    <h3>+</h3>
-                  </button>
-
-                  {arrivalWeekDayArray && (
-                    <>
-                      {arrivalWeekDayArray.map((day, index) => (
-                        <div key={String(day)}>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveArrivalPair(index)}
+                  <nav>
+                    <strong>Selecione o Prestador deste Trajeto</strong>
+                    <Select defaultValue="Selecione prestador" name="prestNome">
+                      <option value="Selecione prestador" disabled>
+                        Selecione prestador
+                      </option>
+                      {providersSelect
+                        .filter(provider => provider.modal === modalSelected)
+                        .map(specificProvider => (
+                          <option
+                            key={String(specificProvider.nome)}
+                            value={String(specificProvider.nome)}
                           >
-                            <h4>X</h4>
-                          </button>
-                          <h2>{`${day}, ${arrivalTimeArray[index]}`}</h2>
-                        </div>
-                      ))}
-                    </>
-                  )}
+                            {specificProvider.nome}
+                          </option>
+                        ))}
+                    </Select>
+                  </nav>
 
-                  <strong>Duração do trecho</strong>
-                  <Input name="duration" type="text" />
+                  <div>
+                    <strong>Dia e hora de embarque</strong>
+                    <aside>
+                      <Select
+                        defaultValue="Selecione dia"
+                        name="weekDay"
+                        onChange={e => setArrivalWeekDay(e.currentTarget.value)}
+                      >
+                        <option value="Selecione dia" disabled>
+                          Selecione dia
+                        </option>
+                        <option value="Segunda-feira">Segunda-feira</option>
+                        <option value="Terça-feira">Terça-feira</option>
+                        <option value="Quarta-feira">Quarta-feira</option>
+                        <option value="Quinta-feira">Quinta-feira</option>
+                        <option value="Sexta-feira">Sexta-feira</option>
+                        <option value="Sábado">Sábado</option>
+                        <option value="Domingo">Domingo</option>
+                      </Select>
+                      <Input
+                        name="time"
+                        type="text"
+                        placeholder="Hora"
+                        onChangeValue={setArrivalTime}
+                      />
+                      <button type="button" onClick={handleInsertArrivalPair}>
+                        <h3>+</h3>
+                      </button>
+                    </aside>
+                    <div>
+                      {arrivalWeekDayArray && (
+                        <>
+                          {arrivalWeekDayArray.map((day, index) => (
+                            <nav key={String(day)}>
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveArrivalPair(index)}
+                              >
+                                <h4>X</h4>
+                              </button>
+                              <h2>{`${day}, ${arrivalTimeArray[index]}`}</h2>
+                            </nav>
+                          ))}
+                        </>
+                      )}
+                    </div>
+                  </div>
 
-                  <strong>Quilometragem (Km)</strong>
-                  <Input name="mileage" type="number" step="any" />
-
-                  <strong>Valor do trecho</strong>
-                  <Input name="cost" type="number" step="any" />
-
-                  <strong>Local de embarque</strong>
-                  <Input name="arrival" type="text" />
-
-                  <strong>Local de desembarque</strong>
-                  <Input name="departure" type="text" />
-
-                  <strong>O modal é:</strong>
                   <section>
-                    <RadioInput
-                      name="category"
-                      options={['Linha', 'Contratado']}
-                      onChangeValue={setCategoryPath}
-                    />
+                    <nav>
+                      <strong>Duração do trecho</strong>
+                      <Input name="duration" type="text" />
+                    </nav>
+
+                    <nav>
+                      <strong>Quilometragem (Km)</strong>
+                      <Input name="mileage" type="number" step="any" />
+                    </nav>
+
+                    <nav>
+                      <strong>Valor do trecho</strong>
+                      <Input name="cost" type="number" step="any" />
+                    </nav>
                   </section>
+
+                  <div>
+                    <strong>Local de embarque</strong>
+                    <Input name="arrival" type="text" />
+                  </div>
+
+                  <div>
+                    <strong>Local de desembarque</strong>
+                    <Input name="departure" type="text" />
+                  </div>
+
+                  <div>
+                    <strong>O modal é:</strong>
+                    <section>
+                      <RadioInput
+                        name="category"
+                        options={['Linha', 'Contratado']}
+                        onChangeValue={setCategoryPath}
+                      />
+                    </section>
+                  </div>
                 </>
               )}
 
