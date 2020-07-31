@@ -23,6 +23,7 @@ import CityUpdatingPopup from '../../../components/Popup/CRUD/CityUpdatingPopup'
 import HolidayUpdatingPopup from '../../../components/Popup/CRUD/HolidayUpdatingPopup';
 import ModalUpdatingPopup from '../../../components/Popup/CRUD/ModalUpdatingPopup';
 import ProviderUpdatingPopup from '../../../components/Popup/CRUD/ProviderUpdatingPopup';
+import PathUpdatingPopup from '../../../components/Popup/CRUD/PathUpdatingPopup';
 
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';
@@ -65,6 +66,10 @@ interface ModalUpdatingPopupProps {
 
 interface ProviderUpdatingPopupProps {
   provider: ProviderState;
+}
+
+interface PathUpdatingPopupProps {
+  path: PathState;
 }
 
 interface SearchData {
@@ -117,6 +122,10 @@ const ListingData: React.FC = () => {
   const [providerUpdatingPopup, setProviderUpdatingPopup] = useState<
     ProviderUpdatingPopupProps
   >({} as ProviderUpdatingPopupProps);
+  const [pathUpdatingPopupActive, setPathUpdatingPopupActive] = useState(false);
+  const [pathUpdatingPopup, setPathUpdatingPopup] = useState<
+    PathUpdatingPopupProps
+  >({} as PathUpdatingPopupProps);
   // ---------------------------------------------------------------------------
 
   // module hooks to make API operations ---------------------------------------
@@ -252,27 +261,27 @@ const ListingData: React.FC = () => {
         <button
           type="button"
           onClick={() => {
-            switch (singularName) {
-              case 'usuário':
+            switch (name) {
+              case 'User':
                 setUserOperationsPopupActive(true);
                 setUserOperationsPopup({
                   operation: 'criar',
                 });
                 setSearchUsers('');
                 break;
-              case 'cidade':
+              case 'City':
                 setGoCityForm(true);
                 break;
-              case 'feriado':
+              case 'Holiday':
                 setGoHolidayForm(true);
                 break;
-              case 'modal':
+              case 'Modal':
                 setGoModalForm(true);
                 break;
-              case 'prestador':
+              case 'Provider':
                 setGoProviderForm(true);
                 break;
-              case 'trajeto':
+              case 'Path':
                 setGoPathForm(true);
                 break;
               default:
@@ -613,7 +622,15 @@ const ListingData: React.FC = () => {
             <td>{path.modal}</td>
             <td>{path.prestNome}</td>
             <td>
-              <button type="button" onClick={() => {}}>
+              <button
+                type="button"
+                onClick={() => {
+                  setPathUpdatingPopupActive(true);
+                  setPathUpdatingPopup({
+                    path,
+                  });
+                }}
+              >
                 <img src={iconEdit} alt="Edit" />
               </button>
             </td>
@@ -664,6 +681,12 @@ const ListingData: React.FC = () => {
         <ProviderUpdatingPopup
           provider={providerUpdatingPopup.provider}
           setProviderUpdatingPopupActive={setProviderUpdatingPopupActive}
+        />
+      )}
+      {pathUpdatingPopupActive && (
+        <PathUpdatingPopup
+          path={pathUpdatingPopup.path}
+          setPathUpdatingPopupActive={setPathUpdatingPopupActive}
         />
       )}
       {/* ------------------------------------------------------------------ */}

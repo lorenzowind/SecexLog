@@ -112,7 +112,13 @@ const PathForm: React.FC = () => {
           duration: Yup.string().required('Duração do trecho obrigatório'),
           cost: Yup.number().required('Valor do trecho obrigatório'),
           mileage: Yup.number().required('Quilometragem obrigatório'),
-          prestNome: Yup.string().required('Nome do prestador obrigatório'),
+          prestNome: Yup.mixed().test(
+            'match',
+            'Nome do prestador obrigatório',
+            () => {
+              return data.prestNome !== 'Selecione prestador';
+            },
+          ),
           initCidade: Yup.mixed().test(
             'match',
             'Cidade origem obrigatória',
@@ -145,10 +151,10 @@ const PathForm: React.FC = () => {
           departure: data.departure,
           contratado: categoryPath === 'Contratado',
           linha: categoryPath === 'Linha',
-          cost: data.cost,
-          mileage: data.mileage,
-          dia: arrivalWeekDayArray.join(', '),
-          hora: arrivalTimeArray.join(', '),
+          cost: Number(data.cost),
+          mileage: Number(data.mileage),
+          dia: arrivalWeekDayArray,
+          hora: arrivalTimeArray,
           duration: data.duration,
           initCidade: data.initCidade,
           endCidade: data.endCidade,
@@ -246,7 +252,7 @@ const PathForm: React.FC = () => {
                 <strong>Escolha o Modal para este trajeto</strong>
                 <Select
                   defaultValue="Selecione modal"
-                  name="preference"
+                  name="modal"
                   onChange={e => setModalSelected(e.currentTarget.value)}
                 >
                   <option value="Selecione modal" disabled>

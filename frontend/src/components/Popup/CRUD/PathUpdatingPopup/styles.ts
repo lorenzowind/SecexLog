@@ -77,11 +77,10 @@ export const Content = styled.div`
 
   form {
     > div {
-      margin: 10px 0;
-
       > section {
-        max-height: 90px;
+        max-height: 100px;
         overflow-y: auto;
+        margin-bottom: 20px;
 
         &::-webkit-scrollbar {
           width: 7px;
@@ -98,33 +97,36 @@ export const Content = styled.div`
         &::-webkit-scrollbar-thumb:hover {
           background: #555;
         }
-      }
 
-      > div {
-        margin-top: 5px;
+        article {
+          display: flex;
+
+          button {
+            margin-right: 10px;
+          }
+        }
       }
     }
 
-    > section {
+    > nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 10px 0;
 
-      > aside {
-        margin-bottom: -5px;
-        strong {
-          margin-right: 10px;
-        }
+      > img {
+        margin: 10px 0 20px 0;
       }
 
-      nav {
-        display: flex;
-        flex-direction: column;
+      > div {
+        width: 185px;
 
         > div {
-          width: 180px;
-          margin-top: 5px;
+          height: 50px;
+          margin: 10px 0 20px 0;
+
+          select {
+            width: 145px;
+          }
         }
       }
     }
@@ -132,36 +134,60 @@ export const Content = styled.div`
     > aside {
       display: flex;
       align-items: center;
-      margin: 10px 0;
-      margin-bottom: 20px;
-
-      > div {
-        width: 150px;
-      }
-
-      > img {
-        margin: 0 10px;
-      }
 
       > button {
-        display: flex;
-        align-items: center;
-        margin-left: 20px;
         border: 0;
         background: transparent;
       }
+
+      > div {
+        width: 165px;
+        margin-right: 15px;
+
+        > div {
+          height: 50px;
+          margin: 10px 0 20px 0;
+        }
+      }
     }
 
-    > nav {
+    > section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      > div {
+        width: 125px;
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        input[type='number'] {
+          -moz-appearance: textfield;
+        }
+
+        > div {
+          height: 50px;
+          margin: 10px 0 20px 0;
+        }
+      }
+    }
+
+    > footer {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
-      margin-top: -10px;
+      margin-bottom: 20px;
 
-      > button {
-        > h4 {
-          margin-right: 10px;
-        }
+      strong {
+        margin-right: 20px;
+      }
+
+      div {
+        display: flex;
+        flex-direction: row;
       }
     }
 

@@ -10,8 +10,8 @@ export interface PathOperationsData {
   endCidade: string;
   modal: string;
   prestNome: string;
-  dia: string;
-  hora: string;
+  dia: string[];
+  hora: string[];
   mileage: number;
   cost: number;
   departure: string;
