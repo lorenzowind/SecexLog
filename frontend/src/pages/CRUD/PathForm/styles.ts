@@ -130,6 +130,10 @@ export const InputsContainer = styled.div`
           flex-direction: row;
           height: 50px;
           width: 310px;
+
+          select {
+            width: 270px;
+          }
         }
       }
     }

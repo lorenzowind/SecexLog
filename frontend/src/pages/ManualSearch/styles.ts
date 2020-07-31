@@ -89,9 +89,12 @@ export const InputsContainer = styled.div`
 
     div {
       height: 57px;
-      width: 75px;
       margin: 0 15px;
       width: max-content;
+
+      select {
+        width: 220px;
+      }
     }
   }
 `;

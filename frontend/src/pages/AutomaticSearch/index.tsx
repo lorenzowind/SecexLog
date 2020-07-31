@@ -58,13 +58,7 @@ const AutomaticSearch: React.FC = () => {
   }, [getCities]);
 
   useEffect(() => {
-    setCitiesSelect(
-      cities.map(city =>
-        city.nome.length > 25
-          ? city.nome.substring(0, 25).concat('...')
-          : city.nome,
-      ),
-    );
+    setCitiesSelect(cities.map(city => city.nome));
   }, [cities]);
 
   useEffect(() => {

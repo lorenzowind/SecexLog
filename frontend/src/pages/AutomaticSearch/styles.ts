@@ -83,6 +83,10 @@ export const InputsContainer = styled.div`
       margin: 15px 0;
       width: max-content;
       animation: ${handleAppearSection} 1s;
+
+      select {
+        width: 280px;
+      }
     }
   }
 

@@ -60,13 +60,7 @@ const ManualSearch: React.FC = () => {
   }, [getCities]);
 
   useEffect(() => {
-    setCitiesSelect(
-      cities.map(city =>
-        city.nome.length > 20
-          ? city.nome.substring(0, 20).concat('...')
-          : city.nome,
-      ),
-    );
+    setCitiesSelect(cities.map(city => city.nome));
   }, [cities]);
 
   useEffect(() => {
