@@ -1,4 +1,5 @@
 import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react';
+import InputMask from 'react-input-mask';
 import { useField } from '@unform/core';
 
 import { Container } from './styles';
@@ -7,6 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   icon?: string;
   isDisabled?: boolean;
+  mask?: string;
   onChangeValue?: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -14,6 +16,7 @@ const Input: React.FC<InputProps> = ({
   name,
   icon,
   isDisabled,
+  mask,
   onChangeValue,
   ...rest
 }) => {
@@ -38,18 +41,20 @@ const Input: React.FC<InputProps> = ({
       isDisabled={isDisabled}
     >
       {icon && <img src={icon} alt="Icon" />}
-      <input
+      <InputMask
+        mask={mask || ''}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         defaultValue={defaultValue}
-        ref={inputRef}
         onChange={e => {
           if (onChangeValue) {
             onChangeValue(e.target.value);
           }
         }}
         {...rest}
-      />
+      >
+        {() => <input ref={inputRef} />}
+      </InputMask>
     </Container>
   );
 };
