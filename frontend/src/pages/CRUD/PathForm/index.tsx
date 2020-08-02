@@ -308,6 +308,7 @@ const PathForm: React.FC = () => {
                         name="time"
                         type="text"
                         placeholder="Hora"
+                        mask="99:99"
                         onChangeValue={setArrivalTime}
                       />
                       <button type="button" onClick={handleInsertArrivalPair}>
@@ -340,7 +341,7 @@ const PathForm: React.FC = () => {
                     </nav>
 
                     <nav>
-                      <strong>Quilometragem (Km)</strong>
+                      <strong>Quilometragem (km)</strong>
                       <Input name="mileage" type="number" step="any" />
                     </nav>
 

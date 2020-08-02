@@ -168,6 +168,7 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
                 <Input
                   name="telefone"
                   type="text"
+                  mask="(999)99999-9999"
                   defaultValue={provider.telefone}
                 />
 

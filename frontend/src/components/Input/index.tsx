@@ -9,6 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon?: string;
   isDisabled?: boolean;
   mask?: string;
+  type: string;
   onChangeValue?: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -17,6 +18,7 @@ const Input: React.FC<InputProps> = ({
   icon,
   isDisabled,
   mask,
+  type,
   onChangeValue,
   ...rest
 }) => {
@@ -41,20 +43,36 @@ const Input: React.FC<InputProps> = ({
       isDisabled={isDisabled}
     >
       {icon && <img src={icon} alt="Icon" />}
-      <InputMask
-        mask={mask || ''}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
-        defaultValue={defaultValue}
-        onChange={e => {
-          if (onChangeValue) {
-            onChangeValue(e.target.value);
-          }
-        }}
-        {...rest}
-      >
-        {() => <input ref={inputRef} />}
-      </InputMask>
+      {mask ? (
+        <InputMask
+          mask={mask || ''}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onChange={e => {
+            if (onChangeValue) {
+              onChangeValue(e.target.value);
+            }
+          }}
+          defaultValue={defaultValue}
+          {...rest}
+        >
+          {() => <input ref={inputRef} type={type} />}
+        </InputMask>
+      ) : (
+        <input
+          ref={inputRef}
+          type={type}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
+          onChange={e => {
+            if (onChangeValue) {
+              onChangeValue(e.target.value);
+            }
+          }}
+          defaultValue={defaultValue}
+          {...rest}
+        />
+      )}
     </Container>
   );
 };

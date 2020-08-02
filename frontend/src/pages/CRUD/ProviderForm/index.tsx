@@ -138,7 +138,7 @@ const ProviderForm: React.FC = () => {
               <section>
                 <div>
                   <strong>Telefone</strong>
-                  <Input name="telefone" type="text" />
+                  <Input name="telefone" type="text" mask="(999)99999-9999" />
                 </div>
                 <div>
                   <strong>Email</strong>
@@ -179,7 +179,15 @@ const ProviderForm: React.FC = () => {
                 {preferenceSelected && (
                   <div>
                     <strong>{preferenceSelected}</strong>
-                    <Input name="preferenceTxt" type="text" />
+                    <Input
+                      name="preferenceTxt"
+                      type="text"
+                      mask={
+                        preferenceSelected === 'CPF'
+                          ? '999.999.999-99'
+                          : '99-999-999/9999-99'
+                      }
+                    />
                   </div>
                 )}
               </section>
