@@ -65,23 +65,29 @@ const UserOperationsPopup: React.FC<Props> = ({
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Insira um email válido'),
-          senha: Yup.string().min(6, 'Senha obrigatória'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
+        let passwordHandled = data.senha;
+
+        if (!passwordHandled && user) {
+          passwordHandled = user.senha;
+        }
+
         const userData: UserOperationsData = {
           nome: data.nome,
           login: data.login,
           cargo: data.cargo,
           email: data.email,
-          senha: data.senha,
+          senha: passwordHandled,
         };
 
         if (user) {
-          const { id, ...auxUser } = user;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { id, createdAt, updatedAt, ...auxUser } = user;
 
           if (!isEqual(userData, auxUser)) {
             await updateUser(id, userData).then(() => {
@@ -181,14 +187,8 @@ const UserOperationsPopup: React.FC<Props> = ({
                   defaultValue={user ? user.email : ''}
                 />
 
-                <strong>Senha</strong>
-                <Input
-                  name="senha"
-                  type="password"
-                  defaultValue={
-                    user?.senha ? '*'.repeat(user.senha.length) : ''
-                  }
-                />
+                <strong>{user ? 'Nova senha' : 'Senha'}</strong>
+                <Input name="senha" type="password" />
 
                 <section>
                   {user ? (

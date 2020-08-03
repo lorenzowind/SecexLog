@@ -12,6 +12,8 @@ export interface ProviderOperationsData {
   modal: string;
   preference: 'CPF' | 'CNPJ';
   preferenceTxt: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ProviderState extends ProviderOperationsData {

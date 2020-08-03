@@ -12,6 +12,8 @@ export interface HolidayOperationsData {
   init: string;
   end: string;
   national: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface HolidayState extends HolidayOperationsData {

@@ -286,6 +286,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
                       <Input
                         name="initDataCheia"
                         type="text"
+                        mask="99/99"
                         onChangeValue={setInitFlood}
                         placeholder="Início"
                       />
@@ -293,6 +294,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
                       <Input
                         name="endDataCheia"
                         type="text"
+                        mask="99/99"
                         onChangeValue={setEndFlood}
                         placeholder="Fim"
                       />

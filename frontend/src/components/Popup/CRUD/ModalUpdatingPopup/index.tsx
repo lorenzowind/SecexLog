@@ -113,7 +113,8 @@ const ModalUpdatingPopup: React.FC<Props> = ({
           imgUrl: auxModalImage ? auxModalImage.url : '',
         };
 
-        const { id, ...auxModal } = modal;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, createdAt, updatedAt, ...auxModal } = modal;
 
         if (!isEqual(modalData, auxModal)) {
           await updateModal(id, modalData).then(() => {

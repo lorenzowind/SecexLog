@@ -11,6 +11,8 @@ export interface UserOperationsData {
   email: string;
   cargo: string;
   senha: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface UserState extends UserOperationsData {

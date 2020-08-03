@@ -16,6 +16,8 @@ export interface CityOperationsData {
   obsCidade?: string;
   latitute?: string;
   longitude?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface CityState extends CityOperationsData {

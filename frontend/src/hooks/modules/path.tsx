@@ -19,6 +19,8 @@ export interface PathOperationsData {
   linha: boolean;
   contratado: boolean;
   duration: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface PathState extends PathOperationsData {

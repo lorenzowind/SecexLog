@@ -11,6 +11,8 @@ export interface ModalOperationsData {
   cost: boolean;
   fast: boolean;
   imgUrl?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface ModalState extends ModalOperationsData {

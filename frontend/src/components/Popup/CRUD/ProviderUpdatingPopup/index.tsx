@@ -82,7 +82,8 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
           preference: provider.preference,
         };
 
-        const { id, ...auxProvider } = provider;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, createdAt, updatedAt, ...auxProvider } = provider;
 
         if (!isEqual(providerData, auxProvider)) {
           await updateProvider(id, providerData).then(() => {

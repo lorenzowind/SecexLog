@@ -120,10 +120,14 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
           national: type === 'Nacional',
           init: auxInitDate,
           end: auxEndDate,
-          cidade: type === 'Nacional' ? undefined : data.cidade,
         };
 
-        const { id, ...auxHoliday } = holiday;
+        if (type === 'Específico') {
+          Object.assign(holidayData, { cidade: data.cidade });
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id, city_id, createdAt, updatedAt, ...auxHoliday } = holiday;
 
         if (!isEqual(holidayData, auxHoliday)) {
           await updateHoliday(id, holidayData).then(() => {
@@ -176,10 +180,12 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
 
     if (foundCity) {
       setDefaultSelectedCity(foundCity.nome);
+      // eslint-disable-next-line no-param-reassign
+      holiday.cidade = foundCity.nome;
     } else {
       setDefaultSelectedCity('Selecione cidade');
     }
-  }, [cities, holiday.city_id, type]);
+  }, [cities, holiday, type]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -249,6 +255,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                       <Input
                         name="init"
                         type="text"
+                        mask="99/99"
                         onChangeValue={setInitDate}
                         placeholder="Início"
                       />
@@ -256,6 +263,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                       <Input
                         name="end"
                         type="text"
+                        mask="99/99"
                         onChangeValue={setEndDate}
                         placeholder="Término"
                       />
