@@ -12,18 +12,19 @@ import { usePath, PathState } from '../../../hooks/modules/path';
 
 import { Container, DataSection } from './styles';
 
-import Header from '../../../components/Header';
-import Menu from '../../../components/Menu';
-import Input from '../../../components/Input';
-import Table from '../../../components/Table';
-import LoadingPartial from '../../../components/Loading/LoadingPartial';
-
-import UserOperationsPopup from '../../../components/Popup/CRUD/UserOperationsPopup';
-import CityUpdatingPopup from '../../../components/Popup/CRUD/CityUpdatingPopup';
-import HolidayUpdatingPopup from '../../../components/Popup/CRUD/HolidayUpdatingPopup';
-import ModalUpdatingPopup from '../../../components/Popup/CRUD/ModalUpdatingPopup';
-import ProviderUpdatingPopup from '../../../components/Popup/CRUD/ProviderUpdatingPopup';
-import PathUpdatingPopup from '../../../components/Popup/CRUD/PathUpdatingPopup';
+import {
+  Header,
+  Menu,
+  Input,
+  Table,
+  LoadingPartial,
+  UserOperationsPopup,
+  CityUpdatingPopup,
+  HolidayUpdatingPopup,
+  ModalUpdatingPopup,
+  ProviderUpdatingPopup,
+  PathUpdatingPopup,
+} from '../../../components';
 
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';

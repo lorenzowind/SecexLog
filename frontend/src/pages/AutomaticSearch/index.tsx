@@ -16,11 +16,13 @@ import {
   ButtonsContainer,
 } from './styles';
 
-import Header from '../../components/Header';
-import Select from '../../components/Select';
-import Button from '../../components/Button';
-import DateInput from '../../components/DateInput';
-import LoadingPartial from '../../components/Loading/LoadingPartial';
+import {
+  Header,
+  Select,
+  Button,
+  DateInput,
+  LoadingPartial,
+} from '../../components';
 
 import logoSecex from '../../assets/logo-secex.png';
 import progressBar from '../../assets/progressBar.png';
@@ -101,7 +103,7 @@ const AutomaticSearch: React.FC = () => {
       } catch (err) {
         addToast({
           type: 'error',
-          title: 'Erro na consulta manual',
+          title: 'Selecione todos os campos',
         });
       }
     },

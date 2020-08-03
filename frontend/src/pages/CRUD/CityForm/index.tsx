@@ -10,16 +10,19 @@ import { useCity, CityOperationsData } from '../../../hooks/modules/city';
 
 import { Container, Content, InputsContainer } from './styles';
 
-import Header from '../../../components/Header';
-import Menu from '../../../components/Menu';
-import Input from '../../../components/Input';
-import Textarea from '../../../components/Textarea';
-import Button from '../../../components/Button';
-import SwitchInput from '../../../components/SwitchInput';
+import {
+  Header,
+  Menu,
+  Input,
+  Textarea,
+  Button,
+  SwitchInput,
+  LoadingPartial,
+  LoadingPage,
+} from '../../../components';
+
 import DateRangeInput, { RangeState } from '../../../components/DateRangeInput';
 import MultiSelect, { Option } from '../../../components/MultiSelect';
-import LoadingPartial from '../../../components/Loading/LoadingPartial';
-import LoadingPage from '../../../components/Loading/LoadingPage';
 
 import iconCrud from '../../../assets/icon-crud-2.png';
 import iconBell from '../../../assets/icon-bell.png';

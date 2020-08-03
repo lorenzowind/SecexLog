@@ -15,13 +15,15 @@ import { useToast } from '../../../hooks/toast';
 
 import { Container, Content, InputsContainer } from './styles';
 
-import Header from '../../../components/Header';
-import Menu from '../../../components/Menu';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import Select from '../../../components/Select';
-import LoadingPartial from '../../../components/Loading/LoadingPartial';
-import LoadingPage from '../../../components/Loading/LoadingPage';
+import {
+  Header,
+  Menu,
+  Input,
+  Button,
+  Select,
+  LoadingPartial,
+  LoadingPage,
+} from '../../../components';
 
 import iconCrud from '../../../assets/icon-crud-2.png';
 

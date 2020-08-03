@@ -14,15 +14,18 @@ import { useCity } from '../../../hooks/modules/city';
 
 import { Container, Content, InputsContainer } from './styles';
 
-import Header from '../../../components/Header';
-import Menu from '../../../components/Menu';
-import Input from '../../../components/Input';
-import Button from '../../../components/Button';
-import Select from '../../../components/Select';
-import SwitchInput from '../../../components/SwitchInput';
+import {
+  Header,
+  Menu,
+  Input,
+  Button,
+  Select,
+  SwitchInput,
+  LoadingPartial,
+  LoadingPage,
+} from '../../../components';
+
 import DateRangeInput, { RangeState } from '../../../components/DateRangeInput';
-import LoadingPartial from '../../../components/Loading/LoadingPartial';
-import LoadingPage from '../../../components/Loading/LoadingPage';
 
 import iconCrud from '../../../assets/icon-crud-2.png';
 

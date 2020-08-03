@@ -14,13 +14,15 @@ import { useToast } from '../../../hooks/toast';
 
 import { Container, Content, InputsContainer } from './styles';
 
-import Header from '../../../components/Header';
-import Menu from '../../../components/Menu';
-import Input from '../../../components/Input';
-import ImageModal from '../../../components/ImageModal';
-import RadioInput from '../../../components/RadioInput';
-import Button from '../../../components/Button';
-import LoadingPage from '../../../components/Loading/LoadingPage';
+import {
+  Header,
+  Menu,
+  Input,
+  ImageModal,
+  RadioInput,
+  Button,
+  LoadingPage,
+} from '../../../components';
 
 import iconCrud from '../../../assets/icon-crud-2.png';
 
