@@ -6,7 +6,7 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   border: solid 1px #707070;
-  border-radius: 13px;
+  border-radius: 35px;
   background-color: #ffffff;
   padding: 0 20px;
 

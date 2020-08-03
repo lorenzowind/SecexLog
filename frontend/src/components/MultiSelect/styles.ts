@@ -10,7 +10,7 @@ export const Container = styled.div`
 
     > div {
       border-color: #707070;
-      border-radius: 13px;
+      border-radius: 20px;
 
       &:nth-child(3) {
         border-radius: 13px;

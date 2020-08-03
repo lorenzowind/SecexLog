@@ -44,7 +44,7 @@ export const DataSection = styled.div`
       justify-content: center;
 
       width: max-content;
-      border-radius: 13px;
+      border-radius: 35px;
       border: solid 1px #707070;
       background-color: #ffffff;
 

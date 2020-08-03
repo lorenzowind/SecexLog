@@ -114,7 +114,7 @@ export const InputsContainer = styled.div`
 
 export const CalendarInput = styled.div`
   background: #fff;
-  border-radius: 13px;
+  border-radius: 35px;
   padding: 16px 16px 16px 0;
   border: 1px solid #707070;
 
