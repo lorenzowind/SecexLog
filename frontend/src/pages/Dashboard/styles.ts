@@ -1,10 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
-interface ModalIconsDivProps {
-  color: string;
-}
-
-interface FeedbacksDivProps {
+interface ColorProps {
   color: string;
 }
 
@@ -26,6 +22,7 @@ export const Container = styled.div`
   nav {
     display: flex;
     flex-direction: row;
+    width: 960px;
   }
 
   padding-top: 100px;
@@ -38,10 +35,10 @@ export const ModalIconsContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 
-  width: 880px;
+  width: 960px;
 `;
 
-export const ModalIcon = styled.div<ModalIconsDivProps>`
+export const ModalIcon = styled.div<ColorProps>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -49,7 +46,7 @@ export const ModalIcon = styled.div<ModalIconsDivProps>`
 
   width: 200px;
   height: 190px;
-  margin: 0 20px 20px 0px;
+  margin: 0 40px 20px 0px;
   border-radius: 35px;
   background: ${props => props.color};
 
@@ -77,13 +74,13 @@ export const ModalIcon = styled.div<ModalIconsDivProps>`
 `;
 
 export const FeedbacksContainer = styled.div`
-  width: 420px;
+  width: 440px;
   height: 400px;
   border-radius: 35px;
   background-color: #ffffff;
   overflow-y: auto;
-  padding: 20px 30px 20px 30px;
-  margin: 10px 10px 0 0;
+  padding: 20px 60px 20px 30px;
+  margin: 10px 20px 30px 0;
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -113,7 +110,7 @@ export const FeedbacksContainer = styled.div`
   }
 `;
 
-export const Feedbacks = styled.div<FeedbacksDivProps>`
+export const Feedbacks = styled.div<ColorProps>`
   display: flex;
   flex-direction: column;
   margin-bottom: 5px;
@@ -152,14 +149,14 @@ export const Feedbacks = styled.div<FeedbacksDivProps>`
 `;
 
 export const ProgressBarsContainer = styled.div`
-  width: 420px;
+  width: 440px;
   height: 400px;
   border-radius: 35px;
   background-color: #ffffff;
   overflow-y: auto;
   margin-top: 20px;
   padding: 50px 30px 0px 30px;
-  margin: 10px 0 0 10px;
+  margin: 10px 0 30px 20px;
 
   &::-webkit-scrollbar {
     width: 7px;

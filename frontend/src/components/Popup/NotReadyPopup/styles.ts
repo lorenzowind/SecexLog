@@ -51,6 +51,7 @@ export const Content = styled.div`
   }
 
   strong {
+    line-height: 40px;
     color: #818181;
     font-size: 40px;
     font-weight: 500;
