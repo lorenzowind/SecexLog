@@ -81,7 +81,7 @@ export const InputsContainer = styled.div`
 
   form {
     div {
-      > div {
+      > nav {
         margin: 10px 0 30px 0;
 
         > nav {
@@ -94,6 +94,11 @@ export const InputsContainer = styled.div`
             margin-right: 10px;
           }
         }
+      }
+
+      > div {
+        margin: 10px 0 30px 0;
+        height: 50px;
       }
 
       aside {
@@ -165,6 +170,7 @@ export const InputsContainer = styled.div`
 
         > div {
           margin: 10px 0 30px 0;
+          height: 50px;
         }
       }
     }

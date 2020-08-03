@@ -85,6 +85,7 @@ export const InputsContainer = styled.div`
 
     strong {
       margin: 0 20px;
+      font-size: 20px;
     }
 
     div {
@@ -101,8 +102,8 @@ export const InputsContainer = styled.div`
 
 export const CalendarInput = styled.div`
   background: #fff;
-  border-radius: 35px;
-  padding: 20px;
+  border-radius: 13px;
+  padding: 16px 16px 16px 0;
   border: 1px solid #707070;
 
   display: flex;
@@ -114,7 +115,7 @@ export const CalendarInput = styled.div`
 
   input {
     flex: 1;
-    width: 95px;
+    width: 75px;
     background: transparent;
     border: 0;
     color: #6c6c80;

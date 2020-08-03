@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import { Props } from './index';
 
 export const Container = styled.table<Props>`
-  border-radius: 25px;
+  border-radius: 13px;
   border: solid 1px #707070;
   background-color: #ffffff;
 

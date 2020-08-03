@@ -401,6 +401,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                       name="time"
                       type="text"
                       placeholder="Hora"
+                      mask="99:99"
                       onChangeValue={setArrivalTime}
                     />
                   </div>
@@ -433,16 +434,18 @@ const PathUpdatingPopup: React.FC<Props> = ({
                     <Input
                       name="duration"
                       type="text"
+                      mask="99:99"
                       defaultValue={path.duration}
                     />
                   </div>
 
                   <div>
-                    <strong>Km</strong>
+                    <strong>Distância</strong>
                     <Input
                       name="mileage"
                       type="number"
                       step="any"
+                      placeholder="Km"
                       defaultValue={path.mileage}
                     />
                   </div>
@@ -452,6 +455,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                       name="cost"
                       type="number"
                       step="any"
+                      placeholder="R$"
                       defaultValue={path.cost}
                     />
                   </div>

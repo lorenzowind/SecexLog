@@ -315,7 +315,7 @@ const PathForm: React.FC = () => {
                         <h3>+</h3>
                       </button>
                     </aside>
-                    <div>
+                    <nav>
                       {arrivalWeekDayArray && (
                         <>
                           {arrivalWeekDayArray.map((day, index) => (
@@ -331,23 +331,33 @@ const PathForm: React.FC = () => {
                           ))}
                         </>
                       )}
-                    </div>
+                    </nav>
                   </div>
 
                   <section>
                     <nav>
                       <strong>Duração do trecho</strong>
-                      <Input name="duration" type="text" />
+                      <Input name="duration" type="text" mask="99:99" />
                     </nav>
 
                     <nav>
-                      <strong>Quilometragem (km)</strong>
-                      <Input name="mileage" type="number" step="any" />
+                      <strong>Distância</strong>
+                      <Input
+                        name="mileage"
+                        type="number"
+                        step="any"
+                        placeholder="Km"
+                      />
                     </nav>
 
                     <nav>
                       <strong>Valor do trecho</strong>
-                      <Input name="cost" type="number" step="any" />
+                      <Input
+                        name="cost"
+                        type="number"
+                        step="any"
+                        placeholder="R$"
+                      />
                     </nav>
                   </section>
 
