@@ -4,6 +4,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
+import { titlesOpinion } from '../../../utils/titlesOpinion';
 
 import { useOpinion, OpinionOperationsData } from '../../../hooks/opinion';
 
@@ -25,7 +26,13 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
 
   const [loadingPartial, setLoadingPartial] = useState(false);
 
-  const { sendOpinion } = useOpinion();
+  const { sendOpinion, getOpinions } = useOpinion();
+
+  const handleRefreshOpinions = useCallback(async () => {
+    await getOpinions().then(() => {
+      setLoadingPartial(false);
+    });
+  }, [getOpinions]);
 
   const handleSend = useCallback(
     async (data: OpinionOperationsData) => {
@@ -51,7 +58,7 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
         };
 
         await sendOpinion(opinionData).then(() => {
-          setLoadingPartial(false);
+          handleRefreshOpinions();
           setOpinionPopupActive(false);
         });
       } catch (err) {
@@ -64,7 +71,7 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
         }
       }
     },
-    [sendOpinion, setOpinionPopupActive],
+    [handleRefreshOpinions, sendOpinion, setOpinionPopupActive],
   );
 
   return (
@@ -88,13 +95,11 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
                   <option value="Selecione um assunto" disabled>
                     Selecione um assunto
                   </option>
-                  <option value="Sistema">Sistema</option>
-                  <option value="Cidades">Cidades</option>
-                  <option value="Modais">Modais</option>
-                  <option value="Prestador de serviços">
-                    Prestador de serviços
-                  </option>
-                  <option value="Trajetos">Trajetos</option>
+                  {titlesOpinion.map(titleOpinion => (
+                    <option key={titleOpinion.name} value={titleOpinion.name}>
+                      {titleOpinion.name}
+                    </option>
+                  ))}
                 </Select>
 
                 <section>

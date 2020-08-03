@@ -18,6 +18,7 @@ interface OpinionContextData {
   opinions: OpinionState[];
   getOpinions(): Promise<void>;
   sendOpinion(opinion: OpinionOperationsData): Promise<void>;
+  removeOpinion(id: number): Promise<void>;
 }
 
 const OpinionContext = createContext<OpinionContextData>(
@@ -76,12 +77,39 @@ const OpinionProvider: React.FC = ({ children }) => {
     [addToast, token],
   );
 
+  const removeOpinion = useCallback(
+    async (id: number) => {
+      try {
+        const response = await api.delete(`opinions/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response) {
+          addToast({
+            type: 'success',
+            title: 'Opinião removida com sucesso!',
+          });
+        }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na remoção',
+          description: 'Ocorreu um erro na remoção da opinião.',
+        });
+      }
+    },
+    [addToast, token],
+  );
+
   return (
     <OpinionContext.Provider
       value={{
         opinions,
         getOpinions,
         sendOpinion,
+        removeOpinion,
       }}
     >
       {children}

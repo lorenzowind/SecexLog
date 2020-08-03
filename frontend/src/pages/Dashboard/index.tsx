@@ -1,33 +1,87 @@
 import React, { useEffect, useCallback, useState } from 'react';
 
-import {
-  getArrayModalIcons,
-  ModalIconState,
-} from '../../utils/getArrayModalFiles';
+import { getArrayModalIcons } from '../../utils/getArrayModalFiles';
+import { titlesOpinion } from '../../utils/titlesOpinion';
 
 import { useModal } from '../../hooks/modules/modal';
+import { useOpinion } from '../../hooks/opinion';
 
-import { Container, ModalIconsContainer, ModalIcon } from './styles';
+import {
+  Container,
+  ModalIconsContainer,
+  ModalIcon,
+  FeedbacksContainer,
+  Feedbacks,
+} from './styles';
 
 import { Header, Menu, LoadingPartial } from '../../components';
 
+interface MessageData {
+  id: number;
+  message: string;
+}
+
+interface FeedbacksData {
+  title: string;
+  titleColor: string;
+  messages: MessageData[];
+}
+
 const Dashboard: React.FC = () => {
   const [loadingPartial, setLoadingPartial] = useState(false);
+
   const [arrayModalIcons, setArrayModalIcons] = useState(getArrayModalIcons);
+  const [arrayFeedbacks, setArrayFeedbacks] = useState<FeedbacksData[]>([]);
 
   const { modals, getModals } = useModal();
+  const { opinions, getOpinions, removeOpinion } = useOpinion();
 
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getModals().then(() => {
+    await Promise.all([getModals(), getOpinions()]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getModals]);
+  }, [getModals, getOpinions]);
+
+  const handleRefreshOpinions = useCallback(async () => {
+    await getOpinions().then(() => {
+      setLoadingPartial(false);
+    });
+  }, [getOpinions]);
+
+  const handleDeleteOpinion = useCallback(
+    async (id: number) => {
+      await removeOpinion(id).then(() => {
+        handleRefreshOpinions();
+      });
+    },
+    [handleRefreshOpinions, removeOpinion],
+  );
 
   useEffect(() => {
     handleGetData();
   }, [handleGetData]);
+
+  useEffect(() => {
+    setArrayFeedbacks(() =>
+      titlesOpinion.map(title => {
+        return {
+          title: title.name,
+          titleColor: title.color,
+          messages: opinions.reduce((newArray: MessageData[], opinion) => {
+            if (opinion.titulo === title.name) {
+              newArray.push({
+                id: opinion.id,
+                message: opinion.desc,
+              });
+            }
+            return newArray;
+          }, []),
+        };
+      }),
+    );
+  }, [opinions]);
 
   useEffect(() => {
     setArrayModalIcons(state =>
@@ -69,6 +123,31 @@ const Dashboard: React.FC = () => {
             </ModalIcon>
           ))}
         </ModalIconsContainer>
+
+        <FeedbacksContainer>
+          <h1>Feedback</h1>
+          <hr />
+          {arrayFeedbacks.map(feedbacks => (
+            <Feedbacks key={feedbacks.title} color={feedbacks.titleColor}>
+              {feedbacks.messages.length ? (
+                <>
+                  <h2>{feedbacks.title}</h2>
+                  {feedbacks.messages.map(feedback => (
+                    <section key={feedback.message}>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteOpinion(feedback.id)}
+                      >
+                        <h3>X</h3>
+                      </button>
+                      <strong>{feedback.message}</strong>
+                    </section>
+                  ))}
+                </>
+              ) : null}
+            </Feedbacks>
+          ))}
+        </FeedbacksContainer>
       </Container>
     </>
   );

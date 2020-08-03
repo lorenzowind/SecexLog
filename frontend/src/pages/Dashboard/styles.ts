@@ -4,6 +4,10 @@ interface ModalIconsDivProps {
   color: string;
 }
 
+interface FeedbacksDivProps {
+  color: string;
+}
+
 const appearFromTop = keyframes`
   from {
     transform: translateY(-200px);
@@ -62,5 +66,79 @@ export const ModalIcon = styled.div<ModalIconsDivProps>`
     font-size: 20px;
     color: #fff;
     font-weight: 400;
+  }
+`;
+
+export const FeedbacksContainer = styled.div`
+  width: 420px;
+  height: 400px;
+  border-radius: 35px;
+  background-color: #ffffff;
+  overflow-y: auto;
+  padding: 20px 30px 20px 30px;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  h1 {
+    color: #292eec;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  hr {
+    margin-bottom: 10px;
+  }
+`;
+
+export const Feedbacks = styled.div<FeedbacksDivProps>`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+
+  h2 {
+    color: ${props => props.color};
+    font-size: 24px;
+    font-weight: 500;
+    word-break: break-all;
+    margin-bottom: 10px;
+  }
+
+  section {
+    display: flex;
+
+    button {
+      border: 0;
+      background: transparent;
+      height: 100%;
+
+      h3 {
+        color: #ff2d2d;
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+
+    strong {
+      color: #818181;
+      font-size: 18px;
+      font-weight: 400;
+      margin-bottom: 5px;
+      margin-left: 20px;
+    }
   }
 `;
