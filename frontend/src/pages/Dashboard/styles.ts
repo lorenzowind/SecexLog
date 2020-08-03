@@ -19,9 +19,16 @@ const appearFromTop = keyframes`
 
 export const Container = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  nav {
+    display: flex;
+    flex-direction: row;
+  }
 
   padding-top: 100px;
-  padding-left: 200px;
 
   animation: ${appearFromTop} 1s;
 `;
@@ -31,7 +38,7 @@ export const ModalIconsContainer = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 
-  width: 480px;
+  width: 880px;
 `;
 
 export const ModalIcon = styled.div<ModalIconsDivProps>`
@@ -52,14 +59,14 @@ export const ModalIcon = styled.div<ModalIconsDivProps>`
 
   img {
     height: 65px;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
   }
 
   h1 {
     font-size: 40px;
     color: #fff;
     font-weight: 600;
-    margin-bottom: 10px;
+    margin: 0 0 10px 0;
   }
 
   strong {
@@ -76,6 +83,7 @@ export const FeedbacksContainer = styled.div`
   background-color: #ffffff;
   overflow-y: auto;
   padding: 20px 30px 20px 30px;
+  margin: 10px 10px 0 0;
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -139,6 +147,43 @@ export const Feedbacks = styled.div<FeedbacksDivProps>`
       font-weight: 400;
       margin-bottom: 5px;
       margin-left: 20px;
+    }
+  }
+`;
+
+export const ProgressBarsContainer = styled.div`
+  width: 420px;
+  height: 400px;
+  border-radius: 35px;
+  background-color: #ffffff;
+  overflow-y: auto;
+  margin-top: 20px;
+  padding: 50px 30px 0px 30px;
+  margin: 10px 0 0 10px;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  section {
+    h1 {
+      padding: 20px 0 35px 0;
+      margin-top: -50px;
+      color: #818181;
+      font-size: 18px;
+      font-weight: 400;
     }
   }
 `;

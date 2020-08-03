@@ -30,6 +30,7 @@ export { default as OpinionPopup } from './Popup/OpinionPopup';
 export { default as RequestPopup } from './Popup/RequestPopup';
 export { default as SignInPopup } from './Popup/SignInPopup';
 
+export { default as ProgressBar } from './ProgressBar';
 export { default as RadioInput } from './RadioInput';
 export { default as Select } from './Select';
 export { default as SwitchInput } from './SwitchInput';

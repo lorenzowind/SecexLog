@@ -12,9 +12,10 @@ import {
   ModalIcon,
   FeedbacksContainer,
   Feedbacks,
+  ProgressBarsContainer,
 } from './styles';
 
-import { Header, Menu, LoadingPartial } from '../../components';
+import { Header, Menu, LoadingPartial, ProgressBar } from '../../components';
 
 interface MessageData {
   id: number;
@@ -124,30 +125,45 @@ const Dashboard: React.FC = () => {
           ))}
         </ModalIconsContainer>
 
-        <FeedbacksContainer>
-          <h1>Feedback</h1>
-          <hr />
-          {arrayFeedbacks.map(feedbacks => (
-            <Feedbacks key={feedbacks.title} color={feedbacks.titleColor}>
-              {feedbacks.messages.length ? (
-                <>
-                  <h2>{feedbacks.title}</h2>
-                  {feedbacks.messages.map(feedback => (
-                    <section key={feedback.message}>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteOpinion(feedback.id)}
-                      >
-                        <h3>X</h3>
-                      </button>
-                      <strong>{feedback.message}</strong>
-                    </section>
-                  ))}
-                </>
-              ) : null}
-            </Feedbacks>
-          ))}
-        </FeedbacksContainer>
+        <nav>
+          <FeedbacksContainer>
+            <h1>Feedback</h1>
+            <hr />
+            {arrayFeedbacks.map(feedbacks => (
+              <Feedbacks key={feedbacks.title} color={feedbacks.titleColor}>
+                {feedbacks.messages.length ? (
+                  <>
+                    <h2>{feedbacks.title}</h2>
+                    {feedbacks.messages.map(feedback => (
+                      <section key={feedback.message}>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteOpinion(feedback.id)}
+                        >
+                          <h3>X</h3>
+                        </button>
+                        <strong>{feedback.message}</strong>
+                      </section>
+                    ))}
+                  </>
+                ) : null}
+              </Feedbacks>
+            ))}
+          </FeedbacksContainer>
+
+          <ProgressBarsContainer>
+            {arrayModalIcons.map(modalIcon => (
+              <section>
+                <ProgressBar
+                  key={`progress-${modalIcon.name}`}
+                  percent={(modalIcon.count / modals.length) * 100}
+                  color={modalIcon.color}
+                />
+                <h1>{modalIcon.name}</h1>
+              </section>
+            ))}
+          </ProgressBarsContainer>
+        </nav>
       </Container>
     </>
   );
