@@ -5,9 +5,10 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
-import getArrayModalImages, {
+import {
+  getArrayModalImages,
   ModalImageState,
-} from '../../../utils/getArrayModalImages';
+} from '../../../utils/getArrayModalFiles';
 
 import { useModal, ModalOperationsData } from '../../../hooks/modules/modal';
 import { useToast } from '../../../hooks/toast';

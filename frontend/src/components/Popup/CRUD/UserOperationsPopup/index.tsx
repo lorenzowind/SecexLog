@@ -65,24 +65,19 @@ const UserOperationsPopup: React.FC<Props> = ({
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Insira um email válido'),
+          senha: Yup.string().min(6, 'Senha obrigatória'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        let passwordHandled = data.senha;
-
-        if (!passwordHandled && user) {
-          passwordHandled = user.senha;
-        }
-
         const userData: UserOperationsData = {
           nome: data.nome,
           login: data.login,
           cargo: data.cargo,
           email: data.email,
-          senha: passwordHandled,
+          senha: data.senha,
         };
 
         if (user) {

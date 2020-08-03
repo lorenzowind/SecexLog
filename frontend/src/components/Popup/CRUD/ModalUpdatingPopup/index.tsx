@@ -5,9 +5,10 @@ import * as Yup from 'yup';
 import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
-import getArrayModalImages, {
+import {
+  getArrayModalImages,
   ModalImageState,
-} from '../../../../utils/getArrayModalImages';
+} from '../../../../utils/getArrayModalFiles';
 
 import {
   useModal,
