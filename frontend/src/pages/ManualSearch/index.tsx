@@ -5,6 +5,7 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
 import { useCity } from '../../hooks/modules/city';
+import { useToast } from '../../hooks/toast';
 
 import {
   Container,
@@ -50,6 +51,7 @@ const ManualSearch: React.FC = () => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { cities, getCities } = useCity();
+  const { addToast } = useToast();
 
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
@@ -104,9 +106,27 @@ const ManualSearch: React.FC = () => {
     ]);
   };
 
-  const handleSearch = useCallback(() => {
-    console.log('Working...');
-  }, []);
+  const handleSearch = useCallback(
+    async (data: Object) => {
+      try {
+        Object.entries(data).forEach(entry => {
+          const value = entry[1];
+          if (
+            value === 'Selecione a cidade de ida' ||
+            value === 'Selecione a cidade de volta'
+          ) {
+            throw new Error();
+          }
+        });
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na consulta manual',
+        });
+      }
+    },
+    [addToast],
+  );
 
   return (
     <>
@@ -198,7 +218,7 @@ const ManualSearch: React.FC = () => {
                 Consulta Automatizada
               </Link>
 
-              <Button type="button">Consultar</Button>
+              <Button type="submit">Consultar</Button>
             </ButtonsContainer>
           </Form>
         </Content>
