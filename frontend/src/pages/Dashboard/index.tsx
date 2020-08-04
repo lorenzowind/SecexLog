@@ -174,7 +174,9 @@ const Dashboard: React.FC = () => {
               <section>
                 <ProgressBar
                   key={`progress-${modalIcon.name}`}
-                  percent={(modalIcon.count / modals.length) * 100}
+                  percent={Number(
+                    ((modalIcon.count / modals.length) * 100).toFixed(2),
+                  )}
                   color={modalIcon.color}
                 />
                 <h1>{modalIcon.name}</h1>
