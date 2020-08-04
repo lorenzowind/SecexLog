@@ -46,7 +46,7 @@ export const ModalIcon = styled.div<ColorProps>`
 
   width: 200px;
   height: 190px;
-  margin: 0 40px 20px 0px;
+  margin: 0 20px 20px 20px;
   border-radius: 35px;
   background: ${props => props.color};
 
@@ -80,7 +80,7 @@ export const FeedbacksContainer = styled.div`
   background-color: #ffffff;
   overflow-y: auto;
   padding: 20px 60px 20px 30px;
-  margin: 10px 20px 30px 0;
+  margin: 10px 20px 30px 20px;
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -156,7 +156,7 @@ export const ProgressBarsContainer = styled.div`
   overflow-y: auto;
   margin-top: 20px;
   padding: 50px 30px 0px 30px;
-  margin: 10px 0 30px 20px;
+  margin: 10px 20px 30px 20px;
 
   &::-webkit-scrollbar {
     width: 7px;

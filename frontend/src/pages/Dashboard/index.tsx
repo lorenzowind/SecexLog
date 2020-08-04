@@ -15,7 +15,13 @@ import {
   ProgressBarsContainer,
 } from './styles';
 
-import { Header, Menu, LoadingPartial, ProgressBar } from '../../components';
+import {
+  Header,
+  Menu,
+  LoadingPartial,
+  ProgressBar,
+  RequestPopup,
+} from '../../components';
 
 interface MessageData {
   id: number;
@@ -34,6 +40,9 @@ const Dashboard: React.FC = () => {
   const [arrayModalIcons, setArrayModalIcons] = useState(getArrayModalIcons);
   const [arrayFeedbacks, setArrayFeedbacks] = useState<FeedbacksData[]>([]);
 
+  const [requestPopupActive, setRequestPopupActive] = useState(false);
+  const [answerId, setAnswerId] = useState(0);
+
   const { modals, getModals } = useModal();
   const { opinions, getOpinions, removeOpinion } = useOpinion();
 
@@ -51,14 +60,12 @@ const Dashboard: React.FC = () => {
     });
   }, [getOpinions]);
 
-  const handleDeleteOpinion = useCallback(
-    async (id: number) => {
-      await removeOpinion(id).then(() => {
-        handleRefreshOpinions();
-      });
-    },
-    [handleRefreshOpinions, removeOpinion],
-  );
+  const handleDeleteOpinion = useCallback(async () => {
+    await removeOpinion(answerId).then(() => {
+      handleRefreshOpinions();
+      setAnswerId(0);
+    });
+  }, [answerId, handleRefreshOpinions, removeOpinion]);
 
   useEffect(() => {
     handleGetData();
@@ -108,6 +115,14 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
+      {requestPopupActive && (
+        <RequestPopup
+          setRequestPopupActive={setRequestPopupActive}
+          handleFunctionToExecute={handleDeleteOpinion}
+          question="Deseja remover este feedback?"
+        />
+      )}
+
       {loadingPartial && <LoadingPartial zIndex={1} />}
 
       <Header isAuthenticated />
@@ -138,7 +153,10 @@ const Dashboard: React.FC = () => {
                       <section key={feedback.message}>
                         <button
                           type="button"
-                          onClick={() => handleDeleteOpinion(feedback.id)}
+                          onClick={() => {
+                            setAnswerId(feedback.id);
+                            setRequestPopupActive(true);
+                          }}
                         >
                           <h3>X</h3>
                         </button>

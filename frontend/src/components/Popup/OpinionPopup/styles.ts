@@ -62,8 +62,9 @@ export const Content = styled.div`
     strong {
       color: #818181;
       font-size: 50px;
+      line-height: 55px;
       font-weight: 500;
-      margin-bottom: 30px;
+      margin: 20px 0;
     }
 
     div {
