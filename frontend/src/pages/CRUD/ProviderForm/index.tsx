@@ -32,7 +32,11 @@ const ProviderForm: React.FC = () => {
 
   const history = useHistory();
 
-  const [preferenceSelected, setPreferenceSelected] = useState('');
+  const [modalSelected, setModalSelected] = useState('Selecione modal');
+  const [preferenceSelected, setPreferenceSelected] = useState(
+    'Selecione preferência',
+  );
+
   const [modalsSelect, setModalsSelect] = useState<String[]>([]);
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -150,7 +154,11 @@ const ProviderForm: React.FC = () => {
 
               <div>
                 <strong>Modal</strong>
-                <Select value="Selecione modal" name="modal">
+                <Select
+                  name="modal"
+                  value={modalSelected}
+                  onChange={e => setModalSelected(e.target.value)}
+                >
                   <option value="Selecione modal" disabled>
                     Selecione modal
                   </option>
@@ -166,11 +174,11 @@ const ProviderForm: React.FC = () => {
                 <div>
                   <strong>Você prefere</strong>
                   <Select
-                    defaultValue="Selecione modal"
                     name="preference"
+                    value={preferenceSelected}
                     onChange={e => setPreferenceSelected(e.currentTarget.value)}
                   >
-                    <option value="Selecione modal" disabled>
+                    <option value="Selecione preferência" disabled>
                       Selecione preferência
                     </option>
                     <option value="CPF">CPF</option>

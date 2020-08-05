@@ -39,6 +39,8 @@ const HolidayForm: React.FC = () => {
     {} as RangeState,
   );
 
+  const [citySelected, setCitySelected] = useState('Selecione cidade');
+
   const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -157,7 +159,11 @@ const HolidayForm: React.FC = () => {
                 <strong>Nome da Cidade</strong>
                 <div>
                   {!isNational ? (
-                    <Select value="Selecione cidade" name="cidade">
+                    <Select
+                      name="cidade"
+                      value={citySelected}
+                      onChange={e => setCitySelected(e.target.value)}
+                    >
                       <option value="Selecione cidade" disabled>
                         Selecione cidade
                       </option>
@@ -169,8 +175,9 @@ const HolidayForm: React.FC = () => {
                     </Select>
                   ) : (
                     <Select
-                      defaultValue="Selecione cidade"
                       name="cidade"
+                      value={citySelected}
+                      onChange={e => setCitySelected(e.target.value)}
                       disabled
                     >
                       <option value="Selecione cidade" disabled>

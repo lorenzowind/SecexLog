@@ -39,9 +39,19 @@ const PathForm: React.FC = () => {
   const history = useHistory();
 
   const [categoryPath, setCategoryPath] = useState('');
-  const [modalSelected, setModalSelected] = useState('');
 
-  const [arrivalWeekDay, setArrivalWeekDay] = useState('');
+  const [modalSelected, setModalSelected] = useState('Selecione modal');
+  const [cityGoSelected, setCityGoSelected] = useState(
+    'Selecione cidade origem',
+  );
+  const [cityBackSelected, setCityBackSelected] = useState(
+    'Selecione cidade destino',
+  );
+  const [providerSelected, setProviderSelected] = useState(
+    'Selecione prestador',
+  );
+
+  const [arrivalWeekDay, setArrivalWeekDay] = useState('Selecione dia');
   const [arrivalTime, setArrivalTime] = useState('');
   const [arrivalWeekDayArray, setArrivalWeekDayArray] = useState<string[]>([]);
   const [arrivalTimeArray, setArrivalTimeArray] = useState<string[]>([]);
@@ -217,8 +227,9 @@ const PathForm: React.FC = () => {
                 <strong>Adicionar cidades do trajeto</strong>
                 <section>
                   <Select
-                    defaultValue="Selecione cidade origem"
                     name="initCidade"
+                    value={cityGoSelected}
+                    onChange={e => setCityGoSelected(e.target.value)}
                   >
                     <option value="Selecione cidade origem" disabled>
                       Selecione cidade origem
@@ -233,8 +244,9 @@ const PathForm: React.FC = () => {
                   <img src={IconGo} alt="Go" />
 
                   <Select
-                    defaultValue="Selecione cidade destino"
                     name="endCidade"
+                    value={cityBackSelected}
+                    onChange={e => setCityBackSelected(e.target.value)}
                   >
                     <option value="Selecione cidade destino" disabled>
                       Selecione cidade destino
@@ -251,8 +263,8 @@ const PathForm: React.FC = () => {
               <nav>
                 <strong>Escolha o Modal para este trajeto</strong>
                 <Select
-                  defaultValue="Selecione modal"
                   name="modal"
+                  value={modalSelected}
                   onChange={e => setModalSelected(e.currentTarget.value)}
                 >
                   <option value="Selecione modal" disabled>
@@ -270,7 +282,11 @@ const PathForm: React.FC = () => {
                 <>
                   <nav>
                     <strong>Selecione o Prestador deste Trajeto</strong>
-                    <Select value="Selecione prestador" name="prestNome">
+                    <Select
+                      name="prestNome"
+                      value={providerSelected}
+                      onChange={e => setProviderSelected(e.target.value)}
+                    >
                       <option value="Selecione prestador" disabled>
                         Selecione prestador
                       </option>
@@ -291,8 +307,8 @@ const PathForm: React.FC = () => {
                     <strong>Dia e hora de embarque</strong>
                     <aside>
                       <Select
-                        defaultValue="Selecione dia"
                         name="weekDay"
+                        value={arrivalWeekDay}
                         onChange={e => setArrivalWeekDay(e.currentTarget.value)}
                       >
                         <option value="Selecione dia" disabled>

@@ -49,8 +49,6 @@ const PathUpdatingPopup: React.FC<Props> = ({
   const [categoryPath, setCategoryPath] = useState(
     path.linha ? 'Linha' : 'Contratado',
   );
-  const [initialModalSelected, setInitialModalSelected] = useState('');
-  const [providerSelected, setProviderSelected] = useState('');
 
   const [arrivalWeekDay, setArrivalWeekDay] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
@@ -227,9 +225,6 @@ const PathUpdatingPopup: React.FC<Props> = ({
       modal: path.modal,
       nome: path.prestNome,
     });
-
-    setInitialModalSelected(path.modal);
-    setProviderSelected(path.prestNome);
   }, [cities, modals, path, providers]);
 
   useEffect(() => {
