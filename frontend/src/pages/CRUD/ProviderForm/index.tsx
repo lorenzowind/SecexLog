@@ -150,7 +150,7 @@ const ProviderForm: React.FC = () => {
 
               <div>
                 <strong>Modal</strong>
-                <Select defaultValue="Selecione modal" name="modal">
+                <Select value="Selecione modal" name="modal">
                   <option value="Selecione modal" disabled>
                     Selecione modal
                   </option>

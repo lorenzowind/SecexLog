@@ -157,7 +157,7 @@ const HolidayForm: React.FC = () => {
                 <strong>Nome da Cidade</strong>
                 <div>
                   {!isNational ? (
-                    <Select defaultValue="Selecione cidade" name="cidade">
+                    <Select value="Selecione cidade" name="cidade">
                       <option value="Selecione cidade" disabled>
                         Selecione cidade
                       </option>

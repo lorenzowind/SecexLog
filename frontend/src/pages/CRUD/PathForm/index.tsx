@@ -270,7 +270,7 @@ const PathForm: React.FC = () => {
                 <>
                   <nav>
                     <strong>Selecione o Prestador deste Trajeto</strong>
-                    <Select defaultValue="Selecione prestador" name="prestNome">
+                    <Select value="Selecione prestador" name="prestNome">
                       <option value="Selecione prestador" disabled>
                         Selecione prestador
                       </option>

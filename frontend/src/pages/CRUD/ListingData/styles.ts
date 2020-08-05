@@ -76,9 +76,23 @@ export const DataSection = styled.div`
     }
   }
 
-  table {
+  > table {
     margin: 20px 0 80px 0;
     padding: 10px 10px;
     height: 250px;
   }
+`;
+
+export const HolidaysTableContainer = styled.div`
+  border-radius: 35px;
+  border: solid 1px #707070;
+  background-color: #ffffff;
+
+  margin: 20px 0 80px 0;
+  padding: 10px 10px;
+  height: 250px;
+
+  overflow-y: auto;
+  display: flex;
+  flex-direction: row;
 `;

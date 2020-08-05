@@ -10,7 +10,7 @@ import { useModal, ModalState } from '../../../hooks/modules/modal';
 import { useProvider, ProviderState } from '../../../hooks/modules/provider';
 import { usePath, PathState } from '../../../hooks/modules/path';
 
-import { Container, DataSection } from './styles';
+import { Container, DataSection, HolidaysTableContainer } from './styles';
 
 import {
   Header,
@@ -419,8 +419,8 @@ const ListingData: React.FC = () => {
   );
 
   const HolidaysTable: React.FC = () => (
-    <Table module="feriado">
-      <div>
+    <HolidaysTableContainer>
+      <Table module="feriado">
         <thead>
           <tr>
             <th>Nacionais</th>
@@ -450,8 +450,8 @@ const ListingData: React.FC = () => {
               </tr>
             ))}
         </tbody>
-      </div>
-      <div>
+      </Table>
+      <Table module="feriado">
         <thead>
           <tr>
             <th>Específicos</th>
@@ -481,8 +481,8 @@ const ListingData: React.FC = () => {
               </tr>
             ))}
         </tbody>
-      </div>
-    </Table>
+      </Table>
+    </HolidaysTableContainer>
   );
 
   const ModalsTable: React.FC = () => (

@@ -181,13 +181,16 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
                 />
 
                 <strong>Modal</strong>
-                <Select defaultValue="Selecione modal" name="modal">
+                <Select
+                  value={String(defaultSelectedModal)}
+                  name="modal"
+                  onChange={e => setDefaultSelectedModal(e.target.value)}
+                >
                   <option value="Selecione modal" disabled>
                     Selecione modal
                   </option>
                   <option
                     key={String(defaultSelectedModal)}
-                    selected
                     value={String(defaultSelectedModal)}
                   >
                     {defaultSelectedModal}

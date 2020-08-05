@@ -49,7 +49,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
   const [categoryPath, setCategoryPath] = useState(
     path.linha ? 'Linha' : 'Contratado',
   );
-  const [modalSelected, setModalSelected] = useState('');
+  const [initialModalSelected, setInitialModalSelected] = useState('');
   const [providerSelected, setProviderSelected] = useState('');
 
   const [arrivalWeekDay, setArrivalWeekDay] = useState('');
@@ -228,7 +228,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
       nome: path.prestNome,
     });
 
-    setModalSelected(path.modal);
+    setInitialModalSelected(path.modal);
     setProviderSelected(path.prestNome);
   }, [cities, modals, path, providers]);
 
@@ -254,19 +254,22 @@ const PathUpdatingPopup: React.FC<Props> = ({
                 <img src={IconClose} alt="Close" />
               </button>
 
-              <h1>Editar Prestador</h1>
+              <h1>Editar Trajeto</h1>
 
               <Form ref={formRef} onSubmit={handleUpdatePath}>
                 <strong>Cidades</strong>
                 <nav>
                   <div>
-                    <Select defaultValue="Selecione cidade" name="initCidade">
+                    <Select
+                      name="initCidade"
+                      value={String(defaultSelectedGoCity)}
+                      onChange={e => setDefaultSelectedGoCity(e.target.value)}
+                    >
                       <option value="Selecione cidade origem" disabled>
                         Selecione cidade origem
                       </option>
                       <option
                         key={String(defaultSelectedGoCity)}
-                        selected
                         value={String(defaultSelectedGoCity)}
                       >
                         {defaultSelectedGoCity}
@@ -287,13 +290,16 @@ const PathUpdatingPopup: React.FC<Props> = ({
                   <img src={IconGo} alt="Go" />
 
                   <div>
-                    <Select defaultValue="Selecione destino" name="endCidade">
+                    <Select
+                      name="endCidade"
+                      value={String(defaultSelectedBackCity)}
+                      onChange={e => setDefaultSelectedBackCity(e.target.value)}
+                    >
                       <option value="Selecione cidade destino" disabled>
                         Selecione cidade destino
                       </option>
                       <option
                         key={String(defaultSelectedBackCity)}
-                        selected
                         value={String(defaultSelectedBackCity)}
                       >
                         {defaultSelectedBackCity}
@@ -316,53 +322,45 @@ const PathUpdatingPopup: React.FC<Props> = ({
                   <div>
                     <strong>Modal</strong>
                     <Select
-                      defaultValue="Selecione modal"
                       name="modal"
-                      onChange={e => setModalSelected(e.currentTarget.value)}
+                      value={defaultSelectedModal}
+                      onChange={e =>
+                        setDefaultSelectedModal(e.currentTarget.value)
+                      }
                     >
                       <option value="Selecione modal" disabled>
                         Selecione modal
                       </option>
-                      <option
-                        key={String(defaultSelectedModal)}
-                        selected
-                        value={String(defaultSelectedModal)}
-                      >
-                        {defaultSelectedModal}
-                      </option>
-                      {modalsSelect
-                        .filter(modal => modal !== defaultSelectedModal)
-                        .map(differentModal => (
-                          <option
-                            key={String(differentModal)}
-                            value={String(differentModal)}
-                          >
-                            {differentModal}
-                          </option>
-                        ))}
+                      {modalsSelect.map(differentModal => (
+                        <option
+                          key={String(differentModal)}
+                          value={String(differentModal)}
+                        >
+                          {differentModal}
+                        </option>
+                      ))}
                     </Select>
                   </div>
 
                   <div>
                     <strong>Nome do Prestador</strong>
-                    <Select defaultValue="Selecione prestador" name="prestNome">
+                    <Select
+                      name="prestNome"
+                      value={defaultSelectedProvider.nome}
+                      onChange={e =>
+                        setDefaultSelectedProvider({
+                          nome: e.target.value,
+                          modal: defaultSelectedProvider.modal,
+                        })
+                      }
+                    >
                       <option value="Selecione prestador" disabled>
                         Selecione prestador
                       </option>
-                      {defaultSelectedProvider.modal === modalSelected && (
-                        <option
-                          key={String(defaultSelectedProvider.nome)}
-                          selected
-                          value={String(defaultSelectedProvider.nome)}
-                        >
-                          {defaultSelectedProvider.nome}
-                        </option>
-                      )}
                       {providersSelect
-                        .filter(provider => provider.nome !== providerSelected)
                         .filter(
                           differentProvider =>
-                            differentProvider.modal === modalSelected,
+                            differentProvider.modal === defaultSelectedModal,
                         )
                         .map(specificProvider => (
                           <option

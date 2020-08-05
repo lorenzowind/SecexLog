@@ -39,6 +39,10 @@ const UserOperationsPopup: React.FC<Props> = ({
   const formRef = useRef<FormHandles>(null);
 
   const [loadingPartial, setLoadingPartial] = useState(false);
+  const [
+    defaultSelectedUserCategory,
+    setDefaultSelectedUserCategory,
+  ] = useState(user ? user.cargo : 'Selecione um cargo');
 
   const { insertUser, updateUser, removeUser, getUsers } = useUser();
 
@@ -162,15 +166,13 @@ const UserOperationsPopup: React.FC<Props> = ({
                 <strong>Cargo</strong>
                 <Select
                   name="cargo"
-                  defaultValue={user ? user.cargo : 'Selecione um cargo'}
+                  value={defaultSelectedUserCategory}
+                  onChange={e => setDefaultSelectedUserCategory(e.target.value)}
                 >
-                  {user?.cargo ? (
-                    <option value={user.cargo}>{user.cargo}</option>
-                  ) : (
-                    <option value="Selecione um cargo" disabled>
-                      Selecione um cargo
-                    </option>
-                  )}
+                  <option value="Selecione um cargo" disabled>
+                    Selecione um cargo
+                  </option>
+
                   <option value="Administrador">Administrador</option>
                   <option value="Usuário">Usuário</option>
                 </Select>

@@ -223,13 +223,16 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                 {type === 'Específico' && (
                   <div>
                     <strong>Cidade</strong>
-                    <Select defaultValue="Selecione cidade" name="cidade">
+                    <Select
+                      value={String(defaultSelectedCity)}
+                      name="cidade"
+                      onChange={e => setDefaultSelectedCity(e.target.value)}
+                    >
                       <option value="Selecione cidade" disabled>
                         Selecione cidade
                       </option>
                       <option
                         key={String(defaultSelectedCity)}
-                        selected
                         value={String(defaultSelectedCity)}
                       >
                         {defaultSelectedCity}

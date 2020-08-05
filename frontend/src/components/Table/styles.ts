@@ -29,8 +29,8 @@ export const Container = styled.table<Props>`
   ${props =>
     props.module === 'feriado' &&
     css`
-      display: flex;
-      flex-direction: row;
+      border: 0;
+      border-radius: 0;
     `}
 
   th {
@@ -77,11 +77,6 @@ export const Container = styled.table<Props>`
             min-width: 280px;
 
             &:nth-child(2) {
-              max-width: 50px;
-              min-width: 50px;
-            }
-
-            &:nth-child(4) {
               max-width: 50px;
               min-width: 50px;
             }
@@ -148,11 +143,6 @@ export const Container = styled.table<Props>`
             min-width: 280px;
 
             &:nth-child(2) {
-              max-width: 50px;
-              min-width: 50px;
-            }
-
-            &:nth-child(4) {
               max-width: 50px;
               min-width: 50px;
             }

@@ -45,6 +45,7 @@ const Input: React.FC<InputProps> = ({
       {icon && <img src={icon} alt="Icon" />}
       {mask ? (
         <InputMask
+          inputRef={inputRef}
           mask={mask || ''}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
@@ -55,9 +56,7 @@ const Input: React.FC<InputProps> = ({
           }}
           defaultValue={defaultValue}
           {...rest}
-        >
-          {() => <input ref={inputRef} type={type} />}
-        </InputMask>
+        />
       ) : (
         <input
           ref={inputRef}
