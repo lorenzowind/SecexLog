@@ -33,7 +33,7 @@ export const Content = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px 120px;
+    padding: 30px 120px;
 
     > button {
       &:first-child {
@@ -61,10 +61,10 @@ export const Content = styled.div`
 
     strong {
       color: #818181;
-      font-size: 50px;
+      font-size: 40px;
       line-height: 55px;
       font-weight: 500;
-      margin: 20px 0;
+      margin: 20px 20px;
     }
 
     div {

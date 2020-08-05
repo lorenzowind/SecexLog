@@ -48,7 +48,7 @@ export const Content = styled.div`
     text-align: center;
     color: #818181;
     line-height: 55px;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 500;
     margin: 20px 0;
     width: 350px;

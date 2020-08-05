@@ -308,9 +308,7 @@ const PathForm: React.FC = () => {
                       </Select>
                       <Input
                         name="time"
-                        type="text"
-                        placeholder="Hora"
-                        mask="99:99"
+                        type="time"
                         onChangeValue={setArrivalTime}
                       />
                       <button type="button" onClick={handleInsertArrivalPair}>
@@ -339,7 +337,7 @@ const PathForm: React.FC = () => {
                   <section>
                     <nav>
                       <strong>Duração do trecho</strong>
-                      <Input name="duration" type="text" mask="99:99" />
+                      <Input name="duration" type="time" />
                     </nav>
 
                     <nav>

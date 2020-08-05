@@ -399,9 +399,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                   <div>
                     <Input
                       name="time"
-                      type="text"
-                      placeholder="Hora"
-                      mask="99:99"
+                      type="time"
                       onChangeValue={setArrivalTime}
                     />
                   </div>
@@ -433,8 +431,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                     <strong>Duração</strong>
                     <Input
                       name="duration"
-                      type="text"
-                      mask="99:99"
+                      type="time"
                       defaultValue={path.duration}
                     />
                   </div>
