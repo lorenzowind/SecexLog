@@ -171,9 +171,8 @@ const Dashboard: React.FC = () => {
 
           <ProgressBarsContainer>
             {arrayModalIcons.map(modalIcon => (
-              <section>
+              <section key={`progress-${modalIcon.name}`}>
                 <ProgressBar
-                  key={`progress-${modalIcon.name}`}
                   percent={Number(
                     ((modalIcon.count / modals.length) * 100).toFixed(2),
                   )}

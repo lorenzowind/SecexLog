@@ -31,7 +31,7 @@ export const Content = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 40px 80px;
+  padding: 50px 80px;
 
   form {
     display: flex;
@@ -59,7 +59,7 @@ export const Content = styled.div`
 
   strong {
     color: #818181;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 500;
     margin-bottom: 15px;
   }
