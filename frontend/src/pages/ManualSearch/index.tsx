@@ -30,25 +30,11 @@ import iconGo from '../../assets/icon-go.png';
 import iconBack from '../../assets/icon-back.png';
 import iconCalendar from '../../assets/icon-calendar.png';
 
-interface PathData {
-  index: number;
-  cityGo: string;
-  cityBack: string;
-  date: Date;
-}
-
 const ManualSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
-  const [pathsData, setPathsData] = useState<PathData[]>([
-    {
-      index: 1,
-      cityGo: '',
-      cityBack: '',
-      date: new Date(),
-    },
-  ]);
+  const [pathsDate, setPathsDate] = useState<Date[]>([new Date()]);
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -74,38 +60,25 @@ const ManualSearch: React.FC = () => {
     }
   }, [handleGetCities, isLoaded]);
 
-  const handleSetDate = useCallback((path: PathData, value: Date) => {
-    setPathsData(state =>
-      state.map(element => {
-        if (element === path) {
-          return {
-            cityBack: path.cityBack,
-            cityGo: path.cityGo,
-            index: path.index,
-            date: value,
-          };
+  const handleSetDate = useCallback((index, value: Date) => {
+    setPathsDate(state =>
+      state.map((date, curIndex) => {
+        if (curIndex === index) {
+          return value;
         }
-        return element;
+        return date;
       }),
     );
   }, []);
 
   const handleDecreasePathNumber = () => {
-    if (pathsData.length > 1) {
-      setPathsData(state => state.slice(0, pathsData.length - 1));
+    if (pathsDate.length > 1) {
+      setPathsDate(state => state.slice(0, pathsDate.length - 1));
     }
   };
 
   const handleIncreasePathNumber = () => {
-    setPathsData([
-      ...pathsData,
-      {
-        index: pathsData.length + 1,
-        cityGo: '',
-        cityBack: '',
-        date: new Date(),
-      },
-    ]);
+    setPathsDate([...pathsDate, new Date()]);
   };
 
   const handleSearch = useCallback(
@@ -144,23 +117,26 @@ const ManualSearch: React.FC = () => {
 
           <Form ref={formRef} onSubmit={handleSearch}>
             <InputsContainer>
-              {pathsData.map(path => (
-                <section key={`path-${String(path.index)}`}>
+              {pathsDate.map((path, index) => (
+                <section key={`path-${String(index)}`}>
                   <strong>
                     Trajeto
-                    {` ${path.index}`}
+                    {` ${index + 1}`}
                   </strong>
 
                   <Select
                     defaultValue="Selecione a cidade de ida"
-                    name={`ida-${path.index}`}
+                    name={`ida-${index}`}
                     icon={iconGo}
                   >
                     <option value="Selecione a cidade de ida" disabled>
                       Selecione a cidade de ida
                     </option>
-                    {citiesSelect.map((city, index) => (
-                      <option key={`go-${String(index)}`} value={String(city)}>
+                    {citiesSelect.map((city, cityindex) => (
+                      <option
+                        key={`goCity-${String(cityindex)}`}
+                        value={String(city)}
+                      >
                         {city}
                       </option>
                     ))}
@@ -168,15 +144,15 @@ const ManualSearch: React.FC = () => {
 
                   <Select
                     defaultValue="Selecione a cidade de volta"
-                    name={`volta-${path.index}`}
+                    name={`volta-${index}`}
                     icon={iconBack}
                   >
                     <option value="Selecione a cidade de volta" disabled>
                       Selecione a cidade de volta
                     </option>
-                    {citiesSelect.map((city, index) => (
+                    {citiesSelect.map((city, cityIndex) => (
                       <option
-                        key={`back-${String(index)}`}
+                        key={`backCity-${String(cityIndex)}`}
                         value={String(city)}
                       >
                         {city}
@@ -186,8 +162,8 @@ const ManualSearch: React.FC = () => {
 
                   <CalendarInput>
                     <DateInput
-                      date={path.date}
-                      setDate={value => handleSetDate(path, value)}
+                      date={path}
+                      setDate={value => handleSetDate(index, value)}
                     />
                     <img src={iconCalendar} alt="Icon" />
                   </CalendarInput>
@@ -197,7 +173,7 @@ const ManualSearch: React.FC = () => {
 
             <OptionsContainer>
               <ul>
-                {pathsData.length > 1 && (
+                {pathsDate.length > 1 && (
                   <li>
                     <button type="button" onClick={handleDecreasePathNumber}>
                       <b>-</b>

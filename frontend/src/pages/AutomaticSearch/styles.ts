@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 const appearFromLeft = keyframes`
   from {
-    transform: translateX(-100px);
+    transform: translateX(-50px);
   }
   to {
     transform: translateX(0);
@@ -184,14 +184,14 @@ export const ButtonsContainer = styled.div`
     text-decoration: none;
     font-size: 20px;
     white-space: nowrap;
-    margin-right: 30px;
+    margin-left: 30px;
 
     svg {
-      margin-right: 8px;
+      margin-left: 8px;
     }
   }
 
   button {
-    margin-left: 30px;
+    margin-right: 30px;
   }
 `;

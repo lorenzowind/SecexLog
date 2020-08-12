@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 const appearFromLeft = keyframes`
   from {
-    transform: translateX(-100px);
+    transform: translateX(50px);
   }
   to {
     transform: translateX(0);

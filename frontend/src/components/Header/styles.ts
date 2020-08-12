@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 const appearFromTop = keyframes`
   from {
-    transform: translateY(-200px);
+    transform: translateY(-100px);
   }
   to {
     transform: translateX(0);

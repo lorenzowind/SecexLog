@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
+import { FiArrowRight } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
@@ -30,23 +30,14 @@ import iconGo from '../../assets/icon-go.png';
 import iconBack from '../../assets/icon-back.png';
 import iconCalendar from '../../assets/icon-calendar.png';
 
-interface PathData {
-  index: number;
-  cityBack: string;
-}
-
 const AutomaticSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
   const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [initialDate, setInitialDate] = useState<Date>(new Date());
   const [finalDate, setFinalDate] = useState<Date>(new Date());
-  const [pathsData, setPathsData] = useState<PathData[]>([
-    {
-      index: 1,
-      cityBack: '',
-    },
-  ]);
+  const [pathsControl, setPathsControl] = useState([1]);
+
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -73,19 +64,13 @@ const AutomaticSearch: React.FC = () => {
   }, [handleGetCities, isLoaded]);
 
   const handleDecreasePathNumber = () => {
-    if (pathsData.length > 1) {
-      setPathsData(state => state.slice(0, pathsData.length - 1));
+    if (pathsControl.length > 1) {
+      setPathsControl(state => state.slice(0, pathsControl.length - 1));
     }
   };
 
   const handleIncreasePathNumber = () => {
-    setPathsData([
-      ...pathsData,
-      {
-        index: pathsData.length + 1,
-        cityBack: '',
-      },
-    ]);
+    setPathsControl([...pathsControl, pathsControl.length + 1]);
   };
 
   const handleSearch = useCallback(
@@ -140,12 +125,12 @@ const AutomaticSearch: React.FC = () => {
                   ))}
                 </Select>
 
-                {pathsData.map(path => (
+                {pathsControl.map(path => (
                   <Select
                     defaultValue="Selecione a cidade para auditoria"
                     icon={iconBack}
-                    key={`path-${String(path.index)}`}
-                    name={`volta-${path.index}`}
+                    key={`path-${String(path)}`}
+                    name={`auditada-${path}`}
                   >
                     <option value="Selecione a cidade para auditoria" disabled>
                       Selecione a cidade para auditoria
@@ -177,7 +162,7 @@ const AutomaticSearch: React.FC = () => {
 
             <OptionsContainer>
               <ul>
-                {pathsData.length > 1 && (
+                {pathsControl.length > 1 && (
                   <li>
                     <button type="button" onClick={handleDecreasePathNumber}>
                       <b>-</b>
@@ -195,12 +180,12 @@ const AutomaticSearch: React.FC = () => {
             </OptionsContainer>
 
             <ButtonsContainer>
-              <Link to="/">
-                <FiArrowLeft size={24} />
-                Consulta Manual
-              </Link>
-
               <Button type="submit">Consultar</Button>
+
+              <Link to="/">
+                Consulta Manual
+                <FiArrowRight size={24} />
+              </Link>
             </ButtonsContainer>
           </Form>
         </Content>
