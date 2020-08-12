@@ -278,127 +278,123 @@ const PathForm: React.FC = () => {
                 </Select>
               </nav>
 
-              {modalSelected && (
-                <>
-                  <nav>
-                    <strong>Selecione o Prestador deste Trajeto</strong>
-                    <Select
-                      name="prestNome"
-                      value={providerSelected}
-                      onChange={e => setProviderSelected(e.target.value)}
-                    >
-                      <option value="Selecione prestador" disabled>
-                        Selecione prestador
-                      </option>
-                      {providersSelect
-                        .filter(provider => provider.modal === modalSelected)
-                        .map(specificProvider => (
-                          <option
-                            key={String(specificProvider.nome)}
-                            value={String(specificProvider.nome)}
-                          >
-                            {specificProvider.nome}
-                          </option>
-                        ))}
-                    </Select>
-                  </nav>
-
-                  <div>
-                    <strong>Dia e hora de embarque</strong>
-                    <aside>
-                      <Select
-                        name="weekDay"
-                        value={arrivalWeekDay}
-                        onChange={e => setArrivalWeekDay(e.currentTarget.value)}
+              <nav>
+                <strong>Selecione o Prestador deste Trajeto</strong>
+                <Select
+                  name="prestNome"
+                  value={providerSelected}
+                  onChange={e => setProviderSelected(e.target.value)}
+                >
+                  <option value="Selecione prestador" disabled>
+                    Selecione prestador
+                  </option>
+                  {providersSelect
+                    .filter(provider => provider.modal === modalSelected)
+                    .map(specificProvider => (
+                      <option
+                        key={String(specificProvider.nome)}
+                        value={String(specificProvider.nome)}
                       >
-                        <option value="Selecione dia" disabled>
-                          Selecione dia
-                        </option>
-                        <option value="Segunda-feira">Segunda-feira</option>
-                        <option value="Terça-feira">Terça-feira</option>
-                        <option value="Quarta-feira">Quarta-feira</option>
-                        <option value="Quinta-feira">Quinta-feira</option>
-                        <option value="Sexta-feira">Sexta-feira</option>
-                        <option value="Sábado">Sábado</option>
-                        <option value="Domingo">Domingo</option>
-                      </Select>
-                      <Input
-                        name="time"
-                        type="time"
-                        onChangeValue={setArrivalTime}
-                      />
-                      <button type="button" onClick={handleInsertArrivalPair}>
-                        <h3>+</h3>
-                      </button>
-                    </aside>
-                    <nav>
-                      {arrivalWeekDayArray && (
-                        <>
-                          {arrivalWeekDayArray.map((day, index) => (
-                            <nav key={String(day)}>
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveArrivalPair(index)}
-                              >
-                                <h4>X</h4>
-                              </button>
-                              <h2>{`${day}, ${arrivalTimeArray[index]}`}</h2>
-                            </nav>
-                          ))}
-                        </>
-                      )}
-                    </nav>
-                  </div>
+                        {specificProvider.nome}
+                      </option>
+                    ))}
+                </Select>
+              </nav>
 
-                  <section>
-                    <nav>
-                      <strong>Duração do trecho</strong>
-                      <Input name="duration" type="time" />
-                    </nav>
+              <div>
+                <strong>Dia e hora de embarque</strong>
+                <aside>
+                  <Select
+                    name="weekDay"
+                    value={arrivalWeekDay}
+                    onChange={e => setArrivalWeekDay(e.currentTarget.value)}
+                  >
+                    <option value="Selecione dia" disabled>
+                      Selecione dia
+                    </option>
+                    <option value="Segunda-feira">Segunda-feira</option>
+                    <option value="Terça-feira">Terça-feira</option>
+                    <option value="Quarta-feira">Quarta-feira</option>
+                    <option value="Quinta-feira">Quinta-feira</option>
+                    <option value="Sexta-feira">Sexta-feira</option>
+                    <option value="Sábado">Sábado</option>
+                    <option value="Domingo">Domingo</option>
+                  </Select>
+                  <Input
+                    name="time"
+                    type="time"
+                    onChangeValue={setArrivalTime}
+                  />
+                  <button type="button" onClick={handleInsertArrivalPair}>
+                    <h3>+</h3>
+                  </button>
+                </aside>
+                <nav>
+                  {arrivalWeekDayArray && (
+                    <>
+                      {arrivalWeekDayArray.map((day, index) => (
+                        <nav key={String(day)}>
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveArrivalPair(index)}
+                          >
+                            <h4>X</h4>
+                          </button>
+                          <h2>{`${day}, ${arrivalTimeArray[index]}`}</h2>
+                        </nav>
+                      ))}
+                    </>
+                  )}
+                </nav>
+              </div>
 
-                    <nav>
-                      <strong>Distância</strong>
-                      <Input
-                        name="mileage"
-                        type="number"
-                        step="any"
-                        placeholder="Km"
-                      />
-                    </nav>
+              <section>
+                <nav>
+                  <strong>Duração do trecho</strong>
+                  <Input name="duration" type="time" />
+                </nav>
 
-                    <nav>
-                      <strong>Valor do trecho</strong>
-                      <Input
-                        name="cost"
-                        type="number"
-                        step="any"
-                        placeholder="R$"
-                      />
-                    </nav>
-                  </section>
+                <nav>
+                  <strong>Distância</strong>
+                  <Input
+                    name="mileage"
+                    type="number"
+                    step="any"
+                    placeholder="Km"
+                  />
+                </nav>
 
-                  <div>
-                    <strong>Local de embarque</strong>
-                    <Input name="arrival" type="text" />
-                  </div>
+                <nav>
+                  <strong>Valor do trecho</strong>
+                  <Input
+                    name="cost"
+                    type="number"
+                    step="any"
+                    placeholder="R$"
+                  />
+                </nav>
+              </section>
 
-                  <div>
-                    <strong>Local de desembarque</strong>
-                    <Input name="departure" type="text" />
-                  </div>
+              <div>
+                <strong>Local de embarque</strong>
+                <Input name="arrival" type="text" />
+              </div>
 
-                  <div>
-                    <strong>O modal é:</strong>
-                    <section>
-                      <RadioInput
-                        name="category"
-                        options={['Linha', 'Contratado']}
-                        onChangeValue={setCategoryPath}
-                      />
-                    </section>
-                  </div>
-                </>
-              )}
+              <div>
+                <strong>Local de desembarque</strong>
+                <Input name="departure" type="text" />
+              </div>
+
+              <div>
+                <strong>O modal é:</strong>
+                <section>
+                  <RadioInput
+                    name="category"
+                    options={['Linha', 'Contratado']}
+                    onChangeValue={setCategoryPath}
+                  />
+                </section>
+              </div>
 
               <aside>
                 <Button type="submit">Criar</Button>

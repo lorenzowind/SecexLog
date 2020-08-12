@@ -15,12 +15,12 @@ export default createGlobalStyle`
   }
 
   body, input, button, textarea, strong {
-    font-family: 'Roboto', serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 16px;
   }
 
   h1, h2, h3, h4, h5, h6, strong {
-    font-family: 'Roboto', serif;
+    font-family: 'Roboto', sans-serif;
     font-weight: 400;
   }
 

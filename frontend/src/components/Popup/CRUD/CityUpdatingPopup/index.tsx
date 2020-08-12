@@ -264,7 +264,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
                     <strong>Latitude</strong>
                     <Input
                       name="latitute"
-                      type="text"
+                      type="number"
                       defaultValue={city.latitute}
                     />
                   </nav>
@@ -273,7 +273,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
                     <strong>Longitude</strong>
                     <Input
                       name="longitude"
-                      type="text"
+                      type="number"
                       defaultValue={city.longitude}
                     />
                   </nav>

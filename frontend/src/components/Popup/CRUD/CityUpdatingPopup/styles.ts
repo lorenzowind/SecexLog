@@ -122,6 +122,16 @@ export const Content = styled.div`
         display: flex;
         flex-direction: column;
 
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+
+        input[type='number'] {
+          -moz-appearance: textfield;
+        }
+
         > div {
           width: 180px;
           margin-top: 5px;
