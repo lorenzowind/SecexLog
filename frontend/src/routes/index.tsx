@@ -7,7 +7,7 @@ import ManualSearch from '../pages/ManualSearch';
 import AutomaticSearch from '../pages/AutomaticSearch';
 import ResultSearch from '../pages/ResultSearch';
 
-import Error from '../pages/Error';
+import NotFound from '../pages/NotFound';
 
 // Authenticated Routes
 import Dashboard from '../pages/Dashboard';
@@ -34,7 +34,7 @@ const Routes: React.FC = () => (
     <Route path="/path-form" component={PathForm} isPrivate />
     <Route path="/provider-form" component={ProviderForm} isPrivate />
 
-    <Route path="*" component={Error} />
+    <Route path="*" component={NotFound} />
   </Switch>
 );
 
