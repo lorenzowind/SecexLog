@@ -4,6 +4,7 @@ import { AuthProvider } from './auth';
 import { ToastProvider } from './toast';
 
 import { OpinionProvider } from './opinion';
+import { SearchResultProvider } from './searchResult';
 
 import ModulesProvider from './modules';
 
@@ -11,7 +12,9 @@ const AppProvider: React.FC = ({ children }) => (
   <AuthProvider>
     <ToastProvider>
       <OpinionProvider>
-        <ModulesProvider>{children}</ModulesProvider>
+        <SearchResultProvider>
+          <ModulesProvider>{children}</ModulesProvider>
+        </SearchResultProvider>
       </OpinionProvider>
     </ToastProvider>
   </AuthProvider>
