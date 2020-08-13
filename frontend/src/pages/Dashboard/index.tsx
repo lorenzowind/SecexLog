@@ -127,7 +127,7 @@ const Dashboard: React.FC = () => {
 
       <Header isAuthenticated />
 
-      <Menu />
+      <Menu isAuthenticated />
 
       <Container>
         <ModalIconsContainer>

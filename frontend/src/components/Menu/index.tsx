@@ -18,7 +18,11 @@ import iconReport from '../../assets/icon-report.png';
 import iconOpinion from '../../assets/icon-opinion.png';
 import iconHelp from '../../assets/icon-help.png';
 
-const Menu: React.FC = () => {
+interface MenuProps {
+  isAuthenticated: boolean;
+}
+
+const Menu: React.FC<MenuProps> = ({ isAuthenticated }) => {
   const [isOpened, setIsOpened] = useState(false);
   const [opinionPopupActive, setOpinionPopupActive] = useState(false);
   const [notReadyPopupActive, setNotReadyPopupActive] = useState(false);
@@ -48,12 +52,14 @@ const Menu: React.FC = () => {
             </aside>
 
             <nav>
-              <Link to="listing-data">
-                <button type="button">
-                  <img src={iconCrud} alt="Crud" />
-                  <strong>Cadastro</strong>
-                </button>
-              </Link>
+              {isAuthenticated && (
+                <Link to="listing-data">
+                  <button type="button">
+                    <img src={iconCrud} alt="Crud" />
+                    <strong>Cadastro</strong>
+                  </button>
+                </Link>
+              )}
 
               <button
                 type="button"
@@ -72,31 +78,33 @@ const Menu: React.FC = () => {
               </section>
             </nav>
 
-            <nav>
-              <button
-                type="button"
-                onClick={() => setNotReadyPopupActive(true)}
-              >
-                <img src={iconHistory} alt="History" />
-                <strong>Histórico de alterações</strong>
-              </button>
+            {isAuthenticated && (
+              <nav>
+                <button
+                  type="button"
+                  onClick={() => setNotReadyPopupActive(true)}
+                >
+                  <img src={iconHistory} alt="History" />
+                  <strong>Histórico de alterações</strong>
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setNotReadyPopupActive(true)}
-              >
-                <img src={iconBackup} alt="Backup" />
-                <strong>Backup e Restauração</strong>
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setNotReadyPopupActive(true)}
+                >
+                  <img src={iconBackup} alt="Backup" />
+                  <strong>Backup e Restauração</strong>
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setNotReadyPopupActive(true)}
-              >
-                <img src={iconReport} alt="Report" />
-                <strong>Relatório</strong>
-              </button>
-            </nav>
+                <button
+                  type="button"
+                  onClick={() => setNotReadyPopupActive(true)}
+                >
+                  <img src={iconReport} alt="Report" />
+                  <strong>Relatório</strong>
+                </button>
+              </nav>
+            )}
 
             <nav>
               <button type="button" onClick={() => setOpinionPopupActive(true)}>
@@ -129,11 +137,13 @@ const Menu: React.FC = () => {
             </aside>
 
             <nav>
-              <Link to="listing-data">
-                <button type="button">
-                  <img src={iconCrud} alt="Crud" />
-                </button>
-              </Link>
+              {isAuthenticated && (
+                <Link to="listing-data">
+                  <button type="button">
+                    <img src={iconCrud} alt="Crud" />
+                  </button>
+                </Link>
+              )}
 
               <button
                 type="button"
@@ -147,28 +157,30 @@ const Menu: React.FC = () => {
               </section>
             </nav>
 
-            <nav>
-              <button
-                type="button"
-                onClick={() => setNotReadyPopupActive(true)}
-              >
-                <img src={iconHistory} alt="History" />
-              </button>
+            {isAuthenticated && (
+              <nav>
+                <button
+                  type="button"
+                  onClick={() => setNotReadyPopupActive(true)}
+                >
+                  <img src={iconHistory} alt="History" />
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setNotReadyPopupActive(true)}
-              >
-                <img src={iconBackup} alt="Backup" />
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setNotReadyPopupActive(true)}
+                >
+                  <img src={iconBackup} alt="Backup" />
+                </button>
 
-              <button
-                type="button"
-                onClick={() => setNotReadyPopupActive(true)}
-              >
-                <img src={iconReport} alt="Report" />
-              </button>
-            </nav>
+                <button
+                  type="button"
+                  onClick={() => setNotReadyPopupActive(true)}
+                >
+                  <img src={iconReport} alt="Report" />
+                </button>
+              </nav>
+            )}
 
             <nav>
               <button type="button" onClick={() => setOpinionPopupActive(true)}>

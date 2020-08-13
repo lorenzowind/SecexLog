@@ -694,7 +694,7 @@ const ListingData: React.FC = () => {
 
       <Header isAuthenticated />
 
-      <Menu />
+      <Menu isAuthenticated />
 
       <Container>
         <DataSection>

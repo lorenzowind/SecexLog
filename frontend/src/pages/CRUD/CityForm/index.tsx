@@ -142,7 +142,7 @@ const CityForm: React.FC = () => {
 
       <Header isAuthenticated />
 
-      <Menu />
+      <Menu isAuthenticated />
 
       <Container>
         <Content>

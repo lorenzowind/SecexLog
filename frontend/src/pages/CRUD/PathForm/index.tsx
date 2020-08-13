@@ -213,7 +213,7 @@ const PathForm: React.FC = () => {
 
       <Header isAuthenticated />
 
-      <Menu />
+      <Menu isAuthenticated />
 
       <Container>
         <Content>

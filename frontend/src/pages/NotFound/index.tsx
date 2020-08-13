@@ -4,7 +4,7 @@ import { Container } from './styles';
 
 import logoSecex from '../../assets/logo-secex.png';
 
-const Error: React.FC = () => (
+const NotFound: React.FC = () => (
   <Container>
     <img src={logoSecex} alt="Secex" />
     <h1>Erro 404!</h1>
@@ -12,4 +12,4 @@ const Error: React.FC = () => (
   </Container>
 );
 
-export default Error;
+export default NotFound;
