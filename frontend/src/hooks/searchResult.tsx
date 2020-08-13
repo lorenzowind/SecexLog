@@ -2,6 +2,8 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
 // import api from '../services/api';
 
+import iconModal5 from '../assets/icon-modal-5.png';
+
 import { PathState } from './modules/path';
 
 export interface ManualSearchData {
@@ -20,10 +22,12 @@ export interface AutomaticSearchData {
 }
 
 interface PathResult extends PathState {
-  initialDate: Date;
-  initialTime: string;
-  finalDate: Date;
-  finalTime: string;
+  selectedPeriod: {
+    selectedInitTime: string;
+    selectedFinalTime: string;
+    selectedInitWeekDay: string;
+    selectedFinalWeekDay: string;
+  };
 }
 
 interface PathsCard {
@@ -32,6 +36,7 @@ interface PathsCard {
   price: number;
   utilDays: number;
   distance: number;
+  modalsImages: string[];
   paths: PathResult[];
 }
 
@@ -60,13 +65,59 @@ const SearchResultProvider: React.FC = ({ children }) => {
         pathsResult: manualSearchData.paths.reduce(
           (pathsCard: PathsCard[], _path) => {
             pathsCard.push({
-              distance: 0,
+              distance: 200,
               initialDate: manualSearchData.paths[0].date,
               finalDate:
                 manualSearchData.paths[manualSearchData.paths.length - 1].date,
-              price: 0,
-              utilDays: 0,
-              paths: [{} as PathResult],
+              price: 800,
+              utilDays: 5,
+              modalsImages: [iconModal5],
+              paths: [
+                {
+                  initCidade: 'Manaus',
+                  endCidade: 'Itacoatiara',
+                  modal: 'Taxi aéreo',
+                  dia: ['10:00'],
+                  hora: ['quinta-feira'],
+                  arrival: '',
+                  departure: '',
+                  prestNome: '',
+                  duration: '00:30',
+                  id: 1,
+                  contratado: true,
+                  linha: false,
+                  mileage: 100,
+                  cost: 400,
+                  selectedPeriod: {
+                    selectedInitTime: '10:00',
+                    selectedFinalTime: '10:30',
+                    selectedInitWeekDay: 'qui',
+                    selectedFinalWeekDay: 'qui',
+                  },
+                },
+                {
+                  initCidade: 'Itacoatiara',
+                  endCidade: 'Manaus',
+                  modal: 'Taxi aéreo',
+                  dia: ['07:00'],
+                  hora: ['sexta-feira'],
+                  arrival: '',
+                  departure: '',
+                  prestNome: '',
+                  duration: '00:30',
+                  id: 1,
+                  contratado: true,
+                  linha: false,
+                  mileage: 100,
+                  cost: 400,
+                  selectedPeriod: {
+                    selectedInitTime: '07:00',
+                    selectedFinalTime: '07:30',
+                    selectedInitWeekDay: 'sex',
+                    selectedFinalWeekDay: 'sex',
+                  },
+                },
+              ],
             });
 
             return pathsCard;
@@ -89,6 +140,7 @@ const SearchResultProvider: React.FC = ({ children }) => {
               finalDate: automaticSearchData.finalDate,
               price: 0,
               utilDays: 0,
+              modalsImages: [''],
               paths: [{} as PathResult],
             });
 

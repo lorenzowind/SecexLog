@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
 import { useCity } from '../../hooks/modules/city';
 import { useToast } from '../../hooks/toast';
+import { useSearchResult, ManualSearchData } from '../../hooks/searchResult';
 
 import {
   Container,
@@ -22,6 +23,7 @@ import {
   Button,
   DateInput,
   LoadingPartial,
+  LoadingPage,
 } from '../../components';
 
 import logoSecex from '../../assets/logo-secex.png';
@@ -32,14 +34,18 @@ import iconCalendar from '../../assets/icon-calendar.png';
 
 const ManualSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const history = useHistory();
 
   const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [pathsDate, setPathsDate] = useState<Date[]>([new Date()]);
+
   const [loadingPartial, setLoadingPartial] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { cities, getCities } = useCity();
   const { addToast } = useToast();
+  const { getManualSearchResult } = useSearchResult();
 
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
@@ -84,8 +90,35 @@ const ManualSearch: React.FC = () => {
   const handleSearch = useCallback(
     async (data: Object) => {
       try {
-        Object.entries(data).forEach(entry => {
+        const manualSearchData: ManualSearchData = {
+          paths: [],
+        };
+
+        Object.entries(data).forEach((entry, index) => {
           const value = entry[1];
+
+          if (!index) {
+            manualSearchData.paths.push({
+              goCity: value,
+              backCity: '',
+              date: pathsDate[index],
+            });
+          } else {
+            const currentLength = manualSearchData.paths.length;
+
+            index % 2 === 0
+              ? manualSearchData.paths.push({
+                  goCity: value,
+                  backCity: '',
+                  date: pathsDate[currentLength],
+                })
+              : (manualSearchData.paths[currentLength - 1] = {
+                  goCity: manualSearchData.paths[currentLength - 1].goCity,
+                  backCity: value,
+                  date: manualSearchData.paths[currentLength - 1].date,
+                });
+          }
+
           if (
             value === 'Selecione a cidade de ida' ||
             value === 'Selecione a cidade de volta'
@@ -93,6 +126,16 @@ const ManualSearch: React.FC = () => {
             throw new Error();
           }
         });
+
+        // setLoadingPage(true);
+
+        // // await getManualSearchResult(manualSearchData).then(() => {
+        // //   setLoadingPage(false);
+        // // });
+
+        getManualSearchResult(manualSearchData);
+
+        history.push('/result-search');
       } catch (err) {
         addToast({
           type: 'error',
@@ -100,11 +143,13 @@ const ManualSearch: React.FC = () => {
         });
       }
     },
-    [addToast],
+    [addToast, getManualSearchResult, history, pathsDate],
   );
 
   return (
     <>
+      {loadingPage && <LoadingPage />}
+
       {loadingPartial && <LoadingPartial zIndex={1} />}
 
       <Container>
