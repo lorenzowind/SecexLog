@@ -23,6 +23,7 @@ export interface AutomaticSearchData {
 
 interface PathResult extends PathState {
   selectedPeriod: {
+    selectedDate: Date;
     selectedInitTime: string;
     selectedFinalTime: string;
     selectedInitWeekDay: string;
@@ -31,16 +32,20 @@ interface PathResult extends PathState {
 }
 
 interface PathsCard {
-  initialDate: Date;
-  finalDate: Date;
   price: number;
   utilDays: number;
   distance: number;
+  initialDate: Date;
+  finalDate: Date;
   modalsImages: string[];
   paths: PathResult[];
 }
 
 interface SearchResult {
+  initialCity: string;
+  finalCity: string[];
+  initialDate: Date;
+  finalDate: Date;
   pathsResult: PathsCard[];
 }
 
@@ -62,63 +67,127 @@ const SearchResultProvider: React.FC = ({ children }) => {
   const getManualSearchResult = useCallback(
     (manualSearchData: ManualSearchData) => {
       setSearchResult({
+        initialCity: 'Manaus',
+        finalCity: ['Itacoatiara'],
+        initialDate: manualSearchData.paths[0].date,
+        finalDate:
+          manualSearchData.paths[manualSearchData.paths.length - 1].date,
         pathsResult: manualSearchData.paths.reduce(
-          (pathsCard: PathsCard[], _path) => {
-            pathsCard.push({
-              distance: 200,
-              initialDate: manualSearchData.paths[0].date,
-              finalDate:
-                manualSearchData.paths[manualSearchData.paths.length - 1].date,
-              price: 800,
-              utilDays: 5,
-              modalsImages: [iconModal5],
-              paths: [
-                {
-                  initCidade: 'Manaus',
-                  endCidade: 'Itacoatiara',
-                  modal: 'Taxi aéreo',
-                  dia: ['10:00'],
-                  hora: ['quinta-feira'],
-                  arrival: '',
-                  departure: '',
-                  prestNome: '',
-                  duration: '00:30',
-                  id: 1,
-                  contratado: true,
-                  linha: false,
-                  mileage: 100,
-                  cost: 400,
-                  selectedPeriod: {
-                    selectedInitTime: '10:00',
-                    selectedFinalTime: '10:30',
-                    selectedInitWeekDay: 'qui',
-                    selectedFinalWeekDay: 'qui',
+          (pathsCard: PathsCard[], path) => {
+            pathsCard.push(
+              {
+                distance: 200,
+                price: 800,
+                utilDays: 5,
+                modalsImages: [iconModal5],
+                initialDate: path.date,
+                finalDate: path.date,
+                paths: [
+                  {
+                    initCidade: 'Manaus',
+                    endCidade: 'Itacoatiara',
+                    modal: 'Taxi aéreo',
+                    dia: ['10:00'],
+                    hora: ['quinta-feira'],
+                    arrival: '',
+                    departure: '',
+                    prestNome: '',
+                    duration: '00:30',
+                    id: 1,
+                    contratado: true,
+                    linha: false,
+                    mileage: 100,
+                    cost: 400,
+                    selectedPeriod: {
+                      selectedDate: path.date,
+                      selectedInitTime: '10:00',
+                      selectedFinalTime: '10:30',
+                      selectedInitWeekDay: 'qui',
+                      selectedFinalWeekDay: 'qui',
+                    },
                   },
-                },
-                {
-                  initCidade: 'Itacoatiara',
-                  endCidade: 'Manaus',
-                  modal: 'Taxi aéreo',
-                  dia: ['07:00'],
-                  hora: ['sexta-feira'],
-                  arrival: '',
-                  departure: '',
-                  prestNome: '',
-                  duration: '00:30',
-                  id: 1,
-                  contratado: true,
-                  linha: false,
-                  mileage: 100,
-                  cost: 400,
-                  selectedPeriod: {
-                    selectedInitTime: '07:00',
-                    selectedFinalTime: '07:30',
-                    selectedInitWeekDay: 'sex',
-                    selectedFinalWeekDay: 'sex',
+                  {
+                    initCidade: 'Itacoatiara',
+                    endCidade: 'Manaus',
+                    modal: 'Taxi aéreo',
+                    dia: ['07:00'],
+                    hora: ['sexta-feira'],
+                    arrival: '',
+                    departure: '',
+                    prestNome: '',
+                    duration: '00:30',
+                    id: 1,
+                    contratado: true,
+                    linha: false,
+                    mileage: 100,
+                    cost: 400,
+                    selectedPeriod: {
+                      selectedDate: path.date,
+                      selectedInitTime: '07:00',
+                      selectedFinalTime: '07:30',
+                      selectedInitWeekDay: 'sex',
+                      selectedFinalWeekDay: 'sex',
+                    },
                   },
-                },
-              ],
-            });
+                ],
+              },
+              {
+                distance: 200,
+                price: 800,
+                utilDays: 5,
+                modalsImages: [iconModal5],
+                initialDate: path.date,
+                finalDate: path.date,
+                paths: [
+                  {
+                    initCidade: 'Manaus',
+                    endCidade: 'Itacoatiara',
+                    modal: 'Taxi aéreo',
+                    dia: ['10:00'],
+                    hora: ['quinta-feira'],
+                    arrival: '',
+                    departure: '',
+                    prestNome: '',
+                    duration: '00:30',
+                    id: 1,
+                    contratado: true,
+                    linha: false,
+                    mileage: 100,
+                    cost: 400,
+                    selectedPeriod: {
+                      selectedDate: path.date,
+                      selectedInitTime: '10:00',
+                      selectedFinalTime: '10:30',
+                      selectedInitWeekDay: 'qui',
+                      selectedFinalWeekDay: 'qui',
+                    },
+                  },
+                  {
+                    initCidade: 'Itacoatiara',
+                    endCidade: 'Manaus',
+                    modal: 'Taxi aéreo',
+                    dia: ['07:00'],
+                    hora: ['sexta-feira'],
+                    arrival: '',
+                    departure: '',
+                    prestNome: '',
+                    duration: '00:30',
+                    id: 1,
+                    contratado: true,
+                    linha: false,
+                    mileage: 100,
+                    cost: 400,
+                    selectedPeriod: {
+                      selectedDate: path.date,
+                      selectedInitTime: '07:00',
+                      selectedFinalTime: '07:30',
+                      selectedInitWeekDay: 'sex',
+                      selectedFinalWeekDay: 'sex',
+                    },
+                  },
+                ],
+              },
+            );
 
             return pathsCard;
           },
@@ -132,14 +201,18 @@ const SearchResultProvider: React.FC = ({ children }) => {
   const getAutomaticSearchResult = useCallback(
     (automaticSearchData: AutomaticSearchData) => {
       setSearchResult({
+        initialCity: '',
+        finalCity: [''],
+        initialDate: automaticSearchData.initialDate,
+        finalDate: automaticSearchData.finalDate,
         pathsResult: automaticSearchData.auditatedCities.reduce(
           (pathsCard: PathsCard[], _auditatedCity) => {
             pathsCard.push({
               distance: 0,
-              initialDate: automaticSearchData.initialDate,
-              finalDate: automaticSearchData.finalDate,
               price: 0,
               utilDays: 0,
+              initialDate: automaticSearchData.initialDate,
+              finalDate: automaticSearchData.finalDate,
               modalsImages: [''],
               paths: [{} as PathResult],
             });
