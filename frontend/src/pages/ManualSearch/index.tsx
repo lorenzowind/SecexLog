@@ -129,9 +129,9 @@ const ManualSearch: React.FC = () => {
 
         // setLoadingPage(true);
 
-        // // await getManualSearchResult(manualSearchData).then(() => {
-        // //   setLoadingPage(false);
-        // // });
+        // await getManualSearchResult(manualSearchData).then(() => {
+        //  setLoadingPage(false);
+        // });
 
         getManualSearchResult(manualSearchData);
 

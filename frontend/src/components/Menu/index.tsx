@@ -157,7 +157,7 @@ const Menu: React.FC<MenuProps> = ({ isAuthenticated }) => {
               </section>
             </nav>
 
-            {isAuthenticated && (
+            {isAuthenticated ? (
               <nav>
                 <button
                   type="button"
@@ -180,6 +180,8 @@ const Menu: React.FC<MenuProps> = ({ isAuthenticated }) => {
                   <img src={iconReport} alt="Report" />
                 </button>
               </nav>
+            ) : (
+              <nav style={{ height: -100 }} />
             )}
 
             <nav>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { FiArrowRight } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
 import { useCity } from '../../hooks/modules/city';
 import { useToast } from '../../hooks/toast';
+import { useSearchResult, AutomaticSearchData } from '../../hooks/searchResult';
 
 import {
   Container,
@@ -22,6 +23,7 @@ import {
   Button,
   DateInput,
   LoadingPartial,
+  LoadingPage,
 } from '../../components';
 
 import logoSecex from '../../assets/logo-secex.png';
@@ -32,6 +34,7 @@ import iconCalendar from '../../assets/icon-calendar.png';
 
 const AutomaticSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const history = useHistory();
 
   const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [initialDate, setInitialDate] = useState<Date>(new Date());
@@ -39,10 +42,12 @@ const AutomaticSearch: React.FC = () => {
   const [pathsControl, setPathsControl] = useState([1]);
 
   const [loadingPartial, setLoadingPartial] = useState(false);
+  const [loadingPage, setLoadingPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { cities, getCities } = useCity();
   const { addToast } = useToast();
+  const { getAutomaticSearchResult } = useSearchResult();
 
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
@@ -76,8 +81,20 @@ const AutomaticSearch: React.FC = () => {
   const handleSearch = useCallback(
     async (data: Object) => {
       try {
-        Object.entries(data).forEach(entry => {
+        const automaticSearchData: AutomaticSearchData = {
+          initialDate,
+          finalDate,
+          initialCity: '',
+          auditatedCities: [],
+        };
+
+        Object.entries(data).forEach((entry, index) => {
           const value = entry[1];
+
+          !index
+            ? (automaticSearchData.initialCity = value)
+            : automaticSearchData.auditatedCities.push(value);
+
           if (
             value === 'Selecione a cidade de ida' ||
             value === 'Selecione a cidade de volta'
@@ -85,6 +102,16 @@ const AutomaticSearch: React.FC = () => {
             throw new Error();
           }
         });
+
+        // setLoadingPage(true);
+
+        // await getAutomaticSearchResult(automaticSearchData).then(() => {
+        //   setLoadingPage(false);
+        // });
+
+        getAutomaticSearchResult(automaticSearchData);
+
+        history.push('/result-search');
       } catch (err) {
         addToast({
           type: 'error',
@@ -92,11 +119,13 @@ const AutomaticSearch: React.FC = () => {
         });
       }
     },
-    [addToast],
+    [addToast, finalDate, getAutomaticSearchResult, history, initialDate],
   );
 
   return (
     <>
+      {loadingPage && <LoadingPage />}
+
       {loadingPartial && <LoadingPartial zIndex={1} />}
 
       <Container>
