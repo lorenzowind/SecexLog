@@ -48,6 +48,19 @@ export const Content = styled.div`
     align-items: center;
     margin-top: 60px;
   }
+
+  > footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px;
+
+    > strong {
+      font-size: 32px;
+      line-height: 50px;
+      color: #707070;
+    }
+  }
 `;
 
 export const Top = styled.div`
@@ -139,6 +152,10 @@ export const ModalsImages = styled.div`
   img {
     width: 40px;
     height: 40px;
+
+    & + img {
+      margin-top: 20px;
+    }
   }
 `;
 
@@ -223,18 +240,21 @@ export const PathSelectionContainer = styled.div`
   padding: 0 20px;
 
   strong {
-    font-size: 42px;
+    margin: 0;
+    font-size: 36px;
     font-weight: 600;
     color: #707070;
   }
 
   h1 {
+    margin: 0;
+    margin-top: 10px;
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 500;
     color: #707070;
   }
 
   button {
-    margin-top: 15px;
+    margin-top: 10px;
   }
 `;

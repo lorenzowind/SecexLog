@@ -30,7 +30,7 @@ const ResultSearch: React.FC = () => {
   const { searchResult } = useSearchResult();
 
   useEffect(() => {
-    if (!searchResult.pathsResult) {
+    if (!searchResult.generalInfo) {
       history.goBack();
     }
   }, [history, searchResult]);
@@ -43,11 +43,16 @@ const ResultSearch: React.FC = () => {
 
       <Menu isAuthenticated={false} />
 
-      {searchResult.pathsResult && (
+      {searchResult.generalInfo && (
         <Container>
           <Content>
             <Top>
-              <button type="button">
+              <button
+                type="button"
+                onClick={() => {
+                  history.goBack();
+                }}
+              >
                 <img src={iconBack} alt="Back" />
               </button>
 
@@ -69,65 +74,79 @@ const ResultSearch: React.FC = () => {
                   <img src={safetyFilter} alt="Safety Filter" />
                 </button>
               </nav>
-              <strong>{searchResult.initialCity}</strong>
-              <strong>{searchResult.finalCity.join(', ')}</strong>
+              <strong>{searchResult.generalInfo.initialCity}</strong>
+              <strong>{searchResult.generalInfo.finalCity.join(', ')}</strong>
               <strong>
-                {`${searchResult.initialDate.toLocaleString().split(' ')[0]} -
-                ${searchResult.finalDate.toLocaleString().split(' ')[0]}`}
+                {`${
+                  searchResult.generalInfo.initialDate
+                    .toLocaleString()
+                    .split(' ')[0]
+                } -
+                ${
+                  searchResult.generalInfo.finalDate
+                    .toLocaleString()
+                    .split(' ')[0]
+                }`}
               </strong>
             </FilterSection>
 
-            {searchResult.pathsResult.map(pathCard => (
-              <section>
-                <ModalsImages>
-                  {pathCard.modalsImages.map(modalImage => (
-                    <img src={modalImage} alt="Modal" />
-                  ))}
-                </ModalsImages>
-
-                <PathCard>
-                  <section>
-                    {pathCard.paths.map(path => (
-                      <aside>
-                        <div>
-                          <strong>
-                            {`${path.selectedPeriod.selectedInitTime}, ${path.selectedPeriod.selectedInitWeekDay}`}
-                          </strong>
-                          <h2>{path.initCidade}</h2>
-                          <h2>{path.modal}</h2>
-                        </div>
-                        <div>
-                          <h2>{path.duration}</h2>
-                          <img src={pathRepresentation} alt="Path" />
-                        </div>
-                        <div>
-                          <strong>
-                            {`${path.selectedPeriod.selectedFinalTime}, ${path.selectedPeriod.selectedFinalWeekDay}`}
-                          </strong>
-                          <h2>{path.endCidade}</h2>
-                          <h2>{path.modal}</h2>
-                        </div>
-                      </aside>
+            {searchResult.pathsResult ? (
+              searchResult.pathsResult.map(pathCard => (
+                <section>
+                  <ModalsImages>
+                    {pathCard.modalsImages.map(modalImage => (
+                      <img src={modalImage} alt="Modal" />
                     ))}
+                  </ModalsImages>
 
-                    <h3>
-                      {`Saída: ${
-                        pathCard.initialDate.toLocaleString().split(' ')[0]
-                      } - Retorno: ${
-                        pathCard.finalDate.toLocaleString().split(' ')[0]
-                      }`}
-                    </h3>
-                  </section>
+                  <PathCard>
+                    <section>
+                      {pathCard.paths.map(path => (
+                        <aside>
+                          <div>
+                            <strong>
+                              {`${path.selectedPeriod.selectedInitTime}, ${path.selectedPeriod.selectedInitWeekDay}`}
+                            </strong>
+                            <h2>{path.initCidade}</h2>
+                            <h2>{path.modal}</h2>
+                          </div>
+                          <div>
+                            <h2>{path.duration}</h2>
+                            <img src={pathRepresentation} alt="Path" />
+                          </div>
+                          <div>
+                            <strong>
+                              {`${path.selectedPeriod.selectedFinalTime}, ${path.selectedPeriod.selectedFinalWeekDay}`}
+                            </strong>
+                            <h2>{path.endCidade}</h2>
+                            <h2>{path.modal}</h2>
+                          </div>
+                        </aside>
+                      ))}
 
-                  <PathSelectionContainer>
-                    <strong>{`R$ ${pathCard.price}`}</strong>
-                    <h1>{`${pathCard.utilDays} dias utéis`}</h1>
+                      <h3>
+                        {`Saída: ${
+                          pathCard.initialDate.toLocaleString().split(' ')[0]
+                        } - Retorno: ${
+                          pathCard.finalDate.toLocaleString().split(' ')[0]
+                        }`}
+                      </h3>
+                    </section>
 
-                    <Button type="button">Selecionar</Button>
-                  </PathSelectionContainer>
-                </PathCard>
-              </section>
-            ))}
+                    <PathSelectionContainer>
+                      <strong>{`R$ ${pathCard.price}`}</strong>
+                      <h1>{`${pathCard.utilDays} dias utéis`}</h1>
+
+                      <Button type="button">Selecionar</Button>
+                    </PathSelectionContainer>
+                  </PathCard>
+                </section>
+              ))
+            ) : (
+              <footer>
+                <strong>Nenhum caminho encontrado!</strong>
+              </footer>
+            )}
           </Content>
         </Container>
       )}

@@ -115,7 +115,7 @@ export const CalendarInput = styled.div`
 
   input {
     flex: 1;
-    width: 75px;
+    width: 100px;
     background: transparent;
     border: 0;
     color: #6c6c80;
