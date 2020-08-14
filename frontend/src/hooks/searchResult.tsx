@@ -71,10 +71,22 @@ const SearchResultProvider: React.FC = ({ children }) => {
 
   const getManualSearchResult = useCallback(
     (manualSearchData: ManualSearchData) => {
+      const formattedBackCities = manualSearchData.paths
+        .map(path => path.backCity)
+        .filter((backCity, index, array) => array.indexOf(backCity) === index);
+
+      const goCityIndex = formattedBackCities.indexOf(
+        manualSearchData.paths[0].goCity,
+      );
+
+      if (goCityIndex !== -1) {
+        formattedBackCities.splice(goCityIndex, 1);
+      }
+
       setSearchResult({
         generalInfo: {
-          initialCity: 'Manaus',
-          finalCity: ['Itacoatiara'],
+          initialCity: manualSearchData.paths[0].goCity,
+          finalCity: formattedBackCities,
           initialDate: manualSearchData.paths[0].date,
           finalDate:
             manualSearchData.paths[manualSearchData.paths.length - 1].date,
