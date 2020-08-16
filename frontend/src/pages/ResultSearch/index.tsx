@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useSearchResult } from '../../hooks/searchResult';
@@ -14,7 +14,7 @@ import {
   PathSelectionContainer,
 } from './styles';
 
-import { Menu, Button } from '../../components';
+import { Menu, Button, ImageModal } from '../../components';
 
 import logoTce from '../../assets/logo-tce.png';
 import iconBack from '../../assets/icon-back-3.png';
@@ -27,7 +27,11 @@ import pathRepresentation from '../../assets/path-representation.png';
 const ResultSearch: React.FC = () => {
   const history = useHistory();
 
-  const { searchResult } = useSearchResult();
+  const [fastFilterSelected, setFastFilterSelected] = useState(false);
+  const [costFilterSelected, setCostFilterSelected] = useState(false);
+  const [safetyFilterSelected, setSafetyFilterSelected] = useState(false);
+
+  const { searchResult, setPathsCard } = useSearchResult();
 
   useEffect(() => {
     if (!searchResult.generalInfo) {
@@ -64,14 +68,35 @@ const ResultSearch: React.FC = () => {
 
             <FilterSection>
               <nav>
-                <button type="button">
-                  <img src={fastFilter} alt="Fast Filter" />
+                <button
+                  type="button"
+                  onClick={() => setFastFilterSelected(!fastFilterSelected)}
+                >
+                  <ImageModal
+                    imageSize={60}
+                    imageModal={fastFilter}
+                    isSelected={fastFilterSelected}
+                  />
                 </button>
-                <button type="button">
-                  <img src={costFilter} alt="Cost Filter" />
+                <button
+                  type="button"
+                  onClick={() => setCostFilterSelected(!costFilterSelected)}
+                >
+                  <ImageModal
+                    imageSize={60}
+                    imageModal={costFilter}
+                    isSelected={costFilterSelected}
+                  />
                 </button>
-                <button type="button">
-                  <img src={safetyFilter} alt="Safety Filter" />
+                <button
+                  type="button"
+                  onClick={() => setSafetyFilterSelected(!safetyFilterSelected)}
+                >
+                  <ImageModal
+                    imageSize={60}
+                    imageModal={safetyFilter}
+                    isSelected={safetyFilterSelected}
+                  />
                 </button>
               </nav>
               <strong>{searchResult.generalInfo.initialCity}</strong>
@@ -137,7 +162,15 @@ const ResultSearch: React.FC = () => {
                       <strong>{`R$ ${pathCard.price}`}</strong>
                       <h1>{`${pathCard.utilDays} dias utéis`}</h1>
 
-                      <Button type="button">Selecionar</Button>
+                      <Button
+                        type="button"
+                        onClick={() => {
+                          setPathsCard(pathCard);
+                          history.push('/detailed-result');
+                        }}
+                      >
+                        Selecionar
+                      </Button>
                     </PathSelectionContainer>
                   </PathCard>
                 </section>

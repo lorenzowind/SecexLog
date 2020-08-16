@@ -97,7 +97,7 @@ const AutomaticSearch: React.FC = () => {
 
           if (
             value === 'Selecione a cidade de ida' ||
-            value === 'Selecione a cidade de volta'
+            value === 'Selecione a cidade para auditoria'
           ) {
             throw new Error();
           }

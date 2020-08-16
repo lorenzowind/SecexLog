@@ -6,6 +6,7 @@ import Route from './Route';
 import ManualSearch from '../pages/ManualSearch';
 import AutomaticSearch from '../pages/AutomaticSearch';
 import ResultSearch from '../pages/ResultSearch';
+import DetailedResult from '../pages/DetailedResult';
 
 import NotFound from '../pages/NotFound';
 
@@ -24,6 +25,7 @@ const Routes: React.FC = () => (
     <Route path="/" exact component={ManualSearch} />
     <Route path="/automatic-search" component={AutomaticSearch} />
     <Route path="/result-search" component={ResultSearch} />
+    <Route path="/detailed-result" component={DetailedResult} />
 
     <Route path="/dashboard" component={Dashboard} isPrivate />
     <Route path="/listing-data" component={ListingData} isPrivate />

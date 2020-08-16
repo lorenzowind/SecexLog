@@ -122,11 +122,6 @@ export const FilterSection = styled.div`
       & + button {
         margin-left: 50px;
       }
-
-      img {
-        width: 60px;
-        height: 60px;
-      }
     }
   }
 

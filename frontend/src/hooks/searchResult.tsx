@@ -32,6 +32,13 @@ interface PathResult extends PathState {
     selectedInitWeekDay: string;
     selectedFinalWeekDay: string;
   };
+  modalImage: string;
+  citiesLocation: {
+    goCityLatitude: string;
+    goCityLongitude: string;
+    backCityLatitude: string;
+    backCityLongitude: string;
+  };
 }
 
 interface PathsCard {
@@ -56,6 +63,8 @@ interface SearchResult {
 
 interface SearchResultContextData {
   searchResult: SearchResult;
+  pathsCardSelected: PathsCard;
+  setPathsCard(pathsCard: PathsCard): void;
   getManualSearchResult(manualSearchData: ManualSearchData): void;
   getAutomaticSearchResult(automaticSearchData: AutomaticSearchData): void;
 }
@@ -68,6 +77,13 @@ const SearchResultProvider: React.FC = ({ children }) => {
   const [searchResult, setSearchResult] = useState<SearchResult>(
     {} as SearchResult,
   );
+  const [pathsCardSelected, setPathsCardSelected] = useState<PathsCard>(
+    {} as PathsCard,
+  );
+
+  const setPathsCard = useCallback((pathsCard: PathsCard) => {
+    setPathsCardSelected(pathsCard);
+  }, []);
 
   const getManualSearchResult = useCallback(
     (manualSearchData: ManualSearchData) => {
@@ -106,6 +122,7 @@ const SearchResultProvider: React.FC = ({ children }) => {
                     initCidade: 'Manaus',
                     endCidade: 'Itacoatiara',
                     modal: 'Taxi aéreo',
+                    modalImage: iconModal5,
                     dia: ['10:00'],
                     hora: ['quinta-feira'],
                     arrival: '',
@@ -124,11 +141,18 @@ const SearchResultProvider: React.FC = ({ children }) => {
                       selectedInitWeekDay: 'qui',
                       selectedFinalWeekDay: 'qui',
                     },
+                    citiesLocation: {
+                      goCityLatitude: '',
+                      goCityLongitude: '',
+                      backCityLatitude: '',
+                      backCityLongitude: '',
+                    },
                   },
                   {
                     initCidade: 'Itacoatiara',
                     endCidade: 'Manaus',
                     modal: 'Taxi aéreo',
+                    modalImage: iconModal5,
                     dia: ['07:00'],
                     hora: ['sexta-feira'],
                     arrival: '',
@@ -147,6 +171,12 @@ const SearchResultProvider: React.FC = ({ children }) => {
                       selectedInitWeekDay: 'sex',
                       selectedFinalWeekDay: 'sex',
                     },
+                    citiesLocation: {
+                      goCityLatitude: '',
+                      goCityLongitude: '',
+                      backCityLatitude: '',
+                      backCityLongitude: '',
+                    },
                   },
                 ],
               },
@@ -162,6 +192,7 @@ const SearchResultProvider: React.FC = ({ children }) => {
                     initCidade: 'Manaus',
                     endCidade: 'Itacoatiara',
                     modal: 'Taxi aéreo',
+                    modalImage: iconModal5,
                     dia: ['10:00'],
                     hora: ['quinta-feira'],
                     arrival: '',
@@ -179,6 +210,12 @@ const SearchResultProvider: React.FC = ({ children }) => {
                       selectedFinalTime: '10:30',
                       selectedInitWeekDay: 'qui',
                       selectedFinalWeekDay: 'qui',
+                    },
+                    citiesLocation: {
+                      goCityLatitude: '',
+                      goCityLongitude: '',
+                      backCityLatitude: '',
+                      backCityLongitude: '',
                     },
                   },
                 ],
@@ -195,6 +232,7 @@ const SearchResultProvider: React.FC = ({ children }) => {
                     initCidade: 'Manaus',
                     endCidade: 'Itacoatiara',
                     modal: 'Taxi aéreo',
+                    modalImage: iconModal5,
                     dia: ['10:00'],
                     hora: ['quinta-feira'],
                     arrival: '',
@@ -213,11 +251,18 @@ const SearchResultProvider: React.FC = ({ children }) => {
                       selectedInitWeekDay: 'qui',
                       selectedFinalWeekDay: 'qui',
                     },
+                    citiesLocation: {
+                      goCityLatitude: '',
+                      goCityLongitude: '',
+                      backCityLatitude: '',
+                      backCityLongitude: '',
+                    },
                   },
                   {
                     initCidade: 'Manaus',
                     endCidade: 'Itacoatiara',
                     modal: 'Taxi aéreo',
+                    modalImage: iconModal5,
                     dia: ['10:00'],
                     hora: ['quinta-feira'],
                     arrival: '',
@@ -236,11 +281,18 @@ const SearchResultProvider: React.FC = ({ children }) => {
                       selectedInitWeekDay: 'qui',
                       selectedFinalWeekDay: 'qui',
                     },
+                    citiesLocation: {
+                      goCityLatitude: '',
+                      goCityLongitude: '',
+                      backCityLatitude: '',
+                      backCityLongitude: '',
+                    },
                   },
                   {
                     initCidade: 'Manaus',
                     endCidade: 'Itacoatiara',
                     modal: 'Taxi aéreo',
+                    modalImage: iconModal5,
                     dia: ['10:00'],
                     hora: ['quinta-feira'],
                     arrival: '',
@@ -258,6 +310,12 @@ const SearchResultProvider: React.FC = ({ children }) => {
                       selectedFinalTime: '10:30',
                       selectedInitWeekDay: 'qui',
                       selectedFinalWeekDay: 'qui',
+                    },
+                    citiesLocation: {
+                      goCityLatitude: '',
+                      goCityLongitude: '',
+                      backCityLatitude: '',
+                      backCityLongitude: '',
                     },
                   },
                 ],
@@ -306,7 +364,13 @@ const SearchResultProvider: React.FC = ({ children }) => {
 
   return (
     <SearchResultContext.Provider
-      value={{ searchResult, getManualSearchResult, getAutomaticSearchResult }}
+      value={{
+        searchResult,
+        pathsCardSelected,
+        setPathsCard,
+        getManualSearchResult,
+        getAutomaticSearchResult,
+      }}
     >
       {children}
     </SearchResultContext.Provider>
