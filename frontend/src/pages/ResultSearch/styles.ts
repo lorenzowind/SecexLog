@@ -5,7 +5,7 @@ const appearFromTop = keyframes`
     transform: translateY(-100px);
   }
   to {
-    transform: translateX(0);
+    transform: translateY(0);
   }
 `;
 

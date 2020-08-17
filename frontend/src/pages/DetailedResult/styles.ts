@@ -2,7 +2,7 @@ import styled, { keyframes } from 'styled-components';
 
 const appearFromRight = keyframes`
   from {
-    transform: translateX(-100px);
+    transform: translateX(100px);
   }
   to {
     transform: translateX(0);
@@ -25,6 +25,30 @@ export const PathDetailed = styled.div`
   padding: 20px 20px 20px 120px;
 `;
 
+export const PathDetailedClosed = styled.div`
+  position: absolute;
+  height: 100vh;
+  max-width: 160px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.16);
+  background-color: #fff;
+
+  padding: 20px 10px 20px 90px;
+
+  > button {
+    width: 60px;
+    height: 60px;
+    border-radius: 13px;
+    border: solid 1px #e6dfdf;
+    background-color: rgba(255, 255, 255, 0);
+
+    h1 {
+      font-size: 18px;
+      font-weight: 500;
+      color: #c5c5c5;
+    }
+  }
+`;
+
 export const Top = styled.div`
   display: flex;
   justify-content: center;
@@ -34,7 +58,6 @@ export const Top = styled.div`
 
   button {
     position: absolute;
-    left: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -44,6 +67,19 @@ export const Top = styled.div`
     border-radius: 21px;
     border: solid 1px #e6dfdf;
     background-color: rgba(255, 255, 255, 0);
+
+    &:first-child {
+      left: 0;
+    }
+    &:last-child {
+      right: 0;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 500;
+      color: #c5c5c5;
+    }
 
     img {
       height: 50px;
@@ -109,16 +145,22 @@ export const PathsContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  padding: 20px 20px 20px 20px;
+  padding: 40px 20px 20px 20px;
 `;
 
 export const UniquePathContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  align-items: center;
+  border-left: 2px solid #f1f1f1;
+  padding-bottom: 29px;
+
+  &:last-child {
+    border-left: 0;
+  }
 
   > nav {
+    margin-left: -16px;
     width: 30px;
     height: 30px;
     border-radius: 50%;
@@ -127,10 +169,9 @@ export const UniquePathContainer = styled.div`
   }
 
   > section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin-left: -16px;
     margin-right: 20px;
+    position: relative;
 
     img {
       width: 30px;
@@ -138,12 +179,33 @@ export const UniquePathContainer = styled.div`
 
     strong {
       position: absolute;
-      margin-top: -15px;
+      margin-left: -20px;
+      margin-top: 5px;
+      font-size: 18px;
+      font-weight: 500;
+      color: #707070;
+    }
+  }
+
+  article {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 40px;
+
+    h3 {
+      margin: 0;
+      color: #6ae8e5;
+      font-size: 32px;
+      font-weight: 700;
     }
   }
 `;
 
-export const PathInfoContainer = styled.div``;
+export const PathInfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 
 export const CitiesContainer = styled.div`
   display: flex;
@@ -162,9 +224,64 @@ export const CitiesContainer = styled.div`
   }
 `;
 
-export const ModalInfoContainer = styled.div``;
+export const ModalInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 13px;
 
-export const TimeInfoContainer = styled.div``;
+  strong {
+    font-size: 20px;
+    font-weight: 500;
+    b {
+      font-weight: 700;
+    }
+  }
+`;
+
+export const TimeInfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 7px;
+
+  strong {
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  section {
+    display: flex;
+    flex-direction: column;
+    margin-left: 25px;
+
+    h2 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 500;
+    }
+  }
+`;
+
+export const OptionsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 40px;
+
+  button {
+    border: 0;
+    background: none;
+
+    & + button {
+      margin-left: 22px;
+    }
+
+    img {
+      height: 45px;
+    }
+  }
+`;
 
 export const MapContainer = styled.div`
   display: flex;
