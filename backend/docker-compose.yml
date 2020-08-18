@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_USER: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: mysql
+      MYSQL_DATABASE: secexlog
+    ports:
+      - 3306:3306
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - mysql-compose-network
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - mysql-compose-network
+
+networks:
+  mysql-compose-network:
+    driver: bridge
+
+volumes:
+  db_data:
+    driver: local

@@ -1,5 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 
+import '../typeorm/database';
+
 import routes from './routes';
 import AppError from '../../errors/AppError';
 
