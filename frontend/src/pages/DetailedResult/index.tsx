@@ -98,7 +98,7 @@ const DetailedResult: React.FC = () => {
                       ) : (
                         <section>
                           <img src={iconPin} alt="Pin" />
-                          <strong>{index + 1}</strong>
+                          <strong>{index}</strong>
                         </section>
                       )}
 
