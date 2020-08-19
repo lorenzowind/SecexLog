@@ -32,7 +32,7 @@ usersRouter.put(
       login: Joi.string().required(),
       email: Joi.string().email().required(),
       position: Joi.string().required(),
-      password: Joi.string(),
+      password: Joi.string().min(6),
     },
   }),
   usersController.update,
