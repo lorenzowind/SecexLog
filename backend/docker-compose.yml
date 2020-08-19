@@ -3,6 +3,7 @@ version: '3'
 services:
   mysql:
     image: mysql
+    container_name: secexlog_mysql
     environment:
       MYSQL_USER: root
       MYSQL_ROOT_PASSWORD: root
@@ -17,10 +18,18 @@ services:
 
   adminer:
     image: adminer
+    container_name: secexlog_adminer
     ports:
       - 8080:8080
     networks:
       - mysql-compose-network
+
+  redis:
+    image: redis
+    container_name: secexlog_redis
+    command: redis-server --requirepass redis
+    ports:
+      - "6379:6379"
 
 networks:
   mysql-compose-network:

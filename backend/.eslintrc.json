@@ -20,7 +20,12 @@
     ],
     "rules": {
       "prettier/prettier": "error",
+      "class-methods-use-this": "off",
+      "import/no-unresolved": "off",
+      "import/no-extraneous-dependencies": "off",
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-explicit-any": "Off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
 	   	"import/extensions": [
 	      "error",
 	      "ignorePackages",
