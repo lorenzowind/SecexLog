@@ -1,0 +1,284 @@
+openapi: 3.0.0
+
+servers:
+  - description: Development server URL
+    url: http://localhost:3333
+
+info:
+  description: HTTP Requests guide to utilize the SecexLog API.
+  version: "1.0.0"
+  title: SecexLog API
+
+tags:
+  - name: users
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    UnauthorizedError:
+      description: JWT token is missing
+    IncorrectToken:
+      description: Invalid JWT token
+  schemas:
+    User:
+      properties:
+        id:
+          type: string
+          format: uuid
+        login:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        position:
+          type: string
+        password:
+          type: string
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
+
+paths:
+  /users:
+    post:
+      summary: Creates an user.
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "User Name"
+                  login:
+                    type: string
+                    example: "user login"
+                  email:
+                    type: string
+                    format: email
+                    example: "user@email.com"
+                  position:
+                    type: string
+                    example: "admin"
+                  password:
+                    type: string
+                    example: "user password"
+      responses:
+        '200':
+          description: Returns a JSON containing the created user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "User Name"
+                  login:
+                    type: string
+                    example: "user login"
+                  email:
+                    type: string
+                    format: email
+                    example: "user@email.com"
+                  position:
+                    type: string
+                    example: "admin"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+    put:
+      summary: Updates an user.
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "New User Name"
+                  login:
+                    type: string
+                    example: "new user login"
+                  email:
+                    type: string
+                    format: email
+                    example: "newuser@email.com"
+                  position:
+                    type: string
+                    example: "usuario"
+                  password:
+                    type: string
+                    example: "new user password"
+      responses:
+        '200':
+          description: Returns a JSON containing the updated user.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "New User Name"
+                  login:
+                    type: string
+                    example: "new user login"
+                  email:
+                    type: string
+                    format: email
+                    example: "newuser@email.com"
+                  position:
+                    type: string
+                    example: "usuario"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /password/forgot:
+    post:
+      summary: Generates a token for password recovering.
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@email.com"
+      responses:
+        '204':
+          description: Confirmation of token sent to email successfully.
+        '400':
+          description: User does not exists.
+  /password/reset:
+    post:
+      summary: Resets the user password.
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: "new user password"
+                password_confirmation:
+                  type: string
+                  example: "new user password"
+                token:
+                  type: string
+                  format: uuid
+                  example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+      responses:
+        '204':
+          description: Confirmation of user password changed successfully.
+        '400':
+          description: Token expired | User token doesn't not exists.
+  /sessions:
+    post:
+      summary: Creates an user session.
+      tags:
+        - users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  login:
+                    type: string
+                    example: "user login"
+                  password:
+                    type: string
+                    example: "user password"
+      responses:
+        '200':
+          description: Returns a JSON containing the user data and a JWT token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                      name:
+                        type: string
+                        example: "User Name"
+                      login:
+                        type: string
+                        example: "user login"
+                      email:
+                        type: string
+                        format: email
+                        example: "user@email.com"
+                      position:
+                        type: string
+                        example: "admin"
+                      created_at:
+                        type: string
+                        format: dateformat
+                        example: "2020-07-02T21:57:00.421Z"
+                      updated_at:
+                        type: string
+                        format: dateformat
+                        example: "2020-07-02T21:57:00.421Z"
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTcxMTQ0MDgsImV4cCI6MTU5NzIwMDgwOCwic3ViIjoiMWEwMWY3ZmYtYzZlMy00M2NiLThiNzQtY2YxOWVhZDYyMDdhIn0.P_NlcLb0Ob6j9pC6DxDJiF2q7Xrx6qqWkgOcUgqCpro"
+        '401':
+          description: 'Incorrect login/password combination.'

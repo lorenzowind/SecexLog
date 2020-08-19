@@ -1,5 +1,5 @@
 import { getRepository, Repository } from 'typeorm';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
 
@@ -17,7 +17,7 @@ class UserTokensRepository implements IUserTokensRepository {
       user_id,
     });
 
-    Object.assign(userToken, { id: uuid(), token: uuid() });
+    Object.assign(userToken, { id: v4(), token: v4() });
 
     await this.ormRepository.save(userToken);
 

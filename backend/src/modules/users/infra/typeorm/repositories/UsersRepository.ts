@@ -1,9 +1,9 @@
 import { getRepository, Repository } from 'typeorm';
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
-import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
+import ICreateUserDTO from '@modules/users/dtos/ICreateOrUpdateUserDTO';
 
 import User from '../entities/User';
 
@@ -26,10 +26,16 @@ class UsersRepository implements IUsersRepository {
     return findUser;
   }
 
+  public async findByLogin(login: string): Promise<User | undefined> {
+    const findUser = await this.ormRepository.findOne({ where: { login } });
+
+    return findUser;
+  }
+
   public async create(userData: ICreateUserDTO): Promise<User> {
     const user = this.ormRepository.create(userData);
 
-    Object.assign(userData, { id: uuid() });
+    Object.assign(user, { id: v4() });
 
     await this.ormRepository.save(user);
 
