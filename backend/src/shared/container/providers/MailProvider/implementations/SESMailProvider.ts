@@ -10,7 +10,7 @@ import ISendMailDTO from '../dtos/ISendMailDTO';
 import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTemplateProvider';
 
 @injectable()
-export default class SESMailProvider implements IMailProvider {
+class SESMailProvider implements IMailProvider {
   private client: Transporter;
 
   constructor(
@@ -47,3 +47,5 @@ export default class SESMailProvider implements IMailProvider {
     });
   }
 }
+
+export default SESMailProvider;

@@ -4,7 +4,7 @@ interface ICacheData {
   [key: string]: string;
 }
 
-export default class FakeCacheProvider implements ICacheProvider {
+export default class DraftCacheProvider implements ICacheProvider {
   private cache: ICacheData = {};
 
   public async save(key: string, value: any): Promise<void> {

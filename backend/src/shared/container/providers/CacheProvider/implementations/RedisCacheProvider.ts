@@ -4,7 +4,7 @@ import cacheConfig from '@config/cache';
 
 import ICacheProvider from '../models/ICacheProvider';
 
-export default class RedisCacheProvider implements ICacheProvider {
+class RedisCacheProvider implements ICacheProvider {
   private client: RedisClient;
 
   constructor() {
@@ -43,3 +43,5 @@ export default class RedisCacheProvider implements ICacheProvider {
     await pipeline.exec();
   }
 }
+
+export default RedisCacheProvider;
