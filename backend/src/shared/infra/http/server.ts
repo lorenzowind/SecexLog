@@ -10,12 +10,14 @@ import '../typeorm/database';
 import '@shared/container/index';
 
 import routes from './routes';
+import rateLimiter from './middlewares/rateLimiter';
 import AppError from '../../errors/AppError';
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(rateLimiter);
 app.use(routes);
 
 app.use(errors());

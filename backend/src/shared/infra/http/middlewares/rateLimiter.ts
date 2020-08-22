@@ -6,6 +6,7 @@ import AppError from '@shared/errors/AppError';
 
 const redisClient = redis.createClient({
   host: process.env.REDIS_HOST,
+  no_ready_check: true,
   port: Number(process.env.REDIS_PORT),
   password: process.env.REDIS_PASS || undefined,
 });

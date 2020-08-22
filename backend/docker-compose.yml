@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  mysql:
+  secexlog_mysql:
     image: mysql
     container_name: secexlog_mysql
     environment:
@@ -11,12 +11,10 @@ services:
       MYSQL_DATABASE: secexlog
     ports:
       - 3306:3306
-    volumes:
-      - db_data:/var/lib/mysql
     networks:
       - mysql-compose-network
 
-  adminer:
+  secexlog_adminer:
     image: adminer
     container_name: secexlog_adminer
     ports:
@@ -24,17 +22,13 @@ services:
     networks:
       - mysql-compose-network
 
-  redis:
+  secexlog_redis:
     image: redis
     container_name: secexlog_redis
     command: redis-server --requirepass redis
     ports:
-      - "6379:6379"
+      - 6379:6379
 
 networks:
   mysql-compose-network:
     driver: bridge
-
-volumes:
-  db_data:
-    driver: local
