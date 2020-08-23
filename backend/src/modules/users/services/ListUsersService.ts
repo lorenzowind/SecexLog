@@ -12,7 +12,10 @@ class ListUsersService {
   ) {}
 
   public async execute(search: string, page: number): Promise<User[]> {
-    const users = await this.usersRepository.findAllUsers(search, page);
+    const users = await this.usersRepository.findAllUsers(
+      search,
+      page > 0 ? page : 1,
+    );
 
     return users;
   }
