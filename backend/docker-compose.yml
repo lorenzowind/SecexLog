@@ -25,7 +25,7 @@ services:
   secexlog_redis:
     image: redis
     container_name: secexlog_redis
-    command: redis-server --requirepass redis
+    command: redis-server --requirepass root
     ports:
       - 6379:6379
 
