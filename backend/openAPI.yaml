@@ -46,7 +46,142 @@ components:
         updated_at:
           type: string
           format: dateformat
-
+    City:
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        is_base:
+          type: boolean
+        is_auditated:
+          type: boolean
+        related_cities:
+          type: array
+          items:
+            type: string
+        latitude:
+          type: number
+        longitude:
+          type: number
+        initial_flood_date:
+          type: string
+        end_flood_date:
+          type: string
+        interdiction_observation:
+          type: string
+        city_observation:
+          type: string
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
+    Holiday:
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        city_name:
+          type: string
+        initial_date:
+          type: string
+        end_date:
+          type: string
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
+    Modal:
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        image:
+          type: string
+        is_safe:
+          type: boolean
+        is_cheap:
+          type: boolean
+        is_fast:
+          type: boolean
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
+    Provider:
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        phone_number:
+          type: string
+        email:
+          type: string
+          format: email
+        modal:
+          type: string
+        preference:
+          type: string
+        prefetence_data:
+          type: string
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
+    Path:
+      properties:
+        id:
+          type: string
+          format: uuid
+        origin_city:
+          type: string
+        destination_city:
+          type: string
+        modal:
+          type: string
+        provider:
+          type: string
+        boarding_days:
+          type: array
+          items:
+            type: string
+        boarding_times:
+          type: array
+          items:
+            type: string
+        duration:
+          type: number
+        mileage:
+          type: number
+        cost:
+          type: number
+        boarding_place:
+          type: string
+        departure_place:
+          type: string
+        is_hired:
+          type: boolean
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
 paths:
   /users:
     post:
@@ -171,6 +306,52 @@ paths:
                     type: string
                     format: dateformat
                     example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /users/all:
+    get:
+      summary: Gets all users.
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a JSON containing all users.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    name:
+                      type: string
+                      example: "New User Name"
+                    login:
+                      type: string
+                      example: "new user login"
+                    email:
+                      type: string
+                      format: email
+                      example: "newuser@email.com"
+                    position:
+                      type: string
+                      example: "usuario"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
         '400':
           $ref:  '#/components/responses/IncorrectToken'
         '401':
