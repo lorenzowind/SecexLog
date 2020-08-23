@@ -466,7 +466,7 @@ paths:
         - bearerAuth: []
       responses:
         '200':
-          description: Returns a JSON containing all users.
+          description: Returns a JSON array containing all users.
           content:
             application/json:
               schema:
@@ -746,7 +746,7 @@ paths:
         - cities
       responses:
         '200':
-          description: Returns a JSON containing all cities.
+          description: Returns a JSON array containing all cities.
           content:
             application/json:
               schema:
@@ -961,7 +961,7 @@ paths:
         - holidays
       responses:
         '200':
-          description: Returns a JSON containing all holidays.
+          description: Returns a JSON array containing all holidays.
           content:
             application/json:
               schema:
@@ -1168,7 +1168,7 @@ paths:
         - modals
       responses:
         '200':
-          description: Returns a JSON containing all modals.
+          description: Returns a JSON array containing all modals.
           content:
             application/json:
               schema:
@@ -1394,7 +1394,7 @@ paths:
         - providers
       responses:
         '200':
-          description: Returns a JSON containing all providers.
+          description: Returns a JSON array containing all providers.
           content:
             application/json:
               schema:
@@ -1708,7 +1708,7 @@ paths:
         - paths
       responses:
         '200':
-          description: Returns a JSON containing all paths.
+          description: Returns a JSON array containing all paths.
           content:
             application/json:
               schema:

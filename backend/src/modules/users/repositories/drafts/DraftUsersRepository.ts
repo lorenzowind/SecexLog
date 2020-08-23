@@ -9,6 +9,10 @@ import User from '@modules/users/infra/typeorm/entities/User';
 export default class DraftUsersRepository implements IUsersRepository {
   private users: User[] = [];
 
+  public async findAllUsers(): Promise<User[]> {
+    return this.users;
+  }
+
   public async findById(id: string): Promise<User | undefined> {
     const user = this.users.find(findUser => findUser.id === id);
 
@@ -43,5 +47,11 @@ export default class DraftUsersRepository implements IUsersRepository {
     this.users[findIndex] = user;
 
     return user;
+  }
+
+  public async remove(user: User): Promise<void> {
+    const findIndex = this.users.findIndex(findUser => findUser.id === user.id);
+
+    this.users.splice(findIndex, 1);
   }
 }

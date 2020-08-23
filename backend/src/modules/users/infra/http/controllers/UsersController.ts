@@ -2,10 +2,20 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import { classToClass } from 'class-transformer';
 
+import ListUsersService from '@modules/users/services/ListUsersService';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
+import DeleteUserService from '@modules/users/services/DeleteUserService';
 
 export default class UsersController {
+  public async show(request: Request, response: Response): Promise<Response> {
+    const listUsers = container.resolve(ListUsersService);
+
+    const users = await listUsers.execute();
+
+    return response.json(classToClass(users));
+  }
+
   public async create(request: Request, response: Response): Promise<Response> {
     const { name, login, email, position, password } = request.body;
 
@@ -23,13 +33,13 @@ export default class UsersController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    const user_id = request.user.id;
+    const { id } = request.params;
     const { name, login, email, position, password } = request.body;
 
-    const updateProfile = container.resolve(UpdateUserService);
+    const updateUser = container.resolve(UpdateUserService);
 
-    const user = await updateProfile.execute({
-      user_id,
+    const user = await updateUser.execute({
+      id,
       name,
       login,
       email,
@@ -38,5 +48,15 @@ export default class UsersController {
     });
 
     return response.json(classToClass(user));
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+
+    const deleteUser = container.resolve(DeleteUserService);
+
+    const user = await deleteUser.execute(id);
+
+    return response.status(200).send();
   }
 }

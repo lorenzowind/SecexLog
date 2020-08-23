@@ -9,6 +9,8 @@ const usersRouter = Router();
 
 const usersController = new UsersController();
 
+usersRouter.get('/all', ensureAuthenticated, usersController.show);
+
 usersRouter.post(
   '/',
   celebrate({
@@ -24,7 +26,7 @@ usersRouter.post(
 );
 
 usersRouter.put(
-  '/',
+  '/:id',
   ensureAuthenticated,
   celebrate({
     [Segments.BODY]: {
@@ -37,5 +39,7 @@ usersRouter.put(
   }),
   usersController.update,
 );
+
+usersRouter.delete('/:id', ensureAuthenticated, usersController.delete);
 
 export default usersRouter;

@@ -28,7 +28,7 @@ describe('UpdateProfile', () => {
     });
 
     const updatedUser = await UpdateUser.execute({
-      user_id: user.id,
+      id: user.id,
       name: 'John Doe II',
       login: 'john doe II',
       email: 'johndoeII@example.com',
@@ -44,7 +44,7 @@ describe('UpdateProfile', () => {
   it('should not be able to update from non existing user', async () => {
     expect(
       UpdateUser.execute({
-        user_id: 'non existing user',
+        id: 'non existing user',
         name: 'John Doe',
         login: 'john doe',
         email: 'johndoe@example.com',
@@ -73,7 +73,7 @@ describe('UpdateProfile', () => {
 
     await expect(
       UpdateUser.execute({
-        user_id: user.id,
+        id: user.id,
         name: user.name,
         login: user.login,
         email: 'johndoe@example.com',
@@ -102,7 +102,7 @@ describe('UpdateProfile', () => {
 
     await expect(
       UpdateUser.execute({
-        user_id: user.id,
+        id: user.id,
         name: user.name,
         login: 'john doe',
         email: user.email,
@@ -122,7 +122,7 @@ describe('UpdateProfile', () => {
     });
 
     const updatedUser = await UpdateUser.execute({
-      user_id: user.id,
+      id: user.id,
       name: user.name,
       login: user.login,
       email: user.email,
