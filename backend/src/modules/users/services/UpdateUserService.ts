@@ -7,9 +7,9 @@ import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 import User from '../infra/typeorm/entities/User';
-import ICreateOrUpdateUserDTO from '../dtos/ICreateOrUpdateUserDTO';
+import IUpdateUserDTO from '../dtos/ICreateOrUpdateUserDTO';
 
-interface IRequest extends ICreateOrUpdateUserDTO {
+interface IRequest extends IUpdateUserDTO {
   id: string;
 }
 

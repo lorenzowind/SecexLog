@@ -24,11 +24,15 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+    positionHeader:
+      type: apiKey
+      in: header
+      name: user_position
   responses:
     UnauthorizedError:
       description: JWT token is missing
     IncorrectToken:
-      description: Invalid JWT token
+      description: Invalid JWT token | Exclusive for administrators
   schemas:
     User:
       properties:
@@ -375,6 +379,7 @@ paths:
         - users
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -450,9 +455,10 @@ paths:
         - users
       security:
         - bearerAuth: []
+        - positionHeader: []
       responses:
         '200':
-          description: Returns a successfully deleted user message.
+          description: Returns a successfully deleted user confirmation.
         '400':
           $ref:  '#/components/responses/IncorrectToken'
         '401':
@@ -464,6 +470,7 @@ paths:
         - users
       security:
         - bearerAuth: []
+        - positionHeader: []
       responses:
         '200':
           description: Returns a JSON array containing all users.
@@ -511,6 +518,7 @@ paths:
         - cities
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -622,6 +630,7 @@ paths:
         - cities
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -732,9 +741,10 @@ paths:
         - cities
       security:
         - bearerAuth: []
+        - positionHeader: []
       responses:
         '200':
-          description: Returns a successfully deleted city message.
+          description: Returns a successfully deleted city confirmation.
         '400':
           $ref:  '#/components/responses/IncorrectToken'
         '401':
@@ -806,6 +816,7 @@ paths:
         - holidays
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -877,6 +888,7 @@ paths:
         - holidays
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -947,9 +959,10 @@ paths:
         - holidays
       security:
         - bearerAuth: []
+        - positionHeader: []
       responses:
         '200':
-          description: Returns a successfully deleted holiday message.
+          description: Returns a successfully deleted holiday confirmation.
         '400':
           $ref:  '#/components/responses/IncorrectToken'
         '401':
@@ -1001,6 +1014,7 @@ paths:
         - modals
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -1078,6 +1092,7 @@ paths:
         - modals
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -1154,9 +1169,10 @@ paths:
         - modals
       security:
         - bearerAuth: []
+        - positionHeader: []
       responses:
         '200':
-          description: Returns a successfully deleted modal message.
+          description: Returns a successfully deleted modal confirmation.
         '400':
           $ref:  '#/components/responses/IncorrectToken'
         '401':
@@ -1211,6 +1227,7 @@ paths:
         - providers
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -1296,6 +1313,7 @@ paths:
         - providers
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -1380,9 +1398,10 @@ paths:
         - providers
       security:
         - bearerAuth: []
+        - positionHeader: []
       responses:
         '200':
-          description: Returns a successfully deleted provider message.
+          description: Returns a successfully deleted provider confirmation.
         '400':
           $ref:  '#/components/responses/IncorrectToken'
         '401':
@@ -1441,6 +1460,7 @@ paths:
         - paths
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -1568,6 +1588,7 @@ paths:
         - paths
       security:
         - bearerAuth: []
+        - positionHeader: []
       requestBody:
         required: true
         content:
@@ -1694,9 +1715,10 @@ paths:
         - paths
       security:
         - bearerAuth: []
+        - positionHeader: []
       responses:
         '200':
-          description: Returns a successfully deleted path message.
+          description: Returns a successfully deleted path confirmation.
         '400':
           $ref:  '#/components/responses/IncorrectToken'
         '401':
