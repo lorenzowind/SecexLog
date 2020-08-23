@@ -9,9 +9,11 @@ import DeleteUserService from '@modules/users/services/DeleteUserService';
 
 export default class UsersController {
   public async show(request: Request, response: Response): Promise<Response> {
+    const { search = '', page = 1 } = request.query;
+
     const listUsers = container.resolve(ListUsersService);
 
-    const users = await listUsers.execute();
+    const users = await listUsers.execute(String(search), Number(page));
 
     return response.json(classToClass(users));
   }

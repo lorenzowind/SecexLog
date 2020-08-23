@@ -40,8 +40,6 @@ describe('DeleteUser', () => {
 
     await deleteUser.execute(user.id);
 
-    const users = await draftUsersRepository.findAllUsers();
-
-    expect(users).toHaveLength(1);
+    expect(await draftUsersRepository.findById(user.id)).toBe(undefined);
   });
 });

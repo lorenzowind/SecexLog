@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 servers:
   - description: Development server URL
-    url: http://localhost:3333
+    url: http://127.0.0.1:3333/
 
 info:
   description: HTTP Requests guide to utilize the SecexLog API.
@@ -468,6 +468,17 @@ paths:
       summary: Gets all users.
       tags:
         - users
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific users.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the users pagination.
       security:
         - bearerAuth: []
         - positionHeader: []
@@ -754,6 +765,17 @@ paths:
       summary: Gets all cities.
       tags:
         - cities
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific cities.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the cities pagination.
       responses:
         '200':
           description: Returns a JSON array containing all cities.
@@ -972,6 +994,17 @@ paths:
       summary: Gets all holidays.
       tags:
         - holidays
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific holidays.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the holidays pagination.
       responses:
         '200':
           description: Returns a JSON array containing all holidays.
@@ -1182,6 +1215,17 @@ paths:
       summary: Gets all modals.
       tags:
         - modals
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific modals.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the modals pagination.
       responses:
         '200':
           description: Returns a JSON array containing all modals.
@@ -1411,6 +1455,17 @@ paths:
       summary: Gets all providers.
       tags:
         - providers
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific providers.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the providers pagination.
       responses:
         '200':
           description: Returns a JSON array containing all providers.
@@ -1728,6 +1783,17 @@ paths:
       summary: Gets all paths.
       tags:
         - paths
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific paths.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the paths pagination.
       responses:
         '200':
           description: Returns a JSON array containing all paths.
