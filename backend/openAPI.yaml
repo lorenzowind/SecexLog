@@ -10,7 +10,13 @@ info:
   title: SecexLog API
 
 tags:
+  - name: authentication
   - name: users
+  - name: cities
+  - name: holidays
+  - name: modals
+  - name: providers
+  - name: paths
 
 components:
   securitySchemes:
@@ -182,7 +188,116 @@ components:
         updated_at:
           type: string
           format: dateformat
+
 paths:
+  /sessions:
+    post:
+      summary: Creates an user session.
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                  login:
+                    type: string
+                    example: "user login"
+                  password:
+                    type: string
+                    example: "user password"
+      responses:
+        '200':
+          description: Returns a JSON containing the user data and a JWT token.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        format: uuid
+                        example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                      name:
+                        type: string
+                        example: "User Name"
+                      login:
+                        type: string
+                        example: "user login"
+                      email:
+                        type: string
+                        format: email
+                        example: "user@email.com"
+                      position:
+                        type: string
+                        example: "admin"
+                      created_at:
+                        type: string
+                        format: dateformat
+                        example: "2020-07-02T21:57:00.421Z"
+                      updated_at:
+                        type: string
+                        format: dateformat
+                        example: "2020-07-02T21:57:00.421Z"
+                  token:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTcxMTQ0MDgsImV4cCI6MTU5NzIwMDgwOCwic3ViIjoiMWEwMWY3ZmYtYzZlMy00M2NiLThiNzQtY2YxOWVhZDYyMDdhIn0.P_NlcLb0Ob6j9pC6DxDJiF2q7Xrx6qqWkgOcUgqCpro"
+        '401':
+          description: 'Incorrect login/password combination.'
+  /password/forgot:
+    post:
+      summary: Generates a token for password recovering.
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@email.com"
+      responses:
+        '204':
+          description: Confirmation of token sent to email successfully.
+        '400':
+          description: User does not exists.
+  /password/reset:
+    post:
+      summary: Resets the user password.
+      tags:
+        - authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  example: "new user password"
+                password_confirmation:
+                  type: string
+                  example: "new user password"
+                token:
+                  type: string
+                  format: uuid
+                  example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+      responses:
+        '204':
+          description: Confirmation of user password changed successfully.
+        '400':
+          description: Token expired | User token doesn't not exists.
+
   /users:
     post:
       summary: Creates an user.
@@ -244,8 +359,18 @@ paths:
                     type: string
                     format: dateformat
                     example: "2020-07-02T21:57:00.421Z"
+  /users/{id}:
     put:
       summary: Updates an user.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: User id to update it.
       tags:
         - users
       security:
@@ -310,6 +435,28 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Deletes an user.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: User id to delete it.
+      tags:
+        - users
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a successfully deleted user message.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
   /users/all:
     get:
       summary: Gets all users.
@@ -356,110 +503,1268 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  /password/forgot:
+
+  /cities:
     post:
-      summary: Generates a token for password recovering.
+      summary: Creates a city.
       tags:
-        - users
+        - cities
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
-            schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                  format: email
-                  example: "user@email.com"
-      responses:
-        '204':
-          description: Confirmation of token sent to email successfully.
-        '400':
-          description: User does not exists.
-  /password/reset:
-    post:
-      summary: Resets the user password.
-      tags:
-        - users
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                password:
-                  type: string
-                  example: "new user password"
-                password_confirmation:
-                  type: string
-                  example: "new user password"
-                token:
-                  type: string
-                  format: uuid
-                  example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-      responses:
-        '204':
-          description: Confirmation of user password changed successfully.
-        '400':
-          description: Token expired | User token doesn't not exists.
-  /sessions:
-    post:
-      summary: Creates an user session.
-      tags:
-        - users
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                  login:
+              schema:
+                type: object
+                properties:
+                  name:
                     type: string
-                    example: "user login"
-                  password:
+                    example: "City Name"
+                  is_base:
+                    type: boolean
+                    example: true
+                  is_auditated:
+                    type: boolean
+                    example: true
+                  related_cities:
+                    type: array
+                    items:
+                      type: string
+                      example: "Related City Name"
+                  latitude:
+                    type: number
+                    example: 1.13452453
+                  longitude:
+                    type: number
+                    example: -1.47354734
+                  initial_flood_date:
                     type: string
-                    example: "user password"
+                    example: "10/06"
+                  end_flood_date:
+                    type: string
+                    example: "10/08"
+                  interdiction_observation:
+                    type: string
+                    example: "Interdiction observation"
+                  city_observation:
+                    type: string
+                    example: "City observation"
       responses:
         '200':
-          description: Returns a JSON containing the user data and a JWT token.
+          description: Returns a JSON containing the created city.
           content:
             application/json:
               schema:
                 type: object
                 properties:
-                  user:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                        format: uuid
-                        example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                      name:
-                        type: string
-                        example: "User Name"
-                      login:
-                        type: string
-                        example: "user login"
-                      email:
-                        type: string
-                        format: email
-                        example: "user@email.com"
-                      position:
-                        type: string
-                        example: "admin"
-                      created_at:
-                        type: string
-                        format: dateformat
-                        example: "2020-07-02T21:57:00.421Z"
-                      updated_at:
-                        type: string
-                        format: dateformat
-                        example: "2020-07-02T21:57:00.421Z"
-                  token:
+                  id:
                     type: string
-                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1OTcxMTQ0MDgsImV4cCI6MTU5NzIwMDgwOCwic3ViIjoiMWEwMWY3ZmYtYzZlMy00M2NiLThiNzQtY2YxOWVhZDYyMDdhIn0.P_NlcLb0Ob6j9pC6DxDJiF2q7Xrx6qqWkgOcUgqCpro"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "City Name"
+                  is_base:
+                    type: boolean
+                    example: true
+                  is_auditated:
+                    type: boolean
+                    example: true
+                  related_cities:
+                    type: array
+                    items:
+                      type: string
+                      example: "Related City Name"
+                  latitude:
+                    type: number
+                    example: 1.13452453
+                  longitude:
+                    type: number
+                    example: -1.47354734
+                  initial_flood_date:
+                    type: string
+                    example: "10/06"
+                  end_flood_date:
+                    type: string
+                    example: "10/08"
+                  interdiction_observation:
+                    type: string
+                    example: "Interdiction observation"
+                  city_observation:
+                    type: string
+                    example: "City observation"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
         '401':
-          description: 'Incorrect login/password combination.'
+          $ref: '#/components/responses/UnauthorizedError'
+  /cities/{id}:
+    put:
+      summary: Updates a city.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: City id to update it.
+      tags:
+        - cities
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "New City Name"
+                  is_base:
+                    type: boolean
+                    example: true
+                  is_auditated:
+                    type: boolean
+                    example: true
+                  related_cities:
+                    type: array
+                    items:
+                      type: string
+                      example: "New Related City Name"
+                  latitude:
+                    type: number
+                    example: 1.13452453
+                  longitude:
+                    type: number
+                    example: -1.47354734
+                  initial_flood_date:
+                    type: string
+                    example: ""
+                  end_flood_date:
+                    type: string
+                    example: ""
+                  interdiction_observation:
+                    type: string
+                    example: ""
+                  city_observation:
+                    type: string
+                    example: ""
+      responses:
+        '200':
+          description: Returns a JSON containing the updated city.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "New City Name"
+                  is_base:
+                    type: boolean
+                    example: true
+                  is_auditated:
+                    type: boolean
+                    example: true
+                  related_cities:
+                    type: array
+                    items:
+                      type: string
+                      example: "New Related City Name"
+                  latitude:
+                    type: number
+                    example: 1.13452453
+                  longitude:
+                    type: number
+                    example: -1.47354734
+                  initial_flood_date:
+                    type: string
+                    example: ""
+                  end_flood_date:
+                    type: string
+                    example: ""
+                  interdiction_observation:
+                    type: string
+                    example: ""
+                  city_observation:
+                    type: string
+                    example: ""
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Deletes a city.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: City id to delete it.
+      tags:
+        - cities
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a successfully deleted city message.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /cities/all:
+    get:
+      summary: Gets all cities.
+      tags:
+        - cities
+      responses:
+        '200':
+          description: Returns a JSON containing all cities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    name:
+                      type: string
+                      example: "City Name"
+                    is_base:
+                      type: boolean
+                      example: true
+                    is_auditated:
+                      type: boolean
+                      example: true
+                    related_cities:
+                      type: array
+                      items:
+                        type: string
+                        example: "Related City Name"
+                    latitude:
+                      type: number
+                      example: 1.13452453
+                    longitude:
+                      type: number
+                      example: -1.47354734
+                    initial_flood_date:
+                      type: string
+                      example: "10/06"
+                    end_flood_date:
+                      type: string
+                      example: "10/08"
+                    interdiction_observation:
+                      type: string
+                      example: "Interdiction observation"
+                    city_observation:
+                      type: string
+                      example: "City observation"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+
+  /holidays:
+    post:
+      summary: Creates a holiday.
+      tags:
+        - holidays
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Holiday Name"
+                  city_name:
+                    type: string
+                    example: ""
+                  initial_date:
+                    type: string
+                    example: "25/12"
+                  end_date:
+                    type: string
+                    example: "25/12"
+      responses:
+        '200':
+          description: Returns a JSON containing the created holiday.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "Holiday Name"
+                  city_name:
+                    type: string
+                    example: ""
+                  initial_date:
+                    type: string
+                    example: "25/12"
+                  end_date:
+                    type: string
+                    example: "25/12"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /holidays/{id}:
+    put:
+      summary: Updates a holiday.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Holiday id to update it.
+      tags:
+        - holidays
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "New Holiday Name"
+                  city_name:
+                    type: string
+                    example: "City Name"
+                  initial_date:
+                    type: string
+                    example: "19/12"
+                  end_date:
+                    type: string
+                    example: "19/12"
+      responses:
+        '200':
+          description: Returns a JSON containing the updated holiday.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "New Holiday Name"
+                  city_name:
+                    type: string
+                    example: "City Name"
+                  initial_date:
+                    type: string
+                    example: "19/12"
+                  end_date:
+                    type: string
+                    example: "19/12"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Deletes a holiday.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Holiday id to delete it.
+      tags:
+        - holidays
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a successfully deleted holiday message.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /holidays/all:
+    get:
+      summary: Gets all holidays.
+      tags:
+        - holidays
+      responses:
+        '200':
+          description: Returns a JSON containing all holidays.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    name:
+                      type: string
+                      example: "Holiday Name"
+                    city_name:
+                      type: string
+                      example: ""
+                    initial_date:
+                      type: string
+                      example: "25/12"
+                    end_date:
+                      type: string
+                      example: "25/12"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+
+  /modals:
+    post:
+      summary: Creates a modal.
+      tags:
+        - modals
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Modal Name"
+                  image:
+                    type: string
+                    example: "Modal image path"
+                  is_safe:
+                    type: boolean
+                    example: true
+                  is_cheap:
+                    type: boolean
+                    example: true
+                  is_fast:
+                    type: boolean
+                    example: true
+      responses:
+        '200':
+          description: Returns a JSON containing the created modal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "Modal Name"
+                  image:
+                    type: string
+                    example: "Modal image path"
+                  is_safe:
+                    type: boolean
+                    example: true
+                  is_cheap:
+                    type: boolean
+                    example: true
+                  is_fast:
+                    type: boolean
+                    example: true
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /modals/{id}:
+    put:
+      summary: Updates a modal.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Modal id to update it.
+      tags:
+        - modals
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Modal Name"
+                  image:
+                    type: string
+                    example: "Modal image path"
+                  is_safe:
+                    type: boolean
+                    example: true
+                  is_cheap:
+                    type: boolean
+                    example: true
+                  is_fast:
+                    type: boolean
+                    example: true
+      responses:
+        '200':
+          description: Returns a JSON containing the updated modal.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "Modal Name"
+                  image:
+                    type: string
+                    example: "Modal image path"
+                  is_safe:
+                    type: boolean
+                    example: true
+                  is_cheap:
+                    type: boolean
+                    example: true
+                  is_fast:
+                    type: boolean
+                    example: true
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Deletes a modal.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Modal id to delete it.
+      tags:
+        - modals
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a successfully deleted modal message.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /modals/all:
+    get:
+      summary: Gets all modals.
+      tags:
+        - modals
+      responses:
+        '200':
+          description: Returns a JSON containing all modals.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    name:
+                      type: string
+                      example: "Modal Name"
+                    image:
+                      type: string
+                      example: "Modal image path"
+                    is_safe:
+                      type: boolean
+                      example: true
+                    is_cheap:
+                      type: boolean
+                      example: true
+                    is_fast:
+                      type: boolean
+                      example: true
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+
+  /providers:
+    post:
+      summary: Creates a provider.
+      tags:
+        - providers
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "Provider Name"
+                  phone_number:
+                    type: string
+                    example: "(092)99999-9999"
+                  email:
+                    type: string
+                    format: email
+                    example: "provider@email.com"
+                  modal:
+                    type: string
+                    example: "Modal Name"
+                  preference:
+                    type: string
+                    example: "CPF"
+                  preference_data:
+                    type: string
+                    example: "999.999.999-99"
+      responses:
+        '200':
+          description: Returns a JSON containing the created provider.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "Provider Name"
+                  phone_number:
+                    type: string
+                    example: "(092)99999-9999"
+                  email:
+                    type: string
+                    format: email
+                    example: "provider@email.com"
+                  modal:
+                    type: string
+                    example: "Modal Name"
+                  preference:
+                    type: string
+                    example: "CPF"
+                  preference_data:
+                    type: string
+                    example: "999.999.999-99"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /providers/{id}:
+    put:
+      summary: Updates a provider.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Provider id to update it.
+      tags:
+        - providers
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "New Provider Name"
+                  phone_number:
+                    type: string
+                    example: "(092)99999-9999"
+                  email:
+                    type: string
+                    format: email
+                    example: "newprovider@email.com"
+                  modal:
+                    type: string
+                    example: "New Modal Name"
+                  preference:
+                    type: string
+                    example: "CNPJ"
+                  preference_data:
+                    type: string
+                    example: "99.999.999/9999-99"
+      responses:
+        '200':
+          description: Returns a JSON containing the updated provider.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  name:
+                    type: string
+                    example: "New Provider Name"
+                  phone_number:
+                    type: string
+                    example: "(092)99999-9999"
+                  email:
+                    type: string
+                    format: email
+                    example: "newprovider@email.com"
+                  modal:
+                    type: string
+                    example: "New Modal Name"
+                  preference:
+                    type: string
+                    example: "CNPJ"
+                  preference_data:
+                    type: string
+                    example: "99.999.999/9999-99"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Deletes a provider.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Provider id to delete it.
+      tags:
+        - providers
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a successfully deleted provider message.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /providers/all:
+    get:
+      summary: Gets all providers.
+      tags:
+        - providers
+      responses:
+        '200':
+          description: Returns a JSON containing all providers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    name:
+                      type: string
+                      example: "Provider Name"
+                    phone_number:
+                      type: string
+                      example: "(092)99999-9999"
+                    email:
+                      type: string
+                      format: email
+                      example: "provider@email.com"
+                    modal:
+                      type: string
+                      example: "Modal Name"
+                    preference:
+                      type: string
+                      example: "CPF"
+                    preference_data:
+                      type: string
+                      example: "999.999.999-99"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+
+  /paths:
+    post:
+      summary: Creates a path.
+      tags:
+        - paths
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  origin_city:
+                    type: string
+                    example: "City Name"
+                  destination_city:
+                    type: string
+                    example: "Another City Name"
+                  modal:
+                    type: string
+                    example: "Modal Name"
+                  provider:
+                    type: string
+                    example: "Provider Name"
+                  boarding_days:
+                    type: array
+                    items:
+                      type: string
+                      example: "Segunda-feira"
+                  boarding_times:
+                    type: array
+                    items:
+                      type: string
+                      example: "12:30"
+                  duration:
+                    type: number
+                    example: 120
+                  mileage:
+                    type: number
+                    example: 60
+                  cost:
+                    type: number
+                    example: 99.99
+                  boarding_place:
+                    type: string
+                    example: "Boarding Place"
+                  departure_place:
+                    type: string
+                    example: "Departure Place"
+                  is_hired:
+                    type: boolean
+                    example: true
+      responses:
+        '200':
+          description: Returns a JSON containing the created path.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  origin_city:
+                    type: string
+                    example: "City Name"
+                  destination_city:
+                    type: string
+                    example: "Another City Name"
+                  modal:
+                    type: string
+                    example: "Modal Name"
+                  provider:
+                    type: string
+                    example: "Provider Name"
+                  boarding_days:
+                    type: array
+                    items:
+                      type: string
+                      example: "Segunda-feira"
+                  boarding_times:
+                    type: array
+                    items:
+                      type: string
+                      example: "12:30"
+                  duration:
+                    type: number
+                    example: 120
+                  mileage:
+                    type: number
+                    example: 60
+                  cost:
+                    type: number
+                    example: 99.99
+                  boarding_place:
+                    type: string
+                    example: "Boarding Place"
+                  departure_place:
+                    type: string
+                    example: "Departure Place"
+                  is_hired:
+                    type: boolean
+                    example: true
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /paths/{id}:
+    put:
+      summary: Updates a path.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Path id to update it.
+      tags:
+        - paths
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  origin_city:
+                    type: string
+                    example: "New City Name"
+                  destination_city:
+                    type: string
+                    example: "New Another City Name"
+                  modal:
+                    type: string
+                    example: "New Modal Name"
+                  provider:
+                    type: string
+                    example: "New Provider Name"
+                  boarding_days:
+                    type: array
+                    items:
+                      type: string
+                      example: "Quarta-feira"
+                  boarding_times:
+                    type: array
+                    items:
+                      type: string
+                      example: "13:30"
+                  duration:
+                    type: number
+                    example: 120
+                  mileage:
+                    type: number
+                    example: 60
+                  cost:
+                    type: number
+                    example: 99.99
+                  boarding_place:
+                    type: string
+                    example: "New Boarding Place"
+                  departure_place:
+                    type: string
+                    example: "New Departure Place"
+                  is_hired:
+                    type: boolean
+                    example: false
+      responses:
+        '200':
+          description: Returns a JSON containing the updated path.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  origin_city:
+                    type: string
+                    example: "New City Name"
+                  destination_city:
+                    type: string
+                    example: "New Another City Name"
+                  modal:
+                    type: string
+                    example: "New Modal Name"
+                  provider:
+                    type: string
+                    example: "New Provider Name"
+                  boarding_days:
+                    type: array
+                    items:
+                      type: string
+                      example: "Quarta-feira"
+                  boarding_times:
+                    type: array
+                    items:
+                      type: string
+                      example: "13:30"
+                  duration:
+                    type: number
+                    example: 120
+                  mileage:
+                    type: number
+                    example: 60
+                  cost:
+                    type: number
+                    example: 99.99
+                  boarding_place:
+                    type: string
+                    example: "New Boarding Place"
+                  departure_place:
+                    type: string
+                    example: "New Departure Place"
+                  is_hired:
+                    type: boolean
+                    example: false
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    delete:
+      summary: Deletes a path.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Path id to delete it.
+      tags:
+        - paths
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a successfully deleted path message.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /paths/all:
+    get:
+      summary: Gets all paths.
+      tags:
+        - paths
+      responses:
+        '200':
+          description: Returns a JSON containing all paths.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    origin_city:
+                      type: string
+                      example: "New City Name"
+                    destination_city:
+                      type: string
+                      example: "New Another City Name"
+                    modal:
+                      type: string
+                      example: "New Modal Name"
+                    provider:
+                      type: string
+                      example: "New Provider Name"
+                    boarding_days:
+                      type: array
+                      items:
+                        type: string
+                        example: "Quarta-feira"
+                    boarding_times:
+                      type: array
+                      items:
+                        type: string
+                        example: "13:30"
+                    duration:
+                      type: number
+                      example: 120
+                    mileage:
+                      type: number
+                      example: 60
+                    cost:
+                      type: number
+                      example: 99.99
+                    boarding_place:
+                      type: string
+                      example: "New Boarding Place"
+                    departure_place:
+                      type: string
+                      example: "New Departure Place"
+                    is_hired:
+                      type: boolean
+                      example: false
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
