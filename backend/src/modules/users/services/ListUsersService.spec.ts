@@ -35,6 +35,12 @@ describe('ListUsers', () => {
     expect(response).toHaveLength(2);
   });
 
+  it('should be able to validate a non positive page number', async () => {
+    const response = await listUsers.execute('', -1);
+
+    expect(response).toHaveLength(0);
+  });
+
   it('should not be able to list users from the second page', async () => {
     const response = await listUsers.execute('', 2);
 
