@@ -1,11 +1,15 @@
 import AppError from '@shared/errors/AppError';
 
+import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
 import DraftHashProvider from '../providers/HashProvider/drafts/DraftHashProvider';
+
 import DraftUsersRepository from '../repositories/drafts/DraftUsersRepository';
 
 import UpdateUserService from './UpdateUserService';
 
 let draftUsersRepository: DraftUsersRepository;
+
+let draftCacheProvider: DraftCacheProvider;
 let draftHashProvider: DraftHashProvider;
 
 let UpdateUser: UpdateUserService;
@@ -13,9 +17,15 @@ let UpdateUser: UpdateUserService;
 describe('UpdateProfile', () => {
   beforeEach(() => {
     draftUsersRepository = new DraftUsersRepository();
-    draftHashProvider = new DraftHashProvider();
 
-    UpdateUser = new UpdateUserService(draftUsersRepository, draftHashProvider);
+    draftHashProvider = new DraftHashProvider();
+    draftCacheProvider = new DraftCacheProvider();
+
+    UpdateUser = new UpdateUserService(
+      draftUsersRepository,
+      draftHashProvider,
+      draftCacheProvider,
+    );
   });
 
   it('should be able to update the profile', async () => {
@@ -41,7 +51,7 @@ describe('UpdateProfile', () => {
     expect(updatedUser.email).toBe('johndoeII@example.com');
   });
 
-  it('should not be able to update from non existing user', async () => {
+  it('should not be able to update from a non existing user', async () => {
     expect(
       UpdateUser.execute({
         id: 'non existing user',
@@ -54,7 +64,7 @@ describe('UpdateProfile', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to change to another user email', async () => {
+  it('should not be able to update to another user email', async () => {
     await draftUsersRepository.create({
       name: 'John Doe',
       login: 'john doe',
@@ -83,7 +93,7 @@ describe('UpdateProfile', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to change to another user login', async () => {
+  it('should not be able to update to another user login', async () => {
     await draftUsersRepository.create({
       name: 'John Doe',
       login: 'john doe',

@@ -2,6 +2,7 @@ import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
 
 @injectable()
@@ -9,6 +10,9 @@ class ListUsersService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute(id: string): Promise<void> {
@@ -19,6 +23,8 @@ class ListUsersService {
     }
 
     await this.usersRepository.remove(user);
+
+    await this.cacheProvider.invalidatePrefix('users-list');
   }
 }
 

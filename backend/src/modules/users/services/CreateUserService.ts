@@ -17,7 +17,10 @@ class CreateUserService {
     private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
-    private hashProvider: IHashProvider, // @inject('CacheProvider') // private cacheProvider: ICacheProvider,
+    private hashProvider: IHashProvider,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
@@ -48,6 +51,8 @@ class CreateUserService {
       position,
       password: hashedPassword,
     });
+
+    await this.cacheProvider.invalidatePrefix('users-list');
 
     return user;
   }

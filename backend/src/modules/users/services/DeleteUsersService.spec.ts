@@ -1,10 +1,14 @@
 import AppError from '@shared/errors/AppError';
 
+import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
+
 import DraftUsersRepository from '../repositories/drafts/DraftUsersRepository';
 
 import DeleteUserService from './DeleteUserService';
 
 let draftUsersRepository: DraftUsersRepository;
+
+let draftCacheProvider: DraftCacheProvider;
 
 let deleteUser: DeleteUserService;
 
@@ -12,7 +16,12 @@ describe('DeleteUser', () => {
   beforeEach(() => {
     draftUsersRepository = new DraftUsersRepository();
 
-    deleteUser = new DeleteUserService(draftUsersRepository);
+    draftCacheProvider = new DraftCacheProvider();
+
+    deleteUser = new DeleteUserService(
+      draftUsersRepository,
+      draftCacheProvider,
+    );
   });
 
   it('should not be able to delete a non existing user', async () => {

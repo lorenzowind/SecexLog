@@ -1,8 +1,12 @@
+import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
+
 import DraftUsersRepository from '../repositories/drafts/DraftUsersRepository';
 
 import ListUsersService from './ListUsersService';
 
 let draftUsersRepository: DraftUsersRepository;
+
+let draftCacheProvider: DraftCacheProvider;
 
 let listUsers: ListUsersService;
 
@@ -10,11 +14,13 @@ describe('ListUsers', () => {
   beforeEach(() => {
     draftUsersRepository = new DraftUsersRepository();
 
-    listUsers = new ListUsersService(draftUsersRepository);
+    draftCacheProvider = new DraftCacheProvider();
+
+    listUsers = new ListUsersService(draftUsersRepository, draftCacheProvider);
   });
 
   it('should be able to list all the users from the first page', async () => {
-    await draftUsersRepository.create({
+    const user = await draftUsersRepository.create({
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
@@ -30,25 +36,73 @@ describe('ListUsers', () => {
       password: '123456',
     });
 
-    const response = await listUsers.execute('', 1);
+    const response = await listUsers.execute('', 1, user.id);
 
     expect(response).toHaveLength(2);
   });
 
   it('should be able to validate a non positive page number', async () => {
-    const response = await listUsers.execute('', -1);
+    const user = await draftUsersRepository.create({
+      name: 'John Doe',
+      login: 'john doe',
+      email: 'johndoe@example.com',
+      position: 'admin',
+      password: '123456',
+    });
+
+    const response = await listUsers.execute('', -1, user.id);
+
+    expect(response).toHaveLength(1);
+  });
+
+  it('should not be able to list users from the second page without accumulate the first one', async () => {
+    const user = await draftUsersRepository.create({
+      name: 'John Doe',
+      login: 'john doe',
+      email: 'johndoe@example.com',
+      position: 'admin',
+      password: '123456',
+    });
+
+    const response = await listUsers.execute('', 2, user.id);
 
     expect(response).toHaveLength(0);
   });
 
-  it('should not be able to list users from the second page', async () => {
-    const response = await listUsers.execute('', 2);
+  it('should be able to return the same users if the same request is made', async () => {
+    const user = await draftUsersRepository.create({
+      name: 'John Doe',
+      login: 'john doe',
+      email: 'johndoe@example.com',
+      position: 'admin',
+      password: '123456',
+    });
 
-    expect(response).toHaveLength(0);
+    await listUsers.execute('', 1, user.id);
+
+    const response = await listUsers.execute('', 1, user.id);
+
+    expect(response).toHaveLength(1);
   });
 
-  it('should be able to list all the users from the second page', async () => {
-    await draftUsersRepository.create({
+  it('should be able to accumulate users from the first page on the second one', async () => {
+    const user = await draftUsersRepository.create({
+      name: 'John Doe',
+      login: 'john doe',
+      email: 'johndoe@example.com',
+      position: 'admin',
+      password: '123456',
+    });
+
+    await listUsers.execute('', 1, user.id);
+
+    const response = await listUsers.execute('', 2, user.id);
+
+    expect(response).toHaveLength(1);
+  });
+
+  it('should be able to accumulate all the users', async () => {
+    const user = await draftUsersRepository.create({
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
@@ -144,15 +198,17 @@ describe('ListUsers', () => {
       password: '123456',
     });
 
-    const response = await listUsers.execute('', 2);
+    await listUsers.execute('', 1, user.id);
 
-    expect(response).toHaveLength(2);
+    const response = await listUsers.execute('', 2, user.id);
+
+    expect(response).toHaveLength(12);
   });
 
   it('should be able to list all the users from the first page who includes a search string', async () => {
     const userSearch = 'User Searching';
 
-    await draftUsersRepository.create({
+    const user = await draftUsersRepository.create({
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
@@ -200,7 +256,7 @@ describe('ListUsers', () => {
       password: '123456',
     });
 
-    const response = await listUsers.execute(userSearch, 1);
+    const response = await listUsers.execute(userSearch, 1, user.id);
 
     expect(response).toHaveLength(1);
   });

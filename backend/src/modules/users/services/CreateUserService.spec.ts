@@ -1,8 +1,9 @@
 import AppError from '@shared/errors/AppError';
 
 import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
-import DraftUsersRepository from '../repositories/drafts/DraftUsersRepository';
 import DraftHashProvider from '../providers/HashProvider/drafts/DraftHashProvider';
+
+import DraftUsersRepository from '../repositories/drafts/DraftUsersRepository';
 
 import CreateUserService from './CreateUserService';
 
@@ -16,13 +17,14 @@ let createUser: CreateUserService;
 describe('CreateUser', () => {
   beforeEach(() => {
     draftUsersRepository = new DraftUsersRepository();
+
     draftHashProvider = new DraftHashProvider();
     draftCacheProvider = new DraftCacheProvider();
 
     createUser = new CreateUserService(
       draftUsersRepository,
       draftHashProvider,
-      // draftCacheProvider,
+      draftCacheProvider,
     );
   });
 
@@ -38,7 +40,7 @@ describe('CreateUser', () => {
     expect(user).toHaveProperty('id');
   });
 
-  it('should not be able to create a new user with same email from another', async () => {
+  it('should not be able to create a new user with the same email from another', async () => {
     await createUser.execute({
       name: 'John Doe',
       login: 'john doe',
@@ -58,7 +60,7 @@ describe('CreateUser', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to create a new user with same user login from another', async () => {
+  it('should not be able to create a new user with the same user login from another', async () => {
     await createUser.execute({
       name: 'John Doe',
       login: 'john doe',
