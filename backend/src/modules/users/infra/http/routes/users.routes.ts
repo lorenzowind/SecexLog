@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
-import UsersController from '../controllers/UsersController';
+import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
 
-import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+import UsersController from '../controllers/UsersController';
 
 const usersRouter = Router();
 
