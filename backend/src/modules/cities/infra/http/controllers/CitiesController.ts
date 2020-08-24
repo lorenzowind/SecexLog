@@ -8,11 +8,17 @@ import DeleteCityService from '@modules/cities/services/DeleteCityService';
 
 export default class CitiesController {
   public async show(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id ? request.user.id : null;
+
     const { search = '', page = 1 } = request.query;
 
     const listCities = container.resolve(ListCitiesService);
 
-    const cities = await listCities.execute(String(search), Number(page));
+    const cities = await listCities.execute(
+      String(search),
+      Number(page),
+      user_id,
+    );
 
     return response.json(cities);
   }
