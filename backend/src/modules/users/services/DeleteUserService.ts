@@ -6,7 +6,7 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 import IUsersRepository from '../repositories/IUsersRepository';
 
 @injectable()
-class ListUsersService {
+class DeleteUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -28,4 +28,4 @@ class ListUsersService {
   }
 }
 
-export default ListUsersService;
+export default DeleteUserService;
