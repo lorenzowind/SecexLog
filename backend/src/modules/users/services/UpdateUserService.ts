@@ -15,7 +15,7 @@ interface IRequest extends IUpdateUserDTO {
 }
 
 @injectable()
-class UpdateProfileService {
+class UpdateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -66,4 +66,4 @@ class UpdateProfileService {
   }
 }
 
-export default UpdateProfileService;
+export default UpdateUserService;

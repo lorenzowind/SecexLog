@@ -20,8 +20,10 @@
     ],
     "rules": {
       "prettier/prettier": "error",
+      "array-callback-return": "off",
       "camelcase": "off",
       "class-methods-use-this": "off",
+      "consistent-return": "off",
       "no-useless-constructor": "off",
       "import/no-unresolved": "off",
       "import/no-extraneous-dependencies": "off",

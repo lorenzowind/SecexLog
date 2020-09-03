@@ -32,10 +32,30 @@ class CitiesRepository implements ICitiesRepository {
     return cities;
   }
 
+  public async findByName(name: string): Promise<City | undefined> {
+    const findCity = await this.ormRepository.findOne(name);
+
+    return findCity;
+  }
+
   public async findById(id: string): Promise<City | undefined> {
     const findCity = await this.ormRepository.findOne(id);
 
     return findCity;
+  }
+
+  public async checkRelatedCities(related_cities: string): Promise<boolean> {
+    const citiesNames = related_cities.split(', ');
+
+    let checkValidCities = true;
+
+    citiesNames.map(async cityName => {
+      if (!(await this.ormRepository.findOne(cityName))) {
+        checkValidCities = false;
+      }
+    });
+
+    return checkValidCities;
   }
 
   public async create(cityData: ICreateCityDTO): Promise<City> {
