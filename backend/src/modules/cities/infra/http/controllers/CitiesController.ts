@@ -94,7 +94,7 @@ export default class CitiesController {
 
     const deleteCity = container.resolve(DeleteCityService);
 
-    const city = await deleteCity.execute(id);
+    await deleteCity.execute(id);
 
     return response.status(200).send();
   }

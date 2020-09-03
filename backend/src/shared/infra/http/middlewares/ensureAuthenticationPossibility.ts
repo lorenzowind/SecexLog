@@ -40,5 +40,9 @@ export default function ensureAuthenticatedPossibility(
     }
   }
 
+  request.user = {
+    id: null,
+  };
+
   return next();
 }

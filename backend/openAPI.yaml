@@ -68,9 +68,7 @@ components:
         is_auditated:
           type: boolean
         related_cities:
-          type: array
-          items:
-            type: string
+          type: string
         latitude:
           type: number
         longitude:
@@ -547,10 +545,8 @@ paths:
                     type: boolean
                     example: true
                   related_cities:
-                    type: array
-                    items:
-                      type: string
-                      example: "Related City Name"
+                    type: string
+                    example: "Related City Name"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -591,10 +587,8 @@ paths:
                     type: boolean
                     example: true
                   related_cities:
-                    type: array
-                    items:
-                      type: string
-                      example: "Related City Name"
+                    type: string
+                    example: "Related City Name"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -659,10 +653,8 @@ paths:
                     type: boolean
                     example: true
                   related_cities:
-                    type: array
-                    items:
-                      type: string
-                      example: "New Related City Name"
+                    type: string
+                    example: "New Related City Name"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -703,10 +695,8 @@ paths:
                     type: boolean
                     example: true
                   related_cities:
-                    type: array
-                    items:
-                      type: string
-                      example: "New Related City Name"
+                    type: string
+                    example: "New Related City Name"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -765,6 +755,9 @@ paths:
       summary: Gets all cities.
       tags:
         - cities
+      security:
+        - bearerAuth: []
+        - positionHeader: []
       parameters:
         - in: query
           name: search
@@ -800,10 +793,8 @@ paths:
                       type: boolean
                       example: true
                     related_cities:
-                      type: array
-                      items:
-                        type: string
-                        example: "Related City Name"
+                      type: string
+                      example: "Related City Name"
                     latitude:
                       type: number
                       example: 1.13452453

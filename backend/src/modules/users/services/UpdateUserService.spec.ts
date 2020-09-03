@@ -14,7 +14,7 @@ let draftHashProvider: DraftHashProvider;
 
 let UpdateUser: UpdateUserService;
 
-describe('UpdateProfile', () => {
+describe('UpdateUser', () => {
   beforeEach(() => {
     draftUsersRepository = new DraftUsersRepository();
 
