@@ -1,0 +1,18 @@
+#Application
+APP_SECRET=eaabc89d8bd9f496424a0afec2231e79
+APP_API_URL=http://localhost:3333
+APP_WEB_URL=http://localhost:3000
+
+#AWS Credentials
+AWS_ACCESS_KEY_ID=AKIASEO3YZQ6VNIYD7UD
+AWS_SECRET_ACCESS_KEY=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
+AWS_DEFAULT_REGION=us-east-2
+
+#Mail - ethereal/ses
+MAIL_DRIVER=ethereal
+
+#Redis
+REDIS_HOST=localhost
+REDIS_PORT=6379
+REDIS_PASS=
+
