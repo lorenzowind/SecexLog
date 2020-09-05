@@ -32,7 +32,7 @@ export default class CreateUsers1597799911025 implements MigrationInterface {
           },
           {
             name: 'position',
-            type: "enum('usuario', 'admin')",
+            type: "enum('user', 'admin')",
           },
           {
             name: 'created_at',

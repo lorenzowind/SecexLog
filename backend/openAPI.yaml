@@ -17,6 +17,7 @@ tags:
   - name: modals
   - name: providers
   - name: paths
+  - name: opinions
 
 components:
   securitySchemes:
@@ -165,13 +166,9 @@ components:
         provider:
           type: string
         boarding_days:
-          type: array
-          items:
-            type: string
+          type: string
         boarding_times:
-          type: array
-          items:
-            type: string
+          type: string
         duration:
           type: number
         mileage:
@@ -184,6 +181,21 @@ components:
           type: string
         is_hired:
           type: boolean
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
+    Opinion:
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
         created_at:
           type: string
           format: dateformat
@@ -397,7 +409,7 @@ paths:
                     example: "newuser@email.com"
                   position:
                     type: string
-                    example: "usuario"
+                    example: "user"
                   password:
                     type: string
                     example: "new user password"
@@ -425,7 +437,7 @@ paths:
                     example: "newuser@email.com"
                   position:
                     type: string
-                    example: "usuario"
+                    example: "user"
                   created_at:
                     type: string
                     format: dateformat
@@ -506,7 +518,7 @@ paths:
                       example: "newuser@email.com"
                     position:
                       type: string
-                      example: "usuario"
+                      example: "user"
                     created_at:
                       type: string
                       format: dateformat
@@ -1527,15 +1539,11 @@ paths:
                     type: string
                     example: "Provider Name"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Segunda-feira"
+                    type: string
+                    example: "Segunda-feira, Terça-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "12:30"
+                    type: string
+                    example: "12:30, 12:30"
                   duration:
                     type: number
                     example: 120
@@ -1579,15 +1587,11 @@ paths:
                     type: string
                     example: "Provider Name"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Segunda-feira"
+                    type: string
+                    example: "Segunda-feira, Terça-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "12:30"
+                    type: string
+                    example: "12:30, 12:30"
                   duration:
                     type: number
                     example: 120
@@ -1655,15 +1659,11 @@ paths:
                     type: string
                     example: "New Provider Name"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Quarta-feira"
+                    type: string
+                    example: "Segunda-feira, Quarta-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "13:30"
+                    type: string
+                    example: "12:30, 13:30"
                   duration:
                     type: number
                     example: 120
@@ -1707,15 +1707,11 @@ paths:
                     type: string
                     example: "New Provider Name"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Quarta-feira"
+                    type: string
+                    example: "Segunda-feira, Quarta-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "13:30"
+                    type: string
+                    example: "12:30, 13:30"
                   duration:
                     type: number
                     example: 120
@@ -1812,15 +1808,11 @@ paths:
                       type: string
                       example: "New Provider Name"
                     boarding_days:
-                      type: array
-                      items:
-                        type: string
-                        example: "Quarta-feira"
+                      type: string
+                      example: "Segunda-feira, Quarta-feira"
                     boarding_times:
-                      type: array
-                      items:
-                        type: string
-                        example: "13:30"
+                      type: string
+                      example: "12:30, 13:30"
                     duration:
                       type: number
                       example: 120
@@ -1839,6 +1831,122 @@ paths:
                     is_hired:
                       type: boolean
                       example: false
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+
+  /opinions:
+    post:
+      summary: Creates an opinion.
+      tags:
+        - opinions
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    example: "Opinion Title"
+                  description:
+                    type: string
+                    example: "Opinion description"
+      responses:
+        '200':
+          description: Returns a JSON containing the created opinion.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  title:
+                    type: string
+                    example: "Opinion Title"
+                  description:
+                    type: string
+                    example: "Opinion description"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+  /opinions/{id}:
+    delete:
+      summary: Deletes an opinion.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Opinion id to delete it.
+      tags:
+        - opinions
+      security:
+        - bearerAuth: []
+        - positionHeader: []
+      responses:
+        '200':
+          description: Returns a successfully deleted opinion confirmation.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /opinions/all:
+    get:
+      summary: Gets all opinions.
+      tags:
+        - opinions
+      security:
+        - bearerAuth: []
+        - positionHeader: []
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific opinions.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the opinions pagination.
+      responses:
+        '200':
+          description: Returns a JSON array containing all opinions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    title:
+                      type: string
+                      example: "Opinion Title"
+                    description:
+                      type: string
+                      example: "Opinion description"
                     created_at:
                       type: string
                       format: dateformat
