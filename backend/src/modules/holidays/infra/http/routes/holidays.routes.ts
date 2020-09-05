@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
-import ensureAuthenticationPossibility from '@shared/infra/http/middlewares/ensureAuthenticationPossibility';
+import ensureIsAdmin from '@shared/infra/http/middlewares/ensureIsAdmin';
 
 import HolidaysController from '../controllers/HolidaysController';
 
@@ -10,15 +10,12 @@ const holidaysRouter = Router();
 
 const holidaysController = new HolidaysController();
 
-holidaysRouter.get(
-  '/all',
-  ensureAuthenticationPossibility,
-  holidaysController.show,
-);
+holidaysRouter.get('/all', ensureAuthenticated, holidaysController.show);
 
 holidaysRouter.post(
   '/',
   ensureAuthenticated,
+  ensureIsAdmin,
   celebrate(
     {
       [Segments.BODY]: {
@@ -37,6 +34,7 @@ holidaysRouter.post(
 holidaysRouter.put(
   '/:id',
   ensureAuthenticated,
+  ensureIsAdmin,
   celebrate(
     {
       [Segments.BODY]: {
@@ -52,6 +50,11 @@ holidaysRouter.put(
   holidaysController.update,
 );
 
-holidaysRouter.delete('/:id', ensureAuthenticated, holidaysController.delete);
+holidaysRouter.delete(
+  '/:id',
+  ensureAuthenticated,
+  ensureIsAdmin,
+  holidaysController.delete,
+);
 
 export default holidaysRouter;

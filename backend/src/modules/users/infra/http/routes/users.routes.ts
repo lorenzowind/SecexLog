@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
+import ensureIsAdmin from '@shared/infra/http/middlewares/ensureIsAdmin';
 
 import UsersController from '../controllers/UsersController';
 
@@ -28,6 +29,7 @@ usersRouter.post(
 usersRouter.put(
   '/:id',
   ensureAuthenticated,
+  ensureIsAdmin,
   celebrate({
     [Segments.BODY]: {
       name: Joi.string().required(),
@@ -40,6 +42,11 @@ usersRouter.put(
   usersController.update,
 );
 
-usersRouter.delete('/:id', ensureAuthenticated, usersController.delete);
+usersRouter.delete(
+  '/:id',
+  ensureAuthenticated,
+  ensureIsAdmin,
+  usersController.delete,
+);
 
 export default usersRouter;

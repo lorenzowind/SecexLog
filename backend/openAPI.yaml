@@ -31,7 +31,7 @@ components:
       name: user_position
   responses:
     UnauthorizedError:
-      description: JWT token is missing
+      description: JWT token | User position is missing
     IncorrectToken:
       description: Invalid JWT token
     ExclusiveAccess:
@@ -497,7 +497,6 @@ paths:
           description: A number to control the users pagination.
       security:
         - bearerAuth: []
-        - positionHeader: []
       responses:
         '200':
           description: Returns a JSON array containing all users.
@@ -537,8 +536,6 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-        '403':
-          $ref: '#/components/responses/ExclusiveAccess'
 
   /cities:
     post:
@@ -781,9 +778,6 @@ paths:
       summary: Gets all cities.
       tags:
         - cities
-      security:
-        - bearerAuth: []
-        - positionHeader: []
       parameters:
         - in: query
           name: search
@@ -847,8 +841,6 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
-        '403':
-          $ref: '#/components/responses/ExclusiveAccess'
 
   /holidays:
     post:
@@ -1030,6 +1022,8 @@ paths:
           schema:
             type: number
           description: A number to control the holidays pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all holidays.
@@ -1064,6 +1058,10 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /modals:
     post:
@@ -1255,6 +1253,8 @@ paths:
           schema:
             type: number
           description: A number to control the modals pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all modals.
@@ -1292,6 +1292,10 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /providers:
     post:
@@ -1501,6 +1505,8 @@ paths:
           schema:
             type: number
           description: A number to control the providers pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all providers.
@@ -1542,6 +1548,10 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /paths:
     post:
@@ -1819,6 +1829,8 @@ paths:
           schema:
             type: number
           description: A number to control the paths pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all paths.
@@ -1877,6 +1889,10 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /opinions:
     post:
@@ -1955,7 +1971,6 @@ paths:
         - opinions
       security:
         - bearerAuth: []
-        - positionHeader: []
       parameters:
         - in: query
           name: search
@@ -1995,5 +2010,7 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
-        '403':
-          $ref: '#/components/responses/ExclusiveAccess'
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'

@@ -8,7 +8,7 @@ import DeleteHolidayService from '@modules/holidays/services/DeleteHolidayServic
 
 export default class HolidaysController {
   public async show(request: Request, response: Response): Promise<Response> {
-    const user_id = request.user.id ? request.user.id : null;
+    const user_id = request.user.id;
 
     const { search = '', page = 1 } = request.query;
 

@@ -17,14 +17,9 @@ export default function ensureAuthenticated(
   next: NextFunction,
 ): void {
   const authHeader = request.headers.authorization;
-  const positionHeader = request.headers.user_position;
 
   if (!authHeader) {
     throw new AppError('JWT token is missing', 401);
-  }
-
-  if (positionHeader !== 'admin') {
-    throw new AppError('Only administrators can make module operations', 403);
   }
 
   const [, token] = authHeader.split(' ');
