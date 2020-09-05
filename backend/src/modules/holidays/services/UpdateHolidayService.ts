@@ -4,12 +4,14 @@ import AppError from '@shared/errors/AppError';
 
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
+import ICitiesRepository from '@modules/cities/repositories/ICitiesRepository';
 import IHolidaysRepository from '../repositories/IHolidaysRepository';
 
 import Holiday from '../infra/typeorm/entities/Holiday';
-import IUpdateHolidaysDTO from '../dtos/ICreateOrUpdateHolidaysDTO';
 
-interface IRequest extends IUpdateHolidaysDTO {
+import IUpdateHolidayDTO from '../dtos/ICreateOrUpdateHolidayDTO';
+
+interface IRequest extends IUpdateHolidayDTO {
   id: string;
 }
 
@@ -18,6 +20,9 @@ class UpdateHolidayService {
   constructor(
     @inject('HolidaysRepository')
     private holidaysRepository: IHolidaysRepository,
+
+    @inject('CitiesRepository')
+    private citiesRepository: ICitiesRepository,
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
@@ -28,7 +33,7 @@ class UpdateHolidayService {
     name,
     city_name,
     initial_date,
-    end_date
+    end_date,
   }: IRequest): Promise<Holiday> {
     const holiday = await this.holidaysRepository.findById(id);
 
@@ -36,29 +41,30 @@ class UpdateHolidayService {
       throw new AppError('Holiday not found.');
     }
 
-    const holidayWithUpdatedName = await this.holidaysRepository.findByName(name);
+    const holidayWithUpdatedName = await this.holidaysRepository.findByName(
+      name,
+    );
 
     if (holidayWithUpdatedName && holidayWithUpdatedName.id !== id) {
       throw new AppError('Holiday name already in use.');
     }
-    /*
-    if (related_cities) {
-      const checkRelatedCities = await this.citiesRepository.checkRelatedCities(
-        related_cities,
+
+    if (city_name) {
+      const checkCityNameExists = await this.citiesRepository.findByName(
+        city_name,
       );
 
-      if (!checkRelatedCities) {
-        throw new AppError('Related cities are not valid.');
+      if (!checkCityNameExists) {
+        throw new AppError('Informed city does not exists.');
       }
-    }*/
+    }
 
     holiday.name = name;
     holiday.end_date = end_date;
     holiday.initial_date = initial_date;
     holiday.city_name = city_name;
-    
 
-    await this.cacheProvider.invalidatePrefix('holiday-list');
+    await this.cacheProvider.invalidatePrefix('holidays-list');
 
     return this.holidaysRepository.save(holiday);
   }

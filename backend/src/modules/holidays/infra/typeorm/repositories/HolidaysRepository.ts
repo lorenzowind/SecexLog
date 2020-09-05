@@ -1,20 +1,23 @@
-import { getRepository, Repository, Like} from 'typeorm';
+import { getRepository, Repository, Like } from 'typeorm';
 import { v4 } from 'uuid';
 
 import IHolidaysRepository from '@modules/holidays/repositories/IHolidaysRepository';
 
-import ICreateHolidaysDTO from '@modules/holidays/dtos/ICreateOrUpdateHolidaysDTO';
+import ICreateHolidayDTO from '@modules/holidays/dtos/ICreateOrUpdateHolidayDTO';
 
 import Holiday from '../entities/Holiday';
 
-class HolidayRepository implements IHolidaysRepository {
+class HolidaysRepository implements IHolidaysRepository {
   private ormRepository: Repository<Holiday>;
 
   constructor() {
     this.ormRepository = getRepository(Holiday);
   }
 
-  public async findAllHolidays(search: string, page: number): Promise<Holiday[]> {
+  public async findAllHolidays(
+    search: string,
+    page: number,
+  ): Promise<Holiday[]> {
     const holidays =
       search !== ''
         ? await this.ormRepository.find({
@@ -44,7 +47,7 @@ class HolidayRepository implements IHolidaysRepository {
     return findHoliday;
   }
 
-  public async create(holidayData: ICreateHolidaysDTO): Promise<Holiday> {
+  public async create(holidayData: ICreateHolidayDTO): Promise<Holiday> {
     const holiday = this.ormRepository.create(holidayData);
 
     Object.assign(holiday, { id: v4() });
@@ -63,4 +66,4 @@ class HolidayRepository implements IHolidaysRepository {
   }
 }
 
-export default HolidayRepository;
+export default HolidaysRepository;

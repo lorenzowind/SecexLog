@@ -12,7 +12,7 @@ let draftCacheProvider: DraftCacheProvider;
 
 let deleteHoliday: DeleteHolidaysService;
 
-describe('Delete', () => {
+describe('DeleteHoliday', () => {
   beforeEach(() => {
     draftHolidaysRepository = new DraftHolidaysRepository();
 
@@ -32,17 +32,17 @@ describe('Delete', () => {
 
   it('should be able to delete a holiday', async () => {
     await draftHolidaysRepository.create({
-      name: 'City 1',
-      city_name: 'Manaus',
-      initial_date: '09/08/2020',
-      end_date: '10/08/2020',
+      name: 'Holiday 1',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
     });
 
     const holiday = await draftHolidaysRepository.create({
-      name: 'City 2',
-      city_name: 'Curitiba',
-      initial_date: '09/08/2020',
-      end_date: '10/08/2020',
+      name: 'Holiday 2',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
     });
 
     await deleteHoliday.execute(holiday.id);

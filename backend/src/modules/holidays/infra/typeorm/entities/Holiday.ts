@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
-@Entity('cities')
-class City {
+@Entity('holidays')
+class Holiday {
   @PrimaryColumn()
   id: string;
 
@@ -18,4 +18,4 @@ class City {
   end_date?: string;
 }
 
-export default City;
+export default Holiday;

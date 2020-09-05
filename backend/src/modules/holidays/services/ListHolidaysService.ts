@@ -2,15 +2,15 @@ import { injectable, inject } from 'tsyringe';
 
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
-import IHolidayRepository from '../repositories/IHolidaysRepository';
+import IHolidaysRepository from '../repositories/IHolidaysRepository';
 
 import Holiday from '../infra/typeorm/entities/Holiday';
 
 @injectable()
-class ListHolidayService {
+class ListHolidaysService {
   constructor(
-    @inject('HolidayRepository')
-    private holidayRepository: IHolidayRepository,
+    @inject('HolidaysRepository')
+    private holidaysRepository: IHolidaysRepository,
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
@@ -19,39 +19,39 @@ class ListHolidayService {
   public async execute(
     search: string,
     page: number,
-    holiday_id: string | null,
+    user_id: string | null,
   ): Promise<Holiday[]> {
     let holidays;
 
-    if (!search && holiday_id) {
+    if (!search && user_id) {
       holidays = await this.cacheProvider.recover<Holiday[]>(
-        `cities-list:${holiday_id}:page=${page}`,
+        `holidays-list:${user_id}:page=${page}`,
       );
     }
 
     if (!holidays) {
-      holidays = await this.holidayRepository.findAllHolidays(
+      holidays = await this.holidaysRepository.findAllHolidays(
         search,
         page > 0 ? page : 1,
       );
 
-      let holidayPreviousPage;
+      let holidaysPreviousPage;
 
-      if (!search && holiday_id) {
-        holidayPreviousPage = await this.cacheProvider.recover<Holiday[]>(
-          `holidays-list:${holiday_id}:page=${page - 1}`,
+      if (!search && user_id) {
+        holidaysPreviousPage = await this.cacheProvider.recover<Holiday[]>(
+          `holidays-list:${user_id}:page=${page - 1}`,
         );
       }
 
-      if (holidayPreviousPage) {
-        holidays = holidayPreviousPage.concat(holidays);
+      if (holidaysPreviousPage) {
+        holidays = holidaysPreviousPage.concat(holidays);
       } else if (page > 1 && !search) {
         return [];
       }
 
-      if (!search && holiday_id) {
+      if (!search && user_id) {
         await this.cacheProvider.save(
-          `holidays-list:${holiday_id}:page=${page}`,
+          `holidays-list:${user_id}:page=${page}`,
           holidays,
         );
       }
@@ -61,4 +61,4 @@ class ListHolidayService {
   }
 }
 
-export default ListHolidayService;
+export default ListHolidaysService;

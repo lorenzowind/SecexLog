@@ -2,14 +2,17 @@ import { v4 } from 'uuid';
 
 import IHolidaysRepository from '@modules/holidays/repositories/IHolidaysRepository';
 
-import ICreateHolidaysDTO from '@modules/holidays/dtos/ICreateOrUpdateHolidaysDTO';
+import ICreateHolidayDTO from '@modules/holidays/dtos/ICreateOrUpdateHolidayDTO';
 
 import Holiday from '@modules/holidays/infra/typeorm/entities/Holiday';
 
 export default class DraftHolidaysRepository implements IHolidaysRepository {
   private holidays: Holiday[] = [];
 
-  public async findAllHolidays(search: string, page: number): Promise<Holiday[]> {
+  public async findAllHolidays(
+    search: string,
+    page: number,
+  ): Promise<Holiday[]> {
     const holidays = search
       ? this.holidays.filter(findHoliday => findHoliday.name.includes(search))
       : this.holidays;
@@ -18,7 +21,9 @@ export default class DraftHolidaysRepository implements IHolidaysRepository {
   }
 
   public async findByName(name: string): Promise<Holiday | undefined> {
-    const holiday = this.holidays.find(findHoliday => findHoliday.name === name);
+    const holiday = this.holidays.find(
+      findHoliday => findHoliday.name === name,
+    );
 
     return holiday;
   }
@@ -29,7 +34,7 @@ export default class DraftHolidaysRepository implements IHolidaysRepository {
     return holiday;
   }
 
-  public async create(holidayData: ICreateHolidaysDTO): Promise<Holiday> {
+  public async create(holidayData: ICreateHolidayDTO): Promise<Holiday> {
     const holiday = new Holiday();
 
     Object.assign(holiday, { id: v4() }, holidayData);

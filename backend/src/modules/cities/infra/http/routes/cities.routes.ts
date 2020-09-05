@@ -4,7 +4,7 @@ import { celebrate, Segments, Joi } from 'celebrate';
 import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
 import ensureAuthenticationPossibility from '@shared/infra/http/middlewares/ensureAuthenticationPossibility';
 
-import CitiesController from '../controllers/CytiesController'; 
+import CitiesController from '../controllers/CitiesController';
 
 const citiesRouter = Router();
 
