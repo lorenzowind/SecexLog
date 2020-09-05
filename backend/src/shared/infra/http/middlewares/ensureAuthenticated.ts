@@ -24,7 +24,7 @@ export default function ensureAuthenticated(
   }
 
   if (positionHeader !== 'admin') {
-    throw new AppError('Only administrators can make module operations', 400);
+    throw new AppError('Only administrators can make module operations', 403);
   }
 
   const [, token] = authHeader.split(' ');

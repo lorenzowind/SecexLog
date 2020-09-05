@@ -33,7 +33,9 @@ components:
     UnauthorizedError:
       description: JWT token is missing
     IncorrectToken:
-      description: Invalid JWT token | Exclusive for administrators
+      description: Invalid JWT token
+    ExclusiveAccess:
+      description: Exclusive for specific user position
   schemas:
     User:
       properties:
@@ -450,6 +452,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes an user.
       parameters:
@@ -473,6 +477,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /users/all:
     get:
       summary: Gets all users.
@@ -531,6 +537,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
 
   /cities:
     post:
@@ -631,6 +639,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /cities/{id}:
     put:
       summary: Updates a city.
@@ -739,6 +749,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a city.
       parameters:
@@ -762,6 +774,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /cities/all:
     get:
       summary: Gets all cities.
@@ -833,6 +847,8 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
 
   /holidays:
     post:
@@ -897,6 +913,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /holidays/{id}:
     put:
       summary: Updates a holiday.
@@ -969,6 +987,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a holiday.
       parameters:
@@ -992,6 +1012,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /holidays/all:
     get:
       summary: Gets all holidays.
@@ -1112,6 +1134,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /modals/{id}:
     put:
       summary: Updates a modal.
@@ -1190,6 +1214,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a modal.
       parameters:
@@ -1344,6 +1370,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /providers/{id}:
     put:
       summary: Updates a provider.
@@ -1430,6 +1458,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a provider.
       parameters:
@@ -1453,6 +1483,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /providers/all:
     get:
       summary: Gets all providers.
@@ -1622,6 +1654,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /paths/{id}:
     put:
       summary: Updates a path.
@@ -1742,6 +1776,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a path.
       parameters:
@@ -1765,6 +1801,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /paths/all:
     get:
       summary: Gets all paths.
@@ -1908,6 +1946,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /opinions/all:
     get:
       summary: Gets all opinions.
@@ -1955,3 +1995,5 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
