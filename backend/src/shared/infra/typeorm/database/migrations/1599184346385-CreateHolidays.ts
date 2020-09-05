@@ -27,7 +27,7 @@ export default class CreateHolidays1599184346385 implements MigrationInterface {
             type: 'varchar(6)',
           },
           {
-            name: 'end_data',
+            name: 'end_date',
             type: 'varchar(6)',
           },
           {

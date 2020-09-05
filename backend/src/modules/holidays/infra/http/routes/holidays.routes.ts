@@ -23,7 +23,6 @@ holidaysRouter.post(
     {
       [Segments.BODY]: {
         name: Joi.string().required(),
-        city_name: Joi.string().required(),
         initial_date: Joi.string().max(6),
         end_date: Joi.string().max(6),
       },
@@ -42,7 +41,6 @@ holidaysRouter.put(
     {
       [Segments.BODY]: {
         name: Joi.string().required(),
-        city_name: Joi.string().required(),
         initial_date: Joi.string().max(6).required(),
         end_date: Joi.string().max(6).required(),
       },
