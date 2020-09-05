@@ -1,4 +1,4 @@
-export default interface ICreateOrUpdateUserDTO {
+export default interface ICreateOrUpdateCityDTO {
   name: string;
   is_base?: boolean;
   is_auditated?: boolean;
