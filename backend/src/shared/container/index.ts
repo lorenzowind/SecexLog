@@ -15,6 +15,9 @@ import CitiesRepository from '@modules/cities/infra/typeorm/repositories/CitiesR
 import IHolidaysRepository from '@modules/holidays/repositories/IHolidaysRepository';
 import HolidaysRepository from '@modules/holidays/infra/typeorm/repositories/HolidaysRepository';
 
+import IOpinionsRepository from '@modules/opinions/repositories/IOpinionsRepository';
+import OpinionsRepository from '@modules/opinions/infra/typeorm/repositories/OpinionsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -33,4 +36,9 @@ container.registerSingleton<ICitiesRepository>(
 container.registerSingleton<IHolidaysRepository>(
   'HolidaysRepository',
   HolidaysRepository,
+);
+
+container.registerSingleton<IOpinionsRepository>(
+  'OpinionsRepository',
+  OpinionsRepository,
 );
