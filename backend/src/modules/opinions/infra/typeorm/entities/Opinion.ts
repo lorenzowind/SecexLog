@@ -9,8 +9,7 @@ class Opinion {
   title: string;
 
   @Column()
-  description?: string;
-
+  description: string;
 }
 
 export default Opinion;

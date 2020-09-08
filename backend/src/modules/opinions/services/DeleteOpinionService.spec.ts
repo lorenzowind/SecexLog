@@ -31,13 +31,13 @@ describe('DeleteOpinion', () => {
 
   it('should be able to delete a opinion', async () => {
     await draftOpinionsRepository.create({
-      title: 'Opinion 1',
-      description: 'description Opinion 01'
+      title: 'Opinion title 2',
+      description: 'Opinion description 2',
     });
 
     const opinion = await draftOpinionsRepository.create({
-      title: 'Opinion 2',
-      description: 'description Opinion 02'
+      title: 'Opinion title',
+      description: 'Opinion description',
     });
 
     await deleteOpinion.execute(opinion.id);

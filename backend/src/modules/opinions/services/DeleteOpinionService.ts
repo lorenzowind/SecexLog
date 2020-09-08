@@ -17,13 +17,14 @@ class DeleteOpinionService {
   ) {}
 
   public async execute(id: string): Promise<void> {
-    const opinion  = await this.opinionsRepository.findById(id);
+    const opinion = await this.opinionsRepository.findById(id);
 
     if (!opinion) {
       throw new AppError('Opinion not found.');
     }
 
     await this.opinionsRepository.remove(opinion);
+
     await this.cacheProvider.invalidatePrefix('opinions-list');
   }
 }

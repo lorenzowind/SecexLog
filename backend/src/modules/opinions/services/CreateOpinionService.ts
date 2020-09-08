@@ -6,7 +6,7 @@ import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICa
 
 import IOpinionsRepository from '../repositories/IOpinionsRepository';
 
-import ICreateOpinionDTO from '../dtos/ICreateOrUpdateOpinionsDTO';
+import ICreateOpinionDTO from '../dtos/ICreateOrUpdateOpinionDTO';
 
 import Opinion from '../infra/typeorm/entities/Opinion';
 
@@ -22,19 +22,11 @@ class CreateOpinionService {
 
   public async execute({
     title,
-    description
+    description,
   }: ICreateOpinionDTO): Promise<Opinion> {
-    const checkOpinionTitleExists = await this.opinionsRepository.findByTitle(
-      title,
-    );
-      
-    if (checkOpinionTitleExists) {
-      throw new AppError('Opinion name already used.');
-    }
-
     const opinion = await this.opinionsRepository.create({
       title,
-      description
+      description,
     });
 
     await this.cacheProvider.invalidatePrefix('opinions-list');

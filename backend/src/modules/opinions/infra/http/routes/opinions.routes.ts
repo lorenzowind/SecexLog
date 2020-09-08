@@ -16,36 +16,13 @@ opinionsRouter.post(
   '/',
   ensureAuthenticated,
   ensureIsAdmin,
-  celebrate(
-    {
-      [Segments.BODY]: {
-        title: Joi.string().required(),
-        description: Joi.string().required(),
-      },
+  celebrate({
+    [Segments.BODY]: {
+      title: Joi.string().required(),
+      description: Joi.string().required(),
     },
-    {
-      allowUnknown: true,
-    },
-  ),
+  }),
   opinionsController.create,
-);
-
-opinionsRouter.put(
-  '/:id',
-  ensureAuthenticated,
-  ensureIsAdmin,
-  celebrate(
-    {
-      [Segments.BODY]: {
-        name: Joi.string().required(),
-        description: Joi.string().required(),
-      },
-    },
-    {
-      allowUnknown: true,
-    },
-  ),
-  opinionsController.update,
 );
 
 opinionsRouter.delete(

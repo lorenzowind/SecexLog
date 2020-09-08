@@ -16,6 +16,6 @@ routes.use('/password', passwordRouter);
 
 routes.use('/cities', citiesRouter);
 routes.use('/holidays', holidaysRouter);
-routes.use('/opinions',opinionsRouter)
+routes.use('/opinions', opinionsRouter);
 
 export default routes;

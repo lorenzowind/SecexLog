@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppError';
+
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 import IOpinionsRepository from '../repositories/IOpinionsRepository';
@@ -10,7 +12,7 @@ import Opinion from '../infra/typeorm/entities/Opinion';
 class ListOpinionsService {
   constructor(
     @inject('OpinionsRepository')
-    private OpinionsRepository: IOpinionsRepository,
+    private opinionsRepository: IOpinionsRepository,
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
@@ -21,34 +23,37 @@ class ListOpinionsService {
     page: number,
     user_id: string | null,
   ): Promise<Opinion[]> {
-    let opinions;
-    if (!search && user_id) {
-      opinions = await this.cacheProvider.recover<Opinion[]>(
-        `opinions-list:${user_id}:page=${page}`,
-      );
+    if (!user_id) {
+      throw new AppError('User id does not exists.');
     }
 
+    let opinions = !search
+      ? await this.cacheProvider.recover<Opinion[]>(
+          `opinions-list:${user_id}:page=${page}`,
+        )
+      : null;
+
     if (!opinions) {
-      opinions = await this.OpinionsRepository.findAllOpinions(
+      opinions = await this.opinionsRepository.findAllOpinions(
         search,
         page > 0 ? page : 1,
       );
 
-      let OpinionsPreviousPage;
+      let opinionsPreviousPage;
 
-      if (!search && user_id) {
-        OpinionsPreviousPage = await this.cacheProvider.recover<Opinion[]>(
+      if (!search) {
+        opinionsPreviousPage = await this.cacheProvider.recover<Opinion[]>(
           `opinions-list:${user_id}:page=${page - 1}`,
         );
       }
 
-      if (OpinionsPreviousPage) {
-        opinions = OpinionsPreviousPage.concat(opinions);
+      if (opinionsPreviousPage) {
+        opinions = opinionsPreviousPage.concat(opinions);
       } else if (page > 1 && !search) {
         return [];
       }
 
-      if (!search && user_id) {
+      if (!search) {
         await this.cacheProvider.save(
           `opinions-list:${user_id}:page=${page}`,
           opinions,

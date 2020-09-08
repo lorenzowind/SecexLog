@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppError';
+
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import User from '../infra/typeorm/entities/User';
 
@@ -18,8 +20,12 @@ class ListUsersService {
   public async execute(
     search: string,
     page: number,
-    user_id: string,
+    user_id: string | null,
   ): Promise<User[]> {
+    if (!user_id) {
+      throw new AppError('User id does not exists.');
+    }
+
     let users = !search
       ? await this.cacheProvider.recover<User[]>(
           `users-list:${user_id}:page=${page}`,

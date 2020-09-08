@@ -1,3 +1,5 @@
+import AppError from '@shared/errors/AppError';
+
 import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
 
 import DraftUsersRepository from '../repositories/drafts/DraftUsersRepository';
@@ -39,6 +41,28 @@ describe('ListUsers', () => {
     const response = await listUsers.execute('', 1, user.id);
 
     expect(response).toHaveLength(2);
+  });
+
+  it('should not be able to list users without authentication', async () => {
+    await draftUsersRepository.create({
+      name: 'John Doe',
+      login: 'john doe',
+      email: 'johndoe@example.com',
+      position: 'admin',
+      password: '123456',
+    });
+
+    await draftUsersRepository.create({
+      name: 'John Doe II',
+      login: 'john doe II',
+      email: 'johndoeII@example.com',
+      position: 'admin',
+      password: '123456',
+    });
+
+    await expect(listUsers.execute('', 1, null)).rejects.toBeInstanceOf(
+      AppError,
+    );
   });
 
   it('should be able to validate a non positive page number', async () => {

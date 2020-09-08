@@ -1,3 +1,5 @@
+import AppError from '@shared/errors/AppError';
+
 import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
 
 import DraftHolidaysRepository from '../repositories/drafts/DraftHolidaysRepository';
@@ -21,7 +23,7 @@ describe('ListHolidays', () => {
     );
   });
 
-  it('should be able to list all the holidays from the first page without authentication', async () => {
+  it('should nit be able to list holidays without authentication', async () => {
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
       city_name: '',
@@ -36,9 +38,9 @@ describe('ListHolidays', () => {
       end_date: '10/08',
     });
 
-    const response = await listHolidays.execute('', 1, null);
-
-    expect(response).toHaveLength(2);
+    await expect(listHolidays.execute('', 1, null)).rejects.toBeInstanceOf(
+      AppError,
+    );
   });
 
   it('should be able to list all the holidays from the first page', async () => {
@@ -123,6 +125,152 @@ describe('ListHolidays', () => {
     await listHolidays.execute('', 1, user_id);
 
     const response = await listHolidays.execute('', 2, user_id);
+
+    expect(response).toHaveLength(1);
+  });
+
+  it('should be able to accumulate all the holidays', async () => {
+    const user_id = 'authenticated user id';
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 1',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 2',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 3',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 4',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 5',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 6',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 7',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 8',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 9',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 10',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 11',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 12',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await listHolidays.execute('', 1, user_id);
+
+    const response = await listHolidays.execute('', 2, user_id);
+
+    expect(response).toHaveLength(12);
+  });
+
+  it('should be able to list all the holidays from the first page which includes a search string', async () => {
+    const holidaySearch = 'Holiday Searching';
+
+    const user_id = 'authenticated user id';
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 1',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 2',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 3',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: holidaySearch,
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 5',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 6',
+      city_name: '',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    const response = await listHolidays.execute(holidaySearch, 1, user_id);
 
     expect(response).toHaveLength(1);
   });

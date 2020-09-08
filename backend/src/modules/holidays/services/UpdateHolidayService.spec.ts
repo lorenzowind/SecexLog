@@ -82,7 +82,6 @@ describe('UpdateHoliday', () => {
         name: 'Holiday 1',
       }),
     ).rejects.toBeInstanceOf(AppError);
-    
   });
 
   it('should be able to update the specific holiday', async () => {

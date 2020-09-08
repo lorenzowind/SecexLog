@@ -2,8 +2,8 @@ import { getRepository, Repository, Like } from 'typeorm';
 import { v4 } from 'uuid';
 
 import IOpinionsRepository from '@modules/opinions/repositories/IOpinionsRepository';
-import ICreateOpinionsDTO from '@modules/opinions/dtos/ICreateOrUpdateOpinionsDTO';
 
+import ICreateOpinionDTO from '@modules/opinions/dtos/ICreateOrUpdateOpinionDTO';
 
 import Opinion from '../entities/Opinion';
 
@@ -37,6 +37,7 @@ class OpinionsRepository implements IOpinionsRepository {
 
   public async findByTitle(title: string): Promise<Opinion | undefined> {
     const findOpinion = await this.ormRepository.findOne(title);
+
     return findOpinion;
   }
 
@@ -46,15 +47,14 @@ class OpinionsRepository implements IOpinionsRepository {
     return findOpinion;
   }
 
-  public async create(data: ICreateOpinionsDTO): Promise<Opinion> {
+  public async create(data: ICreateOpinionDTO): Promise<Opinion> {
     const opinion = this.ormRepository.create(data);
-    Object.assign(opinion, { id: v4() });
-    await this.ormRepository.save(opinion);
-    return opinion;
-  }
 
-  public async save(opinion: Opinion): Promise<Opinion> {
-    return this.ormRepository.save(opinion);
+    Object.assign(opinion, { id: v4() });
+
+    await this.ormRepository.save(opinion);
+
+    return opinion;
   }
 
   public async remove(opinion: Opinion): Promise<void> {

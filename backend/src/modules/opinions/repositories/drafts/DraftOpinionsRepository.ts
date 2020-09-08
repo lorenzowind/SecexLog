@@ -1,7 +1,8 @@
 import { v4 } from 'uuid';
 
 import IOpinionsRepository from '@modules/opinions/repositories/IOpinionsRepository';
-import ICreateOpinionDTO from '@modules/opinions/dtos/ICreateOrUpdateOpinionsDTO';
+
+import ICreateOpinionDTO from '@modules/opinions/dtos/ICreateOrUpdateOpinionDTO';
 
 import Opinion from '@modules/opinions/infra/typeorm/entities/Opinion';
 
@@ -43,20 +44,11 @@ export default class DraftOpinionsRepository implements IOpinionsRepository {
     return opinion;
   }
 
-  public async save(opinion: Opinion): Promise<Opinion> {
-    const findIndex = this.opinions.findIndex(
-      findOpinion => findOpinion.id === opinion.id,
-    );
-
-    this.opinions[findIndex] = opinion;
-
-    return opinion;
-  }
-
   public async remove(opinion: Opinion): Promise<void> {
     const findIndex = this.opinions.findIndex(
       findOpinion => findOpinion.id === opinion.id,
     );
+
     this.opinions.splice(findIndex, 1);
   }
 }

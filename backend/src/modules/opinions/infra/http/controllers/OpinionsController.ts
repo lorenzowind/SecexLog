@@ -3,9 +3,7 @@ import { container } from 'tsyringe';
 
 import ListOpinionsService from '@modules/opinions/services/ListOpinionsService';
 import CreateOpinionService from '@modules/opinions/services/CreateOpinionService';
-import UpdateOpinionService from '@modules/opinions/services/UpdateOpinionsService';
 import DeleteOpinionService from '@modules/opinions/services/DeleteOpinionService';
-
 
 export default class OpinionsController {
   public async show(request: Request, response: Response): Promise<Response> {
@@ -24,27 +22,12 @@ export default class OpinionsController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const {title,description} = request.body;
+    const { title, description } = request.body;
     const createOpinion = container.resolve(CreateOpinionService);
 
     const opinion = await createOpinion.execute({
       title,
-      description
-    });
-
-    return response.json(opinion);
-  }
-
-  public async update(request: Request, response: Response): Promise<Response> {
-    const { id } = request.params;
-    const { title,description } = request.body;
-
-    const updateOpinion = container.resolve(UpdateOpinionService);
-
-    const opinion = await updateOpinion.execute({
-      id,
-      title,
-      description
+      description,
     });
 
     return response.json(opinion);
@@ -54,7 +37,9 @@ export default class OpinionsController {
     const { id } = request.params;
 
     const deleteOpinion = container.resolve(DeleteOpinionService);
+
     await deleteOpinion.execute(id);
+
     return response.status(200).send();
   }
 }
