@@ -33,14 +33,12 @@ describe('DeleteHoliday', () => {
   it('should be able to delete a holiday', async () => {
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     const holiday = await draftHolidaysRepository.create({
       name: 'Holiday 2',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });

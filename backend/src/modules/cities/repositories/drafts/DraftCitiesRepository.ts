@@ -29,20 +29,6 @@ export default class DraftCitiesRepository implements ICitiesRepository {
     return city;
   }
 
-  public async checkRelatedCities(related_cities: string): Promise<boolean> {
-    const citiesNames = related_cities.split(', ');
-
-    let checkValidCities = true;
-
-    citiesNames.map(cityName => {
-      if (!this.cities.find(city => city.name === cityName)) {
-        checkValidCities = false;
-      }
-    });
-
-    return checkValidCities;
-  }
-
   public async create(cityData: ICreateCityDTO): Promise<City> {
     const city = new City();
 

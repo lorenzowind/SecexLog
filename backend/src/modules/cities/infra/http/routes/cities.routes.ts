@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import { celebrate, Segments, Joi } from 'celebrate';
 
-import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
 import ensureAuthenticationPossibility from '@shared/infra/http/middlewares/ensureAuthenticationPossibility';
+import ensureAuthenticated from '@shared/infra/http/middlewares/ensureAuthenticated';
+import ensureIsAdmin from '@shared/infra/http/middlewares/ensureIsAdmin';
 
 import CitiesController from '../controllers/CitiesController';
 
@@ -16,9 +17,12 @@ citiesRouter.get(
   citiesController.show,
 );
 
+citiesRouter.get('/related/:city_id', citiesController.related);
+
 citiesRouter.post(
   '/',
   ensureAuthenticated,
+  ensureIsAdmin,
   celebrate(
     {
       [Segments.BODY]: {
@@ -39,6 +43,7 @@ citiesRouter.post(
 citiesRouter.put(
   '/:id',
   ensureAuthenticated,
+  ensureIsAdmin,
   celebrate(
     {
       [Segments.BODY]: {
@@ -56,6 +61,11 @@ citiesRouter.put(
   citiesController.update,
 );
 
-citiesRouter.delete('/:id', ensureAuthenticated, citiesController.delete);
+citiesRouter.delete(
+  '/:id',
+  ensureAuthenticated,
+  ensureIsAdmin,
+  citiesController.delete,
+);
 
 export default citiesRouter;

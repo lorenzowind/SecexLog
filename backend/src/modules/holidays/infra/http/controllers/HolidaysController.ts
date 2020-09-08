@@ -8,7 +8,7 @@ import DeleteHolidayService from '@modules/holidays/services/DeleteHolidayServic
 
 export default class HolidaysController {
   public async show(request: Request, response: Response): Promise<Response> {
-    const user_id = request.user.id ? request.user.id : null;
+    const user_id = request.user.id;
 
     const { search = '', page = 1 } = request.query;
 
@@ -24,13 +24,13 @@ export default class HolidaysController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const { name, city_name, initial_date, end_date } = request.body;
+    const { name, city_id, initial_date, end_date } = request.body;
 
     const createHoliday = container.resolve(CreateHolidayService);
 
     const holiday = await createHoliday.execute({
       name,
-      city_name,
+      city_id,
       initial_date,
       end_date,
     });
@@ -40,14 +40,14 @@ export default class HolidaysController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const { name, city_name, initial_date, end_date } = request.body;
+    const { name, city_id, initial_date, end_date } = request.body;
 
     const updateCity = container.resolve(UpdateHolidayService);
 
     const city = await updateCity.execute({
       id,
       name,
-      city_name,
+      city_id,
       initial_date,
       end_date,
     });

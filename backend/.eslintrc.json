@@ -24,6 +24,7 @@
       "camelcase": "off",
       "class-methods-use-this": "off",
       "consistent-return": "off",
+      "no-await-in-loop":"off",
       "no-useless-constructor": "off",
       "import/no-unresolved": "off",
       "import/no-extraneous-dependencies": "off",

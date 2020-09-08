@@ -23,7 +23,7 @@ class User {
   email: string;
 
   @Column()
-  position: 'usuario' | 'admin';
+  position: 'user' | 'admin';
 
   @Column()
   @Exclude()

@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export default class CreateHolidays1599184346385 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
@@ -18,7 +23,7 @@ export default class CreateHolidays1599184346385 implements MigrationInterface {
             isUnique: true,
           },
           {
-            name: 'city_name',
+            name: 'city_id',
             type: 'varchar(255)',
             isNullable: true,
           },
@@ -43,9 +48,23 @@ export default class CreateHolidays1599184346385 implements MigrationInterface {
         ],
       }),
     );
+
+    await queryRunner.createForeignKey(
+      'holidays',
+      new TableForeignKey({
+        name: 'HolidayCity',
+        columnNames: ['city_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'cities',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
+    await queryRunner.dropForeignKey('holidays', 'HolidayCity');
+
     await queryRunner.dropTable('holidays');
   }
 }

@@ -31,7 +31,6 @@ describe('UpdateHoliday', () => {
   it('should be able to update the holiday', async () => {
     const holiday = await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -39,7 +38,6 @@ describe('UpdateHoliday', () => {
     const updatedHoliday = await updateHoliday.execute({
       id: holiday.id,
       name: 'New Holiday 1',
-      city_name: '',
       initial_date: '11/08',
       end_date: '12/08',
     });
@@ -54,7 +52,7 @@ describe('UpdateHoliday', () => {
       updateHoliday.execute({
         id: 'non existing holiday',
         name: 'New Holiday 1',
-        city_name: '',
+
         initial_date: '11/08',
         end_date: '12/08',
       }),
@@ -64,14 +62,12 @@ describe('UpdateHoliday', () => {
   it('should not be able to update to another holiday name', async () => {
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     const holiday = await draftHolidaysRepository.create({
       name: 'Holiday 2',
-      city_name: '',
       initial_date: '11/08',
       end_date: '12/08',
     });
@@ -85,7 +81,7 @@ describe('UpdateHoliday', () => {
   });
 
   it('should be able to update the specific holiday', async () => {
-    await draftCitiesRepository.create({
+    const city = await draftCitiesRepository.create({
       name: 'City 1',
       city_observation: 'city observation',
       end_flood_date: '01/09',
@@ -99,7 +95,6 @@ describe('UpdateHoliday', () => {
 
     const holiday = await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -107,13 +102,13 @@ describe('UpdateHoliday', () => {
     const updatedHoliday = await updateHoliday.execute({
       id: holiday.id,
       name: 'New Holiday 1',
-      city_name: 'City 1',
+      city_id: city.id,
       initial_date: '11/06',
       end_date: '12/06',
     });
 
     expect(updatedHoliday.name).toBe('New Holiday 1');
-    expect(updatedHoliday.city_name).toBe('City 1');
+    expect(updatedHoliday.city_id).toBe(city.id);
     expect(updatedHoliday.initial_date).toBe('11/06');
     expect(updatedHoliday.end_date).toBe('12/06');
   });
@@ -121,7 +116,6 @@ describe('UpdateHoliday', () => {
   it('should not be able to update a specific holiday with a non existing city', async () => {
     const holiday = await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -130,7 +124,7 @@ describe('UpdateHoliday', () => {
       updateHoliday.execute({
         id: holiday.id,
         name: 'New Holiday 1',
-        city_name: 'City 1',
+        city_id: 'non existing city id',
         initial_date: '11/08',
         end_date: '12/08',
       }),

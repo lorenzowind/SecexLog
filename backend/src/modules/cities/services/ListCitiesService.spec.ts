@@ -177,57 +177,46 @@ describe('ListCities', () => {
 
     await draftCitiesRepository.create({
       name: 'City 2',
-      related_cities: 'City 1',
     });
 
     await draftCitiesRepository.create({
       name: 'City 3',
-      related_cities: 'City 1, City 2',
     });
 
     await draftCitiesRepository.create({
       name: 'City 4',
-      related_cities: 'City 2, City 3',
     });
 
     await draftCitiesRepository.create({
       name: 'City 5',
-      related_cities: 'City 3, City 4',
     });
 
     await draftCitiesRepository.create({
       name: 'City 6',
-      related_cities: 'City 3, City 4, City 5',
     });
 
     await draftCitiesRepository.create({
       name: 'City 7',
-      related_cities: 'City 6',
     });
 
     await draftCitiesRepository.create({
       name: 'City 8',
-      related_cities: 'City 6, City 7',
     });
 
     await draftCitiesRepository.create({
       name: 'City 9',
-      related_cities: 'City 5, City 6, City 7, City 8',
     });
 
     await draftCitiesRepository.create({
       name: 'City 10',
-      related_cities: 'City 9',
     });
 
     await draftCitiesRepository.create({
       name: 'City 11',
-      related_cities: 'City 10',
     });
 
     await draftCitiesRepository.create({
       name: 'City 12',
-      related_cities: 'City 11',
     });
 
     await listCities.execute('', 1, user_id);
@@ -237,7 +226,7 @@ describe('ListCities', () => {
     expect(response).toHaveLength(12);
   });
 
-  it('should be able to list all the cities from the first page who includes a search string', async () => {
+  it('should be able to list all the cities from the first page which includes a search string', async () => {
     const citySearch = 'City Searching';
 
     const user_id = 'authenticated user id';
@@ -248,27 +237,22 @@ describe('ListCities', () => {
 
     await draftCitiesRepository.create({
       name: 'City 2',
-      related_cities: 'City 1',
     });
 
     await draftCitiesRepository.create({
       name: 'City 3',
-      related_cities: 'City 1, City 2',
     });
 
     await draftCitiesRepository.create({
       name: citySearch,
-      related_cities: 'City 2, City 3',
     });
 
     await draftCitiesRepository.create({
       name: 'City 5',
-      related_cities: `City 3, ${citySearch}`,
     });
 
     await draftCitiesRepository.create({
       name: 'City 6',
-      related_cities: 'City 3, City 4, City 5',
     });
 
     const response = await listCities.execute(citySearch, 1, user_id);

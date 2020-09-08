@@ -3,10 +3,12 @@ import AppError from '@shared/errors/AppError';
 import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
 
 import DraftCitiesRepository from '../repositories/drafts/DraftCitiesRepository';
+import DraftRelatedCitiesRepository from '../repositories/drafts/DraftRelatedCitiesRepository';
 
 import UpdateCityService from './UpdateCityService';
 
 let draftCitiesRepository: DraftCitiesRepository;
+let draftRelatedCitiesRepository: DraftRelatedCitiesRepository;
 
 let draftCacheProvider: DraftCacheProvider;
 
@@ -15,11 +17,13 @@ let updateCity: UpdateCityService;
 describe('UpdateCity', () => {
   beforeEach(() => {
     draftCitiesRepository = new DraftCitiesRepository();
+    draftRelatedCitiesRepository = new DraftRelatedCitiesRepository();
 
     draftCacheProvider = new DraftCacheProvider();
 
     updateCity = new UpdateCityService(
       draftCitiesRepository,
+      draftRelatedCitiesRepository,
       draftCacheProvider,
     );
   });
@@ -107,22 +111,91 @@ describe('UpdateCity', () => {
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to update a city with new related cities names', async () => {
-    const city = await draftCitiesRepository.create({
+  it('should be able to update a city with new related city', async () => {
+    const firstCity = await draftCitiesRepository.create({
       name: 'City 1',
     });
 
-    await draftCitiesRepository.create({
+    const secondCity = await draftCitiesRepository.create({
       name: 'City 2',
     });
 
     const updatedCity = await updateCity.execute({
-      id: city.id,
+      id: firstCity.id,
       name: 'City 1',
-      related_cities: 'City 2',
+      related_cities: [
+        {
+          related_city_id: secondCity.id,
+        },
+      ],
     });
 
-    expect(updatedCity).toHaveProperty('related_cities');
+    expect(
+      await draftRelatedCitiesRepository.findAllByCityId(updatedCity.id),
+    ).toHaveLength(1);
+  });
+
+  it('should not be able to update a city with itself as a related city', async () => {
+    const city = await draftCitiesRepository.create({
+      name: 'City 1',
+    });
+
+    await expect(
+      updateCity.execute({
+        id: city.id,
+        name: 'City 1',
+        related_cities: [
+          {
+            related_city_id: city.id,
+          },
+        ],
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should be able to update new related cities', async () => {
+    const firstCity = await draftCitiesRepository.create({
+      name: 'City 1',
+    });
+
+    const secondCity = await draftCitiesRepository.create({
+      name: 'City 2',
+    });
+
+    const thirdCity = await draftCitiesRepository.create({
+      name: 'City 3',
+    });
+
+    const fourthCity = await draftCitiesRepository.create({
+      name: 'City 4',
+    });
+
+    await updateCity.execute({
+      id: firstCity.id,
+      name: 'City 1',
+      related_cities: [
+        {
+          related_city_id: secondCity.id,
+        },
+        {
+          related_city_id: thirdCity.id,
+        },
+      ],
+    });
+
+    await updateCity.execute({
+      id: firstCity.id,
+      name: 'City 1',
+      related_cities: [
+        {
+          related_city_id: fourthCity.id,
+        },
+      ],
+    });
+
+    expect(
+      await draftRelatedCitiesRepository.findAllByCityId(firstCity.id),
+    ).toHaveLength(1);
   });
 
   it('should not be able to update a city with invalid related cities names', async () => {
@@ -150,7 +223,11 @@ describe('UpdateCity', () => {
         is_base: false,
         latitude: 1.35235235,
         longitude: -1.12467552,
-        related_cities: 'City 2, City 3',
+        related_cities: [
+          {
+            related_city_id: 'non existing related city id',
+          },
+        ],
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

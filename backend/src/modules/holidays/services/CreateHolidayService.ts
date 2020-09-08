@@ -26,7 +26,7 @@ class CreateHolidayService {
 
   public async execute({
     name,
-    city_name,
+    city_id,
     initial_date,
     end_date,
   }: ICreateHolidayDTO): Promise<Holiday> {
@@ -38,19 +38,17 @@ class CreateHolidayService {
       throw new AppError('Holiday name already used.');
     }
 
-    if (city_name) {
-      const checkCityNameExists = await this.citiesRepository.findByName(
-        city_name,
-      );
+    if (city_id) {
+      const checkCityExists = await this.citiesRepository.findById(city_id);
 
-      if (!checkCityNameExists) {
+      if (!checkCityExists) {
         throw new AppError('Informed city does not exists.');
       }
     }
 
     const holiday = await this.holidaysRepository.create({
       name,
-      city_name,
+      city_id,
       initial_date,
       end_date,
     });

@@ -31,7 +31,7 @@ class UpdateHolidayService {
   public async execute({
     id,
     name,
-    city_name,
+    city_id,
     initial_date,
     end_date,
   }: IRequest): Promise<Holiday> {
@@ -49,12 +49,10 @@ class UpdateHolidayService {
       throw new AppError('Holiday name already in use.');
     }
 
-    if (city_name) {
-      const checkCityNameExists = await this.citiesRepository.findByName(
-        city_name,
-      );
+    if (city_id) {
+      const checkCityExists = await this.citiesRepository.findById(city_id);
 
-      if (!checkCityNameExists) {
+      if (!checkCityExists) {
         throw new AppError('Informed city does not exists.');
       }
     }
@@ -62,7 +60,7 @@ class UpdateHolidayService {
     holiday.name = name;
     holiday.end_date = end_date;
     holiday.initial_date = initial_date;
-    holiday.city_name = city_name;
+    holiday.city_id = city_id;
 
     await this.cacheProvider.invalidatePrefix('holidays-list');
 

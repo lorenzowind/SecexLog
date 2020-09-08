@@ -1,5 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
+import AppError from '@shared/errors/AppError';
+
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 import IHolidaysRepository from '../repositories/IHolidaysRepository';
@@ -21,13 +23,15 @@ class ListHolidaysService {
     page: number,
     user_id: string | null,
   ): Promise<Holiday[]> {
-    let holidays;
-
-    if (!search && user_id) {
-      holidays = await this.cacheProvider.recover<Holiday[]>(
-        `holidays-list:${user_id}:page=${page}`,
-      );
+    if (!user_id) {
+      throw new AppError('User id does not exists.');
     }
+
+    let holidays = !search
+      ? await this.cacheProvider.recover<Holiday[]>(
+          `holidays-list:${user_id}:page=${page}`,
+        )
+      : null;
 
     if (!holidays) {
       holidays = await this.holidaysRepository.findAllHolidays(
@@ -37,7 +41,7 @@ class ListHolidaysService {
 
       let holidaysPreviousPage;
 
-      if (!search && user_id) {
+      if (!search) {
         holidaysPreviousPage = await this.cacheProvider.recover<Holiday[]>(
           `holidays-list:${user_id}:page=${page - 1}`,
         );
@@ -49,7 +53,7 @@ class ListHolidaysService {
         return [];
       }
 
-      if (!search && user_id) {
+      if (!search) {
         await this.cacheProvider.save(
           `holidays-list:${user_id}:page=${page}`,
           holidays,

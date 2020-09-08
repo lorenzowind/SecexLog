@@ -17,6 +17,7 @@ tags:
   - name: modals
   - name: providers
   - name: paths
+  - name: opinions
 
 components:
   securitySchemes:
@@ -30,9 +31,11 @@ components:
       name: user_position
   responses:
     UnauthorizedError:
-      description: JWT token is missing
+      description: JWT token | User position is missing
     IncorrectToken:
-      description: Invalid JWT token | Exclusive for administrators
+      description: Invalid JWT token
+    ExclusiveAccess:
+      description: Exclusive for specific user position
   schemas:
     User:
       properties:
@@ -67,8 +70,6 @@ components:
           type: boolean
         is_auditated:
           type: boolean
-        related_cities:
-          type: string
         latitude:
           type: number
         longitude:
@@ -94,8 +95,9 @@ components:
           format: uuid
         name:
           type: string
-        city_name:
+        city_id:
           type: string
+          format: uuid
         initial_date:
           type: string
         end_date:
@@ -139,8 +141,9 @@ components:
         email:
           type: string
           format: email
-        modal:
+        modal_id:
           type: string
+          format: uuid
         preference:
           type: string
         prefetence_data:
@@ -156,22 +159,22 @@ components:
         id:
           type: string
           format: uuid
-        origin_city:
+        origin_city_id:
           type: string
-        destination_city:
+          format: uuid
+        destination_city_id:
           type: string
-        modal:
+          format: uuid
+        modal_id:
           type: string
-        provider:
+          format: uuid
+        provider_id:
           type: string
+          format: uuid
         boarding_days:
-          type: array
-          items:
-            type: string
+          type: string
         boarding_times:
-          type: array
-          items:
-            type: string
+          type: string
         duration:
           type: number
         mileage:
@@ -184,6 +187,21 @@ components:
           type: string
         is_hired:
           type: boolean
+        created_at:
+          type: string
+          format: dateformat
+        updated_at:
+          type: string
+          format: dateformat
+    Opinion:
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
         created_at:
           type: string
           format: dateformat
@@ -397,7 +415,7 @@ paths:
                     example: "newuser@email.com"
                   position:
                     type: string
-                    example: "usuario"
+                    example: "user"
                   password:
                     type: string
                     example: "new user password"
@@ -425,7 +443,7 @@ paths:
                     example: "newuser@email.com"
                   position:
                     type: string
-                    example: "usuario"
+                    example: "user"
                   created_at:
                     type: string
                     format: dateformat
@@ -438,6 +456,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes an user.
       parameters:
@@ -461,6 +481,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /users/all:
     get:
       summary: Gets all users.
@@ -479,7 +501,6 @@ paths:
           description: A number to control the users pagination.
       security:
         - bearerAuth: []
-        - positionHeader: []
       responses:
         '200':
           description: Returns a JSON array containing all users.
@@ -506,7 +527,7 @@ paths:
                       example: "newuser@email.com"
                     position:
                       type: string
-                      example: "usuario"
+                      example: "user"
                     created_at:
                       type: string
                       format: dateformat
@@ -545,8 +566,14 @@ paths:
                     type: boolean
                     example: true
                   related_cities:
-                    type: string
-                    example: "Related City Name"
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        related_city_id:
+                          type: string
+                          format: uuid
+                          example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -586,9 +613,6 @@ paths:
                   is_auditated:
                     type: boolean
                     example: true
-                  related_cities:
-                    type: string
-                    example: "Related City Name"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -619,6 +643,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /cities/{id}:
     put:
       summary: Updates a city.
@@ -653,8 +679,14 @@ paths:
                     type: boolean
                     example: true
                   related_cities:
-                    type: string
-                    example: "New Related City Name"
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        related_city_id:
+                          type: string
+                          format: uuid
+                          example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -694,9 +726,6 @@ paths:
                   is_auditated:
                     type: boolean
                     example: true
-                  related_cities:
-                    type: string
-                    example: "New Related City Name"
                   latitude:
                     type: number
                     example: 1.13452453
@@ -727,6 +756,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a city.
       parameters:
@@ -750,14 +781,13 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /cities/all:
     get:
       summary: Gets all cities.
       tags:
         - cities
-      security:
-        - bearerAuth: []
-        - positionHeader: []
       parameters:
         - in: query
           name: search
@@ -792,9 +822,6 @@ paths:
                     is_auditated:
                       type: boolean
                       example: true
-                    related_cities:
-                      type: string
-                      example: "Related City Name"
                     latitude:
                       type: number
                       example: 1.13452453
@@ -813,6 +840,50 @@ paths:
                     city_observation:
                       type: string
                       example: "City observation"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+  /cities/related/{city_id}:
+    get:
+      summary: Gets all related cities by city id.
+      parameters:
+        - in: path
+          name: city_id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: City id to reference the related cities.
+      tags:
+        - cities
+      responses:
+        '200':
+          description: Returns a JSON array containing all related cities.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    city_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    related_city_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                     created_at:
                       type: string
                       format: dateformat
@@ -840,9 +911,10 @@ paths:
                   name:
                     type: string
                     example: "Holiday Name"
-                  city_name:
+                  city_id:
                     type: string
-                    example: ""
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   initial_date:
                     type: string
                     example: "25/12"
@@ -864,9 +936,10 @@ paths:
                   name:
                     type: string
                     example: "Holiday Name"
-                  city_name:
+                  city_id:
                     type: string
-                    example: ""
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   initial_date:
                     type: string
                     example: "25/12"
@@ -885,6 +958,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /holidays/{id}:
     put:
       summary: Updates a holiday.
@@ -912,9 +987,10 @@ paths:
                   name:
                     type: string
                     example: "New Holiday Name"
-                  city_name:
+                  city_id:
                     type: string
-                    example: "City Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   initial_date:
                     type: string
                     example: "19/12"
@@ -936,9 +1012,10 @@ paths:
                   name:
                     type: string
                     example: "New Holiday Name"
-                  city_name:
+                  city_id:
                     type: string
-                    example: "City Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   initial_date:
                     type: string
                     example: "19/12"
@@ -957,6 +1034,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a holiday.
       parameters:
@@ -980,6 +1059,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /holidays/all:
     get:
       summary: Gets all holidays.
@@ -996,6 +1077,8 @@ paths:
           schema:
             type: number
           description: A number to control the holidays pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all holidays.
@@ -1013,9 +1096,10 @@ paths:
                     name:
                       type: string
                       example: "Holiday Name"
-                    city_name:
+                    city_id:
                       type: string
-                      example: ""
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                     initial_date:
                       type: string
                       example: "25/12"
@@ -1030,6 +1114,65 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /holidays/{city_id}:
+    get:
+      summary: Gets all holidays by city id.
+      tags:
+        - holidays
+      parameters:
+        - in: path
+          name: city_id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: City id to reference the holidays.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a JSON array containing all holidays.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    name:
+                      type: string
+                      example: "Holiday Name"
+                    city_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    initial_date:
+                      type: string
+                      example: "25/12"
+                    end_date:
+                      type: string
+                      example: "25/12"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /modals:
     post:
@@ -1100,6 +1243,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /modals/{id}:
     put:
       summary: Updates a modal.
@@ -1178,6 +1323,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a modal.
       parameters:
@@ -1217,6 +1364,8 @@ paths:
           schema:
             type: number
           description: A number to control the modals pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all modals.
@@ -1254,6 +1403,10 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /providers:
     post:
@@ -1280,9 +1433,10 @@ paths:
                     type: string
                     format: email
                     example: "provider@email.com"
-                  modal:
+                  modal_id:
                     type: string
-                    example: "Modal Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   preference:
                     type: string
                     example: "CPF"
@@ -1311,9 +1465,10 @@ paths:
                     type: string
                     format: email
                     example: "provider@email.com"
-                  modal:
+                  modal_id:
                     type: string
-                    example: "Modal Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   preference:
                     type: string
                     example: "CPF"
@@ -1332,6 +1487,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /providers/{id}:
     put:
       summary: Updates a provider.
@@ -1366,9 +1523,10 @@ paths:
                     type: string
                     format: email
                     example: "newprovider@email.com"
-                  modal:
+                  modal_id:
                     type: string
-                    example: "New Modal Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   preference:
                     type: string
                     example: "CNPJ"
@@ -1397,9 +1555,10 @@ paths:
                     type: string
                     format: email
                     example: "newprovider@email.com"
-                  modal:
+                  modal_id:
                     type: string
-                    example: "New Modal Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   preference:
                     type: string
                     example: "CNPJ"
@@ -1418,6 +1577,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a provider.
       parameters:
@@ -1441,6 +1602,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /providers/all:
     get:
       summary: Gets all providers.
@@ -1457,6 +1620,8 @@ paths:
           schema:
             type: number
           description: A number to control the providers pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all providers.
@@ -1481,9 +1646,10 @@ paths:
                       type: string
                       format: email
                       example: "provider@email.com"
-                    modal:
+                    modal_id:
                       type: string
-                      example: "Modal Name"
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                     preference:
                       type: string
                       example: "CPF"
@@ -1498,6 +1664,72 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /providers/{modal_id}:
+    get:
+      summary: Gets all providers by modal id.
+      tags:
+        - providers
+      parameters:
+        - in: path
+          name: modal_id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Modal id to reference the providers.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a JSON array containing all providers.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    name:
+                      type: string
+                      example: "Provider Name"
+                    phone_number:
+                      type: string
+                      example: "(092)99999-9999"
+                    email:
+                      type: string
+                      format: email
+                      example: "provider@email.com"
+                    modal_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    preference:
+                      type: string
+                      example: "CPF"
+                    preference_data:
+                      type: string
+                      example: "999.999.999-99"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
   /paths:
     post:
@@ -1514,28 +1746,28 @@ paths:
               schema:
                 type: object
                 properties:
-                  origin_city:
+                  origin_city_id:
                     type: string
-                    example: "City Name"
-                  destination_city:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  destination_city_id:
                     type: string
-                    example: "Another City Name"
-                  modal:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  modal_id:
                     type: string
-                    example: "Modal Name"
-                  provider:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  provider_id:
                     type: string
-                    example: "Provider Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Segunda-feira"
+                    type: string
+                    example: "Segunda-feira, Terça-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "12:30"
+                    type: string
+                    example: "12:30, 12:30"
                   duration:
                     type: number
                     example: 120
@@ -1566,28 +1798,28 @@ paths:
                     type: string
                     format: uuid
                     example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                  origin_city:
+                  origin_city_id:
                     type: string
-                    example: "City Name"
-                  destination_city:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  destination_city_id:
                     type: string
-                    example: "Another City Name"
-                  modal:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  modal_id:
                     type: string
-                    example: "Modal Name"
-                  provider:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  provider_id:
                     type: string
-                    example: "Provider Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Segunda-feira"
+                    type: string
+                    example: "Segunda-feira, Terça-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "12:30"
+                    type: string
+                    example: "12:30, 12:30"
                   duration:
                     type: number
                     example: 120
@@ -1618,6 +1850,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /paths/{id}:
     put:
       summary: Updates a path.
@@ -1642,28 +1876,28 @@ paths:
               schema:
                 type: object
                 properties:
-                  origin_city:
+                  origin_city_id:
                     type: string
-                    example: "New City Name"
-                  destination_city:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  destination_city_id:
                     type: string
-                    example: "New Another City Name"
-                  modal:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  modal_id:
                     type: string
-                    example: "New Modal Name"
-                  provider:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  provider_id:
                     type: string
-                    example: "New Provider Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Quarta-feira"
+                    type: string
+                    example: "Segunda-feira, Quarta-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "13:30"
+                    type: string
+                    example: "12:30, 13:30"
                   duration:
                     type: number
                     example: 120
@@ -1694,28 +1928,28 @@ paths:
                     type: string
                     format: uuid
                     example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                  origin_city:
+                  origin_city_id:
                     type: string
-                    example: "New City Name"
-                  destination_city:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  destination_city_id:
                     type: string
-                    example: "New Another City Name"
-                  modal:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  modal_id:
                     type: string
-                    example: "New Modal Name"
-                  provider:
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  provider_id:
                     type: string
-                    example: "New Provider Name"
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                   boarding_days:
-                    type: array
-                    items:
-                      type: string
-                      example: "Quarta-feira"
+                    type: string
+                    example: "Segunda-feira, Quarta-feira"
                   boarding_times:
-                    type: array
-                    items:
-                      type: string
-                      example: "13:30"
+                    type: string
+                    example: "12:30, 13:30"
                   duration:
                     type: number
                     example: 120
@@ -1746,6 +1980,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
     delete:
       summary: Deletes a path.
       parameters:
@@ -1769,6 +2005,8 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
   /paths/all:
     get:
       summary: Gets all paths.
@@ -1785,6 +2023,8 @@ paths:
           schema:
             type: number
           description: A number to control the paths pagination.
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Returns a JSON array containing all paths.
@@ -1799,28 +2039,28 @@ paths:
                       type: string
                       format: uuid
                       example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    origin_city:
+                    origin_city_id:
                       type: string
-                      example: "New City Name"
-                    destination_city:
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    destination_city_id:
                       type: string
-                      example: "New Another City Name"
-                    modal:
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    modal_id:
                       type: string
-                      example: "New Modal Name"
-                    provider:
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    provider_id:
                       type: string
-                      example: "New Provider Name"
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
                     boarding_days:
-                      type: array
-                      items:
-                        type: string
-                        example: "Quarta-feira"
+                      type: string
+                      example: "Segunda-feira, Quarta-feira"
                     boarding_times:
-                      type: array
-                      items:
-                        type: string
-                        example: "13:30"
+                      type: string
+                      example: "12:30, 13:30"
                     duration:
                       type: number
                       example: 120
@@ -1847,3 +2087,128 @@ paths:
                       type: string
                       format: dateformat
                       example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+
+  /opinions:
+    post:
+      summary: Creates an opinion.
+      tags:
+        - opinions
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                    example: "Opinion Title"
+                  description:
+                    type: string
+                    example: "Opinion description"
+      responses:
+        '200':
+          description: Returns a JSON containing the created opinion.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                  title:
+                    type: string
+                    example: "Opinion Title"
+                  description:
+                    type: string
+                    example: "Opinion description"
+                  created_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+                  updated_at:
+                    type: string
+                    format: dateformat
+                    example: "2020-07-02T21:57:00.421Z"
+  /opinions/{id}:
+    delete:
+      summary: Deletes an opinion.
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: string
+            format: uuid
+            example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+          required: true
+          description: Opinion id to delete it.
+      tags:
+        - opinions
+      security:
+        - bearerAuth: []
+        - positionHeader: []
+      responses:
+        '200':
+          description: Returns a successfully deleted opinion confirmation.
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '403':
+          $ref: '#/components/responses/ExclusiveAccess'
+  /opinions/all:
+    get:
+      summary: Gets all opinions.
+      tags:
+        - opinions
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+          description: A string to search for specific opinions.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the opinions pagination.
+      responses:
+        '200':
+          description: Returns a JSON array containing all opinions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    title:
+                      type: string
+                      example: "Opinion Title"
+                    description:
+                      type: string
+                      example: "Opinion description"
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'

@@ -1,4 +1,10 @@
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('cities')
 class City {
@@ -13,9 +19,6 @@ class City {
 
   @Column()
   is_auditated?: boolean;
-
-  @Column()
-  related_cities?: string;
 
   @Column()
   latitude?: number;
@@ -34,6 +37,12 @@ class City {
 
   @Column()
   city_observation?: string;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }
 
 export default City;
