@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import ListCitiesService from '@modules/cities/services/ListCitiesService';
+import ListRelatedCitiesService from '@modules/cities/services/ListRelatedCitiesService';
 import CreateCityService from '@modules/cities/services/CreateCityService';
 import UpdateCityService from '@modules/cities/services/UpdateCityService';
 import DeleteCityService from '@modules/cities/services/DeleteCityService';
@@ -21,6 +22,19 @@ export default class CitiesController {
     );
 
     return response.json(cities);
+  }
+
+  public async related(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
+    const { city_id } = request.params;
+
+    const listRelatedCities = container.resolve(ListRelatedCitiesService);
+
+    const relatedCities = await listRelatedCities.execute(city_id);
+
+    return response.json(relatedCities);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

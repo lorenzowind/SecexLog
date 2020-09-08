@@ -17,6 +17,8 @@ citiesRouter.get(
   citiesController.show,
 );
 
+citiesRouter.get('/related/:city_id', citiesController.related);
+
 citiesRouter.post(
   '/',
   ensureAuthenticated,

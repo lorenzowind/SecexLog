@@ -30,7 +30,6 @@ describe('CreateHoliday', () => {
   it('should be able to create a new holiday', async () => {
     const holiday = await createHoliday.execute({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '15/06',
       end_date: '16/06',
     });
@@ -41,7 +40,6 @@ describe('CreateHoliday', () => {
   it('should not be able to create a new holiday with the same name from another', async () => {
     await createHoliday.execute({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '15/06',
       end_date: '16/06',
     });
@@ -49,7 +47,6 @@ describe('CreateHoliday', () => {
     await expect(
       createHoliday.execute({
         name: 'Holiday 1',
-        city_name: '',
         initial_date: '17/06',
         end_date: '18/06',
       }),
@@ -57,7 +54,7 @@ describe('CreateHoliday', () => {
   });
 
   it('should be able to create a new specific holiday', async () => {
-    await draftCitiesRepository.create({
+    const city = await draftCitiesRepository.create({
       name: 'City 1',
       city_observation: 'city observation',
       end_flood_date: '01/09',
@@ -71,7 +68,7 @@ describe('CreateHoliday', () => {
 
     const holiday = await createHoliday.execute({
       name: 'Holiday 1',
-      city_name: 'City 1',
+      city_id: city.id,
       initial_date: '15/06',
       end_date: '16/06',
     });
@@ -83,7 +80,7 @@ describe('CreateHoliday', () => {
     await expect(
       createHoliday.execute({
         name: 'Holiday 1',
-        city_name: 'City 1',
+        city_id: 'non existing city id',
         initial_date: '15/06',
         end_date: '16/06',
       }),

@@ -8,28 +8,26 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import City from '@modules/cities/infra/typeorm/entities/City';
+import City from './City';
 
-@Entity('holidays')
-class Holiday {
+@Entity('related_cities')
+class RelatedCity {
   @PrimaryColumn()
   id: string;
 
   @Column()
-  name: string;
-
-  @Column()
-  city_id?: string;
+  city_id: string;
 
   @ManyToOne(() => City)
   @JoinColumn({ name: 'city_id' })
-  city?: City;
+  city: City;
 
   @Column()
-  initial_date?: string;
+  related_city_id: string;
 
-  @Column()
-  end_date?: string;
+  @ManyToOne(() => City)
+  @JoinColumn({ name: 'related_city_id' })
+  related_city: City;
 
   @CreateDateColumn()
   created_at: Date;
@@ -38,4 +36,4 @@ class Holiday {
   updated_at: Date;
 }
 
-export default Holiday;
+export default RelatedCity;

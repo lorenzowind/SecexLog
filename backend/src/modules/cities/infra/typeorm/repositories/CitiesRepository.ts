@@ -44,20 +44,6 @@ class CitiesRepository implements ICitiesRepository {
     return findCity;
   }
 
-  public async checkRelatedCities(related_cities: string): Promise<boolean> {
-    const citiesNames = related_cities.split(', ');
-
-    let checkValidCities = true;
-
-    citiesNames.map(async cityName => {
-      if (!(await this.ormRepository.findOne(cityName))) {
-        checkValidCities = false;
-      }
-    });
-
-    return checkValidCities;
-  }
-
   public async create(cityData: ICreateCityDTO): Promise<City> {
     const city = this.ormRepository.create(cityData);
 

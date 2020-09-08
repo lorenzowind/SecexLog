@@ -5,9 +5,11 @@ import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 import ICitiesRepository from '../repositories/ICitiesRepository';
+import IRelatedCitiesRepository from '../repositories/IRelatedCitiesRepository';
 
 import City from '../infra/typeorm/entities/City';
-import IUpdateCityDTO from '../dtos/ICreateOrUpdateCityDTO';
+
+import IUpdateCityDTO from '../dtos/ICreateOrUpdateCityRequestDTO';
 
 interface IRequest extends IUpdateCityDTO {
   id: string;
@@ -18,6 +20,9 @@ class UpdateCityService {
   constructor(
     @inject('CitiesRepository')
     private citiesRepository: ICitiesRepository,
+
+    @inject('RelatedCitiesRepository')
+    private relatedCitiesRepository: IRelatedCitiesRepository,
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
@@ -49,12 +54,23 @@ class UpdateCityService {
     }
 
     if (related_cities) {
-      const checkRelatedCities = await this.citiesRepository.checkRelatedCities(
-        related_cities,
-      );
+      await this.relatedCitiesRepository.removeAllByCityId(id);
 
-      if (!checkRelatedCities) {
-        throw new AppError('Related cities are not valid.');
+      for (let index = 0; index < related_cities.length; index += 1) {
+        const checkRelatedCity = await this.citiesRepository.findById(
+          related_cities[index].related_city_id,
+        );
+
+        if (!checkRelatedCity) {
+          throw new AppError('Related city not found.');
+        } else if (checkRelatedCity.id === id) {
+          throw new AppError('A city cannot have itself as a related city.');
+        }
+
+        await this.relatedCitiesRepository.create(
+          id,
+          related_cities[index].related_city_id,
+        );
       }
     }
 
@@ -67,7 +83,6 @@ class UpdateCityService {
     city.is_base = is_base;
     city.latitude = latitude;
     city.longitude = longitude;
-    city.related_cities = related_cities;
 
     await this.cacheProvider.invalidatePrefix('cities-list');
 

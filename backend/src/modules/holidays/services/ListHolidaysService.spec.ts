@@ -26,14 +26,12 @@ describe('ListHolidays', () => {
   it('should nit be able to list holidays without authentication', async () => {
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 2',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -48,14 +46,12 @@ describe('ListHolidays', () => {
 
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 2',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -70,7 +66,6 @@ describe('ListHolidays', () => {
 
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -85,7 +80,6 @@ describe('ListHolidays', () => {
 
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -100,7 +94,6 @@ describe('ListHolidays', () => {
 
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -117,7 +110,6 @@ describe('ListHolidays', () => {
 
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -134,84 +126,72 @@ describe('ListHolidays', () => {
 
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 2',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 3',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 4',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 5',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 6',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 7',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 8',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 9',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 10',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 11',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 12',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
@@ -230,42 +210,36 @@ describe('ListHolidays', () => {
 
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 2',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 3',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: holidaySearch,
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 5',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });
 
     await draftHolidaysRepository.create({
       name: 'Holiday 6',
-      city_name: '',
       initial_date: '09/08',
       end_date: '10/08',
     });

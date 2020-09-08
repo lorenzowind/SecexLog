@@ -3,13 +3,17 @@ import {
   QueryRunner,
   Table,
   TableForeignKey,
+  TableColumn,
 } from 'typeorm';
 
-export default class CreateHolidays1599184346385 implements MigrationInterface {
+export default class CreateRelatedCities1599602787224
+  implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
+    await queryRunner.dropColumn('cities', 'related_cities');
+
     await queryRunner.createTable(
       new Table({
-        name: 'holidays',
+        name: 'related_cities',
         columns: [
           {
             name: 'id',
@@ -18,22 +22,14 @@ export default class CreateHolidays1599184346385 implements MigrationInterface {
             isUnique: true,
           },
           {
-            name: 'name',
-            type: 'varchar(255)',
-            isUnique: true,
-          },
-          {
             name: 'city_id',
-            type: 'varchar(255)',
+            type: 'varchar(36)',
             isNullable: true,
           },
           {
-            name: 'initial_date',
-            type: 'varchar(6)',
-          },
-          {
-            name: 'end_date',
-            type: 'varchar(6)',
+            name: 'related_city_id',
+            type: 'varchar(36)',
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -50,10 +46,22 @@ export default class CreateHolidays1599184346385 implements MigrationInterface {
     );
 
     await queryRunner.createForeignKey(
-      'holidays',
+      'related_cities',
       new TableForeignKey({
-        name: 'HolidayCity',
+        name: 'CityId',
         columnNames: ['city_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'cities',
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      'related_cities',
+      new TableForeignKey({
+        name: 'RelatedCityId',
+        columnNames: ['related_city_id'],
         referencedColumnNames: ['id'],
         referencedTableName: 'cities',
         onDelete: 'CASCADE',
@@ -63,8 +71,18 @@ export default class CreateHolidays1599184346385 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.dropForeignKey('holidays', 'HolidayCity');
+    await queryRunner.dropForeignKey('related_cities', 'RelatedCityId');
+    await queryRunner.dropForeignKey('related_cities', 'CityId');
 
-    await queryRunner.dropTable('holidays');
+    await queryRunner.dropTable('related_cities');
+
+    await queryRunner.addColumn(
+      'cities',
+      new TableColumn({
+        name: 'related_cities',
+        type: 'varchar(255)',
+        isNullable: true,
+      }),
+    );
   }
 }

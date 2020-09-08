@@ -5,15 +5,19 @@ import AppError from '@shared/errors/AppError';
 import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 
 import ICitiesRepository from '../repositories/ICitiesRepository';
+import IRelatedCitiesRepository from '../repositories/IRelatedCitiesRepository';
 
 import City from '../infra/typeorm/entities/City';
-import ICreateCityDTO from '../dtos/ICreateOrUpdateCityDTO';
+import ICreateCityDTO from '../dtos/ICreateOrUpdateCityRequestDTO';
 
 @injectable()
 class CreateCityService {
   constructor(
     @inject('CitiesRepository')
     private citiesRepository: ICitiesRepository,
+
+    @inject('RelatedCitiesRepository')
+    private relatedCitiesRepository: IRelatedCitiesRepository,
 
     @inject('CacheProvider')
     private cacheProvider: ICacheProvider,
@@ -37,16 +41,6 @@ class CreateCityService {
       throw new AppError('City name already used.');
     }
 
-    if (related_cities) {
-      const checkRelatedCities = await this.citiesRepository.checkRelatedCities(
-        related_cities,
-      );
-
-      if (!checkRelatedCities) {
-        throw new AppError('Related cities are not valid.');
-      }
-    }
-
     const city = await this.citiesRepository.create({
       name,
       city_observation,
@@ -57,8 +51,24 @@ class CreateCityService {
       is_base,
       latitude,
       longitude,
-      related_cities,
     });
+
+    if (related_cities) {
+      for (let index = 0; index < related_cities.length; index += 1) {
+        const checkRelatedCity = await this.citiesRepository.findById(
+          related_cities[index].related_city_id,
+        );
+
+        if (!checkRelatedCity) {
+          throw new AppError('Related city not found.');
+        }
+
+        await this.relatedCitiesRepository.create(
+          city.id,
+          related_cities[index].related_city_id,
+        );
+      }
+    }
 
     await this.cacheProvider.invalidatePrefix('cities-list');
 
