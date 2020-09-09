@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import ListHolidaysService from '@modules/holidays/services/ListHolidaysService';
+import ListFilteredHolidaysService from '@modules/holidays/services/ListFilteredHolidaysService';
 import CreateHolidayService from '@modules/holidays/services/CreateHolidayService';
 import UpdateHolidayService from '@modules/holidays/services/UpdateHolidayService';
 import DeleteHolidayService from '@modules/holidays/services/DeleteHolidayService';
@@ -21,6 +22,16 @@ export default class HolidaysController {
     );
 
     return response.json(holidays);
+  }
+
+  public async filter(request: Request, response: Response): Promise<Response> {
+    const { city_id } = request.params;
+
+    const listFilteredHolidays = container.resolve(ListFilteredHolidaysService);
+
+    const filteredHolidays = await listFilteredHolidays.execute(city_id);
+
+    return response.json(filteredHolidays);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

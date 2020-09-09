@@ -35,6 +35,14 @@ class HolidaysRepository implements IHolidaysRepository {
     return holidays;
   }
 
+  public async findAllByCityId(city_id: string): Promise<Holiday[]> {
+    const filteredHolidays = this.ormRepository.find({
+      where: { city_id },
+    });
+
+    return filteredHolidays;
+  }
+
   public async findByName(name: string): Promise<Holiday | undefined> {
     const findHoliday = await this.ormRepository.findOne(name);
 

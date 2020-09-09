@@ -12,6 +12,12 @@ const holidaysController = new HolidaysController();
 
 holidaysRouter.get('/all', ensureAuthenticated, holidaysController.show);
 
+holidaysRouter.get(
+  '/{city_id}',
+  ensureAuthenticated,
+  holidaysController.filter,
+);
+
 holidaysRouter.post(
   '/',
   ensureAuthenticated,
