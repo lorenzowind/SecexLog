@@ -46,7 +46,7 @@ class UpdateProviderService {
       name,
     );
 
-    if (checkProviderNameExists) {
+    if (checkProviderNameExists && checkProviderNameExists.id !== id) {
       throw new AppError('Provider name already used.');
     }
 
@@ -55,7 +55,7 @@ class UpdateProviderService {
         email,
       );
 
-      if (checkProviderEmailExists) {
+      if (checkProviderEmailExists && checkProviderEmailExists.id !== id) {
         throw new AppError('Provider email already used.');
       }
     }
@@ -65,7 +65,10 @@ class UpdateProviderService {
         phone_number,
       );
 
-      if (checkProviderPhoneNumberExists) {
+      if (
+        checkProviderPhoneNumberExists &&
+        checkProviderPhoneNumberExists.id !== id
+      ) {
         throw new AppError('Provider phone number already used.');
       }
     }
@@ -74,7 +77,10 @@ class UpdateProviderService {
       preference_data,
     );
 
-    if (checkProviderPreferenceDataExists) {
+    if (
+      checkProviderPreferenceDataExists &&
+      checkProviderPreferenceDataExists.id !== id
+    ) {
       throw new AppError('Provider preference data already used.');
     }
 

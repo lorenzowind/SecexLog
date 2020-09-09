@@ -2,87 +2,165 @@ import AppError from '@shared/errors/AppError';
 
 import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
 
-import DraftCitiesRepository from '@modules/cities/repositories/drafts/DraftCitiesRepository';
-import DraftHolidaysRepository from '../repositories/drafts/DraftHolidaysRepository';
+import DraftModalsRepository from '@modules/modals/repositories/drafts/DraftModalsRepository';
+import DraftProvidersRepository from '../repositories/drafts/DraftProvidersRepository';
 
-import CreateHolidayService from './CreateProviderService';
+import CreateProviderService from './CreateProviderService';
 
-let draftHolidaysRepository: DraftHolidaysRepository;
-let draftCitiesRepository: DraftCitiesRepository;
+let draftProvidersRepository: DraftProvidersRepository;
+let draftModalsRepository: DraftModalsRepository;
 
 let draftCacheProvider: DraftCacheProvider;
-let createHoliday: CreateHolidayService;
+let createProvider: CreateProviderService;
 
-describe('CreateHoliday', () => {
+describe('CreateProvider', () => {
   beforeEach(() => {
-    draftHolidaysRepository = new DraftHolidaysRepository();
-    draftCitiesRepository = new DraftCitiesRepository();
+    draftProvidersRepository = new DraftProvidersRepository();
+    draftModalsRepository = new DraftModalsRepository();
 
     draftCacheProvider = new DraftCacheProvider();
 
-    createHoliday = new CreateHolidayService(
-      draftHolidaysRepository,
-      draftCitiesRepository,
+    createProvider = new CreateProviderService(
+      draftProvidersRepository,
+      draftModalsRepository,
       draftCacheProvider,
     );
   });
 
-  it('should be able to create a new holiday', async () => {
-    const holiday = await createHoliday.execute({
-      name: 'Holiday 1',
-      initial_date: '15/06',
-      end_date: '16/06',
+  it('should be able to create a new provider', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
     });
 
-    expect(holiday).toHaveProperty('id');
+    const provider = await createProvider.execute({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    expect(provider).toHaveProperty('id');
   });
 
-  it('should not be able to create a new holiday with the same name from another', async () => {
-    await createHoliday.execute({
-      name: 'Holiday 1',
-      initial_date: '15/06',
-      end_date: '16/06',
+  it('should not be able to create a new provider with the same name from another', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    await createProvider.execute({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
     });
 
     await expect(
-      createHoliday.execute({
-        name: 'Holiday 1',
-        initial_date: '17/06',
-        end_date: '18/06',
+      createProvider.execute({
+        name: 'Provider Name',
+        modal_id: modal.id,
+        preference: 'CPF',
+        preference_data: 'Preference data 2',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to create a new specific holiday', async () => {
-    const city = await draftCitiesRepository.create({
-      name: 'City 1',
-      city_observation: 'city observation',
-      end_flood_date: '01/09',
-      initial_flood_date: '01/07',
-      interdiction_observation: 'interdiction observation',
-      is_auditated: true,
-      is_base: false,
-      latitude: 1.35235235,
-      longitude: -1.12467552,
+  it('should not be able to create a new provider with the same email from another', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
     });
 
-    const holiday = await createHoliday.execute({
-      name: 'Holiday 1',
-      city_id: city.id,
-      initial_date: '15/06',
-      end_date: '16/06',
+    await createProvider.execute({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      email: 'provider@email.com',
+      preference: 'CPF',
+      preference_data: 'Preference data',
     });
 
-    expect(holiday).toHaveProperty('id');
+    await expect(
+      createProvider.execute({
+        name: 'Provider Name 2',
+        modal_id: modal.id,
+        email: 'provider@email.com',
+        preference: 'CPF',
+        preference_data: 'Preference data 2',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to create a new specific holiday with a non existing city', async () => {
+  it('should not be able to create a new provider with the same phone number from another', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    await createProvider.execute({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      phone_number: '(999)99999-9999',
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
     await expect(
-      createHoliday.execute({
-        name: 'Holiday 1',
-        city_id: 'non existing city id',
-        initial_date: '15/06',
-        end_date: '16/06',
+      createProvider.execute({
+        name: 'Provider Name 2',
+        modal_id: modal.id,
+        phone_number: '(999)99999-9999',
+        preference: 'CPF',
+        preference_data: 'Preference data 2',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to create a new provider with the same preference data from another', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    await createProvider.execute({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    await expect(
+      createProvider.execute({
+        name: 'Provider Name 2',
+        modal_id: modal.id,
+        preference: 'CPF',
+        preference_data: 'Preference data',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to create a new provider with a non existing modal', async () => {
+    await expect(
+      createProvider.execute({
+        name: 'Provider Name',
+        modal_id: 'non existing modal id',
+        preference: 'CPF',
+        preference_data: 'Preference data',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

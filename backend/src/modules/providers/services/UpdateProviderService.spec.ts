@@ -2,131 +2,297 @@ import AppError from '@shared/errors/AppError';
 
 import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
 
-import DraftCitiesRepository from '@modules/cities/repositories/drafts/DraftCitiesRepository';
-import DraftHolidaysRepository from '../repositories/drafts/DraftHolidaysRepository';
+import DraftModalsRepository from '@modules/modals/repositories/drafts/DraftModalsRepository';
+import DraftProvidersRepository from '../repositories/drafts/DraftProvidersRepository';
 
-import UpdateHolidaysService from './UpdateProviderService';
+import UpdateProviderService from './UpdateProviderService';
 
-let draftHolidaysRepository: DraftHolidaysRepository;
-let draftCitiesRepository: DraftCitiesRepository;
+let draftModalsRepository: DraftModalsRepository;
+let draftProvidersRepository: DraftProvidersRepository;
 
 let draftCacheProvider: DraftCacheProvider;
 
-let updateHoliday: UpdateHolidaysService;
+let updateProvider: UpdateProviderService;
 
-describe('UpdateHoliday', () => {
+describe('UpdateProvider', () => {
   beforeEach(() => {
-    draftHolidaysRepository = new DraftHolidaysRepository();
-    draftCitiesRepository = new DraftCitiesRepository();
+    draftModalsRepository = new DraftModalsRepository();
+    draftProvidersRepository = new DraftProvidersRepository();
 
     draftCacheProvider = new DraftCacheProvider();
 
-    updateHoliday = new UpdateHolidaysService(
-      draftHolidaysRepository,
-      draftCitiesRepository,
+    updateProvider = new UpdateProviderService(
+      draftProvidersRepository,
+      draftModalsRepository,
       draftCacheProvider,
     );
   });
 
-  it('should be able to update the holiday', async () => {
-    const holiday = await draftHolidaysRepository.create({
-      name: 'Holiday 1',
-      initial_date: '09/08',
-      end_date: '10/08',
+  it('should be able to update the provider', async () => {
+    const firstModal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
     });
 
-    const updatedHoliday = await updateHoliday.execute({
-      id: holiday.id,
-      name: 'New Holiday 1',
-      initial_date: '11/08',
-      end_date: '12/08',
+    const secondModal = await draftModalsRepository.create({
+      name: 'Modal 2',
+      image: 'Modal image URL 2',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
     });
 
-    expect(updatedHoliday.name).toBe('New Holiday 1');
-    expect(updatedHoliday.initial_date).toBe('11/08');
-    expect(updatedHoliday.end_date).toBe('12/08');
+    const provider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: firstModal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    const updatedProvider = await updateProvider.execute({
+      id: provider.id,
+      name: 'Provider Name 2',
+      modal_id: secondModal.id,
+      preference: 'CNPJ',
+      preference_data: 'Preference data 2',
+    });
+
+    expect(updatedProvider.name).toBe('Provider Name 2');
+    expect(updatedProvider.preference).toBe('CNPJ');
+    expect(updatedProvider.preference_data).toBe('Preference data 2');
+    expect(updatedProvider.modal_id).toBe(secondModal.id);
   });
 
-  it('should not be able to update from a non existing holiday', async () => {
-    expect(
-      updateHoliday.execute({
-        id: 'non existing holiday',
-        name: 'New Holiday 1',
+  it('should be able to update the provider with all attributes', async () => {
+    const firstModal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
 
-        initial_date: '11/08',
-        end_date: '12/08',
+    const secondModal = await draftModalsRepository.create({
+      name: 'Modal 2',
+      image: 'Modal image URL 2',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const provider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: firstModal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    const updatedProvider = await updateProvider.execute({
+      id: provider.id,
+      name: 'Provider Name 2',
+      email: 'provider@email.com',
+      phone_number: '(999)99999-9999',
+      modal_id: secondModal.id,
+      preference: 'CNPJ',
+      preference_data: 'Preference data 2',
+    });
+
+    expect(updatedProvider.name).toBe('Provider Name 2');
+    expect(updatedProvider.preference).toBe('CNPJ');
+    expect(updatedProvider.preference_data).toBe('Preference data 2');
+    expect(updatedProvider.email).toBe('provider@email.com');
+    expect(updatedProvider.phone_number).toBe('(999)99999-9999');
+    expect(updatedProvider.modal_id).toBe(secondModal.id);
+  });
+
+  it('should not be able to update from a non existing provider', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    await expect(
+      updateProvider.execute({
+        id: 'non existing provider id',
+        name: 'Provider Name 2',
+        modal_id: modal.id,
+        preference: 'CNPJ',
+        preference_data: 'Preference data 2',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should not be able to update to another holiday name', async () => {
-    await draftHolidaysRepository.create({
-      name: 'Holiday 1',
-      initial_date: '09/08',
-      end_date: '10/08',
+  it('should not be able to update to another provider name', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
     });
 
-    const holiday = await draftHolidaysRepository.create({
-      name: 'Holiday 2',
-      initial_date: '11/08',
-      end_date: '12/08',
+    const provider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    await draftProvidersRepository.create({
+      name: 'Provider Name 2',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data 2',
     });
 
     await expect(
-      updateHoliday.execute({
-        id: holiday.id,
-        name: 'Holiday 1',
+      updateProvider.execute({
+        id: provider.id,
+        name: 'Provider Name 2',
+        modal_id: modal.id,
+        preference: 'CNPJ',
+        preference_data: 'Preference data',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
 
-  it('should be able to update the specific holiday', async () => {
-    const city = await draftCitiesRepository.create({
-      name: 'City 1',
-      city_observation: 'city observation',
-      end_flood_date: '01/09',
-      initial_flood_date: '01/07',
-      interdiction_observation: 'interdiction observation',
-      is_auditated: true,
-      is_base: false,
-      latitude: 1.35235235,
-      longitude: -1.12467552,
+  it('should not be able to update to another provider email', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
     });
 
-    const holiday = await draftHolidaysRepository.create({
-      name: 'Holiday 1',
-      initial_date: '09/08',
-      end_date: '10/08',
+    const provider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      email: 'provider@email.com',
+      preference: 'CPF',
+      preference_data: 'Preference data',
     });
 
-    const updatedHoliday = await updateHoliday.execute({
-      id: holiday.id,
-      name: 'New Holiday 1',
-      city_id: city.id,
-      initial_date: '11/06',
-      end_date: '12/06',
-    });
-
-    expect(updatedHoliday.name).toBe('New Holiday 1');
-    expect(updatedHoliday.city_id).toBe(city.id);
-    expect(updatedHoliday.initial_date).toBe('11/06');
-    expect(updatedHoliday.end_date).toBe('12/06');
-  });
-
-  it('should not be able to update a specific holiday with a non existing city', async () => {
-    const holiday = await draftHolidaysRepository.create({
-      name: 'Holiday 1',
-      initial_date: '09/08',
-      end_date: '10/08',
+    await draftProvidersRepository.create({
+      name: 'Provider Name 2',
+      modal_id: modal.id,
+      email: 'provider2@email.com',
+      preference: 'CPF',
+      preference_data: 'Preference data 2',
     });
 
     await expect(
-      updateHoliday.execute({
-        id: holiday.id,
-        name: 'New Holiday 1',
-        city_id: 'non existing city id',
-        initial_date: '11/08',
-        end_date: '12/08',
+      updateProvider.execute({
+        id: provider.id,
+        name: 'Provider Name',
+        modal_id: modal.id,
+        email: 'provider2@email.com',
+        preference: 'CNPJ',
+        preference_data: 'Preference data',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to update to another provider phone number', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const provider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      phone_number: '(999)99999-9999',
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    await draftProvidersRepository.create({
+      name: 'Provider Name 2',
+      modal_id: modal.id,
+      phone_number: '(111)99999-9999',
+      preference: 'CPF',
+      preference_data: 'Preference data 2',
+    });
+
+    await expect(
+      updateProvider.execute({
+        id: provider.id,
+        name: 'Provider Name',
+        modal_id: modal.id,
+        phone_number: '(111)99999-9999',
+        preference: 'CNPJ',
+        preference_data: 'Preference data',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to update to another provider preference data', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const provider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    await draftProvidersRepository.create({
+      name: 'Provider Name 2',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data 2',
+    });
+
+    await expect(
+      updateProvider.execute({
+        id: provider.id,
+        name: 'Provider Name',
+        modal_id: modal.id,
+        preference: 'CNPJ',
+        preference_data: 'Preference data 2',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to update a provider with a non existing modal', async () => {
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const provider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    await expect(
+      updateProvider.execute({
+        id: provider.id,
+        name: 'Provider Name',
+        modal_id: 'non existing modal id',
+        preference: 'CPF',
+        preference_data: 'Preference data',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

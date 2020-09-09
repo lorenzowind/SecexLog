@@ -23,7 +23,7 @@ describe('ListHolidays', () => {
     );
   });
 
-  it('should nit be able to list holidays without authentication', async () => {
+  it('should not be able to list holidays without authentication', async () => {
     await draftHolidaysRepository.create({
       name: 'Holiday 1',
       initial_date: '09/08',

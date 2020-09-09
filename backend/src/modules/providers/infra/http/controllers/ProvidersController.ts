@@ -74,6 +74,7 @@ export default class ProvidersController {
     const updateProvider = container.resolve(UpdateProviderService);
 
     const provider = await updateProvider.execute({
+      id,
       name,
       phone_number,
       email,

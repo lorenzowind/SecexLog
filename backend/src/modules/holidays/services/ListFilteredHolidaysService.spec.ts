@@ -1,7 +1,5 @@
 import AppError from '@shared/errors/AppError';
 
-import DraftCacheProvider from '@shared/container/providers/CacheProvider/drafts/DraftCacheProvider';
-
 import DraftCitiesRepository from '@modules/cities/repositories/drafts/DraftCitiesRepository';
 import DraftHolidaysRepository from '../repositories/drafts/DraftHolidaysRepository';
 
