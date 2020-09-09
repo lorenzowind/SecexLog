@@ -24,6 +24,9 @@ import OpinionsRepository from '@modules/opinions/infra/typeorm/repositories/Opi
 import IModalsRepository from '@modules/modals/repositories/IModalsRepository';
 import ModalsRepository from '@modules/modals/infra/typeorm/repositories/ModalsRepository';
 
+import IProvidersRepository from '@modules/providers/repositories/IProvidersRepository';
+import ProvidersRepository from '@modules/providers/infra/typeorm/repositories/ProvidersRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -57,4 +60,9 @@ container.registerSingleton<IOpinionsRepository>(
 container.registerSingleton<IModalsRepository>(
   'ModalsRepository',
   ModalsRepository,
+);
+
+container.registerSingleton<IProvidersRepository>(
+  'ProvidersRepository',
+  ProvidersRepository,
 );

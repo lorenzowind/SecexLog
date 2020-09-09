@@ -42,9 +42,9 @@ export default class HolidaysController {
     const { id } = request.params;
     const { name, city_id, initial_date, end_date } = request.body;
 
-    const updateCity = container.resolve(UpdateHolidayService);
+    const updateHoliday = container.resolve(UpdateHolidayService);
 
-    const city = await updateCity.execute({
+    const holiday = await updateHoliday.execute({
       id,
       name,
       city_id,
@@ -52,7 +52,7 @@ export default class HolidaysController {
       end_date,
     });
 
-    return response.json(city);
+    return response.json(holiday);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
