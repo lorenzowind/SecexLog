@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import ListProvidersService from '@modules/providers/services/ListProvidersService';
+import ListFilteredProvidersService from '@modules/providers/services/ListFilteredProvidersService';
 import CreateProviderService from '@modules/providers/services/CreateProviderService';
 import UpdateProviderService from '@modules/providers/services/UpdateProviderService';
 import DeleteProviderService from '@modules/providers/services/DeleteProviderService';
@@ -21,6 +22,18 @@ export default class ProvidersController {
     );
 
     return response.json(providers);
+  }
+
+  public async filter(request: Request, response: Response): Promise<Response> {
+    const { modal_id } = request.params;
+
+    const listFilteredProviders = container.resolve(
+      ListFilteredProvidersService,
+    );
+
+    const filteredProviders = await listFilteredProviders.execute(modal_id);
+
+    return response.json(filteredProviders);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {

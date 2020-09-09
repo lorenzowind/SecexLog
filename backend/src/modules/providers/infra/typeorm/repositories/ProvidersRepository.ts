@@ -35,8 +35,38 @@ class ProvidersRepository implements IProvidersRepository {
     return providers;
   }
 
+  public async findAllByModalId(modal_id: string): Promise<Provider[]> {
+    const filteredProviders = this.ormRepository.find({
+      where: { modal_id },
+    });
+
+    return filteredProviders;
+  }
+
   public async findByName(name: string): Promise<Provider | undefined> {
     const findProvider = await this.ormRepository.findOne(name);
+
+    return findProvider;
+  }
+
+  public async findByEmail(email: string): Promise<Provider | undefined> {
+    const findProvider = await this.ormRepository.findOne(email);
+
+    return findProvider;
+  }
+
+  public async findByPreferenceData(
+    preference_data: string,
+  ): Promise<Provider | undefined> {
+    const findProvider = await this.ormRepository.findOne(preference_data);
+
+    return findProvider;
+  }
+
+  public async findByPhoneNumber(
+    phone_number: string,
+  ): Promise<Provider | undefined> {
+    const findProvider = await this.ormRepository.findOne(phone_number);
 
     return findProvider;
   }

@@ -22,9 +22,45 @@ export default class DraftProvidersRepository implements IProvidersRepository {
     return providers.slice((page - 1) * 10, page * 10);
   }
 
+  public async findAllByModalId(modal_id: string): Promise<Provider[]> {
+    const filteredProviders = this.providers.filter(
+      findProvider => findProvider.modal_id === modal_id,
+    );
+
+    return filteredProviders;
+  }
+
   public async findByName(name: string): Promise<Provider | undefined> {
     const provider = this.providers.find(
       findProvider => findProvider.name === name,
+    );
+
+    return provider;
+  }
+
+  public async findByEmail(email: string): Promise<Provider | undefined> {
+    const provider = this.providers.find(
+      findProvider => findProvider.email === email,
+    );
+
+    return provider;
+  }
+
+  public async findByPreferenceData(
+    preference_data: string,
+  ): Promise<Provider | undefined> {
+    const provider = this.providers.find(
+      findProvider => findProvider.preference_data === preference_data,
+    );
+
+    return provider;
+  }
+
+  public async findByPhoneNumber(
+    phone_number: string,
+  ): Promise<Provider | undefined> {
+    const provider = this.providers.find(
+      findProvider => findProvider.phone_number === phone_number,
     );
 
     return provider;

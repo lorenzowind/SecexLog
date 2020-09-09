@@ -12,6 +12,12 @@ const providersController = new ProvidersController();
 
 providersRouter.get('/all', ensureAuthenticated, providersController.show);
 
+providersRouter.get(
+  '/{modal_id}',
+  ensureAuthenticated,
+  providersController.filter,
+);
+
 providersRouter.post(
   '/',
   ensureAuthenticated,

@@ -3,6 +3,6 @@ export default interface ICreateOrUpdateHolidayDTO {
   phone_number?: string;
   email?: string;
   modal_id: string;
-  prefence: 'CPF' | 'CNPJ';
-  prefence_data: string;
+  preference: 'CPF' | 'CNPJ';
+  preference_data: string;
 }

@@ -26,6 +26,7 @@ export default class CreateProviders1599613435625
           {
             name: 'phone_number',
             type: 'varchar(16)',
+            isUnique: true,
             isNullable: true,
           },
           {
