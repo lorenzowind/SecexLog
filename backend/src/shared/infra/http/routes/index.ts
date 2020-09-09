@@ -9,6 +9,7 @@ import holidaysRouter from '@modules/holidays/infra/http/routes/holidays.routes'
 import opinionsRouter from '@modules/opinions/infra/http/routes/opinions.routes';
 import modalsRouter from '@modules/modals/infra/http/routes/modals.routes';
 import providersRouter from '@modules/providers/infra/http/routes/providers.routes';
+import pathsRouter from '@modules/paths/infra/http/routes/paths.routes';
 
 const routes = Router();
 
@@ -21,5 +22,6 @@ routes.use('/holidays', holidaysRouter);
 routes.use('/opinions', opinionsRouter);
 routes.use('/modals', modalsRouter);
 routes.use('/providers', providersRouter);
+routes.use('/paths', pathsRouter);
 
 export default routes;

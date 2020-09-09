@@ -27,6 +27,9 @@ import ModalsRepository from '@modules/modals/infra/typeorm/repositories/ModalsR
 import IProvidersRepository from '@modules/providers/repositories/IProvidersRepository';
 import ProvidersRepository from '@modules/providers/infra/typeorm/repositories/ProvidersRepository';
 
+import IPathsRepository from '@modules/paths/repositories/IPathsRepository';
+import PathsRepository from '@modules/paths/infra/typeorm/repositories/PathsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -65,4 +68,9 @@ container.registerSingleton<IModalsRepository>(
 container.registerSingleton<IProvidersRepository>(
   'ProvidersRepository',
   ProvidersRepository,
+);
+
+container.registerSingleton<IPathsRepository>(
+  'PathsRepository',
+  PathsRepository,
 );

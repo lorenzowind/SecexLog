@@ -2014,7 +2014,170 @@ paths:
         - paths
       parameters:
         - in: query
-          name: search
+          name: page
+          schema:
+            type: number
+          description: A number to control the paths pagination.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a JSON array containing all paths.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    origin_city_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    destination_city_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    modal_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    provider_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    boarding_days:
+                      type: string
+                      example: "Segunda-feira, Quarta-feira"
+                    boarding_times:
+                      type: string
+                      example: "12:30, 13:30"
+                    duration:
+                      type: number
+                      example: 120
+                    mileage:
+                      type: number
+                      example: 60
+                    cost:
+                      type: number
+                      example: 99.99
+                    boarding_place:
+                      type: string
+                      example: "New Boarding Place"
+                    departure_place:
+                      type: string
+                      example: "New Departure Place"
+                    is_hired:
+                      type: boolean
+                      example: false
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /paths/all/origin:
+    get:
+      summary: Gets all paths by origin city name.
+      tags:
+        - paths
+      parameters:
+        - in: query
+          name: origin_city_name
+          schema:
+            type: string
+          description: A string to search for specific paths.
+        - in: query
+          name: page
+          schema:
+            type: number
+          description: A number to control the paths pagination.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Returns a JSON array containing all paths.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    origin_city_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    destination_city_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    modal_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    provider_id:
+                      type: string
+                      format: uuid
+                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                    boarding_days:
+                      type: string
+                      example: "Segunda-feira, Quarta-feira"
+                    boarding_times:
+                      type: string
+                      example: "12:30, 13:30"
+                    duration:
+                      type: number
+                      example: 120
+                    mileage:
+                      type: number
+                      example: 60
+                    cost:
+                      type: number
+                      example: 99.99
+                    boarding_place:
+                      type: string
+                      example: "New Boarding Place"
+                    departure_place:
+                      type: string
+                      example: "New Departure Place"
+                    is_hired:
+                      type: boolean
+                      example: false
+                    created_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+                    updated_at:
+                      type: string
+                      format: dateformat
+                      example: "2020-07-02T21:57:00.421Z"
+        '400':
+          $ref:  '#/components/responses/IncorrectToken'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /paths/all/destination:
+    get:
+      summary: Gets all paths by destination city name.
+      tags:
+        - paths
+      parameters:
+        - in: query
+          name: destination_city_name
           schema:
             type: string
           description: A string to search for specific paths.
