@@ -2,8 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import ListPathsService from '@modules/paths/services/ListPathsService';
-import ListOriginFilteredPathsService from '@modules/paths/services/ListOriginFilteredPathsService';
-import ListDestinationFilteredPathsService from '@modules/paths/services/ListDestinationFilteredPathsService';
+import ListFilteredPathsService from '@modules/paths/services/ListFilteredPathsService';
 import CreatePathService from '@modules/paths/services/CreatePathService';
 import UpdatePathService from '@modules/paths/services/UpdatePathService';
 import DeletePathService from '@modules/paths/services/DeletePathService';
@@ -22,16 +21,14 @@ export default class PathsController {
   }
 
   public async origin(request: Request, response: Response): Promise<Response> {
-    const user_id = request.user.id;
-
     const { origin_city_name = '', page = 1 } = request.query;
 
-    const listPaths = container.resolve(ListOriginFilteredPathsService);
+    const listPaths = container.resolve(ListFilteredPathsService);
 
     const paths = await listPaths.execute(
       String(origin_city_name),
       Number(page),
-      user_id,
+      'origin_city',
     );
 
     return response.json(paths);
@@ -41,16 +38,14 @@ export default class PathsController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const user_id = request.user.id;
-
     const { destination_city_name = '', page = 1 } = request.query;
 
-    const listPaths = container.resolve(ListDestinationFilteredPathsService);
+    const listPaths = container.resolve(ListFilteredPathsService);
 
     const paths = await listPaths.execute(
       String(destination_city_name),
       Number(page),
-      user_id,
+      'destination_city',
     );
 
     return response.json(paths);
