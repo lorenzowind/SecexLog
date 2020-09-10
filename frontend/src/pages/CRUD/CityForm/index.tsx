@@ -60,8 +60,8 @@ const CityForm: React.FC = () => {
     setCitiesSelect(
       cities.map(city => {
         return {
-          value: city.nome,
-          label: city.nome,
+          value: city.id,
+          label: city.name,
         };
       }),
     );
@@ -80,7 +80,7 @@ const CityForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome da cidade obrigatório'),
+          name: Yup.string().required('Nome da cidade obrigatório'),
         });
 
         await schema.validate(data, {
@@ -88,22 +88,26 @@ const CityForm: React.FC = () => {
         });
 
         const cityData: CityOperationsData = {
-          cAuditada: isAuditatedCity,
-          cBase: isBaseCity,
-          nome: data.nome,
-          latitute: data.latitute,
-          longitude: data.longitude,
-          obsCidade: data.obsCidade,
-          initDataCheia: rangeFlood.from
+          name: data.name,
+          is_auditated: isAuditatedCity,
+          is_base: isBaseCity,
+          city_observation: data.city_observation,
+          interdiction_observation: isInterdicted
+            ? data.interdiction_observation
+            : '',
+          initial_flood_date: rangeFlood.from
             ? rangeFlood.from.toLocaleDateString('pt-BR')
             : '',
-          endDataCheia: rangeFlood.to
+          end_flood_date: rangeFlood.to
             ? rangeFlood.to.toLocaleDateString('pt-BR')
             : '',
-          relations: selectedRelatedCities
-            .map(relatedCity => relatedCity.value)
-            .join(', '),
-          obsInterdicao: isInterdicted ? data.obsInterdicao : '',
+          latitude: data.latitude || null,
+          longitude: data.longitude || null,
+          related_cities: selectedRelatedCities.map(relatedCity => {
+            return {
+              related_city_id: relatedCity.value,
+            };
+          }),
         };
 
         setLoadingPage(true);
@@ -154,7 +158,7 @@ const CityForm: React.FC = () => {
             <Form ref={formRef} onSubmit={handleCreate}>
               <strong>Nome da cidade</strong>
               <div>
-                <Input name="nome" type="text" />
+                <Input name="name" type="text" />
                 <section>
                   <section>
                     <SwitchInput
@@ -185,7 +189,7 @@ const CityForm: React.FC = () => {
               <div>
                 <nav>
                   <strong>Latitude</strong>
-                  <Input name="latitute" type="number" step="any" />
+                  <Input name="latitude" type="number" step="any" />
                 </nav>
                 <nav>
                   <strong>Longitude</strong>
@@ -212,13 +216,13 @@ const CityForm: React.FC = () => {
 
               <strong>Observação da Interdição</strong>
               {isInterdicted ? (
-                <Textarea name="obsInterdicao" />
+                <Textarea name="interdiction_observation" />
               ) : (
-                <Textarea name="obsInterdicao" disabled />
+                <Textarea name="interdiction_observation" disabled />
               )}
 
               <strong>Observação da cidade</strong>
-              <Textarea name="obsCidade" />
+              <Textarea name="city_observation" />
 
               <aside>
                 <Button type="submit">Criar</Button>

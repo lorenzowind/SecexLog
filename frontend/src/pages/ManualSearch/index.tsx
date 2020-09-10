@@ -36,7 +36,6 @@ const ManualSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
 
-  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [pathsDate, setPathsDate] = useState<Date[]>([new Date()]);
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -54,10 +53,6 @@ const ManualSearch: React.FC = () => {
       setLoadingPartial(false);
     });
   }, [getCities]);
-
-  useEffect(() => {
-    setCitiesSelect(cities.map(city => city.nome));
-  }, [cities]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -130,7 +125,7 @@ const ManualSearch: React.FC = () => {
         // setLoadingPage(true);
 
         // await getManualSearchResult(manualSearchData).then(() => {
-        //  setLoadingPage(false);
+        //   setLoadingPage(false);
         // });
 
         getManualSearchResult(manualSearchData);
@@ -177,12 +172,9 @@ const ManualSearch: React.FC = () => {
                     <option value="Selecione a cidade de ida" disabled>
                       Selecione a cidade de ida
                     </option>
-                    {citiesSelect.map((city, cityindex) => (
-                      <option
-                        key={`goCity-${String(cityindex)}`}
-                        value={String(city)}
-                      >
-                        {city}
+                    {cities.map(city => (
+                      <option key={city.id} value={city.id}>
+                        {city.name}
                       </option>
                     ))}
                   </Select>
@@ -195,12 +187,10 @@ const ManualSearch: React.FC = () => {
                     <option value="Selecione a cidade de volta" disabled>
                       Selecione a cidade de volta
                     </option>
-                    {citiesSelect.map((city, cityIndex) => (
-                      <option
-                        key={`backCity-${String(cityIndex)}`}
-                        value={String(city)}
-                      >
-                        {city}
+
+                    {cities.map(city => (
+                      <option key={city.id} value={city.id}>
+                        {city.name}
                       </option>
                     ))}
                   </Select>

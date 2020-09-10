@@ -359,7 +359,7 @@ const ListingData: React.FC = () => {
             <tr key={`${index}-${index + 1}-${index + 2}`}>
               {array[current] && (
                 <>
-                  <td>{array[current].nome}</td>
+                  <td>{array[current].name}</td>
                   <td>
                     <button
                       type="button"
@@ -377,7 +377,7 @@ const ListingData: React.FC = () => {
               )}
               {array[current + 1] && (
                 <>
-                  <td>{array[current + 1].nome}</td>
+                  <td>{array[current + 1].name}</td>
                   <td>
                     <button
                       type="button"
@@ -395,7 +395,7 @@ const ListingData: React.FC = () => {
               )}
               {array[current + 2] && (
                 <>
-                  <td>{array[current + 2].nome}</td>
+                  <td>{array[current + 2].name}</td>
                   <td>
                     <button
                       type="button"

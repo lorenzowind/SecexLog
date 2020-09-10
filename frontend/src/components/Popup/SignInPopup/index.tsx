@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 
 import getValidationErrors from '../../../utils/getValidationErrors';
 
-import { useAuth } from '../../../hooks/auth';
+import { useAuth, SignInCredentials } from '../../../hooks/auth';
 import { useToast } from '../../../hooks/toast';
 
 import { Background, Container, OptionsContainer, Content } from './styles';
@@ -24,11 +24,6 @@ interface Props {
   setForgotPasswordPopupActive(isActive: boolean): void;
 }
 
-interface SignInFormData {
-  login: string;
-  senha: string;
-}
-
 const SignInPopup: React.FC<Props> = ({
   setSignInPopupActive,
   setForgotPasswordPopupActive,
@@ -43,7 +38,7 @@ const SignInPopup: React.FC<Props> = ({
   const { addToast } = useToast();
 
   const handleSignIn = useCallback(
-    async (data: SignInFormData) => {
+    async (data: SignInCredentials) => {
       try {
         formRef.current?.setErrors({});
 
@@ -60,7 +55,7 @@ const SignInPopup: React.FC<Props> = ({
 
         await signIn({
           login: data.login,
-          senha: data.senha,
+          password: data.password,
         }).then(() => {
           setLoadingPage(false);
         });
@@ -116,7 +111,7 @@ const SignInPopup: React.FC<Props> = ({
               />
 
               <Input
-                name="senha"
+                name="password"
                 icon={IconPassword}
                 type="password"
                 placeholder="Senha"

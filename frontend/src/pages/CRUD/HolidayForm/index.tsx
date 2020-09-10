@@ -59,7 +59,7 @@ const HolidayForm: React.FC = () => {
   }, [getCities]);
 
   useEffect(() => {
-    setCitiesSelect(cities.map(city => city.nome));
+    setCitiesSelect(cities.map(city => city.name));
   }, [cities]);
 
   useEffect(() => {

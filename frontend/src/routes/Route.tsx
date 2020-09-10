@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   Route as ReactDOMRoute,
   RouteProps as ReactDOMRouteProps,
@@ -17,24 +17,24 @@ const Route: React.FC<RouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const { user, signOut } = useAuth();
+  const { user } = useAuth();
 
-  const isAuthenticated = useCallback((): boolean => {
-    if (user) {
-      if (Math.floor(Date.now() / 1000) > user.exp) {
-        signOut();
-        return false;
-      }
-      return true;
-    }
-    return false;
-  }, [signOut, user]);
+  // const isAuthenticated = useCallback((): boolean => {
+  //   if (user) {
+  //     if (Math.floor(Date.now() / 1000) > user.exp) {
+  //       signOut();
+  //       return false;
+  //     }
+  //     return true;
+  //   }
+  //   return false;
+  // }, [signOut, user]);
 
   return (
     <ReactDOMRoute
       {...rest}
       render={({ location }) => {
-        return isPrivate === isAuthenticated() ? (
+        return isPrivate === !!user ? (
           <Component />
         ) : (
           <Redirect

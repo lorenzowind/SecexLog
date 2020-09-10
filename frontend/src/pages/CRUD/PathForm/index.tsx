@@ -98,7 +98,7 @@ const PathForm: React.FC = () => {
 
   useEffect(() => {
     setModalsSelect(modals.map(modal => modal.name));
-    setCitiesSelect(cities.map(city => city.nome));
+    setCitiesSelect(cities.map(city => city.name));
     setProvidersSelect(
       providers.map(provider => {
         return { nome: provider.nome, modal: provider.modal };

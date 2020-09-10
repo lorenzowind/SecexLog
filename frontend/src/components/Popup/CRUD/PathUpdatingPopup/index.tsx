@@ -65,7 +65,6 @@ const PathUpdatingPopup: React.FC<Props> = ({
   >({} as FilteredProvider);
 
   const [modalsSelect, setModalsSelect] = useState<String[]>([]);
-  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [providersSelect, setProvidersSelect] = useState<FilteredProvider[]>(
     [],
   );
@@ -211,7 +210,6 @@ const PathUpdatingPopup: React.FC<Props> = ({
 
   useEffect(() => {
     setModalsSelect(modals.map(modal => modal.name));
-    setCitiesSelect(cities.map(city => city.nome));
     setProvidersSelect(
       providers.map(provider => {
         return { nome: provider.nome, modal: provider.modal };
@@ -254,7 +252,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
               <Form ref={formRef} onSubmit={handleUpdatePath}>
                 <strong>Cidades</strong>
                 <nav>
-                  <div>
+                  {/* <div>
                     <Select
                       name="initCidade"
                       value={String(defaultSelectedGoCity)}
@@ -310,7 +308,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                           </option>
                         ))}
                     </Select>
-                  </div>
+                  </div> */}
                 </nav>
 
                 <nav>

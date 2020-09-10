@@ -45,7 +45,6 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
   const [initDate, setInitDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [defaultSelectedCity, setDefaultSelectedCity] = useState('');
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -173,19 +172,19 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
     });
   }, [getCities]);
 
-  useEffect(() => {
-    setCitiesSelect(cities.map(city => city.nome));
+  // useEffect(() => {
+  //   setCitiesSelect(cities.map(city => city.name));
 
-    const foundCity = cities.find(city => city.id === holiday.city_id);
+  //   const foundCity = cities.find(city => city.id === holiday.city_id);
 
-    if (foundCity) {
-      setDefaultSelectedCity(foundCity.nome);
-      // eslint-disable-next-line no-param-reassign
-      holiday.cidade = foundCity.nome;
-    } else {
-      setDefaultSelectedCity('Selecione cidade');
-    }
-  }, [cities, holiday, type]);
+  //   if (foundCity) {
+  //     setDefaultSelectedCity(foundCity.name);
+  //     // eslint-disable-next-line no-param-reassign
+  //     holiday.cidade = foundCity.name;
+  //   } else {
+  //     setDefaultSelectedCity('Selecione cidade');
+  //   }
+  // }, [cities, holiday, type]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -220,7 +219,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                   <Input name="nome" type="text" defaultValue={holiday.nome} />
                 </div>
 
-                {type === 'Específico' && (
+                {/* {type === 'Específico' && (
                   <div>
                     <strong>Cidade</strong>
                     <Select
@@ -249,7 +248,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                         ))}
                     </Select>
                   </div>
-                )}
+                )} */}
 
                 <strong>Dia(s)</strong>
                 {isNewDate ? (
