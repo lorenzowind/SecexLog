@@ -6,18 +6,16 @@ import { useAuth } from '../auth';
 import { useToast } from '../toast';
 
 export interface HolidayOperationsData {
-  nome: string;
-  cidade?: string;
-  city_id?: number;
-  init: string;
-  end: string;
-  national: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  name: string;
+  city_id?: string | null;
+  initial_date: string;
+  end_date: string;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface HolidayState extends HolidayOperationsData {
-  id: number;
+  id: string;
 }
 
 interface HolidayContextData {
@@ -25,8 +23,8 @@ interface HolidayContextData {
   setSearchHolidays(searchHoliday: string): void;
   getHolidays(): Promise<void>;
   insertHoliday(holiday: HolidayOperationsData): Promise<void>;
-  updateHoliday(id: number, holiday: HolidayOperationsData): Promise<void>;
-  removeHoliday(id: number): Promise<void>;
+  updateHoliday(id: string, holiday: HolidayOperationsData): Promise<void>;
+  removeHoliday(id: string): Promise<void>;
 }
 
 const HolidayContext = createContext<HolidayContextData>(
@@ -37,7 +35,7 @@ const HolidayProvider: React.FC = ({ children }) => {
   const [holidays, setHolidays] = useState<HolidayState[]>([]);
   const [search, setSearch] = useState('');
 
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const { addToast } = useToast();
 
   const setSearchHolidays = useCallback(searchHoliday => {
@@ -46,7 +44,7 @@ const HolidayProvider: React.FC = ({ children }) => {
 
   const getHolidays = useCallback(async () => {
     try {
-      const query = search ? `holidays/${search}` : 'holidays';
+      const query = search ? `holidays/all?search=${search}` : 'holidays/all';
 
       const response = await api.get(query, {
         headers: {
@@ -79,6 +77,7 @@ const HolidayProvider: React.FC = ({ children }) => {
         const response = await api.post('holidays', holiday, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -96,15 +95,16 @@ const HolidayProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const updateHoliday = useCallback(
-    async (id: number, holiday: HolidayOperationsData) => {
+    async (id: string, holiday: HolidayOperationsData) => {
       try {
         const response = await api.put(`holidays/${id}`, holiday, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -122,11 +122,11 @@ const HolidayProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const removeHoliday = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         const response = await api.delete(`holidays/${id}`, {
           headers: {

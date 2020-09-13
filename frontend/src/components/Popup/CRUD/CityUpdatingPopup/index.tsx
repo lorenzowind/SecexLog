@@ -33,8 +33,8 @@ interface Props extends CityUpdatingPopupProps {
 }
 
 interface FilteredHoliday {
-  init: string;
-  nome: string;
+  initial_date: string;
+  name: string;
 }
 
 const CityUpdatingPopup: React.FC<Props> = ({
@@ -171,18 +171,18 @@ const CityUpdatingPopup: React.FC<Props> = ({
     });
   }, [city.id, getCities, getHolidays, getRelatedCities]);
 
-  // useEffect(() => {
-  //   setFilteredHolidays(
-  //     holidays
-  //       .filter(holiday => holiday.city_id === city.id)
-  //       .map(cityHoliday => {
-  //         return {
-  //           init: cityHoliday.init,
-  //           nome: cityHoliday.nome,
-  //         };
-  //       }),
-  //   );
-  // }, [city.id, holidays]);
+  useEffect(() => {
+    setFilteredHolidays(
+      holidays
+        .filter(holiday => holiday.city_id === city.id)
+        .map(cityHoliday => {
+          return {
+            initial_date: cityHoliday.initial_date,
+            name: cityHoliday.name,
+          };
+        }),
+    );
+  }, [city.id, holidays]);
 
   useEffect(() => {
     setCitiesSelect(
@@ -419,9 +419,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
                     <section>
                       <strong>Feriados específicos</strong>
                       {filteredHolidays.map(holiday => (
-                        <h2 key={holiday.nome}>
-                          {holiday.init.substring(0, 5).concat(' - ')}
-                          {holiday.nome}
+                        <h2 key={holiday.name}>
+                          {holiday.initial_date.substring(0, 5).concat(' - ')}
+                          {holiday.name}
                         </h2>
                       ))}
                     </section>

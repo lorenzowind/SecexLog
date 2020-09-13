@@ -146,14 +146,14 @@ const ListingData: React.FC = () => {
     await Promise.all([
       getUsers(),
       getCities(),
-      // getHolidays(),
+      getHolidays(),
       // getModals(),
       // getProviders(),
       // getPaths(),
     ]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getCities, getUsers]);
+  }, [getCities, getHolidays, getUsers]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -429,10 +429,10 @@ const ListingData: React.FC = () => {
         </thead>
         <tbody>
           {holidays
-            .filter(holiday => holiday.national)
+            .filter(holiday => !holiday.city_id)
             .map(holidayNational => (
               <tr key={holidayNational.id}>
-                <td>{holidayNational.nome}</td>
+                <td>{holidayNational.name}</td>
                 <td>
                   <button
                     type="button"
@@ -460,10 +460,10 @@ const ListingData: React.FC = () => {
         </thead>
         <tbody>
           {holidays
-            .filter(holiday => !holiday.national)
+            .filter(holiday => holiday.city_id)
             .map(holidaySpecific => (
               <tr key={holidaySpecific.id}>
-                <td>{holidaySpecific.nome}</td>
+                <td>{holidaySpecific.name}</td>
                 <td>
                   <button
                     type="button"

@@ -76,7 +76,7 @@ const UserProvider: React.FC = ({ children }) => {
         const response = await api.post('users', newUser, {
           headers: {
             Authorization: `Bearer ${token}`,
-            user_position: user.position,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -94,7 +94,7 @@ const UserProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token, user.position],
+    [addToast, token, user],
   );
 
   const updateUser = useCallback(
@@ -103,7 +103,7 @@ const UserProvider: React.FC = ({ children }) => {
         const response = await api.put(`users/${id}`, newUser, {
           headers: {
             Authorization: `Bearer ${token}`,
-            user_position: user.position,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -121,7 +121,7 @@ const UserProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token, user.position],
+    [addToast, token, user],
   );
 
   const removeUser = useCallback(
@@ -130,7 +130,7 @@ const UserProvider: React.FC = ({ children }) => {
         const response = await api.delete(`users/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
-            user_position: user.position,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -148,7 +148,7 @@ const UserProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token, user.position],
+    [addToast, token, user],
   );
 
   return (
