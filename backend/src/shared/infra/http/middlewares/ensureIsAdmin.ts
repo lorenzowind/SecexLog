@@ -13,8 +13,8 @@ export default function ensureUserPosition(
     throw new AppError('User position is not informed', 401);
   }
 
-  if (positionHeader !== 'admin') {
-    throw new AppError('Only administrators can make this operation', 403);
+  if (positionHeader !== 'Administrador') {
+    throw new AppError('Only Administradoristrators can make this operation', 403);
   }
 
   return next();

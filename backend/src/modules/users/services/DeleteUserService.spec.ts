@@ -35,7 +35,7 @@ describe('DeleteUser', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -43,7 +43,7 @@ describe('DeleteUser', () => {
       name: 'John Doe II',
       login: 'john doe II',
       email: 'johndoeII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 

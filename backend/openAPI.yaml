@@ -255,7 +255,7 @@ paths:
                         example: "user@email.com"
                       position:
                         type: string
-                        example: "admin"
+                        example: "Administrador"
                       created_at:
                         type: string
                         format: dateformat
@@ -342,7 +342,7 @@ paths:
                     example: "user@email.com"
                   position:
                     type: string
-                    example: "admin"
+                    example: "Administrador"
                   password:
                     type: string
                     example: "user password"
@@ -370,7 +370,7 @@ paths:
                     example: "user@email.com"
                   position:
                     type: string
-                    example: "admin"
+                    example: "Administrador"
                   created_at:
                     type: string
                     format: dateformat

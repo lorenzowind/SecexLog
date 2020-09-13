@@ -146,14 +146,14 @@ const ListingData: React.FC = () => {
     await Promise.all([
       getUsers(),
       getCities(),
-      getHolidays(),
-      getModals(),
-      getProviders(),
-      getPaths(),
+      // getHolidays(),
+      // getModals(),
+      // getProviders(),
+      // getPaths(),
     ]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getCities, getHolidays, getModals, getPaths, getProviders, getUsers]);
+  }, [getCities, getUsers]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -311,11 +311,11 @@ const ListingData: React.FC = () => {
       <tbody>
         {users.map(user => (
           <tr key={user.id}>
-            <td>{user.nome}</td>
+            <td>{user.name}</td>
             <td>{user.login}</td>
             <td>{user.email}</td>
-            <td>{user.cargo}</td>
-            <td>{'*'.repeat(user.senha.length)}</td>
+            <td>{user.position}</td>
+            <td>{'*'.repeat(user.password.length)}</td>
             <td>
               <button
                 type="button"

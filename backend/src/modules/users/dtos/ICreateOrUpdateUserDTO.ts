@@ -2,6 +2,6 @@ export default interface ICreateOrUpdateUserDTO {
   name: string;
   login: string;
   email: string;
-  position: 'user' | 'admin';
+  position: 'Usuário' | 'Administrador';
   password: string;
 }

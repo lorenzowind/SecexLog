@@ -6,26 +6,26 @@ import { useAuth } from '../auth';
 import { useToast } from '../toast';
 
 export interface UserOperationsData {
-  nome: string;
+  name: string;
   login: string;
   email: string;
-  cargo: string;
-  senha: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  position: string;
+  password: string;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface UserState extends UserOperationsData {
-  id: number;
+  id: string;
 }
 
 interface UserContextData {
   users: UserState[];
   setSearchUsers(searchUser: string): void;
   getUsers(): Promise<void>;
-  insertUser(user: UserOperationsData): Promise<void>;
-  updateUser(id: number, user: UserOperationsData): Promise<void>;
-  removeUser(id: number): Promise<void>;
+  insertUser(newUser: UserOperationsData): Promise<void>;
+  updateUser(id: string, newUser: UserOperationsData): Promise<void>;
+  removeUser(id: string): Promise<void>;
 }
 
 const UserContext = createContext<UserContextData>({} as UserContextData);
@@ -34,7 +34,7 @@ const UserProvider: React.FC = ({ children }) => {
   const [users, setUsers] = useState<UserState[]>([]);
   const [search, setSearch] = useState('');
 
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const { addToast } = useToast();
 
   const setSearchUsers = useCallback(searchUser => {
@@ -43,7 +43,7 @@ const UserProvider: React.FC = ({ children }) => {
 
   const getUsers = useCallback(async () => {
     try {
-      const query = search ? `users/${search}` : 'users';
+      const query = search ? `users/all?search=${search}` : 'users/all';
 
       const response = await api.get(query, {
         headers: {
@@ -71,11 +71,12 @@ const UserProvider: React.FC = ({ children }) => {
   }, [addToast, search, token]);
 
   const insertUser = useCallback(
-    async (user: UserOperationsData) => {
+    async (newUser: UserOperationsData) => {
       try {
-        const response = await api.post('users', user, {
+        const response = await api.post('users', newUser, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user.position,
           },
         });
 
@@ -93,15 +94,16 @@ const UserProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user.position],
   );
 
   const updateUser = useCallback(
-    async (id: number, user: UserOperationsData) => {
+    async (id: string, newUser: UserOperationsData) => {
       try {
-        const response = await api.put(`users/${id}`, user, {
+        const response = await api.put(`users/${id}`, newUser, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user.position,
           },
         });
 
@@ -119,15 +121,16 @@ const UserProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user.position],
   );
 
   const removeUser = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         const response = await api.delete(`users/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user.position,
           },
         });
 
@@ -145,7 +148,7 @@ const UserProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user.position],
   );
 
   return (

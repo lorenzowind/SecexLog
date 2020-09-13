@@ -26,7 +26,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -34,7 +34,7 @@ describe('ListUsers', () => {
       name: 'John Doe II',
       login: 'john doe II',
       email: 'johndoeII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -48,7 +48,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -56,7 +56,7 @@ describe('ListUsers', () => {
       name: 'John Doe II',
       login: 'john doe II',
       email: 'johndoeII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -70,7 +70,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -84,7 +84,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -98,7 +98,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -114,7 +114,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -130,7 +130,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -138,7 +138,7 @@ describe('ListUsers', () => {
       name: 'John Doe II',
       login: 'john doe II',
       email: 'johndoeII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -146,7 +146,7 @@ describe('ListUsers', () => {
       name: 'John Doe III',
       login: 'john doe III',
       email: 'johndoeIII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -154,7 +154,7 @@ describe('ListUsers', () => {
       name: 'John Doe IV',
       login: 'john doe IV',
       email: 'johndoeIV@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -162,7 +162,7 @@ describe('ListUsers', () => {
       name: 'John Doe V',
       login: 'john doe V',
       email: 'johndoeV@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -170,7 +170,7 @@ describe('ListUsers', () => {
       name: 'John Doe VI',
       login: 'john doe VI',
       email: 'johndoeVI@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -178,7 +178,7 @@ describe('ListUsers', () => {
       name: 'John Doe VII',
       login: 'john doe VII',
       email: 'johndoeVII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -186,7 +186,7 @@ describe('ListUsers', () => {
       name: 'John Doe VIII',
       login: 'john doe VIII',
       email: 'johndoeVIII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -194,7 +194,7 @@ describe('ListUsers', () => {
       name: 'John Doe IX',
       login: 'john doe IX',
       email: 'johndoeIX@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -202,7 +202,7 @@ describe('ListUsers', () => {
       name: 'John Doe X',
       login: 'john doe X',
       email: 'johndoeX@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -210,7 +210,7 @@ describe('ListUsers', () => {
       name: 'John Doe XI',
       login: 'john doe XI',
       email: 'johndoeXI@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -218,7 +218,7 @@ describe('ListUsers', () => {
       name: 'John Doe XII',
       login: 'john doe XII',
       email: 'johndoeXII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -236,7 +236,7 @@ describe('ListUsers', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -244,7 +244,7 @@ describe('ListUsers', () => {
       name: 'John Doe II',
       login: 'john doe II',
       email: 'johndoeII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -252,7 +252,7 @@ describe('ListUsers', () => {
       name: userSearch,
       login: 'john doe III',
       email: 'johndoeIII@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -260,7 +260,7 @@ describe('ListUsers', () => {
       name: 'John Doe IV',
       login: 'john doe IV',
       email: 'johndoeIV@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -268,7 +268,7 @@ describe('ListUsers', () => {
       name: 'John Doe V',
       login: 'john doe V',
       email: 'johndoeV@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -276,7 +276,7 @@ describe('ListUsers', () => {
       name: 'John Doe VI',
       login: 'john doe VI',
       email: 'johndoeVI@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 

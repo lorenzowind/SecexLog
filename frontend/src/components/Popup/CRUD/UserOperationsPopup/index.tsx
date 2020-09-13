@@ -42,7 +42,7 @@ const UserOperationsPopup: React.FC<Props> = ({
   const [
     defaultSelectedUserCategory,
     setDefaultSelectedUserCategory,
-  ] = useState(user ? user.cargo : 'Selecione um cargo');
+  ] = useState(user ? user.position : 'Selecione um cargo');
 
   const { insertUser, updateUser, removeUser, getUsers } = useUser();
 
@@ -61,15 +61,15 @@ const UserOperationsPopup: React.FC<Props> = ({
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome obrigatório'),
+          name: Yup.string().required('Nome obrigatório'),
           login: Yup.string().required('Login obrigatório'),
-          cargo: Yup.mixed().test('match', 'Cargo obrigatório', () => {
-            return data.cargo !== 'Selecione um cargo';
+          position: Yup.mixed().test('match', 'Cargo obrigatório', () => {
+            return data.position !== 'Selecione um cargo';
           }),
           email: Yup.string()
             .required('E-mail obrigatório')
             .email('Insira um email válido'),
-          senha: Yup.string().min(6, 'Senha obrigatória'),
+          password: Yup.string().min(6, 'Senha obrigatória'),
         });
 
         await schema.validate(data, {
@@ -77,16 +77,15 @@ const UserOperationsPopup: React.FC<Props> = ({
         });
 
         const userData: UserOperationsData = {
-          nome: data.nome,
+          name: data.name,
           login: data.login,
-          cargo: data.cargo,
+          position: data.position,
           email: data.email,
-          senha: data.senha,
+          password: data.password,
         };
 
         if (user) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { id, createdAt, updatedAt, ...auxUser } = user;
+          const { id, ...auxUser } = user;
 
           if (!isEqual(userData, auxUser)) {
             await updateUser(id, userData).then(() => {
@@ -151,9 +150,9 @@ const UserOperationsPopup: React.FC<Props> = ({
               <Form ref={formRef} onSubmit={handleCreateOrUpdateUser}>
                 <strong>Nome</strong>
                 <Input
-                  name="nome"
+                  name="name"
                   type="text"
-                  defaultValue={user ? user.nome : ''}
+                  defaultValue={user ? user.name : ''}
                 />
 
                 <strong>Login</strong>
@@ -165,7 +164,7 @@ const UserOperationsPopup: React.FC<Props> = ({
 
                 <strong>Cargo</strong>
                 <Select
-                  name="cargo"
+                  name="position"
                   value={defaultSelectedUserCategory}
                   onChange={e => setDefaultSelectedUserCategory(e.target.value)}
                 >
@@ -185,7 +184,7 @@ const UserOperationsPopup: React.FC<Props> = ({
                 />
 
                 <strong>{user ? 'Nova senha' : 'Senha'}</strong>
-                <Input name="senha" type="password" />
+                <Input name="password" type="password" />
 
                 <section>
                   {user ? (

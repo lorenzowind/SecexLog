@@ -57,7 +57,7 @@ const CityProvider: React.FC = ({ children }) => {
 
   const getCities = useCallback(async () => {
     try {
-      const query = search ? `cities/all/${search}` : 'cities/all';
+      const query = search ? `cities/all?search=${search}` : 'cities/all';
 
       const response = await api.get(query, {
         headers: {

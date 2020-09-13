@@ -1,5 +1,8 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+
 import api from '../services/api';
+
+import { UserOperationsData } from './modules/user';
 
 export interface SignInCredentials {
   login: string;
@@ -7,13 +10,7 @@ export interface SignInCredentials {
 }
 
 export interface AuthState {
-  user: {
-    id: number;
-    name: string;
-    login: string;
-    email: string;
-    position: string;
-  };
+  user: UserOperationsData;
   token: string;
 }
 

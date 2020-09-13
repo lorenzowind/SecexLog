@@ -21,7 +21,7 @@ export default class UsersController {
       user_id,
     );
 
-    return response.json(classToClass(users));
+    return response.json(users);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -37,7 +37,7 @@ export default class UsersController {
       password,
     });
 
-    return response.json(classToClass(user));
+    return response.json(user);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -55,7 +55,7 @@ export default class UsersController {
       password,
     });
 
-    return response.json(classToClass(user));
+    return response.json(user);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

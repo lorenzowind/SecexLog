@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -87,7 +86,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome obrigatório'),
+          name: Yup.string().required('Nome obrigatório'),
         });
 
         await schema.validate(data, {
@@ -117,8 +116,8 @@ const CityUpdatingPopup: React.FC<Props> = ({
             : '',
           initial_flood_date: auxInitialFloodDate,
           end_flood_date: auxEndFloodDate,
-          latitude: data.latitude,
-          longitude: data.longitude,
+          latitude: data.latitude || null,
+          longitude: data.longitude || null,
           related_cities: selectedRelatedCities.map(relatedCity => {
             return {
               related_city_id: relatedCity.value,
@@ -126,16 +125,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
           }),
         };
 
-        const { id, ...auxCity } = city;
-
-        if (!isEqual(cityData, auxCity)) {
-          await updateCity(id, cityData).then(() => {
-            handleRefreshCities();
-          });
-        } else {
-          setLoadingPartial(false);
-          setCityUpdatingPopupActive(false);
-        }
+        await updateCity(city.id, cityData).then(() => {
+          handleRefreshCities();
+        });
       } catch (err) {
         setLoadingPartial(false);
 
@@ -157,7 +149,6 @@ const CityUpdatingPopup: React.FC<Props> = ({
       isNewFlood,
       positionateFlood,
       selectedRelatedCities,
-      setCityUpdatingPopupActive,
       updateCity,
     ],
   );
@@ -208,16 +199,22 @@ const CityUpdatingPopup: React.FC<Props> = ({
 
   useEffect(() => {
     setSelectedRelatedCities(
-      relatedCities.map(relatedCityId => {
-        const relatedCity = cities.find(
-          findCity => findCity.id === relatedCityId.related_city_id,
-        );
+      relatedCities.reduce(
+        (newSelectedRelatedCities: Option[], relatedCityId) => {
+          const relatedCity = cities.find(
+            findCity => findCity.id === relatedCityId.related_city_id,
+          );
 
-        return {
-          value: relatedCity ? relatedCity.name : '',
-          label: relatedCity ? relatedCity.id : '',
-        };
-      }),
+          if (relatedCity) {
+            newSelectedRelatedCities.push({
+              value: relatedCity.id,
+              label: relatedCity.name,
+            });
+          }
+          return newSelectedRelatedCities;
+        },
+        [],
+      ),
     );
   }, [cities, relatedCities]);
 
