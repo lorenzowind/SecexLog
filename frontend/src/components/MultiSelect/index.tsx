@@ -35,7 +35,7 @@ const MultiSelect: React.FC<Props> = ({
         options={options}
         onChange={handleChange}
         placeholder={placeholder}
-        defaultValue={defaultValues}
+        value={defaultValues}
       />
     </Container>
   );

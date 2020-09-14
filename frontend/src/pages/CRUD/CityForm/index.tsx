@@ -96,10 +96,10 @@ const CityForm: React.FC = () => {
             ? data.interdiction_observation
             : '',
           initial_flood_date: rangeFlood.from
-            ? rangeFlood.from.toLocaleDateString('pt-BR')
+            ? rangeFlood.from.toLocaleDateString('pt-BR').substring(0, 5)
             : '',
           end_flood_date: rangeFlood.to
-            ? rangeFlood.to.toLocaleDateString('pt-BR')
+            ? rangeFlood.to.toLocaleDateString('pt-BR').substring(0, 5)
             : '',
           latitude: data.latitude || null,
           longitude: data.longitude || null,
