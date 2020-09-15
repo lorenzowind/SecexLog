@@ -239,6 +239,7 @@ const ListingData: React.FC = () => {
           if (!data.searchUser) {
             setSearchUsers('');
           } else {
+            initializeUsersPage();
             setSearchUsers(data.searchUser);
           }
           break;
@@ -246,6 +247,7 @@ const ListingData: React.FC = () => {
           if (!data.searchCity) {
             setSearchCities('');
           } else {
+            initializeCitiesPage();
             setSearchCities(data.searchCity);
           }
           break;
@@ -253,6 +255,7 @@ const ListingData: React.FC = () => {
           if (!data.searchHoliday) {
             setSearchHolidays('');
           } else {
+            initializeHolidaysPage();
             setSearchHolidays(data.searchHoliday);
           }
           break;
@@ -283,6 +286,9 @@ const ListingData: React.FC = () => {
       setLoadingPartial(false);
     },
     [
+      initializeUsersPage,
+      initializeCitiesPage,
+      initializeHolidaysPage,
       setSearchCities,
       setSearchHolidays,
       setSearchModals,
