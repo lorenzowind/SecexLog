@@ -37,7 +37,7 @@ interface CityContextData {
   incrementCitiesPage(): void;
   initializeCitiesPage(): void;
   setSearchCities(searchCity: string): void;
-  getCities(): Promise<void>;
+  getCities(isPagination: boolean): Promise<void>;
   getRelatedCities(city_id: string): Promise<void>;
   insertCity(city: CityOperationsData): Promise<void>;
   updateCity(id: string, city: CityOperationsData): Promise<void>;
@@ -67,34 +67,39 @@ const CityProvider: React.FC = ({ children }) => {
     setSearch(searchCity);
   }, []);
 
-  const getCities = useCallback(async () => {
-    try {
-      const query = `cities/all?search=${search}&page=${citiesPage}`;
+  const getCities = useCallback(
+    async (isPagination: boolean) => {
+      try {
+        const query = isPagination
+          ? `cities/pagination/all?search=${search}&page=${citiesPage}`
+          : 'cities/all';
 
-      const response = await api.get(query, {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : '',
-        },
-      });
+        const response = await api.get(query, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        });
 
-      if (response) {
-        setCities(response.data);
+        if (response) {
+          setCities(response.data);
 
-        if (search && response.data.length === 0) {
-          addToast({
-            type: 'info',
-            title: 'Nenhuma cidade encontrada',
-          });
+          if (search && response.data.length === 0) {
+            addToast({
+              type: 'info',
+              title: 'Nenhuma cidade encontrada',
+            });
+          }
         }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na listagem',
+          description: 'Ocorreu um erro na listagem das cidades.',
+        });
       }
-    } catch (err) {
-      addToast({
-        type: 'error',
-        title: 'Erro na listagem',
-        description: 'Ocorreu um erro na listagem das cidades.',
-      });
-    }
-  }, [addToast, citiesPage, search, token]);
+    },
+    [addToast, citiesPage, search, token],
+  );
 
   const getRelatedCities = useCallback(
     async (city_id: string) => {

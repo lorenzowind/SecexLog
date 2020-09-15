@@ -91,9 +91,11 @@ const PathForm: React.FC = () => {
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await Promise.all([getModals(), getCities(), getProviders()]).then(() => {
-      setLoadingPartial(false);
-    });
+    await Promise.all([getModals(), getCities(false), getProviders()]).then(
+      () => {
+        setLoadingPartial(false);
+      },
+    );
   }, [getCities, getModals, getProviders]);
 
   useEffect(() => {

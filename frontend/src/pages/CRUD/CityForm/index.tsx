@@ -51,7 +51,7 @@ const CityForm: React.FC = () => {
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getCities().then(() => {
+    await getCities(false).then(() => {
       setLoadingPartial(false);
     });
   }, [getCities]);

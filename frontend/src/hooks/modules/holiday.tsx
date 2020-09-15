@@ -24,7 +24,7 @@ interface HolidayContextData {
   incrementHolidaysPage(): void;
   initializeHolidaysPage(): void;
   setSearchHolidays(searchHoliday: string): void;
-  getHolidays(): Promise<void>;
+  getHolidays(isPagination: boolean): Promise<void>;
   insertHoliday(holiday: HolidayOperationsData): Promise<void>;
   updateHoliday(id: string, holiday: HolidayOperationsData): Promise<void>;
   removeHoliday(id: string): Promise<void>;
@@ -54,34 +54,39 @@ const HolidayProvider: React.FC = ({ children }) => {
     setSearch(searchHoliday);
   }, []);
 
-  const getHolidays = useCallback(async () => {
-    try {
-      const query = `holidays/all?search=${search}&page=${holidaysPage}`;
+  const getHolidays = useCallback(
+    async (isPagination: boolean) => {
+      try {
+        const query = isPagination
+          ? `holidays/pagination/all?search=${search}&page=${holidaysPage}`
+          : 'holidays/all';
 
-      const response = await api.get(query, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const response = await api.get(query, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (response) {
-        setHolidays(response.data);
+        if (response) {
+          setHolidays(response.data);
 
-        if (search && response.data.length === 0) {
-          addToast({
-            type: 'info',
-            title: 'Nenhum feriado encontrado',
-          });
+          if (search && response.data.length === 0) {
+            addToast({
+              type: 'info',
+              title: 'Nenhum feriado encontrado',
+            });
+          }
         }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na listagem',
+          description: 'Ocorreu um erro na listagem dos feriados.',
+        });
       }
-    } catch (err) {
-      addToast({
-        type: 'error',
-        title: 'Erro na listagem',
-        description: 'Ocorreu um erro na listagem dos feriados.',
-      });
-    }
-  }, [addToast, holidaysPage, search, token]);
+    },
+    [addToast, holidaysPage, search, token],
+  );
 
   const insertHoliday = useCallback(
     async (holiday: HolidayOperationsData) => {

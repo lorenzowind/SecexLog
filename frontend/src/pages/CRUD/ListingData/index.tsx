@@ -186,9 +186,9 @@ const ListingData: React.FC = () => {
 
       if (handleVerifyInitialization()) {
         await Promise.all([
-          getUsers(),
-          getCities(),
-          getHolidays(),
+          getUsers(true),
+          getCities(true),
+          getHolidays(true),
           // getModals(),
           // getProviders(),
           // getPaths(),
@@ -199,19 +199,19 @@ const ListingData: React.FC = () => {
     } else {
       switch (newPageModule.name) {
         case 'User': {
-          await getUsers().then(() => {
+          await getUsers(true).then(() => {
             setLoadingPartial(false);
           });
           break;
         }
         case 'City': {
-          await getCities().then(() => {
+          await getCities(true).then(() => {
             setLoadingPartial(false);
           });
           break;
         }
         case 'Holiday': {
-          await getHolidays().then(() => {
+          await getHolidays(true).then(() => {
             setLoadingPartial(false);
           });
           break;

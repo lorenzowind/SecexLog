@@ -25,7 +25,7 @@ interface UserContextData {
   incrementUsersPage(): void;
   initializeUsersPage(): void;
   setSearchUsers(searchUser: string): void;
-  getUsers(): Promise<void>;
+  getUsers(isPagination: boolean): Promise<void>;
   insertUser(newUser: UserOperationsData): Promise<void>;
   updateUser(id: string, newUser: UserOperationsData): Promise<void>;
   removeUser(id: string): Promise<void>;
@@ -53,34 +53,39 @@ const UserProvider: React.FC = ({ children }) => {
     setSearch(searchUser);
   }, []);
 
-  const getUsers = useCallback(async () => {
-    try {
-      const query = `users/all?search=${search}&page=${usersPage}`;
+  const getUsers = useCallback(
+    async (isPagination: boolean) => {
+      try {
+        const query = isPagination
+          ? `users/pagination/all?search=${search}&page=${usersPage}`
+          : 'users/all';
 
-      const response = await api.get(query, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const response = await api.get(query, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (response) {
-        setUsers(response.data);
+        if (response) {
+          setUsers(response.data);
 
-        if (search && response.data.length === 0) {
-          addToast({
-            type: 'info',
-            title: 'Nenhum usuário encontrado',
-          });
+          if (search && response.data.length === 0) {
+            addToast({
+              type: 'info',
+              title: 'Nenhum usuário encontrado',
+            });
+          }
         }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na listagem',
+          description: 'Ocorreu um erro na listagem dos usuários.',
+        });
       }
-    } catch (err) {
-      addToast({
-        type: 'error',
-        title: 'Erro na listagem',
-        description: 'Ocorreu um erro na listagem dos usuários.',
-      });
-    }
-  }, [addToast, search, token, usersPage]);
+    },
+    [addToast, search, token, usersPage],
+  );
 
   const insertUser = useCallback(
     async (newUser: UserOperationsData) => {

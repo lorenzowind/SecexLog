@@ -53,7 +53,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
   const { cities, getCities } = useCity();
 
   const handleRefreshHolidays = useCallback(async () => {
-    await getHolidays().then(() => {
+    await getHolidays(true).then(() => {
       setLoadingPartial(false);
       setHolidayUpdatingPopupActive(false);
     });
@@ -159,7 +159,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getCities().then(() => {
+    await getCities(false).then(() => {
       setLoadingPartial(false);
     });
   }, [getCities]);

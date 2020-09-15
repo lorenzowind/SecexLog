@@ -72,7 +72,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const { holidays, getHolidays } = useHoliday();
 
   const handleRefreshCities = useCallback(async () => {
-    await getCities().then(() => {
+    await getCities(true).then(() => {
       setLoadingPartial(false);
       setCityUpdatingPopupActive(false);
     });
@@ -163,8 +163,8 @@ const CityUpdatingPopup: React.FC<Props> = ({
     setLoadingPartial(true);
 
     await Promise.all([
-      getHolidays(),
-      getCities(),
+      getHolidays(false),
+      getCities(false),
       getRelatedCities(city.id),
     ]).then(() => {
       setLoadingPartial(false);
