@@ -56,12 +56,6 @@ const PathForm: React.FC = () => {
   const [arrivalWeekDayArray, setArrivalWeekDayArray] = useState<string[]>([]);
   const [arrivalTimeArray, setArrivalTimeArray] = useState<string[]>([]);
 
-  const [modalsSelect, setModalsSelect] = useState<String[]>([]);
-  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
-  const [providersSelect, setProvidersSelect] = useState<FilteredProvider[]>(
-    [],
-  );
-
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [loadingPage, setLoadingPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -94,21 +88,11 @@ const PathForm: React.FC = () => {
     await Promise.all([
       getModals(false),
       getCities(false),
-      getProviders(),
+      getProviders(false),
     ]).then(() => {
       setLoadingPartial(false);
     });
   }, [getCities, getModals, getProviders]);
-
-  useEffect(() => {
-    setModalsSelect(modals.map(modal => modal.name));
-    setCitiesSelect(cities.map(city => city.name));
-    setProvidersSelect(
-      providers.map(provider => {
-        return { nome: provider.nome, modal: provider.modal };
-      }),
-    );
-  }, [cities, modals, providers]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -238,9 +222,9 @@ const PathForm: React.FC = () => {
                     <option value="Selecione cidade origem" disabled>
                       Selecione cidade origem
                     </option>
-                    {citiesSelect.map(city => (
-                      <option key={`go-${city}`} value={String(city)}>
-                        {city}
+                    {cities.map(city => (
+                      <option key={city.id} value={city.id}>
+                        {city.name}
                       </option>
                     ))}
                   </Select>
@@ -255,9 +239,9 @@ const PathForm: React.FC = () => {
                     <option value="Selecione cidade destino" disabled>
                       Selecione cidade destino
                     </option>
-                    {citiesSelect.map(city => (
-                      <option key={`back-${city}`} value={String(city)}>
-                        {city}
+                    {cities.map(city => (
+                      <option key={city.id} value={city.id}>
+                        {city.name}
                       </option>
                     ))}
                   </Select>
@@ -274,9 +258,9 @@ const PathForm: React.FC = () => {
                   <option value="Selecione modal" disabled>
                     Selecione modal
                   </option>
-                  {modalsSelect.map(modal => (
-                    <option key={String(modal)} value={String(modal)}>
-                      {modal}
+                  {modals.map(modal => (
+                    <option key={modal.id} value={modal.id}>
+                      {modal.name}
                     </option>
                   ))}
                 </Select>
@@ -292,14 +276,14 @@ const PathForm: React.FC = () => {
                   <option value="Selecione prestador" disabled>
                     Selecione prestador
                   </option>
-                  {providersSelect
-                    .filter(provider => provider.modal === modalSelected)
+                  {providers
+                    .filter(provider => provider.modal_id === modalSelected)
                     .map(specificProvider => (
                       <option
-                        key={String(specificProvider.nome)}
-                        value={String(specificProvider.nome)}
+                        key={specificProvider.id}
+                        value={specificProvider.id}
                       >
-                        {specificProvider.nome}
+                        {specificProvider.name}
                       </option>
                     ))}
                 </Select>

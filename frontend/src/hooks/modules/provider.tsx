@@ -6,27 +6,30 @@ import { useAuth } from '../auth';
 import { useToast } from '../toast';
 
 export interface ProviderOperationsData {
-  nome: string;
-  telefone: string;
+  name: string;
+  phone_number: string;
   email: string;
-  modal: string;
+  modal_id: string;
   preference: 'CPF' | 'CNPJ';
-  preferenceTxt: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  preference_data: string;
+  created_At?: Date;
+  updated_at?: Date;
 }
 
 export interface ProviderState extends ProviderOperationsData {
-  id: number;
+  id: string;
 }
 
 interface ProviderContextData {
   providers: ProviderState[];
+  providersPage: number;
+  incrementProvidersPage(): void;
+  initializeProvidersPage(): void;
   setSearchProviders(searchProvider: string): void;
-  getProviders(): Promise<void>;
+  getProviders(isPagination: boolean): Promise<void>;
   insertProvider(provider: ProviderOperationsData): Promise<void>;
-  updateProvider(id: number, provider: ProviderOperationsData): Promise<void>;
-  removeProvider(id: number): Promise<void>;
+  updateProvider(id: string, provider: ProviderOperationsData): Promise<void>;
+  removeProvider(id: string): Promise<void>;
 }
 
 const ProviderContext = createContext<ProviderContextData>(
@@ -35,43 +38,57 @@ const ProviderContext = createContext<ProviderContextData>(
 
 const ProviderModuleProvider: React.FC = ({ children }) => {
   const [providers, setProviders] = useState<ProviderState[]>([]);
+  const [providersPage, setProvidersPage] = useState(1);
   const [search, setSearch] = useState('');
 
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const { addToast } = useToast();
+
+  const incrementProvidersPage = useCallback(() => {
+    setProvidersPage(providersPage + 1);
+  }, [providersPage]);
+
+  const initializeProvidersPage = useCallback(() => {
+    setProvidersPage(1);
+  }, []);
 
   const setSearchProviders = useCallback(searchProvider => {
     setSearch(searchProvider);
   }, []);
 
-  const getProviders = useCallback(async () => {
-    try {
-      const query = search ? `providers/${search}` : 'providers';
+  const getProviders = useCallback(
+    async (isPagination: boolean) => {
+      try {
+        const query = isPagination
+          ? `providers/pagination/all?search=${search}&page=${providersPage}`
+          : 'providers/all';
 
-      const response = await api.get(query, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        const response = await api.get(query, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      if (response) {
-        setProviders(response.data);
+        if (response) {
+          setProviders(response.data);
 
-        if (search && response.data.length === 0) {
-          addToast({
-            type: 'info',
-            title: 'Nenhum prestador encontrado',
-          });
+          if (search && response.data.length === 0) {
+            addToast({
+              type: 'info',
+              title: 'Nenhum prestador encontrado',
+            });
+          }
         }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na listagem',
+          description: 'Ocorreu um erro na listagem dos prestadores.',
+        });
       }
-    } catch (err) {
-      addToast({
-        type: 'error',
-        title: 'Erro na listagem',
-        description: 'Ocorreu um erro na listagem dos prestadores.',
-      });
-    }
-  }, [addToast, search, token]);
+    },
+    [addToast, providersPage, search, token],
+  );
 
   const insertProvider = useCallback(
     async (provider: ProviderOperationsData) => {
@@ -79,6 +96,7 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         const response = await api.post('providers', provider, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -96,15 +114,16 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const updateProvider = useCallback(
-    async (id: number, provider: ProviderOperationsData) => {
+    async (id: string, provider: ProviderOperationsData) => {
       try {
         const response = await api.put(`providers/${id}`, provider, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -122,15 +141,16 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const removeProvider = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         const response = await api.delete(`providers/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -148,13 +168,16 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   return (
     <ProviderContext.Provider
       value={{
         providers,
+        providersPage,
+        incrementProvidersPage,
+        initializeProvidersPage,
         setSearchProviders,
         getProviders,
         insertProvider,

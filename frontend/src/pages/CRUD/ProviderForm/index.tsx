@@ -37,8 +37,6 @@ const ProviderForm: React.FC = () => {
     'Selecione preferência',
   );
 
-  const [modalsSelect, setModalsSelect] = useState<String[]>([]);
-
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [loadingPage, setLoadingPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -56,10 +54,6 @@ const ProviderForm: React.FC = () => {
   }, [getModals]);
 
   useEffect(() => {
-    setModalsSelect(modals.map(modal => modal.name));
-  }, [modals]);
-
-  useEffect(() => {
     if (!isLoaded) {
       handleGetModals();
       setIsLoaded(true);
@@ -72,13 +66,17 @@ const ProviderForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome da cidade obrigatório'),
+          name: Yup.string().required('Nome da cidade obrigatório'),
           email: Yup.string().required('Email obrigatório'),
-          telefone: Yup.string().required('Telefone obrigatório'),
-          modal: Yup.mixed().test('match', 'Nome do modal obrigatório', () => {
-            return data.modal !== 'Selecione modal';
-          }),
-          preferenceTxt: Yup.string().required('Preferência obrigatório'),
+          phone_number: Yup.string().required('Telefone obrigatório'),
+          modal_id: Yup.mixed().test(
+            'match',
+            'Nome do modal obrigatório',
+            () => {
+              return data.modal_id !== 'Selecione modal';
+            },
+          ),
+          preference_data: Yup.string().required('Preferência obrigatória'),
         });
 
         await schema.validate(data, {
@@ -86,11 +84,11 @@ const ProviderForm: React.FC = () => {
         });
 
         const providerData: ProviderOperationsData = {
-          nome: data.nome,
+          name: data.name,
           email: data.email,
-          modal: data.modal,
-          telefone: data.telefone,
-          preferenceTxt: data.preferenceTxt,
+          modal_id: data.modal_id,
+          phone_number: data.phone_number,
+          preference_data: data.preference_data,
           preference: data.preference,
         };
 
@@ -138,13 +136,17 @@ const ProviderForm: React.FC = () => {
             <Form ref={formRef} onSubmit={handleCreate}>
               <div>
                 <strong>Nome do Prestador</strong>
-                <Input name="nome" type="text" />
+                <Input name="name" type="text" />
               </div>
 
               <section>
                 <div>
                   <strong>Telefone</strong>
-                  <Input name="telefone" type="text" mask="(999)99999-9999" />
+                  <Input
+                    name="phone_number"
+                    type="text"
+                    mask="(999)99999-9999"
+                  />
                 </div>
                 <div>
                   <strong>Email</strong>
@@ -155,15 +157,15 @@ const ProviderForm: React.FC = () => {
               <div>
                 <strong>Modal</strong>
                 <Select
-                  name="modal"
+                  name="modal_id"
                   value={modalSelected}
                   onChange={e => setModalSelected(e.target.value)}
                 >
                   <option value="Selecione modal" disabled>
                     Selecione modal
                   </option>
-                  {modalsSelect.map((modal, index) => (
-                    <option key={String(index)} value={String(modal)}>
+                  {modals.map(modal => (
+                    <option key={modal.id} value={modal.name}>
                       {modal}
                     </option>
                   ))}
@@ -190,7 +192,7 @@ const ProviderForm: React.FC = () => {
                   <div>
                     <strong>{preferenceSelected}</strong>
                     <Input
-                      name="preferenceTxt"
+                      name="preference_data"
                       type="text"
                       mask={
                         preferenceSelected === 'CPF'

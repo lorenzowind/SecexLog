@@ -166,7 +166,14 @@ const ListingData: React.FC = () => {
     getModals,
     setSearchModals,
   } = useModal();
-  const { providers, getProviders, setSearchProviders } = useProvider();
+  const {
+    providers,
+    providersPage,
+    initializeProvidersPage,
+    incrementProvidersPage,
+    getProviders,
+    setSearchProviders,
+  } = useProvider();
   const { paths, getPaths, setSearchPaths } = usePath();
   // ---------------------------------------------------------------------------
 
@@ -180,11 +187,13 @@ const ListingData: React.FC = () => {
     initializeUsersPage();
     initializeHolidaysPage();
     initializeModalsPage();
+    initializeProvidersPage();
   }, [
     initializeCitiesPage,
     initializeUsersPage,
     initializeHolidaysPage,
     initializeModalsPage,
+    initializeProvidersPage,
   ]);
 
   const handleVerifyInitialization = useCallback(() => {
@@ -192,9 +201,10 @@ const ListingData: React.FC = () => {
       citiesPage === 1 &&
       usersPage === 1 &&
       holidaysPage === 1 &&
-      modalsPage === 1
+      modalsPage === 1 &&
+      providersPage === 1
     );
-  }, [citiesPage, usersPage, holidaysPage, modalsPage]);
+  }, [citiesPage, usersPage, holidaysPage, modalsPage, providersPage]);
 
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
@@ -208,7 +218,7 @@ const ListingData: React.FC = () => {
           getCities(true),
           getHolidays(true),
           getModals(true),
-          // getProviders(),
+          getProviders(true),
           // getPaths(),
         ]).then(() => {
           setLoadingPartial(false);
@@ -240,6 +250,12 @@ const ListingData: React.FC = () => {
           });
           break;
         }
+        case 'Provider': {
+          await getProviders(true).then(() => {
+            setLoadingPartial(false);
+          });
+          break;
+        }
         default: {
           break;
         }
@@ -249,6 +265,7 @@ const ListingData: React.FC = () => {
     getCities,
     getHolidays,
     getModals,
+    getProviders,
     getUsers,
     handleInitializeModules,
     handleVerifyInitialization,
@@ -296,6 +313,7 @@ const ListingData: React.FC = () => {
           if (!data.searchProvider) {
             setSearchProviders('');
           } else {
+            initializeProvidersPage();
             setSearchProviders(data.searchProvider);
           }
           break;
@@ -321,6 +339,7 @@ const ListingData: React.FC = () => {
       setSearchModals,
       initializeModalsPage,
       setSearchProviders,
+      initializeProvidersPage,
       setSearchPaths,
     ],
   );
@@ -693,10 +712,10 @@ const ListingData: React.FC = () => {
       <tbody>
         {providers.map(provider => (
           <tr key={provider.id}>
-            <td>{provider.nome}</td>
-            <td>{provider.telefone}</td>
+            <td>{provider.name}</td>
+            <td>{provider.phone_number}</td>
             <td>{provider.email}</td>
-            <td>{provider.modal}</td>
+            <td>{modals.find(modal => modal.id === provider.modal_id)}</td>
             <td>
               <button
                 type="button"
@@ -907,7 +926,22 @@ const ListingData: React.FC = () => {
             singularName="prestador"
             name="Provider"
           />
+
           <ProvidersTable />
+
+          {providers.length ? (
+            <button
+              type="button"
+              onClick={() => {
+                setNewPageModule({
+                  name: 'Provider',
+                });
+                incrementProvidersPage();
+              }}
+            >
+              Carregar mais
+            </button>
+          ) : null}
         </DataSection>
 
         <DataSection>

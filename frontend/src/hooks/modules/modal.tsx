@@ -16,7 +16,7 @@ export interface ModalOperationsData {
 }
 
 export interface ModalState extends ModalOperationsData {
-  id: number;
+  id: string;
 }
 
 interface ModalContextData {
@@ -27,8 +27,8 @@ interface ModalContextData {
   setSearchModals(searchCity: string): void;
   getModals(isPagination: boolean): Promise<void>;
   insertModal(modal: ModalOperationsData): Promise<void>;
-  updateModal(id: number, modal: ModalOperationsData): Promise<void>;
-  removeModal(id: number): Promise<void>;
+  updateModal(id: string, modal: ModalOperationsData): Promise<void>;
+  removeModal(id: string): Promise<void>;
 }
 
 const ModalContext = createContext<ModalContextData>({} as ModalContextData);
@@ -115,7 +115,7 @@ const ModalProvider: React.FC = ({ children }) => {
   );
 
   const updateModal = useCallback(
-    async (id: number, modal: ModalOperationsData) => {
+    async (id: string, modal: ModalOperationsData) => {
       try {
         const response = await api.put(`modals/${id}`, modal, {
           headers: {
@@ -142,7 +142,7 @@ const ModalProvider: React.FC = ({ children }) => {
   );
 
   const removeModal = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         const response = await api.delete(`modals/${id}`, {
           headers: {

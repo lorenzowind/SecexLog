@@ -64,11 +64,6 @@ const PathUpdatingPopup: React.FC<Props> = ({
     FilteredProvider
   >({} as FilteredProvider);
 
-  const [modalsSelect, setModalsSelect] = useState<String[]>([]);
-  const [providersSelect, setProvidersSelect] = useState<FilteredProvider[]>(
-    [],
-  );
-
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -206,20 +201,13 @@ const PathUpdatingPopup: React.FC<Props> = ({
     await Promise.all([
       getModals(false),
       getCities(false),
-      getProviders(),
+      getProviders(false),
     ]).then(() => {
       setLoadingPartial(false);
     });
   }, [getCities, getModals, getProviders]);
 
   useEffect(() => {
-    setModalsSelect(modals.map(modal => modal.name));
-    setProvidersSelect(
-      providers.map(provider => {
-        return { nome: provider.nome, modal: provider.modal };
-      }),
-    );
-
     setDefaultSelectedGoCity(path.initCidade);
     setDefaultSelectedBackCity(path.endCidade);
     setDefaultSelectedModal(path.modal);
@@ -328,12 +316,12 @@ const PathUpdatingPopup: React.FC<Props> = ({
                       <option value="Selecione modal" disabled>
                         Selecione modal
                       </option>
-                      {modalsSelect.map(differentModal => (
+                      {modals.map(differentModal => (
                         <option
-                          key={String(differentModal)}
-                          value={String(differentModal)}
+                          key={differentModal.id}
+                          value={differentModal.id}
                         >
-                          {differentModal}
+                          {differentModal.name}
                         </option>
                       ))}
                     </Select>
@@ -354,17 +342,17 @@ const PathUpdatingPopup: React.FC<Props> = ({
                       <option value="Selecione prestador" disabled>
                         Selecione prestador
                       </option>
-                      {providersSelect
+                      {providers
                         .filter(
                           differentProvider =>
-                            differentProvider.modal === defaultSelectedModal,
+                            differentProvider.modal_id === defaultSelectedModal,
                         )
                         .map(specificProvider => (
                           <option
-                            key={String(specificProvider.nome)}
-                            value={String(specificProvider.nome)}
+                            key={specificProvider.id}
+                            value={specificProvider.id}
                           >
-                            {specificProvider.nome}
+                            {specificProvider.name}
                           </option>
                         ))}
                     </Select>
