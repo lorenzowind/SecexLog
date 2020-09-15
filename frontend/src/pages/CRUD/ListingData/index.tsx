@@ -73,6 +73,10 @@ interface PathUpdatingPopupProps {
   path: PathState;
 }
 
+interface NewPageModule {
+  name: 'User' | 'City' | 'Holiday' | 'Provider' | 'Modal' | 'Path' | '';
+}
+
 interface SearchData {
   searchUser?: string;
   searchCity?: string;
@@ -131,7 +135,14 @@ const ListingData: React.FC = () => {
 
   // module hooks to make API operations ---------------------------------------
   const { users, getUsers, setSearchUsers } = useUser();
-  const { cities, getCities, setSearchCities } = useCity();
+  const {
+    cities,
+    citiesPage,
+    getCities,
+    setSearchCities,
+    initializeCitiesPage,
+    incrementCitiesPage,
+  } = useCity();
   const { holidays, getHolidays, setSearchHolidays } = useHoliday();
   const { modals, getModals, setSearchModals } = useModal();
   const { providers, getProviders, setSearchProviders } = useProvider();
@@ -139,21 +150,53 @@ const ListingData: React.FC = () => {
   // ---------------------------------------------------------------------------
 
   const [loadingPartial, setLoadingPartial] = useState(false);
+  const [newPageModule, setNewPageModule] = useState<NewPageModule>({
+    name: '',
+  });
+
+  const handleVerifyInitialization = useCallback(() => {
+    return citiesPage === 1;
+  }, [citiesPage]);
 
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await Promise.all([
-      getUsers(),
-      getCities(),
-      getHolidays(),
-      // getModals(),
-      // getProviders(),
-      // getPaths(),
-    ]).then(() => {
-      setLoadingPartial(false);
-    });
-  }, [getCities, getHolidays, getUsers]);
+    if (!newPageModule.name) {
+      initializeCitiesPage();
+
+      if (handleVerifyInitialization()) {
+        await Promise.all([
+          getUsers(),
+          getCities(),
+          getHolidays(),
+          // getModals(),
+          // getProviders(),
+          // getPaths(),
+        ]).then(() => {
+          setLoadingPartial(false);
+        });
+      }
+    } else {
+      switch (newPageModule.name) {
+        case 'City': {
+          await getCities().then(() => {
+            setLoadingPartial(false);
+          });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
+  }, [
+    getCities,
+    getHolidays,
+    getUsers,
+    handleVerifyInitialization,
+    initializeCitiesPage,
+    newPageModule,
+  ]);
 
   const handleSearch = useCallback(
     (data: SearchData, module: ModuleHeaderProps) => {
@@ -218,8 +261,12 @@ const ListingData: React.FC = () => {
   );
 
   useEffect(() => {
-    handleGetData();
-  }, [handleGetData]);
+    const loadData = async () => {
+      await handleGetData();
+    };
+
+    loadData();
+  }, [handleGetData, initializeCitiesPage]);
 
   const ModuleHeader: React.FC<ModuleHeaderProps> = ({
     singularName,
@@ -712,7 +759,20 @@ const ListingData: React.FC = () => {
             singularName="cidade"
             name="City"
           />
+
           <CitiesTable />
+
+          <button
+            type="button"
+            onClick={() => {
+              setNewPageModule({
+                name: 'City',
+              });
+              incrementCitiesPage();
+            }}
+          >
+            Carregar mais
+          </button>
         </DataSection>
 
         <DataSection>

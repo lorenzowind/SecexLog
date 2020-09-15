@@ -33,6 +33,9 @@ export interface RelatedCityState {
 interface CityContextData {
   cities: CityState[];
   relatedCities: RelatedCityState[];
+  citiesPage: number;
+  incrementCitiesPage(): void;
+  initializeCitiesPage(): void;
   setSearchCities(searchCity: string): void;
   getCities(): Promise<void>;
   getRelatedCities(city_id: string): Promise<void>;
@@ -46,10 +49,19 @@ const CityContext = createContext<CityContextData>({} as CityContextData);
 const CityProvider: React.FC = ({ children }) => {
   const [cities, setCities] = useState<CityState[]>([]);
   const [relatedCities, setRelatedCities] = useState<RelatedCityState[]>([]);
+  const [citiesPage, setCitiesPage] = useState(1);
   const [search, setSearch] = useState('');
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
+
+  const incrementCitiesPage = useCallback(() => {
+    setCitiesPage(citiesPage + 1);
+  }, [citiesPage]);
+
+  const initializeCitiesPage = useCallback(() => {
+    setCitiesPage(1);
+  }, []);
 
   const setSearchCities = useCallback(searchCity => {
     setSearch(searchCity);
@@ -57,7 +69,7 @@ const CityProvider: React.FC = ({ children }) => {
 
   const getCities = useCallback(async () => {
     try {
-      const query = search ? `cities/all?search=${search}` : 'cities/all';
+      const query = `cities/all?search=${search}&page=${citiesPage}`;
 
       const response = await api.get(query, {
         headers: {
@@ -82,7 +94,7 @@ const CityProvider: React.FC = ({ children }) => {
         description: 'Ocorreu um erro na listagem das cidades.',
       });
     }
-  }, [addToast, search, token]);
+  }, [addToast, citiesPage, search, token]);
 
   const getRelatedCities = useCallback(
     async (city_id: string) => {
@@ -193,6 +205,9 @@ const CityProvider: React.FC = ({ children }) => {
       value={{
         cities,
         relatedCities,
+        citiesPage,
+        incrementCitiesPage,
+        initializeCitiesPage,
         setSearchCities,
         getCities,
         getRelatedCities,
