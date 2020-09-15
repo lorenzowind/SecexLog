@@ -12,6 +12,12 @@ const citiesRouter = Router();
 const citiesController = new CitiesController();
 
 citiesRouter.get(
+  '/pagination/all',
+  ensureAuthenticationPossibility,
+  citiesController.pagination,
+);
+
+citiesRouter.get(
   '/all',
   ensureAuthenticationPossibility,
   citiesController.show,

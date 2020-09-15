@@ -14,7 +14,10 @@ class CitiesRepository implements ICitiesRepository {
     this.ormRepository = getRepository(City);
   }
 
-  public async findAllCities(search: string, page: number): Promise<City[]> {
+  public async findAllPaginationCities(
+    search: string,
+    page: number,
+  ): Promise<City[]> {
     const cities =
       search !== ''
         ? await this.ormRepository.find({
@@ -30,6 +33,10 @@ class CitiesRepository implements ICitiesRepository {
           });
 
     return cities;
+  }
+
+  public async findAllCities(): Promise<City[]> {
+    return this.ormRepository.find();
   }
 
   public async findByName(name: string): Promise<City | undefined> {

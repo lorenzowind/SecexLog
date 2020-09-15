@@ -9,12 +9,19 @@ import City from '@modules/cities/infra/typeorm/entities/City';
 export default class DraftCitiesRepository implements ICitiesRepository {
   private cities: City[] = [];
 
-  public async findAllCities(search: string, page: number): Promise<City[]> {
+  public async findAllPaginationCities(
+    search: string,
+    page: number,
+  ): Promise<City[]> {
     const cities = search
       ? this.cities.filter(findCity => findCity.name.includes(search))
       : this.cities;
 
     return cities.slice((page - 1) * 10, page * 10);
+  }
+
+  public async findAllCities(): Promise<City[]> {
+    return this.cities;
   }
 
   public async findByName(name: string): Promise<City | undefined> {
