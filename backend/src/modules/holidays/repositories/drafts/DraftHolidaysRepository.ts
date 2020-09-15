@@ -9,7 +9,7 @@ import Holiday from '@modules/holidays/infra/typeorm/entities/Holiday';
 export default class DraftHolidaysRepository implements IHolidaysRepository {
   private holidays: Holiday[] = [];
 
-  public async findAllHolidays(
+  public async findAllPaginationHolidays(
     search: string,
     page: number,
   ): Promise<Holiday[]> {
@@ -18,6 +18,10 @@ export default class DraftHolidaysRepository implements IHolidaysRepository {
       : this.holidays;
 
     return holidays.slice((page - 1) * 10, page * 10);
+  }
+
+  public async findAllHolidays(): Promise<Holiday[]> {
+    return this.holidays;
   }
 
   public async findAllByCityId(city_id: string): Promise<Holiday[]> {

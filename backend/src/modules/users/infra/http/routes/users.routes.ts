@@ -10,6 +10,12 @@ const usersRouter = Router();
 
 const usersController = new UsersController();
 
+usersRouter.get(
+  '/pagination/all',
+  ensureAuthenticated,
+  usersController.pagination,
+);
+
 usersRouter.get('/all', ensureAuthenticated, usersController.show);
 
 usersRouter.post(

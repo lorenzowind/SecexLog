@@ -10,6 +10,12 @@ const holidaysRouter = Router();
 
 const holidaysController = new HolidaysController();
 
+holidaysRouter.get(
+  '/pagination/all',
+  ensureAuthenticated,
+  holidaysController.pagination,
+);
+
 holidaysRouter.get('/all', ensureAuthenticated, holidaysController.show);
 
 holidaysRouter.get(

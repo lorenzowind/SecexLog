@@ -18,47 +18,19 @@ class ListHolidaysService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(
-    search: string,
-    page: number,
-    user_id: string | null,
-  ): Promise<Holiday[]> {
+  public async execute(user_id: string | null): Promise<Holiday[]> {
     if (!user_id) {
       throw new AppError('User id does not exists.');
     }
 
-    let holidays = !search
-      ? await this.cacheProvider.recover<Holiday[]>(
-          `holidays-list:${user_id}:page=${page}`,
-        )
-      : null;
+    let holidays = await this.cacheProvider.recover<Holiday[]>(
+      `holidays-list:${user_id}`,
+    );
 
     if (!holidays) {
-      holidays = await this.holidaysRepository.findAllHolidays(
-        search,
-        page > 0 ? page : 1,
-      );
+      holidays = await this.holidaysRepository.findAllHolidays();
 
-      let holidaysPreviousPage;
-
-      if (!search) {
-        holidaysPreviousPage = await this.cacheProvider.recover<Holiday[]>(
-          `holidays-list:${user_id}:page=${page - 1}`,
-        );
-      }
-
-      if (holidaysPreviousPage) {
-        holidays = holidaysPreviousPage.concat(holidays);
-      } else if (page > 1 && !search) {
-        return [];
-      }
-
-      if (!search) {
-        await this.cacheProvider.save(
-          `holidays-list:${user_id}:page=${page}`,
-          holidays,
-        );
-      }
+      await this.cacheProvider.save(`holidays-list:${user_id}`, holidays);
     }
 
     return holidays;

@@ -17,45 +17,19 @@ class ListUsersService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(
-    search: string,
-    page: number,
-    user_id: string | null,
-  ): Promise<User[]> {
+  public async execute(user_id: string | null): Promise<User[]> {
     if (!user_id) {
       throw new AppError('User id does not exists.');
     }
 
-    let users = !search
-      ? await this.cacheProvider.recover<User[]>(
-          `users-list:${user_id}:page=${page}`,
-        )
-      : null;
+    let users = await this.cacheProvider.recover<User[]>(
+      `users-list:${user_id}`,
+    );
 
     if (!users) {
-      users = await this.usersRepository.findAllUsers(
-        search,
-        page > 0 ? page : 1,
-      );
+      users = await this.usersRepository.findAllUsers();
 
-      const usersPreviousPage = !search
-        ? await this.cacheProvider.recover<User[]>(
-            `users-list:${user_id}:page=${page - 1}`,
-          )
-        : null;
-
-      if (usersPreviousPage) {
-        users = usersPreviousPage.concat(users);
-      } else if (page > 1 && !search) {
-        return [];
-      }
-
-      if (!search) {
-        await this.cacheProvider.save(
-          `users-list:${user_id}:page=${page}`,
-          users,
-        );
-      }
+      await this.cacheProvider.save(`users-list:${user_id}`, users);
     }
 
     return users;

@@ -14,7 +14,7 @@ class HolidaysRepository implements IHolidaysRepository {
     this.ormRepository = getRepository(Holiday);
   }
 
-  public async findAllHolidays(
+  public async findAllPaginationHolidays(
     search: string,
     page: number,
   ): Promise<Holiday[]> {
@@ -33,6 +33,10 @@ class HolidaysRepository implements IHolidaysRepository {
           });
 
     return holidays;
+  }
+
+  public async findAllHolidays(): Promise<Holiday[]> {
+    return this.ormRepository.find();
   }
 
   public async findAllByCityId(city_id: string): Promise<Holiday[]> {
