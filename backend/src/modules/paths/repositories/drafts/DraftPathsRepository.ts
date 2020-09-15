@@ -9,8 +9,12 @@ import Path from '@modules/paths/infra/typeorm/entities/Path';
 export default class DraftPathsRepository implements IPathsRepository {
   private paths: Path[] = [];
 
-  public async findAllPaths(page: number): Promise<Path[]> {
+  public async findAllPaginationPaths(page: number): Promise<Path[]> {
     return this.paths.slice((page - 1) * 10, page * 10);
+  }
+
+  public async findAllPaths(): Promise<Path[]> {
+    return this.paths;
   }
 
   public async findAllByOriginCity(

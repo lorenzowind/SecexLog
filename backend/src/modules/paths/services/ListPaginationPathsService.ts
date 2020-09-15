@@ -18,19 +18,34 @@ class ListPaginationPathsService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(user_id: string | null): Promise<Path[]> {
+  public async execute(page: number, user_id: string | null): Promise<Path[]> {
     if (!user_id) {
       throw new AppError('User id does not exists.');
     }
 
     let paths = await this.cacheProvider.recover<Path[]>(
-      `paths-list:${user_id}`,
+      `paths-list:${user_id}:page=${page}`,
     );
 
     if (!paths) {
-      paths = await this.pathsRepository.findAllPaths();
+      paths = await this.pathsRepository.findAllPaginationPaths(
+        page > 0 ? page : 1,
+      );
 
-      await this.cacheProvider.save(`paths-list:${user_id}`, paths);
+      const pathsPreviousPage = await this.cacheProvider.recover<Path[]>(
+        `paths-list:${user_id}:page=${page - 1}`,
+      );
+
+      if (pathsPreviousPage) {
+        paths = pathsPreviousPage.concat(paths);
+      } else if (page > 1) {
+        return [];
+      }
+
+      await this.cacheProvider.save(
+        `paths-list:${user_id}:page=${page}`,
+        paths,
+      );
     }
 
     return paths;

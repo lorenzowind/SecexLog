@@ -18,47 +18,19 @@ class ListOpinionsService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(
-    search: string,
-    page: number,
-    user_id: string | null,
-  ): Promise<Opinion[]> {
+  public async execute(user_id: string | null): Promise<Opinion[]> {
     if (!user_id) {
       throw new AppError('User id does not exists.');
     }
 
-    let opinions = !search
-      ? await this.cacheProvider.recover<Opinion[]>(
-          `opinions-list:${user_id}:page=${page}`,
-        )
-      : null;
+    let opinions = await this.cacheProvider.recover<Opinion[]>(
+      `opinions-list:${user_id}`,
+    );
 
     if (!opinions) {
-      opinions = await this.opinionsRepository.findAllOpinions(
-        search,
-        page > 0 ? page : 1,
-      );
+      opinions = await this.opinionsRepository.findAllOpinions();
 
-      let opinionsPreviousPage;
-
-      if (!search) {
-        opinionsPreviousPage = await this.cacheProvider.recover<Opinion[]>(
-          `opinions-list:${user_id}:page=${page - 1}`,
-        );
-      }
-
-      if (opinionsPreviousPage) {
-        opinions = opinionsPreviousPage.concat(opinions);
-      } else if (page > 1 && !search) {
-        return [];
-      }
-
-      if (!search) {
-        await this.cacheProvider.save(
-          `opinions-list:${user_id}:page=${page}`,
-          opinions,
-        );
-      }
+      await this.cacheProvider.save(`opinions-list:${user_id}`, opinions);
     }
 
     return opinions;

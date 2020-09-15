@@ -10,6 +10,12 @@ const opinionsRouter = Router();
 
 const opinionsController = new OpinionsController();
 
+opinionsRouter.get(
+  '/pagination/all',
+  ensureAuthenticated,
+  opinionsController.pagination,
+);
+
 opinionsRouter.get('/all', ensureAuthenticated, opinionsController.show);
 
 opinionsRouter.post(

@@ -14,13 +14,17 @@ class PathsRepository implements IPathsRepository {
     this.ormRepository = getRepository(Path);
   }
 
-  public async findAllPaths(page: number): Promise<Path[]> {
+  public async findAllPaginationPaths(page: number): Promise<Path[]> {
     const paths = await this.ormRepository.find({
       skip: (page - 1) * 10,
       take: 10,
     });
 
     return paths;
+  }
+
+  public async findAllPaths(): Promise<Path[]> {
+    return this.ormRepository.find();
   }
 
   public async findAllByOriginCity(

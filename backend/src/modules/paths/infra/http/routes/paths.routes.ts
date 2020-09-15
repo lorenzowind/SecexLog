@@ -10,6 +10,12 @@ const pathsRouter = Router();
 
 const pathsController = new PathsController();
 
+pathsRouter.get(
+  '/pagination/all',
+  ensureAuthenticated,
+  pathsController.pagination,
+);
+
 pathsRouter.get('/all', ensureAuthenticated, pathsController.show);
 
 pathsRouter.get('/all/origin', ensureAuthenticated, pathsController.origin);

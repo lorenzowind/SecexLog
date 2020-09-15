@@ -9,7 +9,7 @@ import Opinion from '@modules/opinions/infra/typeorm/entities/Opinion';
 export default class DraftOpinionsRepository implements IOpinionsRepository {
   private opinions: Opinion[] = [];
 
-  public async findAllOpinions(
+  public async findAllPaginationOpinions(
     search: string,
     page: number,
   ): Promise<Opinion[]> {
@@ -18,6 +18,10 @@ export default class DraftOpinionsRepository implements IOpinionsRepository {
       : this.opinions;
 
     return opinions.slice((page - 1) * 10, page * 10);
+  }
+
+  public async findAllOpinions(): Promise<Opinion[]> {
+    return this.opinions;
   }
 
   public async findByTitle(title: string): Promise<Opinion | undefined> {
