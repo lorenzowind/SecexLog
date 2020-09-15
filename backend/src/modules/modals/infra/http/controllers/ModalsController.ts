@@ -1,24 +1,38 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import ListPaginationModalsService from '@modules/modals/services/ListPaginationModalsService';
 import ListModalsService from '@modules/modals/services/ListModalsService';
 import CreateModalService from '@modules/modals/services/CreateModalService';
 import UpdateModalService from '@modules/modals/services/UpdateModalService';
 import DeleteModalService from '@modules/modals/services/DeleteModalService';
 
 export default class ModalsController {
-  public async show(request: Request, response: Response): Promise<Response> {
+  public async pagination(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
     const user_id = request.user.id;
 
     const { search = '', page = 1 } = request.query;
 
-    const listModals = container.resolve(ListModalsService);
+    const listModals = container.resolve(ListPaginationModalsService);
 
     const modals = await listModals.execute(
       String(search),
       Number(page),
       user_id,
     );
+
+    return response.json(modals);
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const listModals = container.resolve(ListModalsService);
+
+    const modals = await listModals.execute(user_id);
 
     return response.json(modals);
   }

@@ -18,47 +18,19 @@ class ListModalsService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(
-    search: string,
-    page: number,
-    user_id: string | null,
-  ): Promise<Modal[]> {
+  public async execute(user_id: string | null): Promise<Modal[]> {
     if (!user_id) {
       throw new AppError('User id does not exists.');
     }
 
-    let modals = !search
-      ? await this.cacheProvider.recover<Modal[]>(
-          `modals-list:${user_id}:page=${page}`,
-        )
-      : null;
+    let modals = await this.cacheProvider.recover<Modal[]>(
+      `modals-list:${user_id}`,
+    );
 
     if (!modals) {
-      modals = await this.modalsRepository.findAllModals(
-        search,
-        page > 0 ? page : 1,
-      );
+      modals = await this.modalsRepository.findAllModals();
 
-      let modalsPreviousPage;
-
-      if (!search) {
-        modalsPreviousPage = await this.cacheProvider.recover<Modal[]>(
-          `modals-list:${user_id}:page=${page - 1}`,
-        );
-      }
-
-      if (modalsPreviousPage) {
-        modals = modalsPreviousPage.concat(modals);
-      } else if (page > 1 && !search) {
-        return [];
-      }
-
-      if (!search) {
-        await this.cacheProvider.save(
-          `modals-list:${user_id}:page=${page}`,
-          modals,
-        );
-      }
+      await this.cacheProvider.save(`modals-list:${user_id}`, modals);
     }
 
     return modals;

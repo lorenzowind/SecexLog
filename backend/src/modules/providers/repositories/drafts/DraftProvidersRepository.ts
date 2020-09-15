@@ -9,7 +9,7 @@ import Provider from '@modules/providers/infra/typeorm/entities/Provider';
 export default class DraftProvidersRepository implements IProvidersRepository {
   private providers: Provider[] = [];
 
-  public async findAllProviders(
+  public async findAllPaginationProviders(
     search: string,
     page: number,
   ): Promise<Provider[]> {
@@ -20,6 +20,10 @@ export default class DraftProvidersRepository implements IProvidersRepository {
       : this.providers;
 
     return providers.slice((page - 1) * 10, page * 10);
+  }
+
+  public async findAllProviders(): Promise<Provider[]> {
+    return this.providers;
   }
 
   public async findAllByModalId(modal_id: string): Promise<Provider[]> {

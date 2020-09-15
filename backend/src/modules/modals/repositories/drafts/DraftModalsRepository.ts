@@ -9,12 +9,19 @@ import Modal from '@modules/modals/infra/typeorm/entities/Modal';
 export default class DraftModalsRepository implements IModalsRepository {
   private modals: Modal[] = [];
 
-  public async findAllModals(search: string, page: number): Promise<Modal[]> {
+  public async findAllPaginationModals(
+    search: string,
+    page: number,
+  ): Promise<Modal[]> {
     const modals = search
       ? this.modals.filter(findModal => findModal.name.includes(search))
       : this.modals;
 
     return modals.slice((page - 1) * 10, page * 10);
+  }
+
+  public async findAllModals(): Promise<Modal[]> {
+    return this.modals;
   }
 
   public async findByName(name: string): Promise<Modal | undefined> {

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
+import ListPaginationProvidersService from '@modules/providers/services/ListPaginationProvidersService';
 import ListProvidersService from '@modules/providers/services/ListProvidersService';
 import ListFilteredProvidersService from '@modules/providers/services/ListFilteredProvidersService';
 import CreateProviderService from '@modules/providers/services/CreateProviderService';
@@ -8,18 +9,31 @@ import UpdateProviderService from '@modules/providers/services/UpdateProviderSer
 import DeleteProviderService from '@modules/providers/services/DeleteProviderService';
 
 export default class ProvidersController {
-  public async show(request: Request, response: Response): Promise<Response> {
+  public async pagination(
+    request: Request,
+    response: Response,
+  ): Promise<Response> {
     const user_id = request.user.id;
 
     const { search = '', page = 1 } = request.query;
 
-    const listProviders = container.resolve(ListProvidersService);
+    const listProviders = container.resolve(ListPaginationProvidersService);
 
     const providers = await listProviders.execute(
       String(search),
       Number(page),
       user_id,
     );
+
+    return response.json(providers);
+  }
+
+  public async show(request: Request, response: Response): Promise<Response> {
+    const user_id = request.user.id;
+
+    const listProviders = container.resolve(ListProvidersService);
+
+    const providers = await listProviders.execute(user_id);
 
     return response.json(providers);
   }

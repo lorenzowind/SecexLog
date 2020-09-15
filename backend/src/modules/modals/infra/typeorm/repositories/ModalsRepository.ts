@@ -14,7 +14,10 @@ class ModalsRepository implements IModalsRepository {
     this.ormRepository = getRepository(Modal);
   }
 
-  public async findAllModals(search: string, page: number): Promise<Modal[]> {
+  public async findAllPaginationModals(
+    search: string,
+    page: number,
+  ): Promise<Modal[]> {
     const modals =
       search !== ''
         ? await this.ormRepository.find({
@@ -30,6 +33,10 @@ class ModalsRepository implements IModalsRepository {
           });
 
     return modals;
+  }
+
+  public async findAllModals(): Promise<Modal[]> {
+    return this.ormRepository.find();
   }
 
   public async findByName(name: string): Promise<Modal | undefined> {

@@ -10,6 +10,12 @@ const modalsRouter = Router();
 
 const modalsController = new ModalsController();
 
+modalsRouter.get(
+  '/pagination/all',
+  ensureAuthenticated,
+  modalsController.pagination,
+);
+
 modalsRouter.get('/all', ensureAuthenticated, modalsController.show);
 
 modalsRouter.post(

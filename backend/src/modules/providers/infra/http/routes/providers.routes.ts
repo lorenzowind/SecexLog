@@ -10,6 +10,12 @@ const providersRouter = Router();
 
 const providersController = new ProvidersController();
 
+providersRouter.get(
+  '/pagination/all',
+  ensureAuthenticated,
+  providersController.pagination,
+);
+
 providersRouter.get('/all', ensureAuthenticated, providersController.show);
 
 providersRouter.get(

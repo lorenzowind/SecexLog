@@ -18,47 +18,19 @@ class ListProvidersService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(
-    search: string,
-    page: number,
-    user_id: string | null,
-  ): Promise<Provider[]> {
+  public async execute(user_id: string | null): Promise<Provider[]> {
     if (!user_id) {
       throw new AppError('User id does not exists.');
     }
 
-    let providers = !search
-      ? await this.cacheProvider.recover<Provider[]>(
-          `providers-list:${user_id}:page=${page}`,
-        )
-      : null;
+    let providers = await this.cacheProvider.recover<Provider[]>(
+      `providers-list:${user_id}`,
+    );
 
     if (!providers) {
-      providers = await this.providersRepository.findAllProviders(
-        search,
-        page > 0 ? page : 1,
-      );
+      providers = await this.providersRepository.findAllProviders();
 
-      let providersPreviousPage;
-
-      if (!search) {
-        providersPreviousPage = await this.cacheProvider.recover<Provider[]>(
-          `providers-list:${user_id}:page=${page - 1}`,
-        );
-      }
-
-      if (providersPreviousPage) {
-        providers = providersPreviousPage.concat(providers);
-      } else if (page > 1 && !search) {
-        return [];
-      }
-
-      if (!search) {
-        await this.cacheProvider.save(
-          `providers-list:${user_id}:page=${page}`,
-          providers,
-        );
-      }
+      await this.cacheProvider.save(`providers-list:${user_id}`, providers);
     }
 
     return providers;

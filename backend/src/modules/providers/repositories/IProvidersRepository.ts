@@ -3,7 +3,8 @@ import Provider from '../infra/typeorm/entities/Provider';
 import ICreateProviderDTO from '../dtos/ICreateOrUpdateProviderDTO';
 
 export default interface IProvidersRepository {
-  findAllProviders(search: string, page: number): Promise<Provider[]>;
+  findAllPaginationProviders(search: string, page: number): Promise<Provider[]>;
+  findAllProviders(): Promise<Provider[]>;
   findAllByModalId(modal_id: string): Promise<Provider[]>;
   findByName(name: string): Promise<Provider | undefined>;
   findByEmail(email: string): Promise<Provider | undefined>;
