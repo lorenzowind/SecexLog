@@ -106,7 +106,7 @@ const CityProvider: React.FC = ({ children }) => {
       try {
         const response = await api.get(`cities/related/${city_id}`, {
           headers: {
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: user ? `Bearer ${token}` : '',
           },
         });
 
@@ -121,7 +121,7 @@ const CityProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const insertCity = useCallback(

@@ -64,6 +64,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const {
     cities,
     relatedCities,
+    initializeCitiesPage,
     updateCity,
     removeCity,
     getCities,
@@ -74,9 +75,10 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const handleRefreshCities = useCallback(async () => {
     await getCities(true).then(() => {
       setLoadingPartial(false);
+      initializeCitiesPage();
       setCityUpdatingPopupActive(false);
     });
-  }, [getCities, setCityUpdatingPopupActive]);
+  }, [getCities, setCityUpdatingPopupActive, initializeCitiesPage]);
 
   const handleUpdateCity = useCallback(
     async (data: CityOperationsData) => {

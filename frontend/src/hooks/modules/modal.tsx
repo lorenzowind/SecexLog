@@ -62,7 +62,7 @@ const ModalProvider: React.FC = ({ children }) => {
 
         const response = await api.get(query, {
           headers: {
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: `Bearer ${token}`,
           },
         });
 
@@ -92,7 +92,7 @@ const ModalProvider: React.FC = ({ children }) => {
       try {
         const response = await api.post('modals', modal, {
           headers: {
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: `Bearer ${token}`,
             user_position: user ? user.position : '',
           },
         });
@@ -119,7 +119,7 @@ const ModalProvider: React.FC = ({ children }) => {
       try {
         const response = await api.put(`modals/${id}`, modal, {
           headers: {
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: `Bearer ${token}`,
             user_position: user ? user.position : '',
           },
         });
@@ -146,7 +146,7 @@ const ModalProvider: React.FC = ({ children }) => {
       try {
         const response = await api.delete(`modals/${id}`, {
           headers: {
-            Authorization: token ? `Bearer ${token}` : '',
+            Authorization: `Bearer ${token}`,
             user_position: user ? user.position : '',
           },
         });

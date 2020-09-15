@@ -44,14 +44,21 @@ const UserOperationsPopup: React.FC<Props> = ({
     setDefaultSelectedUserCategory,
   ] = useState(user ? user.position : 'Selecione um cargo');
 
-  const { insertUser, updateUser, removeUser, getUsers } = useUser();
+  const {
+    initializeUsersPage,
+    insertUser,
+    updateUser,
+    removeUser,
+    getUsers,
+  } = useUser();
 
   const handleRefreshUsers = useCallback(async () => {
     await getUsers(true).then(() => {
       setLoadingPartial(false);
+      initializeUsersPage();
       setUserOperationsPopupActive(false);
     });
-  }, [getUsers, setUserOperationsPopupActive]);
+  }, [getUsers, setUserOperationsPopupActive, initializeUsersPage]);
 
   const handleCreateOrUpdateUser = useCallback(
     async (data: UserOperationsData) => {

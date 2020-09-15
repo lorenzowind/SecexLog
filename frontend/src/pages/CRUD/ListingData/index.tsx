@@ -288,6 +288,7 @@ const ListingData: React.FC = () => {
           if (!data.searchModal) {
             setSearchModals('');
           } else {
+            initializeModalsPage();
             setSearchModals(data.searchModal);
           }
           break;
@@ -311,15 +312,16 @@ const ListingData: React.FC = () => {
       setLoadingPartial(false);
     },
     [
-      initializeUsersPage,
-      initializeCitiesPage,
-      initializeHolidaysPage,
-      setSearchCities,
-      setSearchHolidays,
-      setSearchModals,
-      setSearchPaths,
-      setSearchProviders,
       setSearchUsers,
+      initializeUsersPage,
+      setSearchCities,
+      initializeCitiesPage,
+      setSearchHolidays,
+      initializeHolidaysPage,
+      setSearchModals,
+      initializeModalsPage,
+      setSearchProviders,
+      setSearchPaths,
     ],
   );
 
@@ -816,17 +818,19 @@ const ListingData: React.FC = () => {
 
           <UsersTable />
 
-          <button
-            type="button"
-            onClick={() => {
-              setNewPageModule({
-                name: 'User',
-              });
-              incrementUsersPage();
-            }}
-          >
-            Carregar mais
-          </button>
+          {users.length ? (
+            <button
+              type="button"
+              onClick={() => {
+                setNewPageModule({
+                  name: 'User',
+                });
+                incrementUsersPage();
+              }}
+            >
+              Carregar mais
+            </button>
+          ) : null}
         </DataSection>
 
         <DataSection>
@@ -838,17 +842,19 @@ const ListingData: React.FC = () => {
 
           <CitiesTable />
 
-          <button
-            type="button"
-            onClick={() => {
-              setNewPageModule({
-                name: 'City',
-              });
-              incrementCitiesPage();
-            }}
-          >
-            Carregar mais
-          </button>
+          {cities.length ? (
+            <button
+              type="button"
+              onClick={() => {
+                setNewPageModule({
+                  name: 'City',
+                });
+                incrementCitiesPage();
+              }}
+            >
+              Carregar mais
+            </button>
+          ) : null}
         </DataSection>
 
         <DataSection>
@@ -860,17 +866,19 @@ const ListingData: React.FC = () => {
 
           <HolidaysTable />
 
-          <button
-            type="button"
-            onClick={() => {
-              setNewPageModule({
-                name: 'Holiday',
-              });
-              incrementHolidaysPage();
-            }}
-          >
-            Carregar mais
-          </button>
+          {holidays.length ? (
+            <button
+              type="button"
+              onClick={() => {
+                setNewPageModule({
+                  name: 'Holiday',
+                });
+                incrementHolidaysPage();
+              }}
+            >
+              Carregar mais
+            </button>
+          ) : null}
         </DataSection>
 
         <DataSection>
@@ -878,17 +886,19 @@ const ListingData: React.FC = () => {
 
           <ModalsTable />
 
-          <button
-            type="button"
-            onClick={() => {
-              setNewPageModule({
-                name: 'Modal',
-              });
-              incrementModalsPage();
-            }}
-          >
-            Carregar mais
-          </button>
+          {modals.length ? (
+            <button
+              type="button"
+              onClick={() => {
+                setNewPageModule({
+                  name: 'Modal',
+                });
+                incrementModalsPage();
+              }}
+            >
+              Carregar mais
+            </button>
+          ) : null}
         </DataSection>
 
         <DataSection>

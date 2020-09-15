@@ -148,6 +148,7 @@ const HolidayProvider: React.FC = ({ children }) => {
         const response = await api.delete(`holidays/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -165,7 +166,7 @@ const HolidayProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   return (
