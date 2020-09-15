@@ -21,6 +21,9 @@ export interface UserState extends UserOperationsData {
 
 interface UserContextData {
   users: UserState[];
+  usersPage: number;
+  incrementUsersPage(): void;
+  initializeUsersPage(): void;
   setSearchUsers(searchUser: string): void;
   getUsers(): Promise<void>;
   insertUser(newUser: UserOperationsData): Promise<void>;
@@ -32,10 +35,19 @@ const UserContext = createContext<UserContextData>({} as UserContextData);
 
 const UserProvider: React.FC = ({ children }) => {
   const [users, setUsers] = useState<UserState[]>([]);
+  const [usersPage, setUsersPage] = useState(1);
   const [search, setSearch] = useState('');
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
+
+  const incrementUsersPage = useCallback(() => {
+    setUsersPage(usersPage + 1);
+  }, [usersPage]);
+
+  const initializeUsersPage = useCallback(() => {
+    setUsersPage(1);
+  }, []);
 
   const setSearchUsers = useCallback(searchUser => {
     setSearch(searchUser);
@@ -43,7 +55,7 @@ const UserProvider: React.FC = ({ children }) => {
 
   const getUsers = useCallback(async () => {
     try {
-      const query = search ? `users/all?search=${search}` : 'users/all';
+      const query = `users/all?search=${search}&page=${usersPage}`;
 
       const response = await api.get(query, {
         headers: {
@@ -68,7 +80,7 @@ const UserProvider: React.FC = ({ children }) => {
         description: 'Ocorreu um erro na listagem dos usuários.',
       });
     }
-  }, [addToast, search, token]);
+  }, [addToast, search, token, usersPage]);
 
   const insertUser = useCallback(
     async (newUser: UserOperationsData) => {
@@ -155,6 +167,9 @@ const UserProvider: React.FC = ({ children }) => {
     <UserContext.Provider
       value={{
         users,
+        usersPage,
+        incrementUsersPage,
+        initializeUsersPage,
         setSearchUsers,
         getUsers,
         insertUser,

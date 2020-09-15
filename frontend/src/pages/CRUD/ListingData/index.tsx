@@ -134,7 +134,14 @@ const ListingData: React.FC = () => {
   // ---------------------------------------------------------------------------
 
   // module hooks to make API operations ---------------------------------------
-  const { users, getUsers, setSearchUsers } = useUser();
+  const {
+    users,
+    usersPage,
+    initializeUsersPage,
+    incrementUsersPage,
+    getUsers,
+    setSearchUsers,
+  } = useUser();
   const {
     cities,
     citiesPage,
@@ -143,7 +150,14 @@ const ListingData: React.FC = () => {
     initializeCitiesPage,
     incrementCitiesPage,
   } = useCity();
-  const { holidays, getHolidays, setSearchHolidays } = useHoliday();
+  const {
+    holidays,
+    holidaysPage,
+    initializeHolidaysPage,
+    incrementHolidaysPage,
+    getHolidays,
+    setSearchHolidays,
+  } = useHoliday();
   const { modals, getModals, setSearchModals } = useModal();
   const { providers, getProviders, setSearchProviders } = useProvider();
   const { paths, getPaths, setSearchPaths } = usePath();
@@ -154,15 +168,21 @@ const ListingData: React.FC = () => {
     name: '',
   });
 
+  const handleInitializeModules = useCallback(() => {
+    initializeCitiesPage();
+    initializeUsersPage();
+    initializeHolidaysPage();
+  }, [initializeCitiesPage, initializeUsersPage, initializeHolidaysPage]);
+
   const handleVerifyInitialization = useCallback(() => {
-    return citiesPage === 1;
-  }, [citiesPage]);
+    return citiesPage === 1 && usersPage === 1 && holidaysPage === 1;
+  }, [citiesPage, usersPage, holidaysPage]);
 
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
     if (!newPageModule.name) {
-      initializeCitiesPage();
+      handleInitializeModules();
 
       if (handleVerifyInitialization()) {
         await Promise.all([
@@ -178,8 +198,20 @@ const ListingData: React.FC = () => {
       }
     } else {
       switch (newPageModule.name) {
+        case 'User': {
+          await getUsers().then(() => {
+            setLoadingPartial(false);
+          });
+          break;
+        }
         case 'City': {
           await getCities().then(() => {
+            setLoadingPartial(false);
+          });
+          break;
+        }
+        case 'Holiday': {
+          await getHolidays().then(() => {
             setLoadingPartial(false);
           });
           break;
@@ -193,8 +225,8 @@ const ListingData: React.FC = () => {
     getCities,
     getHolidays,
     getUsers,
+    handleInitializeModules,
     handleVerifyInitialization,
-    initializeCitiesPage,
     newPageModule,
   ]);
 
@@ -750,7 +782,20 @@ const ListingData: React.FC = () => {
             singularName="usuário"
             name="User"
           />
+
           <UsersTable />
+
+          <button
+            type="button"
+            onClick={() => {
+              setNewPageModule({
+                name: 'User',
+              });
+              incrementUsersPage();
+            }}
+          >
+            Carregar mais
+          </button>
         </DataSection>
 
         <DataSection>
@@ -781,7 +826,20 @@ const ListingData: React.FC = () => {
             singularName="feriado"
             name="Holiday"
           />
+
           <HolidaysTable />
+
+          <button
+            type="button"
+            onClick={() => {
+              setNewPageModule({
+                name: 'Holiday',
+              });
+              incrementHolidaysPage();
+            }}
+          >
+            Carregar mais
+          </button>
         </DataSection>
 
         <DataSection>

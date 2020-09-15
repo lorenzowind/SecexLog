@@ -20,6 +20,9 @@ export interface HolidayState extends HolidayOperationsData {
 
 interface HolidayContextData {
   holidays: HolidayState[];
+  holidaysPage: number;
+  incrementHolidaysPage(): void;
+  initializeHolidaysPage(): void;
   setSearchHolidays(searchHoliday: string): void;
   getHolidays(): Promise<void>;
   insertHoliday(holiday: HolidayOperationsData): Promise<void>;
@@ -33,10 +36,19 @@ const HolidayContext = createContext<HolidayContextData>(
 
 const HolidayProvider: React.FC = ({ children }) => {
   const [holidays, setHolidays] = useState<HolidayState[]>([]);
+  const [holidaysPage, setHolidaysPage] = useState(1);
   const [search, setSearch] = useState('');
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
+
+  const incrementHolidaysPage = useCallback(() => {
+    setHolidaysPage(holidaysPage + 1);
+  }, [holidaysPage]);
+
+  const initializeHolidaysPage = useCallback(() => {
+    setHolidaysPage(1);
+  }, []);
 
   const setSearchHolidays = useCallback(searchHoliday => {
     setSearch(searchHoliday);
@@ -44,7 +56,7 @@ const HolidayProvider: React.FC = ({ children }) => {
 
   const getHolidays = useCallback(async () => {
     try {
-      const query = search ? `holidays/all?search=${search}` : 'holidays/all';
+      const query = `holidays/all?search=${search}&page=${holidaysPage}`;
 
       const response = await api.get(query, {
         headers: {
@@ -69,7 +81,7 @@ const HolidayProvider: React.FC = ({ children }) => {
         description: 'Ocorreu um erro na listagem dos feriados.',
       });
     }
-  }, [addToast, search, token]);
+  }, [addToast, holidaysPage, search, token]);
 
   const insertHoliday = useCallback(
     async (holiday: HolidayOperationsData) => {
@@ -155,6 +167,9 @@ const HolidayProvider: React.FC = ({ children }) => {
     <HolidayContext.Provider
       value={{
         holidays,
+        holidaysPage,
+        incrementHolidaysPage,
+        initializeHolidaysPage,
         setSearchHolidays,
         getHolidays,
         insertHoliday,
