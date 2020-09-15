@@ -50,8 +50,9 @@ const ModalUpdatingPopup: React.FC<Props> = ({
     return auxArrayModalImages.reduce(
       (newArray: ModalImageState[], modalImage) => {
         newArray.push({
-          isSelected: modalImage.url === modal.image,
+          isSelected: modalImage.name === modal.image,
           url: modalImage.url,
+          name: modalImage.name,
         });
         return newArray;
       },
@@ -69,6 +70,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
         newArray.push({
           isSelected: curIndex === index ? !modalImage.isSelected : false,
           url: modalImage.url,
+          name: modalImage.name,
         });
         return newArray;
       }, []),

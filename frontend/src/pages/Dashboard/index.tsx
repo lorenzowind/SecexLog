@@ -95,7 +95,7 @@ const Dashboard: React.FC = () => {
     setArrayModalIcons(state =>
       state.map(modalIcon => {
         const newCount = modals.reduce((count, modal) => {
-          if (modal.image === modalIcon.equalImageUrl) {
+          if (modal.image === modalIcon.name) {
             // eslint-disable-next-line no-param-reassign
             count += 1;
           }

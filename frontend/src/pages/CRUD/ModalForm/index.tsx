@@ -49,6 +49,7 @@ const ModalForm: React.FC = () => {
         newArray.push({
           isSelected: curIndex === index ? !modalImage.isSelected : false,
           url: modalImage.url,
+          name: modalImage.name,
         });
         return newArray;
       }, []),
@@ -81,10 +82,8 @@ const ModalForm: React.FC = () => {
           is_safe: safeModal === 'Sim',
           is_cheap: cheapModal === 'Sim',
           is_fast: fastModal === 'Sim',
-          image: auxModalImage ? auxModalImage.url : '',
+          image: auxModalImage ? auxModalImage.name : '',
         };
-
-        console.log(modalData);
 
         setLoadingPage(true);
 
