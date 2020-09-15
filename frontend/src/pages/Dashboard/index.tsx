@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await Promise.all([getModals(), getOpinions()]).then(() => {
+    await Promise.all([getModals(false), getOpinions()]).then(() => {
       setLoadingPartial(false);
     });
   }, [getModals, getOpinions]);
@@ -95,7 +95,7 @@ const Dashboard: React.FC = () => {
     setArrayModalIcons(state =>
       state.map(modalIcon => {
         const newCount = modals.reduce((count, modal) => {
-          if (modal.imgUrl === modalIcon.equalImageUrl) {
+          if (modal.image === modalIcon.equalImageUrl) {
             // eslint-disable-next-line no-param-reassign
             count += 1;
           }

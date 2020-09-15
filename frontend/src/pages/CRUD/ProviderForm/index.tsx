@@ -50,7 +50,7 @@ const ProviderForm: React.FC = () => {
   const handleGetModals = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getModals().then(() => {
+    await getModals(false).then(() => {
       setLoadingPartial(false);
     });
   }, [getModals]);

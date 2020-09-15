@@ -158,7 +158,14 @@ const ListingData: React.FC = () => {
     getHolidays,
     setSearchHolidays,
   } = useHoliday();
-  const { modals, getModals, setSearchModals } = useModal();
+  const {
+    modals,
+    modalsPage,
+    initializeModalsPage,
+    incrementModalsPage,
+    getModals,
+    setSearchModals,
+  } = useModal();
   const { providers, getProviders, setSearchProviders } = useProvider();
   const { paths, getPaths, setSearchPaths } = usePath();
   // ---------------------------------------------------------------------------
@@ -172,11 +179,22 @@ const ListingData: React.FC = () => {
     initializeCitiesPage();
     initializeUsersPage();
     initializeHolidaysPage();
-  }, [initializeCitiesPage, initializeUsersPage, initializeHolidaysPage]);
+    initializeModalsPage();
+  }, [
+    initializeCitiesPage,
+    initializeUsersPage,
+    initializeHolidaysPage,
+    initializeModalsPage,
+  ]);
 
   const handleVerifyInitialization = useCallback(() => {
-    return citiesPage === 1 && usersPage === 1 && holidaysPage === 1;
-  }, [citiesPage, usersPage, holidaysPage]);
+    return (
+      citiesPage === 1 &&
+      usersPage === 1 &&
+      holidaysPage === 1 &&
+      modalsPage === 1
+    );
+  }, [citiesPage, usersPage, holidaysPage, modalsPage]);
 
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
@@ -189,7 +207,7 @@ const ListingData: React.FC = () => {
           getUsers(true),
           getCities(true),
           getHolidays(true),
-          // getModals(),
+          getModals(true),
           // getProviders(),
           // getPaths(),
         ]).then(() => {
@@ -216,6 +234,12 @@ const ListingData: React.FC = () => {
           });
           break;
         }
+        case 'Modal': {
+          await getModals(true).then(() => {
+            setLoadingPartial(false);
+          });
+          break;
+        }
         default: {
           break;
         }
@@ -224,10 +248,11 @@ const ListingData: React.FC = () => {
   }, [
     getCities,
     getHolidays,
+    getModals,
     getUsers,
     handleInitializeModules,
     handleVerifyInitialization,
-    newPageModule,
+    newPageModule.name,
   ]);
 
   const handleSearch = useCallback(
@@ -850,7 +875,20 @@ const ListingData: React.FC = () => {
 
         <DataSection>
           <ModuleHeader pluralName="modais" singularName="modal" name="Modal" />
+
           <ModalsTable />
+
+          <button
+            type="button"
+            onClick={() => {
+              setNewPageModule({
+                name: 'Modal',
+              });
+              incrementModalsPage();
+            }}
+          >
+            Carregar mais
+          </button>
         </DataSection>
 
         <DataSection>

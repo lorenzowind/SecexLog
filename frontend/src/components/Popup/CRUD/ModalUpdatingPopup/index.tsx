@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 import {
@@ -41,9 +40,9 @@ const ModalUpdatingPopup: React.FC<Props> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
 
-  const [safeModal, setSafeModal] = useState(modal.safety ? 'Sim' : 'Não');
-  const [cheapModal, setCheapModal] = useState(modal.cost ? 'Sim' : 'Não');
-  const [fastModal, setFastModal] = useState(modal.fast ? 'Sim' : 'Não');
+  const [safeModal, setSafeModal] = useState(modal.is_safe ? 'Sim' : 'Não');
+  const [cheapModal, setCheapModal] = useState(modal.is_cheap ? 'Sim' : 'Não');
+  const [fastModal, setFastModal] = useState(modal.is_fast ? 'Sim' : 'Não');
 
   const [arrayModalImages, setArrayModalImages] = useState(() => {
     const auxArrayModalImages = getArrayModalImages();
@@ -51,7 +50,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
     return auxArrayModalImages.reduce(
       (newArray: ModalImageState[], modalImage) => {
         newArray.push({
-          isSelected: modalImage.url === modal.imgUrl,
+          isSelected: modalImage.url === modal.image,
           url: modalImage.url,
         });
         return newArray;
@@ -77,7 +76,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
   }, []);
 
   const handleRefreshModals = useCallback(async () => {
-    await getModals().then(() => {
+    await getModals(true).then(() => {
       setLoadingPartial(false);
       setModalUpdatingPopupActive(false);
     });
@@ -108,23 +107,15 @@ const ModalUpdatingPopup: React.FC<Props> = ({
 
         const modalData: ModalOperationsData = {
           name: data.name,
-          safety: safeModal === 'Sim',
-          cost: cheapModal === 'Sim',
-          fast: fastModal === 'Sim',
-          imgUrl: auxModalImage ? auxModalImage.url : '',
+          is_safe: safeModal === 'Sim',
+          is_cheap: cheapModal === 'Sim',
+          is_fast: fastModal === 'Sim',
+          image: auxModalImage ? auxModalImage.url : '',
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { id, createdAt, updatedAt, ...auxModal } = modal;
-
-        if (!isEqual(modalData, auxModal)) {
-          await updateModal(id, modalData).then(() => {
-            handleRefreshModals();
-          });
-        } else {
-          setLoadingPartial(false);
-          setModalUpdatingPopupActive(false);
-        }
+        await updateModal(modal.id, modalData).then(() => {
+          handleRefreshModals();
+        });
       } catch (err) {
         setLoadingPartial(false);
 
@@ -142,7 +133,6 @@ const ModalUpdatingPopup: React.FC<Props> = ({
       handleRefreshModals,
       modal,
       safeModal,
-      setModalUpdatingPopupActive,
       updateModal,
     ],
   );
@@ -199,7 +189,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
                   <strong>Esse modal é seguro?</strong>
                   <section>
                     <RadioInput
-                      name="safety"
+                      name="is_safe"
                       defaultValue={safeModal}
                       options={['Sim', 'Não']}
                       onChangeValue={setSafeModal}
@@ -210,7 +200,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
                   <strong>Esse modal é de baixo custo?</strong>
                   <section>
                     <RadioInput
-                      name="cost"
+                      name="is_cheap"
                       defaultValue={cheapModal}
                       options={['Sim', 'Não']}
                       onChangeValue={setCheapModal}
@@ -221,7 +211,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
                   <strong>Esse modal é rápido?</strong>
                   <section>
                     <RadioInput
-                      name="speed"
+                      name="is_fast"
                       defaultValue={fastModal}
                       options={['Sim', 'Não']}
                       onChangeValue={setFastModal}

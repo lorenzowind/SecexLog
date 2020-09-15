@@ -120,7 +120,7 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
   const handleGetModals = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getModals().then(() => {
+    await getModals(false).then(() => {
       setLoadingPartial(false);
     });
   }, [getModals]);
