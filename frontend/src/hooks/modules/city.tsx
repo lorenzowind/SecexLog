@@ -68,8 +68,6 @@ const CityProvider: React.FC = ({ children }) => {
           ? `cities/pagination/all?search=${search}&page=${citiesPage}`
           : 'cities/all';
 
-        console.log(query);
-
         const response = await api.get(query, {
           headers: {
             Authorization: token ? `Bearer ${token}` : '',

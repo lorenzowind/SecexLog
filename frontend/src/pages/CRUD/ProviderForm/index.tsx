@@ -165,8 +165,8 @@ const ProviderForm: React.FC = () => {
                     Selecione modal
                   </option>
                   {modals.map(modal => (
-                    <option key={modal.id} value={modal.name}>
-                      {modal}
+                    <option key={modal.id} value={modal.id}>
+                      {modal.name}
                     </option>
                   ))}
                 </Select>

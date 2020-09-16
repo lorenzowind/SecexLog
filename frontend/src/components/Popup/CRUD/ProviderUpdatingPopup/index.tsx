@@ -182,19 +182,11 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
                   <option value="Selecione modal" disabled>
                     Selecione modal
                   </option>
-                  <option
-                    key={defaultSelectedModal}
-                    value={defaultSelectedModal}
-                  >
-                    {defaultSelectedModal}
-                  </option>
-                  {modals
-                    .filter(modal => modal.id !== defaultSelectedModal)
-                    .map(differentModal => (
-                      <option key={differentModal.id} value={differentModal.id}>
-                        {differentModal.name}
-                      </option>
-                    ))}
+                  {modals.map(differentModal => (
+                    <option key={differentModal.id} value={differentModal.id}>
+                      {differentModal.name}
+                    </option>
+                  ))}
                 </Select>
 
                 <section>

@@ -764,7 +764,9 @@ const ListingData: React.FC = () => {
             <td>{provider.name}</td>
             <td>{provider.phone_number}</td>
             <td>{provider.email}</td>
-            <td>{modals.find(modal => modal.id === provider.modal_id)}</td>
+            <td>
+              {modals.find(modal => modal.id === provider.modal_id)?.name}
+            </td>
             <td>
               <button
                 type="button"
