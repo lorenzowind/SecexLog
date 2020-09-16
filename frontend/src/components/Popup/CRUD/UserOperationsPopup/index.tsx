@@ -53,9 +53,10 @@ const UserOperationsPopup: React.FC<Props> = ({
   } = useUser();
 
   const handleRefreshUsers = useCallback(async () => {
+    initializeUsersPage();
+
     await getUsers('', true).then(() => {
       setLoadingPartial(false);
-      initializeUsersPage();
       setUserOperationsPopupActive(false);
     });
   }, [getUsers, setUserOperationsPopupActive, initializeUsersPage]);

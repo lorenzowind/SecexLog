@@ -68,17 +68,19 @@ const PathUpdatingPopup: React.FC<Props> = ({
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { updatePath, removePath, getPaths } = usePath();
+  const { initializePathsPage, updatePath, removePath, getPaths } = usePath();
   const { modals, getModals } = useModal();
   const { cities, getCities } = useCity();
   const { providers, getProviders } = useProvider();
 
   const handleRefreshPaths = useCallback(async () => {
+    initializePathsPage();
+
     await getPaths('', true).then(() => {
       setLoadingPartial(false);
       setPathUpdatingPopupActive(false);
     });
-  }, [getPaths, setPathUpdatingPopupActive]);
+  }, [getPaths, setPathUpdatingPopupActive, initializePathsPage]);
 
   const handleUpdatePath = useCallback(
     async (data: PathOperationsData) => {

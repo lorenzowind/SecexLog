@@ -42,10 +42,10 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          titulo: Yup.mixed().test('match', 'Assunto obrigatório', () => {
-            return data.titulo !== 'Selecione um assunto';
+          title: Yup.mixed().test('match', 'Assunto obrigatório', () => {
+            return data.title !== 'Selecione um assunto';
           }),
-          desc: Yup.string().required('Opinião obrigatória'),
+          description: Yup.string().required('Opinião obrigatória'),
         });
 
         await schema.validate(data, {
@@ -53,8 +53,8 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
         });
 
         const opinionData: OpinionOperationsData = {
-          titulo: data.titulo,
-          desc: data.desc,
+          title: data.title,
+          description: data.description,
         };
 
         await sendOpinion(opinionData).then(() => {
@@ -91,7 +91,7 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
                 </button>
 
                 <strong>Dê sua opinião!</strong>
-                <Select name="titulo" defaultValue="Selecione um assunto">
+                <Select name="title" defaultValue="Selecione um assunto">
                   <option value="Selecione um assunto" disabled>
                     Selecione um assunto
                   </option>
@@ -103,7 +103,7 @@ const OpinionPopup: React.FC<Props> = ({ setOpinionPopupActive }) => {
                 </Select>
 
                 <section>
-                  <Textarea name="desc" placeholder="Opinião..." />
+                  <Textarea name="description" placeholder="Opinião..." />
                 </section>
 
                 <button type="submit">

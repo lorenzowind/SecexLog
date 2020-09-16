@@ -24,7 +24,7 @@ import {
 } from '../../components';
 
 interface MessageData {
-  id: number;
+  id: string;
   message: string;
 }
 
@@ -41,7 +41,7 @@ const Dashboard: React.FC = () => {
   const [arrayFeedbacks, setArrayFeedbacks] = useState<FeedbacksData[]>([]);
 
   const [requestPopupActive, setRequestPopupActive] = useState(false);
-  const [answerId, setAnswerId] = useState(0);
+  const [answerId, setAnswerId] = useState('');
 
   const { modals, getModals } = useModal();
   const { opinions, getOpinions, removeOpinion } = useOpinion();
@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
   const handleDeleteOpinion = useCallback(async () => {
     await removeOpinion(answerId).then(() => {
       handleRefreshOpinions();
-      setAnswerId(0);
+      setAnswerId('');
     });
   }, [answerId, handleRefreshOpinions, removeOpinion]);
 
@@ -78,10 +78,10 @@ const Dashboard: React.FC = () => {
           title: title.name,
           titleColor: title.color,
           messages: opinions.reduce((newArray: MessageData[], opinion) => {
-            if (opinion.titulo === title.name) {
+            if (opinion.title === title.name) {
               newArray.push({
                 id: opinion.id,
-                message: opinion.desc,
+                message: opinion.description,
               });
             }
             return newArray;

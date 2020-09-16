@@ -58,9 +58,10 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
   const { cities, getCities } = useCity();
 
   const handleRefreshHolidays = useCallback(async () => {
+    initializeHolidaysPage();
+
     await getHolidays('', true).then(() => {
       setLoadingPartial(false);
-      initializeHolidaysPage();
       setHolidayUpdatingPopupActive(false);
     });
   }, [getHolidays, setHolidayUpdatingPopupActive, initializeHolidaysPage]);

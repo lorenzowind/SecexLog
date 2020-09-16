@@ -50,9 +50,10 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
   const { modals, getModals } = useModal();
 
   const handleRefreshProviders = useCallback(async () => {
+    initializeProvidersPage();
+
     await getProviders('', true).then(() => {
       setLoadingPartial(false);
-      initializeProvidersPage();
       setProviderUpdatingPopupActive(false);
     });
   }, [getProviders, initializeProvidersPage, setProviderUpdatingPopupActive]);
