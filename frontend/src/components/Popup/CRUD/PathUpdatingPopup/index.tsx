@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -36,8 +35,8 @@ interface Props extends PathUpdatingPopupProps {
 }
 
 interface FilteredProvider {
-  nome: string;
-  modal: string;
+  id: string;
+  modal_id: string;
 }
 
 const PathUpdatingPopup: React.FC<Props> = ({
@@ -47,15 +46,17 @@ const PathUpdatingPopup: React.FC<Props> = ({
   const formRef = useRef<FormHandles>(null);
 
   const [categoryPath, setCategoryPath] = useState(
-    path.linha ? 'Linha' : 'Contratado',
+    path.is_hired ? 'Contratado' : 'Linha',
   );
 
   const [arrivalWeekDay, setArrivalWeekDay] = useState('');
   const [arrivalTime, setArrivalTime] = useState('');
   const [arrivalWeekDayArray, setArrivalWeekDayArray] = useState<string[]>(
-    path.dia,
+    path.boarding_days.split(', '),
   );
-  const [arrivalTimeArray, setArrivalTimeArray] = useState<string[]>(path.hora);
+  const [arrivalTimeArray, setArrivalTimeArray] = useState<string[]>(
+    path.boarding_times.split(', '),
+  );
 
   const [defaultSelectedGoCity, setDefaultSelectedGoCity] = useState('');
   const [defaultSelectedBackCity, setDefaultSelectedBackCity] = useState('');
@@ -73,7 +74,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
   const { providers, getProviders } = useProvider();
 
   const handleRefreshPaths = useCallback(async () => {
-    await getPaths().then(() => {
+    await getPaths('', true).then(() => {
       setLoadingPartial(false);
       setPathUpdatingPopupActive(false);
     });
@@ -87,35 +88,43 @@ const PathUpdatingPopup: React.FC<Props> = ({
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          arrival: Yup.string().required('Local de embarque obrigatório'),
-          departure: Yup.string().required('Local de embarque obrigatório'),
+          boarding_place: Yup.string().required(
+            'Local de embarque obrigatório',
+          ),
+          departure_place: Yup.string().required(
+            'Local de embarque obrigatório',
+          ),
           duration: Yup.string().required('Duração do trecho obrigatório'),
-          cost: Yup.number().required('Valor do trecho obrigatório'),
           mileage: Yup.number().required('Quilometragem obrigatório'),
-          prestNome: Yup.mixed().test(
+          cost: Yup.number().required('Valor do trecho obrigatório'),
+          provider_id: Yup.mixed().test(
             'match',
             'Nome do prestador obrigatório',
             () => {
-              return data.prestNome !== 'Selecione prestador';
+              return data.provider_id !== 'Selecione prestador';
             },
           ),
-          initCidade: Yup.mixed().test(
+          origin_city_id: Yup.mixed().test(
             'match',
             'Cidade origem obrigatória',
             () => {
-              return data.initCidade !== 'Selecione cidade origem';
+              return data.origin_city_id !== 'Selecione cidade origem';
             },
           ),
-          endCidade: Yup.mixed().test(
+          destination_city_id: Yup.mixed().test(
             'match',
             'Cidade destino obrigatória',
             () => {
-              return data.endCidade !== 'Selecione cidade destino';
+              return data.destination_city_id !== 'Selecione cidade destino';
             },
           ),
-          modal: Yup.mixed().test('match', 'Nome do modal obrigatório', () => {
-            return data.modal !== 'Selecione modal';
-          }),
+          modal_id: Yup.mixed().test(
+            'match',
+            'Nome do modal obrigatório',
+            () => {
+              return data.modal_id !== 'Selecione modal';
+            },
+          ),
         });
 
         await schema.validate(data, {
@@ -127,31 +136,27 @@ const PathUpdatingPopup: React.FC<Props> = ({
         }
 
         const pathData: PathOperationsData = {
-          arrival: data.arrival,
-          departure: data.departure,
-          contratado: categoryPath === 'Contratado',
-          linha: categoryPath === 'Linha',
-          cost: Number(data.cost),
+          boarding_place: data.boarding_place,
+          departure_place: data.departure_place,
+          is_hired: categoryPath === 'Contratado',
+          duration:
+            typeof data.duration === 'string'
+              ? Number(data.duration.split(':')[0]) * 60 +
+                Number(data.duration.split(':')[1])
+              : 0,
           mileage: Number(data.mileage),
-          dia: arrivalWeekDayArray,
-          hora: arrivalTimeArray,
-          duration: data.duration,
-          initCidade: data.initCidade,
-          endCidade: data.endCidade,
-          modal: data.modal,
-          prestNome: data.prestNome,
+          cost: Number(data.cost),
+          boarding_days: arrivalWeekDayArray.join(', '),
+          boarding_times: arrivalTimeArray.join(', '),
+          origin_city_id: data.origin_city_id,
+          destination_city_id: data.destination_city_id,
+          modal_id: data.modal_id,
+          provider_id: data.provider_id,
         };
 
-        const { id, ...auxPath } = path;
-
-        if (!isEqual(pathData, auxPath)) {
-          await updatePath(id, pathData).then(() => {
-            handleRefreshPaths();
-          });
-        } else {
-          setLoadingPartial(false);
-          setPathUpdatingPopupActive(false);
-        }
+        await updatePath(path.id, pathData).then(() => {
+          handleRefreshPaths();
+        });
       } catch (err) {
         setLoadingPartial(false);
 
@@ -167,8 +172,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
       arrivalWeekDayArray,
       categoryPath,
       handleRefreshPaths,
-      path,
-      setPathUpdatingPopupActive,
+      path.id,
       updatePath,
     ],
   );
@@ -208,12 +212,12 @@ const PathUpdatingPopup: React.FC<Props> = ({
   }, [getCities, getModals, getProviders]);
 
   useEffect(() => {
-    setDefaultSelectedGoCity(path.initCidade);
-    setDefaultSelectedBackCity(path.endCidade);
-    setDefaultSelectedModal(path.modal);
+    setDefaultSelectedGoCity(path.origin_city_id);
+    setDefaultSelectedBackCity(path.destination_city_id);
+    setDefaultSelectedModal(path.modal_id);
     setDefaultSelectedProvider({
-      modal: path.modal,
-      nome: path.prestNome,
+      modal_id: path.modal_id,
+      id: path.provider_id,
     });
   }, [cities, modals, path, providers]);
 
@@ -244,31 +248,20 @@ const PathUpdatingPopup: React.FC<Props> = ({
               <Form ref={formRef} onSubmit={handleUpdatePath}>
                 <strong>Cidades</strong>
                 <nav>
-                  {/* <div>
+                  <div>
                     <Select
-                      name="initCidade"
-                      value={String(defaultSelectedGoCity)}
+                      name="origin_city_id"
+                      value={defaultSelectedGoCity}
                       onChange={e => setDefaultSelectedGoCity(e.target.value)}
                     >
                       <option value="Selecione cidade origem" disabled>
                         Selecione cidade origem
                       </option>
-                      <option
-                        key={String(defaultSelectedGoCity)}
-                        value={String(defaultSelectedGoCity)}
-                      >
-                        {defaultSelectedGoCity}
-                      </option>
-                      {citiesSelect
-                        .filter(city => city !== defaultSelectedGoCity)
-                        .map(differentCity => (
-                          <option
-                            key={`go-${differentCity}`}
-                            value={String(differentCity)}
-                          >
-                            {differentCity}
-                          </option>
-                        ))}
+                      {cities.map(differentCity => (
+                        <option key={differentCity.id} value={differentCity.id}>
+                          {differentCity.name}
+                        </option>
+                      ))}
                     </Select>
                   </div>
 
@@ -276,38 +269,27 @@ const PathUpdatingPopup: React.FC<Props> = ({
 
                   <div>
                     <Select
-                      name="endCidade"
-                      value={String(defaultSelectedBackCity)}
+                      name="destination_city_id"
+                      value={defaultSelectedBackCity}
                       onChange={e => setDefaultSelectedBackCity(e.target.value)}
                     >
                       <option value="Selecione cidade destino" disabled>
                         Selecione cidade destino
                       </option>
-                      <option
-                        key={String(defaultSelectedBackCity)}
-                        value={String(defaultSelectedBackCity)}
-                      >
-                        {defaultSelectedBackCity}
-                      </option>
-                      {citiesSelect
-                        .filter(city => city !== defaultSelectedBackCity)
-                        .map(differentCity => (
-                          <option
-                            key={`back-${differentCity}`}
-                            value={String(differentCity)}
-                          >
-                            {differentCity}
-                          </option>
-                        ))}
+                      {cities.map(differentCity => (
+                        <option key={differentCity.id} value={differentCity.id}>
+                          {differentCity.name}
+                        </option>
+                      ))}
                     </Select>
-                  </div> */}
+                  </div>
                 </nav>
 
                 <nav>
                   <div>
                     <strong>Modal</strong>
                     <Select
-                      name="modal"
+                      name="modal_id"
                       value={defaultSelectedModal}
                       onChange={e =>
                         setDefaultSelectedModal(e.currentTarget.value)
@@ -330,12 +312,12 @@ const PathUpdatingPopup: React.FC<Props> = ({
                   <div>
                     <strong>Nome do Prestador</strong>
                     <Select
-                      name="prestNome"
-                      value={defaultSelectedProvider.nome}
+                      name="provider_id"
+                      value={defaultSelectedProvider.id}
                       onChange={e =>
                         setDefaultSelectedProvider({
-                          nome: e.target.value,
-                          modal: defaultSelectedProvider.modal,
+                          id: e.target.value,
+                          modal_id: defaultSelectedProvider.modal_id,
                         })
                       }
                     >
@@ -445,18 +427,18 @@ const PathUpdatingPopup: React.FC<Props> = ({
                   <div>
                     <strong>Embarque</strong>
                     <Input
-                      name="arrival"
+                      name="boarding_place"
                       type="text"
-                      defaultValue={path.arrival}
+                      defaultValue={path.boarding_place}
                     />
                   </div>
 
                   <div>
                     <strong>Desembarque</strong>
                     <Input
-                      name="departure"
+                      name="departure_place"
                       type="text"
-                      defaultValue={path.departure}
+                      defaultValue={path.departure_place}
                     />
                   </div>
                 </nav>
@@ -467,7 +449,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                     name="category"
                     options={['Linha', 'Contratado']}
                     onChangeValue={setCategoryPath}
-                    defaultValue={path.linha ? 'Linha' : 'Contratado'}
+                    defaultValue={path.is_hired ? 'Contratado' : 'Linha'}
                   />
                 </footer>
 

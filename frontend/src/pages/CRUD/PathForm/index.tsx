@@ -107,35 +107,43 @@ const PathForm: React.FC = () => {
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          arrival: Yup.string().required('Local de embarque obrigatório'),
-          departure: Yup.string().required('Local de embarque obrigatório'),
+          boarding_place: Yup.string().required(
+            'Local de embarque obrigatório',
+          ),
+          departure_place: Yup.string().required(
+            'Local de embarque obrigatório',
+          ),
           duration: Yup.string().required('Duração do trecho obrigatório'),
           cost: Yup.number().required('Valor do trecho obrigatório'),
           mileage: Yup.number().required('Quilometragem obrigatório'),
-          prestNome: Yup.mixed().test(
+          provider_id: Yup.mixed().test(
             'match',
             'Nome do prestador obrigatório',
             () => {
-              return data.prestNome !== 'Selecione prestador';
+              return data.provider_id !== 'Selecione prestador';
             },
           ),
-          initCidade: Yup.mixed().test(
+          origin_city_id: Yup.mixed().test(
             'match',
             'Cidade origem obrigatória',
             () => {
-              return data.initCidade !== 'Selecione cidade origem';
+              return data.origin_city_id !== 'Selecione cidade origem';
             },
           ),
-          endCidade: Yup.mixed().test(
+          destination_city_id: Yup.mixed().test(
             'match',
             'Cidade destino obrigatória',
             () => {
-              return data.endCidade !== 'Selecione cidade destino';
+              return data.destination_city_id !== 'Selecione cidade destino';
             },
           ),
-          modal: Yup.mixed().test('match', 'Nome do modal obrigatório', () => {
-            return data.modal !== 'Selecione modal';
-          }),
+          modal_id: Yup.mixed().test(
+            'match',
+            'Nome do modal obrigatório',
+            () => {
+              return data.modal_id !== 'Selecione modal';
+            },
+          ),
         });
 
         await schema.validate(data, {
@@ -147,19 +155,22 @@ const PathForm: React.FC = () => {
         }
 
         const pathData: PathOperationsData = {
-          arrival: data.arrival,
-          departure: data.departure,
-          contratado: categoryPath === 'Contratado',
-          linha: categoryPath === 'Linha',
-          cost: Number(data.cost),
+          boarding_place: data.boarding_place,
+          departure_place: data.departure_place,
+          is_hired: categoryPath === 'Contratado',
+          duration:
+            typeof data.duration === 'string'
+              ? Number(data.duration.split(':')[0]) * 60 +
+                Number(data.duration.split(':')[1])
+              : 0,
           mileage: Number(data.mileage),
-          dia: arrivalWeekDayArray,
-          hora: arrivalTimeArray,
-          duration: data.duration,
-          initCidade: data.initCidade,
-          endCidade: data.endCidade,
-          modal: data.modal,
-          prestNome: data.prestNome,
+          cost: Number(data.cost),
+          boarding_days: arrivalWeekDayArray.join(', '),
+          boarding_times: arrivalTimeArray.join(', '),
+          origin_city_id: data.origin_city_id,
+          destination_city_id: data.destination_city_id,
+          modal_id: data.modal_id,
+          provider_id: data.provider_id,
         };
 
         setLoadingPage(true);
@@ -215,7 +226,7 @@ const PathForm: React.FC = () => {
                 <strong>Adicionar cidades do trajeto</strong>
                 <section>
                   <Select
-                    name="initCidade"
+                    name="origin_city_id"
                     value={cityGoSelected}
                     onChange={e => setCityGoSelected(e.target.value)}
                   >
@@ -232,7 +243,7 @@ const PathForm: React.FC = () => {
                   <img src={IconGo} alt="Go" />
 
                   <Select
-                    name="endCidade"
+                    name="destination_city_id"
                     value={cityBackSelected}
                     onChange={e => setCityBackSelected(e.target.value)}
                   >
@@ -251,7 +262,7 @@ const PathForm: React.FC = () => {
               <nav>
                 <strong>Escolha o Modal para este trajeto</strong>
                 <Select
-                  name="modal"
+                  name="modal_id"
                   value={modalSelected}
                   onChange={e => setModalSelected(e.currentTarget.value)}
                 >
@@ -269,7 +280,7 @@ const PathForm: React.FC = () => {
               <nav>
                 <strong>Selecione o Prestador deste Trajeto</strong>
                 <Select
-                  name="prestNome"
+                  name="provider_id"
                   value={providerSelected}
                   onChange={e => setProviderSelected(e.target.value)}
                 >
@@ -321,7 +332,7 @@ const PathForm: React.FC = () => {
                   {arrivalWeekDayArray && (
                     <>
                       {arrivalWeekDayArray.map((day, index) => (
-                        <nav key={String(day)}>
+                        <nav key={String(index)}>
                           <button
                             type="button"
                             onClick={() => handleRemoveArrivalPair(index)}
@@ -365,12 +376,12 @@ const PathForm: React.FC = () => {
 
               <div>
                 <strong>Local de embarque</strong>
-                <Input name="arrival" type="text" />
+                <Input name="boarding_place" type="text" />
               </div>
 
               <div>
                 <strong>Local de desembarque</strong>
-                <Input name="departure" type="text" />
+                <Input name="departure_place" type="text" />
               </div>
 
               <div>

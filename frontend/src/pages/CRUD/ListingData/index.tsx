@@ -29,7 +29,11 @@ import {
 import iconSearch from '../../../assets/icon-search.png';
 import iconEdit from '../../../assets/icon-edit.png';
 
-interface ModuleHeaderProps {
+export interface ModuleName {
+  name: 'USER' | 'CITY' | 'HOLIDAY' | 'PROVIDER' | 'MODAL' | 'PATH';
+}
+
+interface ModuleHeaderProps extends ModuleName {
   pluralName:
     | 'usuários'
     | 'cidades'
@@ -44,11 +48,10 @@ interface ModuleHeaderProps {
     | 'prestador'
     | 'modal'
     | 'trajeto';
-  name: 'User' | 'City' | 'Holiday' | 'Provider' | 'Modal' | 'Path';
 }
 
 interface UserOperationsPopupProps {
-  operation: 'criar' | 'editar';
+  operation: 'CREATE' | 'UPDATE';
   user?: UserState;
 }
 
@@ -74,7 +77,7 @@ interface PathUpdatingPopupProps {
 }
 
 interface NewPageModule {
-  name: 'User' | 'City' | 'Holiday' | 'Provider' | 'Modal' | 'Path' | '';
+  name: ModuleName['name'] | '';
 }
 
 interface SearchModule extends NewPageModule {
@@ -82,16 +85,16 @@ interface SearchModule extends NewPageModule {
 }
 
 interface HandleDataOperation {
-  type: 'search' | 'pagination' | 'load';
+  type: 'SEARCH' | 'PAGINATION' | 'LOAD';
 }
 
 interface SearchData {
-  searchUser?: string;
-  searchCity?: string;
-  searchHoliday?: string;
-  searchProvider?: string;
-  searchModal?: string;
-  searchPath?: string;
+  search_USER?: string;
+  search_CITY?: string;
+  search_HOLIDAY?: string;
+  search_PROVIDER?: string;
+  search_MODAL?: string;
+  search_PATH?: string;
 }
 
 const ListingData: React.FC = () => {
@@ -177,7 +180,13 @@ const ListingData: React.FC = () => {
     incrementProvidersPage,
     getProviders,
   } = useProvider();
-  const { paths, getPaths, setSearchPaths } = usePath();
+  const {
+    paths,
+    pathsPage,
+    incrementPathsPage,
+    initializePathsPage,
+    getPaths,
+  } = usePath();
   // ---------------------------------------------------------------------------
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -189,7 +198,7 @@ const ListingData: React.FC = () => {
     search: '',
   });
   const [dataOperation, setDataOperation] = useState<HandleDataOperation>({
-    type: 'load',
+    type: 'LOAD',
   });
 
   const handleInitializeModules = useCallback(() => {
@@ -198,12 +207,14 @@ const ListingData: React.FC = () => {
     initializeHolidaysPage();
     initializeModalsPage();
     initializeProvidersPage();
+    initializePathsPage();
   }, [
     initializeCitiesPage,
     initializeUsersPage,
     initializeHolidaysPage,
     initializeModalsPage,
     initializeProvidersPage,
+    initializePathsPage,
   ]);
 
   const handleVerifyInitialization = useCallback(() => {
@@ -212,42 +223,56 @@ const ListingData: React.FC = () => {
       usersPage === 1 &&
       holidaysPage === 1 &&
       modalsPage === 1 &&
-      providersPage === 1
+      providersPage === 1 &&
+      pathsPage === 1
     );
-  }, [citiesPage, usersPage, holidaysPage, modalsPage, providersPage]);
+  }, [
+    citiesPage,
+    usersPage,
+    holidaysPage,
+    modalsPage,
+    providersPage,
+    pathsPage,
+  ]);
 
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
     switch (dataOperation.type) {
-      case 'search': {
+      case 'SEARCH': {
         switch (searchModule.name) {
-          case 'User': {
+          case 'USER': {
             await getUsers(searchModule.search, true).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
-          case 'City': {
+          case 'CITY': {
             await getCities(searchModule.search, true).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
-          case 'Holiday': {
+          case 'HOLIDAY': {
             await getHolidays(searchModule.search, true).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
-          case 'Modal': {
+          case 'MODAL': {
             await getModals(searchModule.search, true).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
-          case 'Provider': {
+          case 'PROVIDER': {
             await getProviders(searchModule.search, true).then(() => {
+              setLoadingPartial(false);
+            });
+            break;
+          }
+          case 'PATH': {
+            await getPaths(searchModule.search, true).then(() => {
               setLoadingPartial(false);
             });
             break;
@@ -258,35 +283,41 @@ const ListingData: React.FC = () => {
         }
         break;
       }
-      case 'pagination': {
+      case 'PAGINATION': {
         if (newPageModule.name) {
           switch (newPageModule.name) {
-            case 'User': {
-              await getUsers('', true).then(() => {
+            case 'USER': {
+              await getUsers(searchModule.search, true).then(() => {
                 setLoadingPartial(false);
               });
               break;
             }
-            case 'City': {
-              await getCities('', true).then(() => {
+            case 'CITY': {
+              await getCities(searchModule.search, true).then(() => {
                 setLoadingPartial(false);
               });
               break;
             }
-            case 'Holiday': {
-              await getHolidays('', true).then(() => {
+            case 'HOLIDAY': {
+              await getHolidays(searchModule.search, true).then(() => {
                 setLoadingPartial(false);
               });
               break;
             }
-            case 'Modal': {
-              await getModals('', true).then(() => {
+            case 'MODAL': {
+              await getModals(searchModule.search, true).then(() => {
                 setLoadingPartial(false);
               });
               break;
             }
-            case 'Provider': {
-              await getProviders('', true).then(() => {
+            case 'PROVIDER': {
+              await getProviders(searchModule.search, true).then(() => {
+                setLoadingPartial(false);
+              });
+              break;
+            }
+            case 'PATH': {
+              await getPaths(searchModule.search, true).then(() => {
                 setLoadingPartial(false);
               });
               break;
@@ -298,7 +329,7 @@ const ListingData: React.FC = () => {
         }
         break;
       }
-      case 'load': {
+      case 'LOAD': {
         handleInitializeModules();
 
         if (handleVerifyInitialization()) {
@@ -308,7 +339,7 @@ const ListingData: React.FC = () => {
             getHolidays('', true),
             getModals('', true),
             getProviders('', true),
-            // getPaths(),
+            getPaths('', true),
           ]).then(() => {
             setLoadingPartial(false);
           });
@@ -324,6 +355,7 @@ const ListingData: React.FC = () => {
     getCities,
     getHolidays,
     getModals,
+    getPaths,
     getProviders,
     getUsers,
     handleInitializeModules,
@@ -335,62 +367,62 @@ const ListingData: React.FC = () => {
   const handleSearch = useCallback(
     async (data: SearchData, module: ModuleHeaderProps) => {
       switch (module.name) {
-        case 'User':
+        case 'USER':
           initializeUsersPage();
           setSearchModule({
-            name: 'User',
-            search: data.searchUser || '',
+            name: 'USER',
+            search: data.search_USER || '',
           });
           break;
-        case 'City':
+        case 'CITY':
           initializeCitiesPage();
           setSearchModule({
-            name: 'City',
-            search: data.searchCity || '',
+            name: 'CITY',
+            search: data.search_CITY || '',
           });
           break;
-        case 'Holiday':
+        case 'HOLIDAY':
           initializeHolidaysPage();
           setSearchModule({
-            name: 'Holiday',
-            search: data.searchHoliday || '',
+            name: 'HOLIDAY',
+            search: data.search_HOLIDAY || '',
           });
           break;
-        case 'Modal':
+        case 'MODAL':
           initializeModalsPage();
           setSearchModule({
-            name: 'Modal',
-            search: data.searchModal || '',
+            name: 'MODAL',
+            search: data.search_MODAL || '',
           });
           break;
-        case 'Provider':
+        case 'PROVIDER':
           initializeProvidersPage();
           setSearchModule({
-            name: 'Provider',
-            search: data.searchProvider || '',
+            name: 'PROVIDER',
+            search: data.search_PROVIDER || '',
           });
           break;
-        case 'Path':
-          if (!data.searchPath) {
-            setSearchPaths('');
-          } else {
-            setSearchPaths(data.searchPath);
-          }
+        case 'PATH':
+          initializePathsPage();
+          setSearchModule({
+            name: 'PATH',
+            search: data.search_PATH || '',
+          });
           break;
         default:
           break;
       }
       setDataOperation({
-        type: 'search',
+        type: 'SEARCH',
       });
     },
     [
       initializeCitiesPage,
       initializeHolidaysPage,
       initializeModalsPage,
+      initializePathsPage,
       initializeProvidersPage,
       initializeUsersPage,
-      setSearchPaths,
     ],
   );
 
@@ -422,7 +454,7 @@ const ListingData: React.FC = () => {
           onSubmit={e => handleSearch(e, { pluralName, singularName, name })}
         >
           <Input
-            name={`search${name}`}
+            name={`search_${name}`}
             type="text"
             placeholder={
               singularName.charAt(0).toUpperCase() +
@@ -444,25 +476,25 @@ const ListingData: React.FC = () => {
           type="button"
           onClick={() => {
             switch (name) {
-              case 'User':
+              case 'USER':
                 setUserOperationsPopupActive(true);
                 setUserOperationsPopup({
-                  operation: 'criar',
+                  operation: 'CREATE',
                 });
                 break;
-              case 'City':
+              case 'CITY':
                 setGoCityForm(true);
                 break;
-              case 'Holiday':
+              case 'HOLIDAY':
                 setGoHolidayForm(true);
                 break;
-              case 'Modal':
+              case 'MODAL':
                 setGoModalForm(true);
                 break;
-              case 'Provider':
+              case 'PROVIDER':
                 setGoProviderForm(true);
                 break;
-              case 'Path':
+              case 'PATH':
                 setGoPathForm(true);
                 break;
               default:
@@ -477,7 +509,7 @@ const ListingData: React.FC = () => {
   );
 
   const UsersTable: React.FC = () => (
-    <Table module="usuário">
+    <Table name="USER">
       <thead>
         <tr>
           <th>Usuário</th>
@@ -502,7 +534,7 @@ const ListingData: React.FC = () => {
                 onClick={() => {
                   setUserOperationsPopupActive(true);
                   setUserOperationsPopup({
-                    operation: 'editar',
+                    operation: 'UPDATE',
                     user,
                   });
                 }}
@@ -517,7 +549,7 @@ const ListingData: React.FC = () => {
   );
 
   const CitiesTable: React.FC = () => (
-    <Table module="cidade">
+    <Table name="CITY">
       <thead>
         <tr>
           <th>Nome</th>
@@ -600,7 +632,7 @@ const ListingData: React.FC = () => {
 
   const HolidaysTable: React.FC = () => (
     <HolidaysTableContainer>
-      <Table module="feriado">
+      <Table name="HOLIDAY">
         <thead>
           <tr>
             <th>Nacionais</th>
@@ -631,7 +663,7 @@ const ListingData: React.FC = () => {
             ))}
         </tbody>
       </Table>
-      <Table module="feriado">
+      <Table name="HOLIDAY">
         <thead>
           <tr>
             <th>Específicos</th>
@@ -666,7 +698,7 @@ const ListingData: React.FC = () => {
   );
 
   const ModalsTable: React.FC = () => (
-    <Table module="modal">
+    <Table name="MODAL">
       <thead>
         <tr>
           <th>Nome</th>
@@ -748,7 +780,7 @@ const ListingData: React.FC = () => {
   );
 
   const ProvidersTable: React.FC = () => (
-    <Table module="prestador">
+    <Table name="PROVIDER">
       <thead>
         <tr>
           <th>Nome</th>
@@ -765,7 +797,8 @@ const ListingData: React.FC = () => {
             <td>{provider.phone_number}</td>
             <td>{provider.email}</td>
             <td>
-              {modals.find(modal => modal.id === provider.modal_id)?.name}
+              {modals.find(modal => modal.id === provider.modal_id)?.name ||
+                `${provider.modal_id}`}
             </td>
             <td>
               <button
@@ -787,7 +820,7 @@ const ListingData: React.FC = () => {
   );
 
   const PathsTable: React.FC = () => (
-    <Table module="trajeto">
+    <Table name="PATH">
       <thead>
         <tr>
           <th>Origem</th>
@@ -800,10 +833,22 @@ const ListingData: React.FC = () => {
       <tbody>
         {paths.map(path => (
           <tr key={path.id}>
-            <td>{path.initCidade}</td>
-            <td>{path.endCidade}</td>
-            <td>{path.modal}</td>
-            <td>{path.prestNome}</td>
+            <td>
+              {cities.find(city => city.id === path.origin_city_id)?.name ||
+                `${path.origin_city_id}`}
+            </td>
+            <td>
+              {cities.find(city => city.id === path.destination_city_id)
+                ?.name || `${path.destination_city_id}`}
+            </td>
+            <td>
+              {modals.find(modal => modal.id === path.modal_id)?.name ||
+                `${path.modal_id}`}
+            </td>
+            <td>
+              {providers.find(provider => provider.id === path.provider_id)
+                ?.name || `${path.provider_id}`}
+            </td>
             <td>
               <button
                 type="button"
@@ -883,7 +928,7 @@ const ListingData: React.FC = () => {
           <ModuleHeader
             pluralName="usuários"
             singularName="usuário"
-            name="User"
+            name="USER"
           />
 
           <UsersTable />
@@ -893,10 +938,10 @@ const ListingData: React.FC = () => {
               type="button"
               onClick={() => {
                 setDataOperation({
-                  type: 'pagination',
+                  type: 'PAGINATION',
                 });
                 setNewPageModule({
-                  name: 'User',
+                  name: 'USER',
                 });
                 incrementUsersPage();
               }}
@@ -910,7 +955,7 @@ const ListingData: React.FC = () => {
           <ModuleHeader
             pluralName="cidades"
             singularName="cidade"
-            name="City"
+            name="CITY"
           />
 
           <CitiesTable />
@@ -920,10 +965,10 @@ const ListingData: React.FC = () => {
               type="button"
               onClick={() => {
                 setDataOperation({
-                  type: 'pagination',
+                  type: 'PAGINATION',
                 });
                 setNewPageModule({
-                  name: 'City',
+                  name: 'CITY',
                 });
                 incrementCitiesPage();
               }}
@@ -937,7 +982,7 @@ const ListingData: React.FC = () => {
           <ModuleHeader
             pluralName="feriados"
             singularName="feriado"
-            name="Holiday"
+            name="HOLIDAY"
           />
 
           <HolidaysTable />
@@ -947,10 +992,10 @@ const ListingData: React.FC = () => {
               type="button"
               onClick={() => {
                 setDataOperation({
-                  type: 'pagination',
+                  type: 'PAGINATION',
                 });
                 setNewPageModule({
-                  name: 'Holiday',
+                  name: 'HOLIDAY',
                 });
                 incrementHolidaysPage();
               }}
@@ -961,7 +1006,7 @@ const ListingData: React.FC = () => {
         </DataSection>
 
         <DataSection>
-          <ModuleHeader pluralName="modais" singularName="modal" name="Modal" />
+          <ModuleHeader pluralName="modais" singularName="modal" name="MODAL" />
 
           <ModalsTable />
 
@@ -970,10 +1015,10 @@ const ListingData: React.FC = () => {
               type="button"
               onClick={() => {
                 setDataOperation({
-                  type: 'pagination',
+                  type: 'PAGINATION',
                 });
                 setNewPageModule({
-                  name: 'Modal',
+                  name: 'MODAL',
                 });
                 incrementModalsPage();
               }}
@@ -987,7 +1032,7 @@ const ListingData: React.FC = () => {
           <ModuleHeader
             pluralName="prestadores"
             singularName="prestador"
-            name="Provider"
+            name="PROVIDER"
           />
 
           <ProvidersTable />
@@ -997,10 +1042,10 @@ const ListingData: React.FC = () => {
               type="button"
               onClick={() => {
                 setDataOperation({
-                  type: 'pagination',
+                  type: 'PAGINATION',
                 });
                 setNewPageModule({
-                  name: 'Provider',
+                  name: 'PROVIDER',
                 });
                 incrementProvidersPage();
               }}
@@ -1014,9 +1059,26 @@ const ListingData: React.FC = () => {
           <ModuleHeader
             pluralName="trajetos"
             singularName="trajeto"
-            name="Path"
+            name="PATH"
           />
           <PathsTable />
+
+          {paths.length ? (
+            <button
+              type="button"
+              onClick={() => {
+                setDataOperation({
+                  type: 'PAGINATION',
+                });
+                setNewPageModule({
+                  name: 'PATH',
+                });
+                incrementPathsPage();
+              }}
+            >
+              Carregar mais
+            </button>
+          ) : null}
         </DataSection>
       </Container>
     </>

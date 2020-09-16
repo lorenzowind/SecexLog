@@ -276,9 +276,13 @@ describe('ListFilteredPaths', () => {
       is_hired: true,
     });
 
-    await expect(
-      listFilteredPaths.execute('non existing city name', 1, 'origin_city'),
-    ).rejects.toBeInstanceOf(AppError);
+    const response = await listFilteredPaths.execute(
+      'non existing city name',
+      1,
+      'origin_city',
+    );
+
+    expect(response).toHaveLength(0);
   });
 
   it('should not be able to list a filtered path with non existing destination city', async () => {
@@ -320,12 +324,12 @@ describe('ListFilteredPaths', () => {
       is_hired: true,
     });
 
-    await expect(
-      listFilteredPaths.execute(
-        'non existing city name',
-        1,
-        'destination_city',
-      ),
-    ).rejects.toBeInstanceOf(AppError);
+    const response = await listFilteredPaths.execute(
+      'non existing city name',
+      1,
+      'destination_city',
+    );
+
+    expect(response).toHaveLength(0);
   });
 });

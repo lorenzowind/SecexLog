@@ -105,12 +105,12 @@ const DetailedResult: React.FC = () => {
                       <PathInfoContainer>
                         <CitiesContainer>
                           <img src={path.modalImage} alt="Modal" />
-                          <strong>{`${path.initCidade} - ${path.endCidade}`}</strong>
+                          <strong>{`${path.origin_city_id} - ${path.destination_city_id}`}</strong>
                         </CitiesContainer>
                         <ModalInfoContainer>
                           <strong>
-                            <b>{path.modal}</b>
-                            {` - ${path.prestNome}`}
+                            <b>{path.modal_id}</b>
+                            {` - ${path.provider_id}`}
                           </strong>
                         </ModalInfoContainer>
                         <TimeInfoContainer>

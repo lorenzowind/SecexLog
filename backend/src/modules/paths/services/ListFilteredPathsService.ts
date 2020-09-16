@@ -1,7 +1,5 @@
 import { injectable, inject } from 'tsyringe';
 
-import AppError from '@shared/errors/AppError';
-
 import ICitiesRepository from '@modules/cities/repositories/ICitiesRepository';
 import IPathsRepository from '../repositories/IPathsRepository';
 
@@ -30,7 +28,7 @@ class ListFilteredPathsService {
       );
 
       if (!checkOriginCityNameExists) {
-        throw new AppError('Origin city does not exists.');
+        return [];
       }
 
       paths = await this.pathsRepository.findAllByOriginCity(
@@ -45,7 +43,7 @@ class ListFilteredPathsService {
       );
 
       if (!checkDestinationCityNameExists) {
-        throw new AppError('Destination city does not exists.');
+        return [];
       }
 
       paths = await this.pathsRepository.findAllByDestinationCity(

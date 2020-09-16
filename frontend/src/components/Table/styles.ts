@@ -27,7 +27,7 @@ export const Container = styled.table<Props>`
   }
 
   ${props =>
-    props.module === 'feriado' &&
+    props.name === 'HOLIDAY' &&
     css`
       border: 0;
       border-radius: 0;
@@ -39,8 +39,8 @@ export const Container = styled.table<Props>`
     padding: 0 10px 5px 10px;
 
     ${props => {
-      switch (props.module) {
-        case 'usuário':
+      switch (props.name) {
+        case 'USER':
           return css`
             max-width: 120px;
             min-width: 120px;
@@ -50,8 +50,8 @@ export const Container = styled.table<Props>`
               min-width: 60px;
             }
           `;
-        case 'cidade':
-        case 'modal':
+        case 'CITY':
+        case 'MODAL':
           return css`
             max-width: 170px;
             min-width: 170px;
@@ -71,7 +71,7 @@ export const Container = styled.table<Props>`
               min-width: 50px;
             }
           `;
-        case 'feriado':
+        case 'HOLIDAY':
           return css`
             max-width: 280px;
             min-width: 280px;
@@ -81,8 +81,8 @@ export const Container = styled.table<Props>`
               min-width: 50px;
             }
           `;
-        case 'prestador':
-        case 'trajeto':
+        case 'PROVIDER':
+        case 'PATH':
           return css`
             max-width: 150px;
             min-width: 150px;
@@ -105,8 +105,8 @@ export const Container = styled.table<Props>`
     overflow: hidden;
 
     ${props => {
-      switch (props.module) {
-        case 'usuário':
+      switch (props.name) {
+        case 'USER':
           return css`
             max-width: 120px;
             min-width: 120px;
@@ -116,8 +116,8 @@ export const Container = styled.table<Props>`
               min-width: 60px;
             }
           `;
-        case 'cidade':
-        case 'modal':
+        case 'CITY':
+        case 'MODAL':
           return css`
             max-width: 170px;
             min-width: 170px;
@@ -137,7 +137,7 @@ export const Container = styled.table<Props>`
               min-width: 50px;
             }
           `;
-        case 'feriado':
+        case 'HOLIDAY':
           return css`
             max-width: 280px;
             min-width: 280px;
@@ -147,8 +147,8 @@ export const Container = styled.table<Props>`
               min-width: 50px;
             }
           `;
-        case 'prestador':
-        case 'trajeto':
+        case 'PROVIDER':
+        case 'PATH':
           return css`
             max-width: 150px;
             min-width: 150px;

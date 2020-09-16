@@ -23,7 +23,7 @@ import IconClose from '../../../../assets/icon-close.png';
 import IconTrash from '../../../../assets/icon-trash.png';
 
 interface UserOperationsPopupProps {
-  operation: 'criar' | 'editar';
+  operation: 'CREATE' | 'UPDATE';
   user?: UserState;
 }
 
@@ -150,8 +150,7 @@ const UserOperationsPopup: React.FC<Props> = ({
               </button>
 
               <h1>
-                {operation.charAt(0).toUpperCase() +
-                  operation.slice(1).concat(' usuário')}
+                {`${operation === 'CREATE' ? 'Criar' : 'Editar'} usuário`}
               </h1>
 
               <Form ref={formRef} onSubmit={handleCreateOrUpdateUser}>
@@ -208,7 +207,7 @@ const UserOperationsPopup: React.FC<Props> = ({
                   )}
 
                   <Button type="submit">
-                    {operation === 'editar' ? 'Salvar' : 'Criar'}
+                    {operation === 'CREATE' ? 'Criar' : 'Salvar'}
                   </Button>
                 </section>
               </Form>
