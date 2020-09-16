@@ -25,8 +25,7 @@ interface ProviderContextData {
   providersPage: number;
   incrementProvidersPage(): void;
   initializeProvidersPage(): void;
-  setSearchProviders(searchProvider: string): void;
-  getProviders(isPagination: boolean): Promise<void>;
+  getProviders(search: string, isPagination: boolean): Promise<void>;
   insertProvider(provider: ProviderOperationsData): Promise<void>;
   updateProvider(id: string, provider: ProviderOperationsData): Promise<void>;
   removeProvider(id: string): Promise<void>;
@@ -39,7 +38,6 @@ const ProviderContext = createContext<ProviderContextData>(
 const ProviderModuleProvider: React.FC = ({ children }) => {
   const [providers, setProviders] = useState<ProviderState[]>([]);
   const [providersPage, setProvidersPage] = useState(1);
-  const [search, setSearch] = useState('');
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
@@ -52,12 +50,8 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
     setProvidersPage(1);
   }, []);
 
-  const setSearchProviders = useCallback(searchProvider => {
-    setSearch(searchProvider);
-  }, []);
-
   const getProviders = useCallback(
-    async (isPagination: boolean) => {
+    async (search: string, isPagination: boolean) => {
       try {
         const query = isPagination
           ? `providers/pagination/all?search=${search}&page=${providersPage}`
@@ -87,7 +81,7 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, providersPage, search, token],
+    [addToast, providersPage, token],
   );
 
   const insertProvider = useCallback(
@@ -178,7 +172,6 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         providersPage,
         incrementProvidersPage,
         initializeProvidersPage,
-        setSearchProviders,
         getProviders,
         insertProvider,
         removeProvider,

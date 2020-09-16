@@ -53,9 +53,9 @@ class UpdateCityService {
       throw new AppError('City name already in use.');
     }
 
-    if (related_cities) {
-      await this.relatedCitiesRepository.removeAllByCityId(id);
+    await this.relatedCitiesRepository.removeAllByCityId(id);
 
+    if (related_cities) {
       for (let index = 0; index < related_cities.length; index += 1) {
         const checkRelatedCity = await this.citiesRepository.findById(
           related_cities[index].related_city_id,

@@ -23,8 +23,7 @@ interface HolidayContextData {
   holidaysPage: number;
   incrementHolidaysPage(): void;
   initializeHolidaysPage(): void;
-  setSearchHolidays(searchHoliday: string): void;
-  getHolidays(isPagination: boolean): Promise<void>;
+  getHolidays(search: string, isPagination: boolean): Promise<void>;
   insertHoliday(holiday: HolidayOperationsData): Promise<void>;
   updateHoliday(id: string, holiday: HolidayOperationsData): Promise<void>;
   removeHoliday(id: string): Promise<void>;
@@ -37,7 +36,6 @@ const HolidayContext = createContext<HolidayContextData>(
 const HolidayProvider: React.FC = ({ children }) => {
   const [holidays, setHolidays] = useState<HolidayState[]>([]);
   const [holidaysPage, setHolidaysPage] = useState(1);
-  const [search, setSearch] = useState('');
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
@@ -50,12 +48,8 @@ const HolidayProvider: React.FC = ({ children }) => {
     setHolidaysPage(1);
   }, []);
 
-  const setSearchHolidays = useCallback(searchHoliday => {
-    setSearch(searchHoliday);
-  }, []);
-
   const getHolidays = useCallback(
-    async (isPagination: boolean) => {
+    async (search: string, isPagination: boolean) => {
       try {
         const query = isPagination
           ? `holidays/pagination/all?search=${search}&page=${holidaysPage}`
@@ -85,7 +79,7 @@ const HolidayProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, holidaysPage, search, token],
+    [addToast, holidaysPage, token],
   );
 
   const insertHoliday = useCallback(
@@ -176,7 +170,6 @@ const HolidayProvider: React.FC = ({ children }) => {
         holidaysPage,
         incrementHolidaysPage,
         initializeHolidaysPage,
-        setSearchHolidays,
         getHolidays,
         insertHoliday,
         removeHoliday,

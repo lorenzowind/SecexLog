@@ -36,8 +36,7 @@ interface CityContextData {
   citiesPage: number;
   incrementCitiesPage(): void;
   initializeCitiesPage(): void;
-  setSearchCities(searchCity: string): void;
-  getCities(isPagination: boolean): Promise<void>;
+  getCities(search: string, isPagination: boolean): Promise<void>;
   getRelatedCities(city_id: string): Promise<void>;
   insertCity(city: CityOperationsData): Promise<void>;
   updateCity(id: string, city: CityOperationsData): Promise<void>;
@@ -50,7 +49,6 @@ const CityProvider: React.FC = ({ children }) => {
   const [cities, setCities] = useState<CityState[]>([]);
   const [relatedCities, setRelatedCities] = useState<RelatedCityState[]>([]);
   const [citiesPage, setCitiesPage] = useState(1);
-  const [search, setSearch] = useState('');
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
@@ -63,16 +61,14 @@ const CityProvider: React.FC = ({ children }) => {
     setCitiesPage(1);
   }, []);
 
-  const setSearchCities = useCallback(searchCity => {
-    setSearch(searchCity);
-  }, []);
-
   const getCities = useCallback(
-    async (isPagination: boolean) => {
+    async (search: string, isPagination: boolean) => {
       try {
         const query = isPagination
           ? `cities/pagination/all?search=${search}&page=${citiesPage}`
           : 'cities/all';
+
+        console.log(query);
 
         const response = await api.get(query, {
           headers: {
@@ -98,7 +94,7 @@ const CityProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, citiesPage, search, token],
+    [addToast, citiesPage, token],
   );
 
   const getRelatedCities = useCallback(
@@ -213,7 +209,6 @@ const CityProvider: React.FC = ({ children }) => {
         citiesPage,
         incrementCitiesPage,
         initializeCitiesPage,
-        setSearchCities,
         getCities,
         getRelatedCities,
         insertCity,

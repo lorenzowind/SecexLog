@@ -83,7 +83,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
   }, []);
 
   const handleRefreshModals = useCallback(async () => {
-    await getModals(true).then(() => {
+    await getModals('', true).then(() => {
       setLoadingPartial(false);
       initializeModalsPage();
       setModalUpdatingPopupActive(false);

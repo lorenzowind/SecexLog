@@ -77,6 +77,14 @@ interface NewPageModule {
   name: 'User' | 'City' | 'Holiday' | 'Provider' | 'Modal' | 'Path' | '';
 }
 
+interface SearchModule extends NewPageModule {
+  search: string;
+}
+
+interface HandleDataOperation {
+  type: 'search' | 'pagination' | 'load';
+}
+
 interface SearchData {
   searchUser?: string;
   searchCity?: string;
@@ -140,13 +148,11 @@ const ListingData: React.FC = () => {
     initializeUsersPage,
     incrementUsersPage,
     getUsers,
-    setSearchUsers,
   } = useUser();
   const {
     cities,
     citiesPage,
     getCities,
-    setSearchCities,
     initializeCitiesPage,
     incrementCitiesPage,
   } = useCity();
@@ -156,7 +162,6 @@ const ListingData: React.FC = () => {
     initializeHolidaysPage,
     incrementHolidaysPage,
     getHolidays,
-    setSearchHolidays,
   } = useHoliday();
   const {
     modals,
@@ -164,7 +169,6 @@ const ListingData: React.FC = () => {
     initializeModalsPage,
     incrementModalsPage,
     getModals,
-    setSearchModals,
   } = useModal();
   const {
     providers,
@@ -172,7 +176,6 @@ const ListingData: React.FC = () => {
     initializeProvidersPage,
     incrementProvidersPage,
     getProviders,
-    setSearchProviders,
   } = useProvider();
   const { paths, getPaths, setSearchPaths } = usePath();
   // ---------------------------------------------------------------------------
@@ -180,6 +183,13 @@ const ListingData: React.FC = () => {
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [newPageModule, setNewPageModule] = useState<NewPageModule>({
     name: '',
+  });
+  const [searchModule, setSearchModule] = useState<SearchModule>({
+    name: '',
+    search: '',
+  });
+  const [dataOperation, setDataOperation] = useState<HandleDataOperation>({
+    type: 'load',
   });
 
   const handleInitializeModules = useCallback(() => {
@@ -209,59 +219,108 @@ const ListingData: React.FC = () => {
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    if (!newPageModule.name) {
-      handleInitializeModules();
-
-      if (handleVerifyInitialization()) {
-        await Promise.all([
-          getUsers(true),
-          getCities(true),
-          getHolidays(true),
-          getModals(true),
-          getProviders(true),
-          // getPaths(),
-        ]).then(() => {
-          setLoadingPartial(false);
-        });
+    switch (dataOperation.type) {
+      case 'search': {
+        switch (searchModule.name) {
+          case 'User': {
+            await getUsers(searchModule.search, true).then(() => {
+              setLoadingPartial(false);
+            });
+            break;
+          }
+          case 'City': {
+            await getCities(searchModule.search, true).then(() => {
+              setLoadingPartial(false);
+            });
+            break;
+          }
+          case 'Holiday': {
+            await getHolidays(searchModule.search, true).then(() => {
+              setLoadingPartial(false);
+            });
+            break;
+          }
+          case 'Modal': {
+            await getModals(searchModule.search, true).then(() => {
+              setLoadingPartial(false);
+            });
+            break;
+          }
+          case 'Provider': {
+            await getProviders(searchModule.search, true).then(() => {
+              setLoadingPartial(false);
+            });
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+        break;
       }
-    } else {
-      switch (newPageModule.name) {
-        case 'User': {
-          await getUsers(true).then(() => {
+      case 'pagination': {
+        if (newPageModule.name) {
+          switch (newPageModule.name) {
+            case 'User': {
+              await getUsers('', true).then(() => {
+                setLoadingPartial(false);
+              });
+              break;
+            }
+            case 'City': {
+              await getCities('', true).then(() => {
+                setLoadingPartial(false);
+              });
+              break;
+            }
+            case 'Holiday': {
+              await getHolidays('', true).then(() => {
+                setLoadingPartial(false);
+              });
+              break;
+            }
+            case 'Modal': {
+              await getModals('', true).then(() => {
+                setLoadingPartial(false);
+              });
+              break;
+            }
+            case 'Provider': {
+              await getProviders('', true).then(() => {
+                setLoadingPartial(false);
+              });
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        }
+        break;
+      }
+      case 'load': {
+        handleInitializeModules();
+
+        if (handleVerifyInitialization()) {
+          await Promise.all([
+            getUsers('', true),
+            getCities('', true),
+            getHolidays('', true),
+            getModals('', true),
+            getProviders('', true),
+            // getPaths(),
+          ]).then(() => {
             setLoadingPartial(false);
           });
-          break;
         }
-        case 'City': {
-          await getCities(true).then(() => {
-            setLoadingPartial(false);
-          });
-          break;
-        }
-        case 'Holiday': {
-          await getHolidays(true).then(() => {
-            setLoadingPartial(false);
-          });
-          break;
-        }
-        case 'Modal': {
-          await getModals(true).then(() => {
-            setLoadingPartial(false);
-          });
-          break;
-        }
-        case 'Provider': {
-          await getProviders(true).then(() => {
-            setLoadingPartial(false);
-          });
-          break;
-        }
-        default: {
-          break;
-        }
+        break;
+      }
+      default: {
+        break;
       }
     }
   }, [
+    dataOperation,
     getCities,
     getHolidays,
     getModals,
@@ -269,53 +328,47 @@ const ListingData: React.FC = () => {
     getUsers,
     handleInitializeModules,
     handleVerifyInitialization,
-    newPageModule.name,
+    newPageModule,
+    searchModule,
   ]);
 
   const handleSearch = useCallback(
-    (data: SearchData, module: ModuleHeaderProps) => {
-      setLoadingPartial(true);
-
+    async (data: SearchData, module: ModuleHeaderProps) => {
       switch (module.name) {
         case 'User':
-          if (!data.searchUser) {
-            setSearchUsers('');
-          } else {
-            initializeUsersPage();
-            setSearchUsers(data.searchUser);
-          }
+          initializeUsersPage();
+          setSearchModule({
+            name: 'User',
+            search: data.searchUser || '',
+          });
           break;
         case 'City':
-          if (!data.searchCity) {
-            setSearchCities('');
-          } else {
-            initializeCitiesPage();
-            setSearchCities(data.searchCity);
-          }
+          initializeCitiesPage();
+          setSearchModule({
+            name: 'City',
+            search: data.searchCity || '',
+          });
           break;
         case 'Holiday':
-          if (!data.searchHoliday) {
-            setSearchHolidays('');
-          } else {
-            initializeHolidaysPage();
-            setSearchHolidays(data.searchHoliday);
-          }
+          initializeHolidaysPage();
+          setSearchModule({
+            name: 'Holiday',
+            search: data.searchHoliday || '',
+          });
           break;
         case 'Modal':
-          if (!data.searchModal) {
-            setSearchModals('');
-          } else {
-            initializeModalsPage();
-            setSearchModals(data.searchModal);
-          }
+          initializeModalsPage();
+          setSearchModule({
+            name: 'Modal',
+            search: data.searchModal || '',
+          });
           break;
         case 'Provider':
-          if (!data.searchProvider) {
-            setSearchProviders('');
-          } else {
-            initializeProvidersPage();
-            setSearchProviders(data.searchProvider);
-          }
+          initializeProvidersPage();
+          setSearchModule({
+            name: 'Provider',
+            search: data.searchProvider || '',
+          });
           break;
         case 'Path':
           if (!data.searchPath) {
@@ -327,19 +380,16 @@ const ListingData: React.FC = () => {
         default:
           break;
       }
-      setLoadingPartial(false);
+      setDataOperation({
+        type: 'search',
+      });
     },
     [
-      setSearchUsers,
-      initializeUsersPage,
-      setSearchCities,
       initializeCitiesPage,
-      setSearchHolidays,
       initializeHolidaysPage,
-      setSearchModals,
       initializeModalsPage,
-      setSearchProviders,
       initializeProvidersPage,
+      initializeUsersPage,
       setSearchPaths,
     ],
   );
@@ -350,7 +400,7 @@ const ListingData: React.FC = () => {
     };
 
     loadData();
-  }, [handleGetData, initializeCitiesPage]);
+  }, [handleGetData]);
 
   const ModuleHeader: React.FC<ModuleHeaderProps> = ({
     singularName,
@@ -399,7 +449,6 @@ const ListingData: React.FC = () => {
                 setUserOperationsPopup({
                   operation: 'criar',
                 });
-                setSearchUsers('');
                 break;
               case 'City':
                 setGoCityForm(true);
@@ -841,6 +890,9 @@ const ListingData: React.FC = () => {
             <button
               type="button"
               onClick={() => {
+                setDataOperation({
+                  type: 'pagination',
+                });
                 setNewPageModule({
                   name: 'User',
                 });
@@ -865,6 +917,9 @@ const ListingData: React.FC = () => {
             <button
               type="button"
               onClick={() => {
+                setDataOperation({
+                  type: 'pagination',
+                });
                 setNewPageModule({
                   name: 'City',
                 });
@@ -889,6 +944,9 @@ const ListingData: React.FC = () => {
             <button
               type="button"
               onClick={() => {
+                setDataOperation({
+                  type: 'pagination',
+                });
                 setNewPageModule({
                   name: 'Holiday',
                 });
@@ -909,6 +967,9 @@ const ListingData: React.FC = () => {
             <button
               type="button"
               onClick={() => {
+                setDataOperation({
+                  type: 'pagination',
+                });
                 setNewPageModule({
                   name: 'Modal',
                 });
@@ -933,6 +994,9 @@ const ListingData: React.FC = () => {
             <button
               type="button"
               onClick={() => {
+                setDataOperation({
+                  type: 'pagination',
+                });
                 setNewPageModule({
                   name: 'Provider',
                 });

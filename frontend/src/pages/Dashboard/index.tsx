@@ -49,7 +49,7 @@ const Dashboard: React.FC = () => {
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await Promise.all([getModals(false), getOpinions()]).then(() => {
+    await Promise.all([getModals('', false), getOpinions()]).then(() => {
       setLoadingPartial(false);
     });
   }, [getModals, getOpinions]);

@@ -199,9 +199,9 @@ const PathUpdatingPopup: React.FC<Props> = ({
     setLoadingPartial(true);
 
     await Promise.all([
-      getModals(false),
-      getCities(false),
-      getProviders(false),
+      getModals('', false),
+      getCities('', false),
+      getProviders('', false),
     ]).then(() => {
       setLoadingPartial(false);
     });

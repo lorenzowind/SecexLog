@@ -86,9 +86,9 @@ const PathForm: React.FC = () => {
     setLoadingPartial(true);
 
     await Promise.all([
-      getModals(false),
-      getCities(false),
-      getProviders(false),
+      getModals('', false),
+      getCities('', false),
+      getProviders('', false),
     ]).then(() => {
       setLoadingPartial(false);
     });

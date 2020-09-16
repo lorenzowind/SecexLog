@@ -24,8 +24,7 @@ interface ModalContextData {
   modalsPage: number;
   incrementModalsPage(): void;
   initializeModalsPage(): void;
-  setSearchModals(searchCity: string): void;
-  getModals(isPagination: boolean): Promise<void>;
+  getModals(search: string, isPagination: boolean): Promise<void>;
   insertModal(modal: ModalOperationsData): Promise<void>;
   updateModal(id: string, modal: ModalOperationsData): Promise<void>;
   removeModal(id: string): Promise<void>;
@@ -36,7 +35,6 @@ const ModalContext = createContext<ModalContextData>({} as ModalContextData);
 const ModalProvider: React.FC = ({ children }) => {
   const [modals, setModals] = useState<ModalState[]>([]);
   const [modalsPage, setModalsPage] = useState(1);
-  const [search, setSearch] = useState('');
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
@@ -49,12 +47,8 @@ const ModalProvider: React.FC = ({ children }) => {
     setModalsPage(1);
   }, []);
 
-  const setSearchModals = useCallback(searchModal => {
-    setSearch(searchModal);
-  }, []);
-
   const getModals = useCallback(
-    async (isPagination: boolean) => {
+    async (search: string, isPagination: boolean) => {
       try {
         const query = isPagination
           ? `modals/pagination/all?search=${search}&page=${modalsPage}`
@@ -84,7 +78,7 @@ const ModalProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, modalsPage, search, token],
+    [addToast, modalsPage, token],
   );
 
   const insertModal = useCallback(
@@ -175,7 +169,6 @@ const ModalProvider: React.FC = ({ children }) => {
         modalsPage,
         incrementModalsPage,
         initializeModalsPage,
-        setSearchModals,
         getModals,
         insertModal,
         removeModal,

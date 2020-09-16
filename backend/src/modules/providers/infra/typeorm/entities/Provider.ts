@@ -10,7 +10,7 @@ import {
 
 import Modal from '@modules/modals/infra/typeorm/entities/Modal';
 
-@Entity('provider')
+@Entity('providers')
 class Provider {
   @PrimaryColumn()
   id: string;
