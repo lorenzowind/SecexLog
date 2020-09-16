@@ -8,6 +8,7 @@ import AutomaticSearch from '../pages/AutomaticSearch';
 import ResultSearch from '../pages/ResultSearch';
 import DetailedResult from '../pages/DetailedResult';
 
+import ResetPassword from '../pages/ResetPassword';
 import NotFound from '../pages/NotFound';
 
 // Authenticated Routes
@@ -36,6 +37,7 @@ const Routes: React.FC = () => (
     <Route path="/path-form" component={PathForm} isPrivate />
     <Route path="/provider-form" component={ProviderForm} isPrivate />
 
+    <Route path="/reset-password" component={ResetPassword} />
     <Route path="*" component={NotFound} />
   </Switch>
 );
