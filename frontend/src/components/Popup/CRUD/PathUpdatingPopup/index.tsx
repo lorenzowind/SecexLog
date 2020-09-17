@@ -1,4 +1,10 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import React, {
+  useCallback,
+  useRef,
+  useState,
+  useEffect,
+  useMemo,
+} from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
@@ -72,6 +78,27 @@ const PathUpdatingPopup: React.FC<Props> = ({
   const { modals, getModals } = useModal();
   const { cities, getCities } = useCity();
   const { providers, getProviders } = useProvider();
+
+  const defaultDuration = useMemo(() => {
+    const hours = Math.floor(Number(path.duration) / 60);
+    const minutes = Number(path.duration) % 60;
+
+    let duration = '';
+
+    if (hours < 10) {
+      duration += `0${String(hours)}`;
+    } else {
+      duration += `${String(hours)}`;
+    }
+
+    if (minutes < 10) {
+      duration += `:0${String(minutes)}`;
+    } else {
+      duration += `:${String(minutes)}`;
+    }
+
+    return duration;
+  }, [path.duration]);
 
   const handleRefreshPaths = useCallback(async () => {
     await getPaths('').then(() => {
@@ -395,7 +422,7 @@ const PathUpdatingPopup: React.FC<Props> = ({
                     <Input
                       name="duration"
                       type="time"
-                      defaultValue={path.duration}
+                      defaultValue={defaultDuration}
                     />
                   </div>
 
