@@ -76,16 +76,13 @@ interface PathUpdatingPopupProps {
   path: PathState;
 }
 
-interface NewPageModule {
+interface SearchModule {
+  search: string;
   name: ModuleName['name'] | '';
 }
 
-interface SearchModule extends NewPageModule {
-  search: string;
-}
-
 interface HandleDataOperation {
-  type: 'SEARCH' | 'PAGINATION' | 'LOAD';
+  type: 'SEARCH' | 'LOAD';
 }
 
 interface SearchData {
@@ -145,54 +142,15 @@ const ListingData: React.FC = () => {
   // ---------------------------------------------------------------------------
 
   // module hooks to make API operations ---------------------------------------
-  const {
-    users,
-    usersPage,
-    initializeUsersPage,
-    incrementUsersPage,
-    getUsers,
-  } = useUser();
-  const {
-    cities,
-    citiesPage,
-    getCities,
-    initializeCitiesPage,
-    incrementCitiesPage,
-  } = useCity();
-  const {
-    holidays,
-    holidaysPage,
-    initializeHolidaysPage,
-    incrementHolidaysPage,
-    getHolidays,
-  } = useHoliday();
-  const {
-    modals,
-    modalsPage,
-    initializeModalsPage,
-    incrementModalsPage,
-    getModals,
-  } = useModal();
-  const {
-    providers,
-    providersPage,
-    initializeProvidersPage,
-    incrementProvidersPage,
-    getProviders,
-  } = useProvider();
-  const {
-    paths,
-    pathsPage,
-    incrementPathsPage,
-    initializePathsPage,
-    getPaths,
-  } = usePath();
+  const { users, getUsers } = useUser();
+  const { cities, getCities } = useCity();
+  const { holidays, getHolidays } = useHoliday();
+  const { modals, getModals } = useModal();
+  const { providers, getProviders } = useProvider();
+  const { paths, getPaths } = usePath();
   // ---------------------------------------------------------------------------
 
   const [loadingPartial, setLoadingPartial] = useState(false);
-  const [newPageModule, setNewPageModule] = useState<NewPageModule>({
-    name: '',
-  });
   const [searchModule, setSearchModule] = useState<SearchModule>({
     name: '',
     search: '',
@@ -201,40 +159,6 @@ const ListingData: React.FC = () => {
     type: 'LOAD',
   });
 
-  const handleInitializeModules = useCallback(() => {
-    initializeCitiesPage();
-    initializeUsersPage();
-    initializeHolidaysPage();
-    initializeModalsPage();
-    initializeProvidersPage();
-    initializePathsPage();
-  }, [
-    initializeCitiesPage,
-    initializeUsersPage,
-    initializeHolidaysPage,
-    initializeModalsPage,
-    initializeProvidersPage,
-    initializePathsPage,
-  ]);
-
-  const handleVerifyInitialization = useCallback(() => {
-    return (
-      citiesPage === 1 &&
-      usersPage === 1 &&
-      holidaysPage === 1 &&
-      modalsPage === 1 &&
-      providersPage === 1 &&
-      pathsPage === 1
-    );
-  }, [
-    citiesPage,
-    usersPage,
-    holidaysPage,
-    modalsPage,
-    providersPage,
-    pathsPage,
-  ]);
-
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
@@ -242,37 +166,37 @@ const ListingData: React.FC = () => {
       case 'SEARCH': {
         switch (searchModule.name) {
           case 'USER': {
-            await getUsers(searchModule.search, true).then(() => {
+            await getUsers(searchModule.search).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
           case 'CITY': {
-            await getCities(searchModule.search, true).then(() => {
+            await getCities(searchModule.search).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
           case 'HOLIDAY': {
-            await getHolidays(searchModule.search, true).then(() => {
+            await getHolidays(searchModule.search).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
           case 'MODAL': {
-            await getModals(searchModule.search, true).then(() => {
+            await getModals(searchModule.search).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
           case 'PROVIDER': {
-            await getProviders(searchModule.search, true).then(() => {
+            await getProviders(searchModule.search).then(() => {
               setLoadingPartial(false);
             });
             break;
           }
           case 'PATH': {
-            await getPaths(searchModule.search, true).then(() => {
+            await getPaths(searchModule.search).then(() => {
               setLoadingPartial(false);
             });
             break;
@@ -283,67 +207,18 @@ const ListingData: React.FC = () => {
         }
         break;
       }
-      case 'PAGINATION': {
-        if (newPageModule.name) {
-          switch (newPageModule.name) {
-            case 'USER': {
-              await getUsers(searchModule.search, true).then(() => {
-                setLoadingPartial(false);
-              });
-              break;
-            }
-            case 'CITY': {
-              await getCities(searchModule.search, true).then(() => {
-                setLoadingPartial(false);
-              });
-              break;
-            }
-            case 'HOLIDAY': {
-              await getHolidays(searchModule.search, true).then(() => {
-                setLoadingPartial(false);
-              });
-              break;
-            }
-            case 'MODAL': {
-              await getModals(searchModule.search, true).then(() => {
-                setLoadingPartial(false);
-              });
-              break;
-            }
-            case 'PROVIDER': {
-              await getProviders(searchModule.search, true).then(() => {
-                setLoadingPartial(false);
-              });
-              break;
-            }
-            case 'PATH': {
-              await getPaths(searchModule.search, true).then(() => {
-                setLoadingPartial(false);
-              });
-              break;
-            }
-            default: {
-              break;
-            }
-          }
-        }
-        break;
-      }
       case 'LOAD': {
-        handleInitializeModules();
+        await Promise.all([
+          getUsers(''),
+          getCities(''),
+          getHolidays(''),
+          getModals(''),
+          getProviders(''),
+          getPaths(''),
+        ]).then(() => {
+          setLoadingPartial(false);
+        });
 
-        if (handleVerifyInitialization()) {
-          await Promise.all([
-            getUsers('', true),
-            getCities('', true),
-            getHolidays('', true),
-            getModals('', true),
-            getProviders('', true),
-            getPaths('', true),
-          ]).then(() => {
-            setLoadingPartial(false);
-          });
-        }
         break;
       }
       default: {
@@ -358,9 +233,6 @@ const ListingData: React.FC = () => {
     getPaths,
     getProviders,
     getUsers,
-    handleInitializeModules,
-    handleVerifyInitialization,
-    newPageModule,
     searchModule,
   ]);
 
@@ -368,42 +240,36 @@ const ListingData: React.FC = () => {
     async (data: SearchData, module: ModuleHeaderProps) => {
       switch (module.name) {
         case 'USER':
-          initializeUsersPage();
           setSearchModule({
             name: 'USER',
             search: data.search_USER || '',
           });
           break;
         case 'CITY':
-          initializeCitiesPage();
           setSearchModule({
             name: 'CITY',
             search: data.search_CITY || '',
           });
           break;
         case 'HOLIDAY':
-          initializeHolidaysPage();
           setSearchModule({
             name: 'HOLIDAY',
             search: data.search_HOLIDAY || '',
           });
           break;
         case 'MODAL':
-          initializeModalsPage();
           setSearchModule({
             name: 'MODAL',
             search: data.search_MODAL || '',
           });
           break;
         case 'PROVIDER':
-          initializeProvidersPage();
           setSearchModule({
             name: 'PROVIDER',
             search: data.search_PROVIDER || '',
           });
           break;
         case 'PATH':
-          initializePathsPage();
           setSearchModule({
             name: 'PATH',
             search: data.search_PATH || '',
@@ -416,14 +282,7 @@ const ListingData: React.FC = () => {
         type: 'SEARCH',
       });
     },
-    [
-      initializeCitiesPage,
-      initializeHolidaysPage,
-      initializeModalsPage,
-      initializePathsPage,
-      initializeProvidersPage,
-      initializeUsersPage,
-    ],
+    [],
   );
 
   useEffect(() => {
@@ -930,25 +789,7 @@ const ListingData: React.FC = () => {
             singularName="usuário"
             name="USER"
           />
-
           <UsersTable />
-
-          {users.length ? (
-            <button
-              type="button"
-              onClick={() => {
-                setDataOperation({
-                  type: 'PAGINATION',
-                });
-                setNewPageModule({
-                  name: 'USER',
-                });
-                incrementUsersPage();
-              }}
-            >
-              Carregar mais
-            </button>
-          ) : null}
         </DataSection>
 
         <DataSection>
@@ -959,23 +800,6 @@ const ListingData: React.FC = () => {
           />
 
           <CitiesTable />
-
-          {cities.length ? (
-            <button
-              type="button"
-              onClick={() => {
-                setDataOperation({
-                  type: 'PAGINATION',
-                });
-                setNewPageModule({
-                  name: 'CITY',
-                });
-                incrementCitiesPage();
-              }}
-            >
-              Carregar mais
-            </button>
-          ) : null}
         </DataSection>
 
         <DataSection>
@@ -984,48 +808,12 @@ const ListingData: React.FC = () => {
             singularName="feriado"
             name="HOLIDAY"
           />
-
           <HolidaysTable />
-
-          {holidays.length ? (
-            <button
-              type="button"
-              onClick={() => {
-                setDataOperation({
-                  type: 'PAGINATION',
-                });
-                setNewPageModule({
-                  name: 'HOLIDAY',
-                });
-                incrementHolidaysPage();
-              }}
-            >
-              Carregar mais
-            </button>
-          ) : null}
         </DataSection>
 
         <DataSection>
           <ModuleHeader pluralName="modais" singularName="modal" name="MODAL" />
-
           <ModalsTable />
-
-          {modals.length ? (
-            <button
-              type="button"
-              onClick={() => {
-                setDataOperation({
-                  type: 'PAGINATION',
-                });
-                setNewPageModule({
-                  name: 'MODAL',
-                });
-                incrementModalsPage();
-              }}
-            >
-              Carregar mais
-            </button>
-          ) : null}
         </DataSection>
 
         <DataSection>
@@ -1034,25 +822,7 @@ const ListingData: React.FC = () => {
             singularName="prestador"
             name="PROVIDER"
           />
-
           <ProvidersTable />
-
-          {providers.length ? (
-            <button
-              type="button"
-              onClick={() => {
-                setDataOperation({
-                  type: 'PAGINATION',
-                });
-                setNewPageModule({
-                  name: 'PROVIDER',
-                });
-                incrementProvidersPage();
-              }}
-            >
-              Carregar mais
-            </button>
-          ) : null}
         </DataSection>
 
         <DataSection>
@@ -1062,23 +832,6 @@ const ListingData: React.FC = () => {
             name="PATH"
           />
           <PathsTable />
-
-          {paths.length ? (
-            <button
-              type="button"
-              onClick={() => {
-                setDataOperation({
-                  type: 'PAGINATION',
-                });
-                setNewPageModule({
-                  name: 'PATH',
-                });
-                incrementPathsPage();
-              }}
-            >
-              Carregar mais
-            </button>
-          ) : null}
         </DataSection>
       </Container>
     </>

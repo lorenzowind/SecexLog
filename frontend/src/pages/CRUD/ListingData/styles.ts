@@ -1,4 +1,3 @@
-import { shade } from 'polished';
 import styled, { keyframes } from 'styled-components';
 
 const appearFromTop = keyframes`
@@ -83,29 +82,6 @@ export const DataSection = styled.div`
     margin: 20px 0 80px 0;
     padding: 10px 10px;
     height: 250px;
-  }
-
-  > button {
-    margin-top: -75px;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    position: absolute;
-    width: auto;
-    height: auto;
-    border-radius: 13px;
-    border: solid 1px #e6dfdf;
-    background-color: rgba(255, 255, 255, 0);
-
-    padding: 8px;
-    color: #707070;
-    font-size: 24px;
-    font-weight: 400;
-
-    &:hover {
-      border: solid 1px ${shade(0.1, '#e6dfdf')};
-    }
   }
 `;
 

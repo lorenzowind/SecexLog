@@ -28,10 +28,7 @@ export interface PathState extends PathOperationsData {
 
 interface PathContextData {
   paths: PathState[];
-  pathsPage: number;
-  incrementPathsPage(): void;
-  initializePathsPage(): void;
-  getPaths(search: string, isPagination: boolean): Promise<void>;
+  getPaths(search: string): Promise<void>;
   insertPath(path: PathOperationsData): Promise<void>;
   updatePath(id: string, path: PathOperationsData): Promise<void>;
   removePath(id: string): Promise<void>;
@@ -41,29 +38,16 @@ const PathContext = createContext<PathContextData>({} as PathContextData);
 
 const PathProvider: React.FC = ({ children }) => {
   const [paths, setPaths] = useState<PathState[]>([]);
-  const [pathsPage, setPathsPage] = useState(1);
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
 
-  const incrementPathsPage = useCallback(() => {
-    setPathsPage(pathsPage + 1);
-  }, [pathsPage]);
-
-  const initializePathsPage = useCallback(() => {
-    setPathsPage(1);
-  }, []);
-
   const getPaths = useCallback(
-    async (search: string, isPagination: boolean) => {
+    async (search: string) => {
       try {
-        let query = search
-          ? `paths/all/origin?origin_city_name=${search}&page=${pathsPage}`
-          : `paths/pagination/all?page=${pathsPage}`;
-
-        if (!isPagination) {
-          query = '​/paths​/all';
-        }
+        const query = search
+          ? `paths/all/origin?origin_city_name=${search}`
+          : `paths/all`;
 
         const response = await api.get(query, {
           headers: {
@@ -89,7 +73,7 @@ const PathProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, pathsPage, token],
+    [addToast, token],
   );
 
   const insertPath = useCallback(
@@ -177,9 +161,6 @@ const PathProvider: React.FC = ({ children }) => {
     <PathContext.Provider
       value={{
         paths,
-        pathsPage,
-        incrementPathsPage,
-        initializePathsPage,
         getPaths,
         insertPath,
         removePath,

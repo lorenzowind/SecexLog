@@ -21,10 +21,7 @@ export interface ModalState extends ModalOperationsData {
 
 interface ModalContextData {
   modals: ModalState[];
-  modalsPage: number;
-  incrementModalsPage(): void;
-  initializeModalsPage(): void;
-  getModals(search: string, isPagination: boolean): Promise<void>;
+  getModals(search: string): Promise<void>;
   insertModal(modal: ModalOperationsData): Promise<void>;
   updateModal(id: string, modal: ModalOperationsData): Promise<void>;
   removeModal(id: string): Promise<void>;
@@ -34,25 +31,14 @@ const ModalContext = createContext<ModalContextData>({} as ModalContextData);
 
 const ModalProvider: React.FC = ({ children }) => {
   const [modals, setModals] = useState<ModalState[]>([]);
-  const [modalsPage, setModalsPage] = useState(1);
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
 
-  const incrementModalsPage = useCallback(() => {
-    setModalsPage(modalsPage + 1);
-  }, [modalsPage]);
-
-  const initializeModalsPage = useCallback(() => {
-    setModalsPage(1);
-  }, []);
-
   const getModals = useCallback(
-    async (search: string, isPagination: boolean) => {
+    async (search: string) => {
       try {
-        const query = isPagination
-          ? `modals/pagination/all?search=${search}&page=${modalsPage}`
-          : 'modals/all';
+        const query = `modals/all?search=${search}`;
 
         const response = await api.get(query, {
           headers: {
@@ -78,7 +64,7 @@ const ModalProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, modalsPage, token],
+    [addToast, token],
   );
 
   const insertModal = useCallback(
@@ -166,9 +152,6 @@ const ModalProvider: React.FC = ({ children }) => {
     <ModalContext.Provider
       value={{
         modals,
-        modalsPage,
-        incrementModalsPage,
-        initializeModalsPage,
         getModals,
         insertModal,
         removeModal,

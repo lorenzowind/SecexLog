@@ -62,12 +62,7 @@ const ModalUpdatingPopup: React.FC<Props> = ({
 
   const [loadingPartial, setLoadingPartial] = useState(false);
 
-  const {
-    initializeModalsPage,
-    updateModal,
-    removeModal,
-    getModals,
-  } = useModal();
+  const { updateModal, removeModal, getModals } = useModal();
 
   const handleClickModalImage = useCallback((index: number) => {
     setArrayModalImages(state =>
@@ -83,13 +78,11 @@ const ModalUpdatingPopup: React.FC<Props> = ({
   }, []);
 
   const handleRefreshModals = useCallback(async () => {
-    initializeModalsPage();
-
-    await getModals('', true).then(() => {
+    await getModals('').then(() => {
       setLoadingPartial(false);
       setModalUpdatingPopupActive(false);
     });
-  }, [getModals, setModalUpdatingPopupActive, initializeModalsPage]);
+  }, [getModals, setModalUpdatingPopupActive]);
 
   const handleUpdateModal = useCallback(
     async (data: ModalOperationsData) => {

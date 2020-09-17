@@ -20,10 +20,7 @@ export interface HolidayState extends HolidayOperationsData {
 
 interface HolidayContextData {
   holidays: HolidayState[];
-  holidaysPage: number;
-  incrementHolidaysPage(): void;
-  initializeHolidaysPage(): void;
-  getHolidays(search: string, isPagination: boolean): Promise<void>;
+  getHolidays(search: string): Promise<void>;
   insertHoliday(holiday: HolidayOperationsData): Promise<void>;
   updateHoliday(id: string, holiday: HolidayOperationsData): Promise<void>;
   removeHoliday(id: string): Promise<void>;
@@ -35,25 +32,14 @@ const HolidayContext = createContext<HolidayContextData>(
 
 const HolidayProvider: React.FC = ({ children }) => {
   const [holidays, setHolidays] = useState<HolidayState[]>([]);
-  const [holidaysPage, setHolidaysPage] = useState(1);
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
 
-  const incrementHolidaysPage = useCallback(() => {
-    setHolidaysPage(holidaysPage + 1);
-  }, [holidaysPage]);
-
-  const initializeHolidaysPage = useCallback(() => {
-    setHolidaysPage(1);
-  }, []);
-
   const getHolidays = useCallback(
-    async (search: string, isPagination: boolean) => {
+    async (search: string) => {
       try {
-        const query = isPagination
-          ? `holidays/pagination/all?search=${search}&page=${holidaysPage}`
-          : 'holidays/all';
+        const query = `holidays/all?search=${search}`;
 
         const response = await api.get(query, {
           headers: {
@@ -79,7 +65,7 @@ const HolidayProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, holidaysPage, token],
+    [addToast, token],
   );
 
   const insertHoliday = useCallback(
@@ -167,9 +153,6 @@ const HolidayProvider: React.FC = ({ children }) => {
     <HolidayContext.Provider
       value={{
         holidays,
-        holidaysPage,
-        incrementHolidaysPage,
-        initializeHolidaysPage,
         getHolidays,
         insertHoliday,
         removeHoliday,

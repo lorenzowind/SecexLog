@@ -64,7 +64,6 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const {
     cities,
     relatedCities,
-    initializeCitiesPage,
     updateCity,
     removeCity,
     getCities,
@@ -73,13 +72,11 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const { holidays, getHolidays } = useHoliday();
 
   const handleRefreshCities = useCallback(async () => {
-    initializeCitiesPage();
-
-    await getCities('', true).then(() => {
+    await getCities('').then(() => {
       setLoadingPartial(false);
       setCityUpdatingPopupActive(false);
     });
-  }, [getCities, setCityUpdatingPopupActive, initializeCitiesPage]);
+  }, [getCities, setCityUpdatingPopupActive]);
 
   const handleUpdateCity = useCallback(
     async (data: CityOperationsData) => {
@@ -168,8 +165,8 @@ const CityUpdatingPopup: React.FC<Props> = ({
     setLoadingPartial(true);
 
     await Promise.all([
-      getHolidays('', false),
-      getCities('', false),
+      getHolidays(''),
+      getCities(''),
       getRelatedCities(city.id),
     ]).then(() => {
       setLoadingPartial(false);

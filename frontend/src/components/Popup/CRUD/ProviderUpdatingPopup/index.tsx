@@ -41,22 +41,15 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const {
-    initializeProvidersPage,
-    updateProvider,
-    removeProvider,
-    getProviders,
-  } = useProvider();
+  const { updateProvider, removeProvider, getProviders } = useProvider();
   const { modals, getModals } = useModal();
 
   const handleRefreshProviders = useCallback(async () => {
-    initializeProvidersPage();
-
-    await getProviders('', true).then(() => {
+    await getProviders('').then(() => {
       setLoadingPartial(false);
       setProviderUpdatingPopupActive(false);
     });
-  }, [getProviders, initializeProvidersPage, setProviderUpdatingPopupActive]);
+  }, [getProviders, setProviderUpdatingPopupActive]);
 
   const handleUpdateProvider = useCallback(
     async (data: ProviderOperationsData) => {
@@ -116,7 +109,7 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
   const handleGetModals = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getModals('', false).then(() => {
+    await getModals('').then(() => {
       setLoadingPartial(false);
     });
   }, [getModals]);

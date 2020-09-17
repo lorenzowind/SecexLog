@@ -22,10 +22,7 @@ export interface ProviderState extends ProviderOperationsData {
 
 interface ProviderContextData {
   providers: ProviderState[];
-  providersPage: number;
-  incrementProvidersPage(): void;
-  initializeProvidersPage(): void;
-  getProviders(search: string, isPagination: boolean): Promise<void>;
+  getProviders(search: string): Promise<void>;
   insertProvider(provider: ProviderOperationsData): Promise<void>;
   updateProvider(id: string, provider: ProviderOperationsData): Promise<void>;
   removeProvider(id: string): Promise<void>;
@@ -37,25 +34,14 @@ const ProviderContext = createContext<ProviderContextData>(
 
 const ProviderModuleProvider: React.FC = ({ children }) => {
   const [providers, setProviders] = useState<ProviderState[]>([]);
-  const [providersPage, setProvidersPage] = useState(1);
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
 
-  const incrementProvidersPage = useCallback(() => {
-    setProvidersPage(providersPage + 1);
-  }, [providersPage]);
-
-  const initializeProvidersPage = useCallback(() => {
-    setProvidersPage(1);
-  }, []);
-
   const getProviders = useCallback(
-    async (search: string, isPagination: boolean) => {
+    async (search: string) => {
       try {
-        const query = isPagination
-          ? `providers/pagination/all?search=${search}&page=${providersPage}`
-          : 'providers/all';
+        const query = `providers/all?search=${search}`;
 
         const response = await api.get(query, {
           headers: {
@@ -81,7 +67,7 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, providersPage, token],
+    [addToast, token],
   );
 
   const insertProvider = useCallback(
@@ -169,9 +155,6 @@ const ProviderModuleProvider: React.FC = ({ children }) => {
     <ProviderContext.Provider
       value={{
         providers,
-        providersPage,
-        incrementProvidersPage,
-        initializeProvidersPage,
         getProviders,
         insertProvider,
         removeProvider,

@@ -49,7 +49,7 @@ const ManualSearch: React.FC = () => {
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getCities('', false).then(() => {
+    await getCities('').then(() => {
       setLoadingPartial(false);
     });
   }, [getCities]);

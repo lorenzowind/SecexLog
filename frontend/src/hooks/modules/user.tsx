@@ -21,10 +21,7 @@ export interface UserState extends UserOperationsData {
 
 interface UserContextData {
   users: UserState[];
-  usersPage: number;
-  incrementUsersPage(): void;
-  initializeUsersPage(): void;
-  getUsers(search: string, isPagination: boolean): Promise<void>;
+  getUsers(search: string): Promise<void>;
   insertUser(newUser: UserOperationsData): Promise<void>;
   updateUser(id: string, newUser: UserOperationsData): Promise<void>;
   removeUser(id: string): Promise<void>;
@@ -34,25 +31,14 @@ const UserContext = createContext<UserContextData>({} as UserContextData);
 
 const UserProvider: React.FC = ({ children }) => {
   const [users, setUsers] = useState<UserState[]>([]);
-  const [usersPage, setUsersPage] = useState(1);
 
   const { user, token } = useAuth();
   const { addToast } = useToast();
 
-  const incrementUsersPage = useCallback(() => {
-    setUsersPage(usersPage + 1);
-  }, [usersPage]);
-
-  const initializeUsersPage = useCallback(() => {
-    setUsersPage(1);
-  }, []);
-
   const getUsers = useCallback(
-    async (search: string, isPagination: boolean) => {
+    async (search: string) => {
       try {
-        const query = isPagination
-          ? `users/pagination/all?search=${search}&page=${usersPage}`
-          : 'users/all';
+        const query = `users/all?search=${search}`;
 
         const response = await api.get(query, {
           headers: {
@@ -78,7 +64,7 @@ const UserProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token, usersPage],
+    [addToast, token],
   );
 
   const insertUser = useCallback(
@@ -166,9 +152,6 @@ const UserProvider: React.FC = ({ children }) => {
     <UserContext.Provider
       value={{
         users,
-        usersPage,
-        incrementUsersPage,
-        initializeUsersPage,
         getUsers,
         insertUser,
         removeUser,
