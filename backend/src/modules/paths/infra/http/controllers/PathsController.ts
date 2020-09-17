@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ListPaginationPathsService from '@modules/paths/services/ListPaginationPathsService';
 import ListPathsService from '@modules/paths/services/ListPathsService';
 import ListFilteredPathsService from '@modules/paths/services/ListFilteredPathsService';
 import CreatePathService from '@modules/paths/services/CreatePathService';
@@ -9,21 +8,6 @@ import UpdatePathService from '@modules/paths/services/UpdatePathService';
 import DeletePathService from '@modules/paths/services/DeletePathService';
 
 export default class PathsController {
-  public async pagination(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const user_id = request.user.id;
-
-    const { page = 1 } = request.query;
-
-    const listPaths = container.resolve(ListPaginationPathsService);
-
-    const paths = await listPaths.execute(Number(page), user_id);
-
-    return response.json(paths);
-  }
-
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 

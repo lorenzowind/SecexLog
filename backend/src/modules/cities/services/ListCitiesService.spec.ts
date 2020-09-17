@@ -47,7 +47,7 @@ describe('ListCities', () => {
       longitude: -1.12467552,
     });
 
-    const response = await listCities.execute(null);
+    const response = await listCities.execute('', null);
 
     expect(response).toHaveLength(2);
   });
@@ -79,10 +79,43 @@ describe('ListCities', () => {
       longitude: -1.12467552,
     });
 
-    await listCities.execute(user_id);
+    await listCities.execute('', user_id);
 
-    const response = await listCities.execute(user_id);
+    const response = await listCities.execute('', user_id);
 
     expect(response).toHaveLength(2);
+  });
+
+  it('should be able to list all the cities by a search string', async () => {
+    const user_id = 'authenticated user id';
+    const searchCity = 'City search';
+
+    await draftCitiesRepository.create({
+      name: 'City 1',
+      city_observation: 'city observation',
+      end_flood_date: '01/09',
+      initial_flood_date: '01/07',
+      interdiction_observation: 'interdiction observation',
+      is_auditated: true,
+      is_base: false,
+      latitude: 1.35235235,
+      longitude: -1.12467552,
+    });
+
+    await draftCitiesRepository.create({
+      name: searchCity,
+      city_observation: 'city observation 2',
+      end_flood_date: '01/09',
+      initial_flood_date: '01/07',
+      interdiction_observation: 'interdiction observation 2',
+      is_auditated: true,
+      is_base: false,
+      latitude: 1.35235235,
+      longitude: -1.12467552,
+    });
+
+    const response = await listCities.execute(searchCity, user_id);
+
+    expect(response).toHaveLength(1);
   });
 });

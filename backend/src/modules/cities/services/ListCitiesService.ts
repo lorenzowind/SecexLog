@@ -16,19 +16,22 @@ class ListCitiesService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(user_id: string | null): Promise<City[]> {
+  public async execute(
+    search: string,
+    user_id: string | null,
+  ): Promise<City[]> {
     let cities;
 
     if (user_id) {
-      cities = await this.cacheProvider.recover<City[]>(
-        `cities-list:${user_id}`,
-      );
+      cities = !search
+        ? await this.cacheProvider.recover<City[]>(`cities-list:${user_id}`)
+        : null;
     }
 
     if (!cities) {
-      cities = await this.citiesRepository.findAllCities();
+      cities = await this.citiesRepository.findAllCities(search);
 
-      if (user_id) {
+      if (user_id && !search) {
         await this.cacheProvider.save(`cities-list:${user_id}`, cities);
       }
     }

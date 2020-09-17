@@ -1,38 +1,20 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ListPaginationUsersService from '@modules/users/services/ListPaginationUsersService';
 import ListUsersService from '@modules/users/services/ListUsersService';
 import CreateUserService from '@modules/users/services/CreateUserService';
 import UpdateUserService from '@modules/users/services/UpdateUserService';
 import DeleteUserService from '@modules/users/services/DeleteUserService';
 
 export default class UsersController {
-  public async pagination(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const user_id = request.user.id;
-
-    const { search = '', page = 1 } = request.query;
-
-    const listUsers = container.resolve(ListPaginationUsersService);
-
-    const users = await listUsers.execute(
-      String(search),
-      Number(page),
-      user_id,
-    );
-
-    return response.json(users);
-  }
-
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
+    const { search = '' } = request.query;
+
     const listUsers = container.resolve(ListUsersService);
 
-    const users = await listUsers.execute(user_id);
+    const users = await listUsers.execute(String(search), user_id);
 
     return response.json(users);
   }

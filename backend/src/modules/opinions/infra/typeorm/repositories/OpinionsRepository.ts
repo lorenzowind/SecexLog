@@ -14,27 +14,6 @@ class OpinionsRepository implements IOpinionsRepository {
     this.ormRepository = getRepository(Opinion);
   }
 
-  public async findAllPaginationOpinions(
-    search: string,
-    page: number,
-  ): Promise<Opinion[]> {
-    const opinions =
-      search !== ''
-        ? await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
-            where: {
-              name: Like(`%${search}%`),
-            },
-          })
-        : await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
-          });
-
-    return opinions;
-  }
-
   public async findAllOpinions(): Promise<Opinion[]> {
     return this.ormRepository.find();
   }

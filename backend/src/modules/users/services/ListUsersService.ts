@@ -17,19 +17,24 @@ class ListUsersService {
     private cacheProvider: ICacheProvider,
   ) {}
 
-  public async execute(user_id: string | null): Promise<User[]> {
+  public async execute(
+    search: string,
+    user_id: string | null,
+  ): Promise<User[]> {
     if (!user_id) {
       throw new AppError('User id does not exists.');
     }
 
-    let users = await this.cacheProvider.recover<User[]>(
-      `users-list:${user_id}`,
-    );
+    let users = !search
+      ? await this.cacheProvider.recover<User[]>(`users-list:${user_id}`)
+      : null;
 
     if (!users) {
-      users = await this.usersRepository.findAllUsers();
+      users = await this.usersRepository.findAllUsers(search);
 
-      await this.cacheProvider.save(`users-list:${user_id}`, users);
+      if (!search) {
+        await this.cacheProvider.save(`users-list:${user_id}`, users);
+      }
     }
 
     return users;

@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ListPaginationHolidaysService from '@modules/holidays/services/ListPaginationHolidaysService';
 import ListHolidaysService from '@modules/holidays/services/ListHolidaysService';
 import ListFilteredHolidaysService from '@modules/holidays/services/ListFilteredHolidaysService';
 import CreateHolidayService from '@modules/holidays/services/CreateHolidayService';
@@ -9,31 +8,14 @@ import UpdateHolidayService from '@modules/holidays/services/UpdateHolidayServic
 import DeleteHolidayService from '@modules/holidays/services/DeleteHolidayService';
 
 export default class HolidaysController {
-  public async pagination(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const user_id = request.user.id;
-
-    const { search = '', page = 1 } = request.query;
-
-    const listHolidays = container.resolve(ListPaginationHolidaysService);
-
-    const holidays = await listHolidays.execute(
-      String(search),
-      Number(page),
-      user_id,
-    );
-
-    return response.json(holidays);
-  }
-
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
+    const { search = '' } = request.query;
+
     const listHolidays = container.resolve(ListHolidaysService);
 
-    const holidays = await listHolidays.execute(user_id);
+    const holidays = await listHolidays.execute(String(search), user_id);
 
     return response.json(holidays);
   }

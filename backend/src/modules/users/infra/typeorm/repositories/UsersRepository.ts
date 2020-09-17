@@ -35,8 +35,17 @@ class UsersRepository implements IUsersRepository {
     return users;
   }
 
-  public async findAllUsers(): Promise<User[]> {
-    return this.ormRepository.find();
+  public async findAllUsers(search: string): Promise<User[]> {
+    const users =
+      search !== ''
+        ? await this.ormRepository.find({
+            where: {
+              name: Like(`%${search}%`),
+            },
+          })
+        : await this.ormRepository.find();
+
+    return users;
   }
 
   public async findById(id: string): Promise<User | undefined> {

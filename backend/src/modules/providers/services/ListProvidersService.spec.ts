@@ -50,7 +50,9 @@ describe('ListProviders', () => {
       preference_data: 'Preference data 2',
     });
 
-    await expect(listProviders.execute(null)).rejects.toBeInstanceOf(AppError);
+    await expect(listProviders.execute('', null)).rejects.toBeInstanceOf(
+      AppError,
+    );
   });
 
   it('should be able to list all the providers', async () => {
@@ -78,10 +80,41 @@ describe('ListProviders', () => {
       preference_data: 'Preference data 2',
     });
 
-    await listProviders.execute(user_id);
+    await listProviders.execute('', user_id);
 
-    const response = await listProviders.execute(user_id);
+    const response = await listProviders.execute('', user_id);
 
     expect(response).toHaveLength(2);
+  });
+
+  it('should be able to list all the providers by a search string', async () => {
+    const user_id = 'authenticated user id';
+    const searchProvider = 'Provider searching';
+
+    const modal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    await draftProvidersRepository.create({
+      name: searchProvider,
+      modal_id: modal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data 2',
+    });
+
+    const response = await listProviders.execute(searchProvider, user_id);
+
+    expect(response).toHaveLength(1);
   });
 });

@@ -14,29 +14,17 @@ class ProvidersRepository implements IProvidersRepository {
     this.ormRepository = getRepository(Provider);
   }
 
-  public async findAllPaginationProviders(
-    search: string,
-    page: number,
-  ): Promise<Provider[]> {
+  public async findAllProviders(search: string): Promise<Provider[]> {
     const providers =
       search !== ''
         ? await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
             where: {
               name: Like(`%${search}%`),
             },
           })
-        : await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
-          });
+        : await this.ormRepository.find();
 
     return providers;
-  }
-
-  public async findAllProviders(): Promise<Provider[]> {
-    return this.ormRepository.find();
   }
 
   public async findAllByModalId(modal_id: string): Promise<Provider[]> {

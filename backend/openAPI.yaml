@@ -483,9 +483,9 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ExclusiveAccess'
-  /users/pagination/all:
+  /users/all:
     get:
-      summary: Gets all users by searching and paging.
+      summary: Gets all users by optional searching.
       tags:
         - users
       parameters:
@@ -494,57 +494,6 @@ paths:
           schema:
             type: string
           description: A string to search for specific users.
-        - in: query
-          name: page
-          schema:
-            type: number
-          description: A number to control the users pagination.
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Returns a JSON array containing all users.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    name:
-                      type: string
-                      example: "New User Name"
-                    login:
-                      type: string
-                      example: "new user login"
-                    email:
-                      type: string
-                      format: email
-                      example: "newuser@email.com"
-                    position:
-                      type: string
-                      example: "user"
-                    created_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-                    updated_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-        '400':
-          $ref:  '#/components/responses/IncorrectToken'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-  /users/all:
-    get:
-      summary: Gets all users.
-      tags:
-        - users
       security:
         - bearerAuth: []
       responses:
@@ -829,9 +778,9 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ExclusiveAccess'
-  /cities/pagination/all:
+  /cities/all:
     get:
-      summary: Gets all cities by searching and paging.
+      summary: Gets all cities by optional searching.
       tags:
         - cities
       parameters:
@@ -840,65 +789,6 @@ paths:
           schema:
             type: string
           description: A string to search for specific cities.
-        - in: query
-          name: page
-          schema:
-            type: number
-          description: A number to control the cities pagination.
-      responses:
-        '200':
-          description: Returns a JSON array containing all cities.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    name:
-                      type: string
-                      example: "City Name"
-                    is_base:
-                      type: boolean
-                      example: true
-                    is_auditated:
-                      type: boolean
-                      example: true
-                    latitude:
-                      type: number
-                      example: 1.13452453
-                    longitude:
-                      type: number
-                      example: -1.47354734
-                    initial_flood_date:
-                      type: string
-                      example: "10/06"
-                    end_flood_date:
-                      type: string
-                      example: "10/08"
-                    interdiction_observation:
-                      type: string
-                      example: "Interdiction observation"
-                    city_observation:
-                      type: string
-                      example: "City observation"
-                    created_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-                    updated_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-  /cities/all:
-    get:
-      summary: Gets all cities.
-      tags:
-        - cities
       responses:
         '200':
           description: Returns a JSON array containing all cities.
@@ -1161,9 +1051,9 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ExclusiveAccess'
-  /holidays/pagination/all:
+  /holidays/all:
     get:
-      summary: Gets all holidays by searching and paging.
+      summary: Gets all holidays by optional searching.
       tags:
         - holidays
       parameters:
@@ -1172,57 +1062,6 @@ paths:
           schema:
             type: string
           description: A string to search for specific holidays.
-        - in: query
-          name: page
-          schema:
-            type: number
-          description: A number to control the holidays pagination.
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Returns a JSON array containing all holidays.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    name:
-                      type: string
-                      example: "Holiday Name"
-                    city_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    initial_date:
-                      type: string
-                      example: "25/12"
-                    end_date:
-                      type: string
-                      example: "25/12"
-                    created_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-                    updated_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-        '400':
-          $ref:  '#/components/responses/IncorrectToken'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-  /holidays/all:
-    get:
-      summary: Gets all holidays.
-      tags:
-        - holidays
       security:
         - bearerAuth: []
       responses:
@@ -1494,9 +1333,9 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  /modals/pagination/all:
+  /modals/all:
     get:
-      summary: Gets all modals by searching and paging.
+      summary: Gets all modals by optional searching.
       tags:
         - modals
       parameters:
@@ -1505,59 +1344,6 @@ paths:
           schema:
             type: string
           description: A string to search for specific modals.
-        - in: query
-          name: page
-          schema:
-            type: number
-          description: A number to control the modals pagination.
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Returns a JSON array containing all modals.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    name:
-                      type: string
-                      example: "Modal Name"
-                    image:
-                      type: string
-                      example: "Modal image path"
-                    is_safe:
-                      type: boolean
-                      example: true
-                    is_cheap:
-                      type: boolean
-                      example: true
-                    is_fast:
-                      type: boolean
-                      example: true
-                    created_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-                    updated_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-        '400':
-          $ref:  '#/components/responses/IncorrectToken'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-  /modals/all:
-    get:
-      summary: Gets all modals.
-      tags:
-        - modals
       security:
         - bearerAuth: []
       responses:
@@ -1798,9 +1584,9 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ExclusiveAccess'
-  /providers/pagination/all:
+  /providers/all:
     get:
-      summary: Gets all providers by searching and paging.
+      summary: Gets all providers by optional searching.
       tags:
         - providers
       parameters:
@@ -1814,59 +1600,6 @@ paths:
           schema:
             type: number
           description: A number to control the providers pagination.
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Returns a JSON array containing all providers.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    name:
-                      type: string
-                      example: "Provider Name"
-                    phone_number:
-                      type: string
-                      example: "(092)99999-9999"
-                    email:
-                      type: string
-                      format: email
-                      example: "provider@email.com"
-                    modal_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    preference:
-                      type: string
-                      example: "CPF"
-                    preference_data:
-                      type: string
-                      example: "999.999.999-99"
-                    created_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-                    updated_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-        '400':
-          $ref:  '#/components/responses/IncorrectToken'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
-  /providers/all:
-    get:
-      summary: Gets all providers.
-      tags:
-        - providers
       security:
         - bearerAuth: []
       responses:
@@ -2254,85 +1987,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ExclusiveAccess'
-  /paths/pagination/all:
-    get:
-      summary: Gets all paths by searching and paging.
-      tags:
-        - paths
-      parameters:
-        - in: query
-          name: page
-          schema:
-            type: number
-          description: A number to control the paths pagination.
-      security:
-        - bearerAuth: []
-      responses:
-        '200':
-          description: Returns a JSON array containing all paths.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    origin_city_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    destination_city_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    modal_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    provider_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    boarding_days:
-                      type: string
-                      example: "Segunda-feira, Quarta-feira"
-                    boarding_times:
-                      type: string
-                      example: "12:30, 13:30"
-                    duration:
-                      type: number
-                      example: 120
-                    mileage:
-                      type: number
-                      example: 60
-                    cost:
-                      type: number
-                      example: 99.99
-                    boarding_place:
-                      type: string
-                      example: "New Boarding Place"
-                    departure_place:
-                      type: string
-                      example: "New Departure Place"
-                    is_hired:
-                      type: boolean
-                      example: false
-                    created_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-                    updated_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-        '400':
-          $ref:  '#/components/responses/IncorrectToken'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
   /paths/all:
     get:
       summary: Gets all paths.
@@ -2645,56 +2299,6 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '403':
           $ref: '#/components/responses/ExclusiveAccess'
-  /opinions/pagination/all:
-    get:
-      summary: Gets all opinions.
-      tags:
-        - opinions
-      security:
-        - bearerAuth: []
-      parameters:
-        - in: query
-          name: search
-          schema:
-            type: string
-          description: A string to search for specific opinions.
-        - in: query
-          name: page
-          schema:
-            type: number
-          description: A number to control the opinions pagination.
-      responses:
-        '200':
-          description: Returns a JSON array containing all opinions.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    title:
-                      type: string
-                      example: "Opinion Title"
-                    description:
-                      type: string
-                      example: "Opinion description"
-                    created_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-                    updated_at:
-                      type: string
-                      format: dateformat
-                      example: "2020-07-02T21:57:00.421Z"
-        '400':
-          $ref:  '#/components/responses/IncorrectToken'
-        '401':
-          $ref: '#/components/responses/UnauthorizedError'
   /opinions/all:
     get:
       summary: Gets all opinions.

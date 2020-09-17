@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ListPaginationCitiesService from '@modules/cities/services/ListPaginationCitiesService';
 import ListCitiesService from '@modules/cities/services/ListCitiesService';
 import ListRelatedCitiesService from '@modules/cities/services/ListRelatedCitiesService';
 import CreateCityService from '@modules/cities/services/CreateCityService';
@@ -9,31 +8,14 @@ import UpdateCityService from '@modules/cities/services/UpdateCityService';
 import DeleteCityService from '@modules/cities/services/DeleteCityService';
 
 export default class CitiesController {
-  public async pagination(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const user_id = request.user.id;
-
-    const { search = '', page = 1 } = request.query;
-
-    const listCities = container.resolve(ListPaginationCitiesService);
-
-    const cities = await listCities.execute(
-      String(search),
-      Number(page),
-      user_id,
-    );
-
-    return response.json(cities);
-  }
-
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
+    const { search = '' } = request.query;
+
     const listCities = container.resolve(ListCitiesService);
 
-    const cities = await listCities.execute(user_id);
+    const cities = await listCities.execute(String(search), user_id);
 
     return response.json(cities);
   }

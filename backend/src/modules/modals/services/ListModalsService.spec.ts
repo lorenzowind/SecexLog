@@ -41,7 +41,7 @@ describe('ListModal', () => {
       is_fast: true,
     });
 
-    await expect(listModals.execute(null)).rejects.toBeInstanceOf(AppError);
+    await expect(listModals.execute('', null)).rejects.toBeInstanceOf(AppError);
   });
 
   it('should be able to list all the modals', async () => {
@@ -63,10 +63,34 @@ describe('ListModal', () => {
       is_fast: true,
     });
 
-    await listModals.execute(user_id);
+    await listModals.execute('', user_id);
 
-    const response = await listModals.execute(user_id);
+    const response = await listModals.execute('', user_id);
 
     expect(response).toHaveLength(2);
+  });
+  it('should be able to list all the modals by a search string', async () => {
+    const user_id = 'authenticated user id';
+    const searchModal = 'Modal searching';
+
+    await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    await draftModalsRepository.create({
+      name: searchModal,
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const response = await listModals.execute(searchModal, user_id);
+
+    expect(response).toHaveLength(1);
   });
 });

@@ -1,30 +1,11 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import ListPaginationOpinionsService from '@modules/opinions/services/ListPaginationOpinionsService';
 import ListOpinionsService from '@modules/opinions/services/ListOpinionsService';
 import CreateOpinionService from '@modules/opinions/services/CreateOpinionService';
 import DeleteOpinionService from '@modules/opinions/services/DeleteOpinionService';
 
 export default class OpinionsController {
-  public async pagination(
-    request: Request,
-    response: Response,
-  ): Promise<Response> {
-    const user_id = request.user.id;
-    const { search = '', page = 1 } = request.query;
-
-    const listOpinions = container.resolve(ListPaginationOpinionsService);
-
-    const opinions = await listOpinions.execute(
-      String(search),
-      Number(page),
-      user_id,
-    );
-
-    return response.json(opinions);
-  }
-
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 

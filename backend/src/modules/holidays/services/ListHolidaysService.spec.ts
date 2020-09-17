@@ -36,7 +36,9 @@ describe('ListHolidays', () => {
       end_date: '10/08',
     });
 
-    await expect(listHolidays.execute(null)).rejects.toBeInstanceOf(AppError);
+    await expect(listHolidays.execute('', null)).rejects.toBeInstanceOf(
+      AppError,
+    );
   });
 
   it('should be able to list all the holidays', async () => {
@@ -54,10 +56,31 @@ describe('ListHolidays', () => {
       end_date: '10/08',
     });
 
-    await listHolidays.execute(user_id);
+    await listHolidays.execute('', user_id);
 
-    const response = await listHolidays.execute(user_id);
+    const response = await listHolidays.execute('', user_id);
 
     expect(response).toHaveLength(2);
+  });
+
+  it('should be able to list all the holidays by a search string', async () => {
+    const user_id = 'authenticated user id';
+    const searchHoliday = 'Holiday search';
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 1',
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    await draftHolidaysRepository.create({
+      name: searchHoliday,
+      initial_date: '09/08',
+      end_date: '10/08',
+    });
+
+    const response = await listHolidays.execute(searchHoliday, user_id);
+
+    expect(response).toHaveLength(1);
   });
 });

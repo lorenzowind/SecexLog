@@ -38,11 +38,35 @@ describe('ListUsers', () => {
       password: '123456',
     });
 
-    await listUsers.execute(user.id);
+    await listUsers.execute('', user.id);
 
-    const response = await listUsers.execute(user.id);
+    const response = await listUsers.execute('', user.id);
 
     expect(response).toHaveLength(2);
+  });
+
+  it('should be able to list all the users by a search string', async () => {
+    const searchUser = 'User searching';
+
+    const user = await draftUsersRepository.create({
+      name: 'John Doe',
+      login: 'john doe',
+      email: 'johndoe@example.com',
+      position: 'Administrador',
+      password: '123456',
+    });
+
+    await draftUsersRepository.create({
+      name: searchUser,
+      login: 'john doe II',
+      email: 'johndoeII@example.com',
+      position: 'Administrador',
+      password: '123456',
+    });
+
+    const response = await listUsers.execute(searchUser, user.id);
+
+    expect(response).toHaveLength(1);
   });
 
   it('should not be able to list users without authentication', async () => {
@@ -62,6 +86,6 @@ describe('ListUsers', () => {
       password: '123456',
     });
 
-    await expect(listUsers.execute(null)).rejects.toBeInstanceOf(AppError);
+    await expect(listUsers.execute('', null)).rejects.toBeInstanceOf(AppError);
   });
 });

@@ -14,29 +14,17 @@ class ModalsRepository implements IModalsRepository {
     this.ormRepository = getRepository(Modal);
   }
 
-  public async findAllPaginationModals(
-    search: string,
-    page: number,
-  ): Promise<Modal[]> {
+  public async findAllModals(search: string): Promise<Modal[]> {
     const modals =
       search !== ''
         ? await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
             where: {
               name: Like(`%${search}%`),
             },
           })
-        : await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
-          });
+        : await this.ormRepository.find();
 
     return modals;
-  }
-
-  public async findAllModals(): Promise<Modal[]> {
-    return this.ormRepository.find();
   }
 
   public async findByName(name: string): Promise<Modal | undefined> {
