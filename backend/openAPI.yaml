@@ -18,7 +18,7 @@ tags:
   - name: providers
   - name: paths
   - name: opinions
-  - name: search
+  - name: searches
 
 components:
   securitySchemes:
@@ -2373,151 +2373,163 @@ paths:
           $ref:  '#/components/responses/IncorrectToken'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
-  /search/manual:
+  /searches/manual:
     post:
       summary: Search for paths possibilities.
       tags:
-        - search
+        - searches
       requestBody:
         required: true
         content:
           application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    origin_city_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    destination_city_id:
-                      type: string
-                      format: uuid
-                      example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
-                    date:
-                      type: string
-                      example: "17/09/2020"
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        origin_city_id:
+                          type: string
+                          format: uuid
+                          example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                        destination_city_id:
+                          type: string
+                          format: uuid
+                          example: "3c68c90a-009b-4c59-9c7f-dab2774e9a57"
+                        date:
+                          type: string
+                          example: "17/09/2020"
       responses:
         '200':
           description: Returns a JSON containing the paths possibilities.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    general_info:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
                       type: object
                       properties:
-                        origin_city_name:
-                          type: string
-                          example: "Origin City Name"
-                        destination_cities_names:
+                        general_info:
+                          type: object
+                          properties:
+                            origin_city_name:
+                              type: string
+                              example: "Origin City Name"
+                            destination_cities_names:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  destination_city_name:
+                                    type: string
+                                    example: "Destination City Name"
+                            initial_date:
+                              type: string
+                              example: "17/09/2020"
+                            final_date:
+                              type: string
+                              example: "17/09/2020"
+                        paths_result:
                           type: array
                           items:
-                            type: string
-                            example: "Destination City Name"
-                        initial_date:
-                          type: string
-                          example: "17/09/2020"
-                        final_date:
-                          type: string
-                          example: "17/09/2020"
-                    paths_result:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          price:
-                            type: number
-                            example: 800
-                          util_days:
-                            type: number
-                            example: 5
-                          distance:
-                            type: number
-                            example: 100
-                          initial_date:
-                            type: string
-                            example: "17/09/2020"
-                          final_date:
-                            type: string
-                            example: "17/09/2020"
-                          observations:
-                            type: array
-                            items:
-                              type: string
-                              example: "City observation"
-                          paths:
-                            type: array
-                            items:
-                              type: object
-                              properties:
-                                selected_period:
+                            type: object
+                            properties:
+                              price:
+                                type: number
+                                example: 800
+                              util_days:
+                                type: number
+                                example: 5
+                              distance:
+                                type: number
+                                example: 100
+                              initial_date:
+                                type: string
+                                example: "17/09/2020"
+                              final_date:
+                                type: string
+                                example: "17/09/2020"
+                              observations:
+                                type: array
+                                items:
                                   type: object
                                   properties:
-                                    selected_date:
+                                    obeservation:
                                       type: string
-                                      example: "17/09/2020"
-                                    selected_init_time:
-                                      type: string
-                                      example: "10:00"
-                                    selected_final_time:
-                                      type: string
-                                      example: "10:30"
-                                    selected_init_week_day:
-                                      type: string
-                                      example: "qui"
-                                    selected_final_week_day:
-                                      type: string
-                                      example: "qui"
-                                cities_location:
+                                      example: "City observation"
+                              paths:
+                                type: array
+                                items:
                                   type: object
                                   properties:
-                                    origin_city_latitude:
-                                        type: string
-                                        example: "1.325235"
-                                    origin_city_longitude:
-                                        type: string
-                                        example: "1.325235"
-                                    destination_city_latitude:
-                                        type: string
-                                        example: "1.325235"
-                                    destination_city_longitude:
-                                        type: string
-                                        example: "1.325235"
-                                path_data:
-                                  type: object
-                                  properties:
-                                    origin_city_name:
-                                      type: string
-                                      example: "Origin City Name"
-                                    destination_city_name:
-                                      type: string
-                                      example: "Destination City Name"
-                                    modal_name:
-                                      type: string
-                                      example: "Modal Name"
-                                    modal_image:
-                                      type: string
-                                      example: Modal image name
-                                    provider_name:
-                                      type: string
-                                      example: "Provider Name"
-                                    duration:
-                                      type: number
-                                      example: 120
-                                    mileage:
-                                      type: number
-                                      example: 60
-                                    cost:
-                                      type: number
-                                      example: 99.99
-                                    boarding_place:
-                                      type: string
-                                      example: "Boarding Place"
-                                    departure_place:
-                                      type: string
-                                      example: "Departure Place"
+                                    selected_period:
+                                      type: object
+                                      properties:
+                                        selected_date:
+                                          type: string
+                                          example: "17/09/2020"
+                                        selected_initial_time:
+                                          type: string
+                                          example: "10:00"
+                                        selected_final_time:
+                                          type: string
+                                          example: "10:30"
+                                        selected_initial_week_day:
+                                          type: string
+                                          example: "qui"
+                                        selected_final_week_day:
+                                          type: string
+                                          example: "qui"
+                                    cities_location:
+                                      type: object
+                                      properties:
+                                        origin_city_latitude:
+                                            type: string
+                                            example: "1.325235"
+                                        origin_city_longitude:
+                                            type: string
+                                            example: "1.325235"
+                                        destination_city_latitude:
+                                            type: string
+                                            example: "1.325235"
+                                        destination_city_longitude:
+                                            type: string
+                                            example: "1.325235"
+                                    path_data:
+                                      type: object
+                                      properties:
+                                        origin_city_name:
+                                          type: string
+                                          example: "Origin City Name"
+                                        destination_city_name:
+                                          type: string
+                                          example: "Destination City Name"
+                                        modal_name:
+                                          type: string
+                                          example: "Modal Name"
+                                        modal_image:
+                                          type: string
+                                          example: Modal image name
+                                        provider_name:
+                                          type: string
+                                          example: "Provider Name"
+                                        duration:
+                                          type: number
+                                          example: 120
+                                        mileage:
+                                          type: number
+                                          example: 60
+                                        cost:
+                                          type: number
+                                          example: 99.99
+                                        boarding_place:
+                                          type: string
+                                          example: "Boarding Place"
+                                        departure_place:
+                                          type: string
+                                          example: "Departure Place"

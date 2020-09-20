@@ -30,6 +30,9 @@ import ProvidersRepository from '@modules/providers/infra/typeorm/repositories/P
 import IPathsRepository from '@modules/paths/repositories/IPathsRepository';
 import PathsRepository from '@modules/paths/infra/typeorm/repositories/PathsRepository';
 
+import ISearchesRepository from '@modules/searches/repositories/ISearchesRepository';
+import SearchesRepository from '@modules/searches/infra/typeorm/repositories/SearchesRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -73,4 +76,9 @@ container.registerSingleton<IProvidersRepository>(
 container.registerSingleton<IPathsRepository>(
   'PathsRepository',
   PathsRepository,
+);
+
+container.registerSingleton<ISearchesRepository>(
+  'SearchesRepository',
+  SearchesRepository,
 );

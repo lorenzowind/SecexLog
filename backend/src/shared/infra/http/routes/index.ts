@@ -10,7 +10,8 @@ import opinionsRouter from '@modules/opinions/infra/http/routes/opinions.routes'
 import modalsRouter from '@modules/modals/infra/http/routes/modals.routes';
 import providersRouter from '@modules/providers/infra/http/routes/providers.routes';
 import pathsRouter from '@modules/paths/infra/http/routes/paths.routes';
-import searchRouter from '@modules/search/infra/http/routes/search.routes'
+
+import searchesRouter from '@modules/searches/infra/http/routes/searches.routes';
 
 const routes = Router();
 
@@ -24,6 +25,7 @@ routes.use('/opinions', opinionsRouter);
 routes.use('/modals', modalsRouter);
 routes.use('/providers', providersRouter);
 routes.use('/paths', pathsRouter);
-routes.use('/search',searchRouter)
+
+routes.use('/searches', searchesRouter);
 
 export default routes;
