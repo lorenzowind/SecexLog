@@ -14,8 +14,6 @@ opinionsRouter.get('/all', ensureAuthenticated, opinionsController.show);
 
 opinionsRouter.post(
   '/',
-  ensureAuthenticated,
-  ensureIsAdmin,
   celebrate({
     [Segments.BODY]: {
       title: Joi.string().required(),

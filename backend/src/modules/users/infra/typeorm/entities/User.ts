@@ -6,8 +6,6 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 
-import { Exclude } from 'class-transformer';
-
 @Entity('users')
 class User {
   @PrimaryColumn()
@@ -23,10 +21,9 @@ class User {
   email: string;
 
   @Column()
-  position: 'user' | 'admin';
+  position: 'Usuário' | 'Administrador';
 
   @Column()
-  @Exclude()
   password: string;
 
   @CreateDateColumn()

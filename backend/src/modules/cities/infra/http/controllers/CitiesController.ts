@@ -11,15 +11,11 @@ export default class CitiesController {
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    const { search = '', page = 1 } = request.query;
+    const { search = '' } = request.query;
 
     const listCities = container.resolve(ListCitiesService);
 
-    const cities = await listCities.execute(
-      String(search),
-      Number(page),
-      user_id,
-    );
+    const cities = await listCities.execute(String(search), user_id);
 
     return response.json(cities);
   }

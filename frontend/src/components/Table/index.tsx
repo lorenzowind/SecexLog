@@ -1,13 +1,13 @@
 import React from 'react';
 
+import { ModuleName } from '../../pages/CRUD/ListingData';
+
 import { Container } from './styles';
 
-export interface Props {
-  module: 'usuário' | 'cidade' | 'feriado' | 'prestador' | 'modal' | 'trajeto';
-}
+export type Props = ModuleName;
 
-const Table: React.FC<Props> = ({ module, children, ...rest }) => (
-  <Container module={module} {...rest}>
+const Table: React.FC<Props> = ({ name, children, ...rest }) => (
+  <Container name={name} {...rest}>
     {children}
   </Container>
 );

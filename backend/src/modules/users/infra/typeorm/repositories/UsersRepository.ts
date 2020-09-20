@@ -14,7 +14,10 @@ class UsersRepository implements IUsersRepository {
     this.ormRepository = getRepository(User);
   }
 
-  public async findAllUsers(search: string, page: number): Promise<User[]> {
+  public async findAllPaginationUsers(
+    search: string,
+    page: number,
+  ): Promise<User[]> {
     const users =
       search !== ''
         ? await this.ormRepository.find({
@@ -28,6 +31,19 @@ class UsersRepository implements IUsersRepository {
             skip: (page - 1) * 10,
             take: 10,
           });
+
+    return users;
+  }
+
+  public async findAllUsers(search: string): Promise<User[]> {
+    const users =
+      search !== ''
+        ? await this.ormRepository.find({
+            where: {
+              name: Like(`%${search}%`),
+            },
+          })
+        : await this.ormRepository.find();
 
     return users;
   }

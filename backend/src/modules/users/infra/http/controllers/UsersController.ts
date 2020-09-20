@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { classToClass } from 'class-transformer';
 
 import ListUsersService from '@modules/users/services/ListUsersService';
 import CreateUserService from '@modules/users/services/CreateUserService';
@@ -11,17 +10,13 @@ export default class UsersController {
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
 
-    const { search = '', page = 1 } = request.query;
+    const { search = '' } = request.query;
 
     const listUsers = container.resolve(ListUsersService);
 
-    const users = await listUsers.execute(
-      String(search),
-      Number(page),
-      user_id,
-    );
+    const users = await listUsers.execute(String(search), user_id);
 
-    return response.json(classToClass(users));
+    return response.json(users);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
@@ -37,7 +32,7 @@ export default class UsersController {
       password,
     });
 
-    return response.json(classToClass(user));
+    return response.json(user);
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
@@ -55,7 +50,7 @@ export default class UsersController {
       password,
     });
 
-    return response.json(classToClass(user));
+    return response.json(user);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

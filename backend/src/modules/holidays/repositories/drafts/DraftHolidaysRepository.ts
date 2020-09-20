@@ -9,15 +9,20 @@ import Holiday from '@modules/holidays/infra/typeorm/entities/Holiday';
 export default class DraftHolidaysRepository implements IHolidaysRepository {
   private holidays: Holiday[] = [];
 
-  public async findAllHolidays(
-    search: string,
-    page: number,
-  ): Promise<Holiday[]> {
+  public async findAllHolidays(search: string): Promise<Holiday[]> {
     const holidays = search
       ? this.holidays.filter(findHoliday => findHoliday.name.includes(search))
       : this.holidays;
 
-    return holidays.slice((page - 1) * 10, page * 10);
+    return holidays;
+  }
+
+  public async findAllByCityId(city_id: string): Promise<Holiday[]> {
+    const filteredHolidays = this.holidays.filter(
+      findHoliday => findHoliday.city_id === city_id,
+    );
+
+    return filteredHolidays;
   }
 
   public async findByName(name: string): Promise<Holiday | undefined> {

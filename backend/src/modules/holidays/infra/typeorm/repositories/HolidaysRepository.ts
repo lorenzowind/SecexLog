@@ -14,25 +14,25 @@ class HolidaysRepository implements IHolidaysRepository {
     this.ormRepository = getRepository(Holiday);
   }
 
-  public async findAllHolidays(
-    search: string,
-    page: number,
-  ): Promise<Holiday[]> {
+  public async findAllHolidays(search: string): Promise<Holiday[]> {
     const holidays =
       search !== ''
         ? await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
             where: {
               name: Like(`%${search}%`),
             },
           })
-        : await this.ormRepository.find({
-            skip: (page - 1) * 10,
-            take: 10,
-          });
+        : await this.ormRepository.find();
 
     return holidays;
+  }
+
+  public async findAllByCityId(city_id: string): Promise<Holiday[]> {
+    const filteredHolidays = this.ormRepository.find({
+      where: { city_id },
+    });
+
+    return filteredHolidays;
   }
 
   public async findByName(name: string): Promise<Holiday | undefined> {

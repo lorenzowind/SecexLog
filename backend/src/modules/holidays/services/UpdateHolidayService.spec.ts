@@ -48,11 +48,10 @@ describe('UpdateHoliday', () => {
   });
 
   it('should not be able to update from a non existing holiday', async () => {
-    expect(
+    await expect(
       updateHoliday.execute({
         id: 'non existing holiday',
         name: 'New Holiday 1',
-
         initial_date: '11/08',
         end_date: '12/08',
       }),

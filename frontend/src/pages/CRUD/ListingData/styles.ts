@@ -21,6 +21,8 @@ export const Container = styled.div`
 `;
 
 export const DataSection = styled.div`
+  position: relative;
+
   h1 {
     color: #292eec;
     font-size: 24px;

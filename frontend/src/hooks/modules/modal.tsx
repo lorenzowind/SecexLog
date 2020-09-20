@@ -7,68 +7,65 @@ import { useToast } from '../toast';
 
 export interface ModalOperationsData {
   name: string;
-  safety: boolean;
-  cost: boolean;
-  fast: boolean;
-  imgUrl?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  image: string;
+  is_safe: boolean;
+  is_cheap: boolean;
+  is_fast: boolean;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface ModalState extends ModalOperationsData {
-  id: number;
+  id: string;
 }
 
 interface ModalContextData {
   modals: ModalState[];
-  setSearchModals(searchCity: string): void;
-  getModals(): Promise<void>;
+  getModals(search: string): Promise<void>;
   insertModal(modal: ModalOperationsData): Promise<void>;
-  updateModal(id: number, modal: ModalOperationsData): Promise<void>;
-  removeModal(id: number): Promise<void>;
+  updateModal(id: string, modal: ModalOperationsData): Promise<void>;
+  removeModal(id: string): Promise<void>;
 }
 
 const ModalContext = createContext<ModalContextData>({} as ModalContextData);
 
 const ModalProvider: React.FC = ({ children }) => {
   const [modals, setModals] = useState<ModalState[]>([]);
-  const [search, setSearch] = useState('');
 
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const { addToast } = useToast();
 
-  const setSearchModals = useCallback(searchModal => {
-    setSearch(searchModal);
-  }, []);
+  const getModals = useCallback(
+    async (search: string) => {
+      try {
+        const query = `modals/all?search=${search}`;
 
-  const getModals = useCallback(async () => {
-    try {
-      const query = search ? `modals/${search}` : 'modals';
+        const response = await api.get(query, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-      const response = await api.get(query, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        if (response) {
+          setModals(response.data);
 
-      if (response) {
-        setModals(response.data);
-
-        if (search && response.data.length === 0) {
-          addToast({
-            type: 'info',
-            title: 'Nenhum modal encontrado',
-          });
+          if (search && response.data.length === 0) {
+            addToast({
+              type: 'info',
+              title: 'Nenhum modal encontrado',
+            });
+          }
         }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na listagem',
+          description: 'Ocorreu um erro na listagem dos modais.',
+        });
       }
-    } catch (err) {
-      addToast({
-        type: 'error',
-        title: 'Erro na listagem',
-        description: 'Ocorreu um erro na listagem dos modais.',
-      });
-    }
-  }, [addToast, search, token]);
+    },
+    [addToast, token],
+  );
 
   const insertModal = useCallback(
     async (modal: ModalOperationsData) => {
@@ -76,6 +73,7 @@ const ModalProvider: React.FC = ({ children }) => {
         const response = await api.post('modals', modal, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -93,15 +91,16 @@ const ModalProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const updateModal = useCallback(
-    async (id: number, modal: ModalOperationsData) => {
+    async (id: string, modal: ModalOperationsData) => {
       try {
         const response = await api.put(`modals/${id}`, modal, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -119,15 +118,16 @@ const ModalProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const removeModal = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         const response = await api.delete(`modals/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -145,14 +145,13 @@ const ModalProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   return (
     <ModalContext.Provider
       value={{
         modals,
-        setSearchModals,
         getModals,
         insertModal,
         removeModal,

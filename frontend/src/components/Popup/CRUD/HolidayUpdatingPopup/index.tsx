@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -40,12 +39,11 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
 
-  const [isNewDate, setIsNewDate] = useState(!holiday.init);
+  const [isNewDate, setIsNewDate] = useState(!holiday.initial_date);
   const [positionateDate, setPositionateDate] = useState(false);
   const [initDate, setInitDate] = useState('');
   const [endDate, setEndDate] = useState('');
 
-  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [defaultSelectedCity, setDefaultSelectedCity] = useState('');
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -55,7 +53,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
   const { cities, getCities } = useCity();
 
   const handleRefreshHolidays = useCallback(async () => {
-    await getHolidays().then(() => {
+    await getHolidays('').then(() => {
       setLoadingPartial(false);
       setHolidayUpdatingPopupActive(false);
     });
@@ -73,29 +71,29 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
         if (isNewDate) {
           if (type === 'Nacional') {
             schema = Yup.object().shape({
-              nome: Yup.string().required('Nome obrigatório'),
-              init: Yup.string().required('Data de início obrigatória'),
-              end: Yup.string().required('Data de término obrigatória'),
+              name: Yup.string().required('Nome obrigatório'),
+              initial_date: Yup.string().required('Data de início obrigatória'),
+              end_date: Yup.string().required('Data de término obrigatória'),
             });
           } else {
             schema = Yup.object().shape({
-              nome: Yup.string().required('Nome obrigatório'),
-              cidade: Yup.mixed().test('match', 'Cidade obrigatória', () => {
-                return data.cidade !== 'Selecione uma cidade';
+              name: Yup.string().required('Nome obrigatório'),
+              city_id: Yup.mixed().test('match', 'Cidade obrigatória', () => {
+                return data.city_id !== 'Selecione uma cidade';
               }),
-              init: Yup.string().required('Data de início obrigatória'),
-              end: Yup.string().required('Data de término obrigatória'),
+              initial_date: Yup.string().required('Data de início obrigatória'),
+              end_date: Yup.string().required('Data de término obrigatória'),
             });
           }
         } else if (type === 'Nacional') {
           schema = Yup.object().shape({
-            nome: Yup.string().required('Nome obrigatório'),
+            name: Yup.string().required('Nome obrigatório'),
           });
         } else {
           schema = Yup.object().shape({
-            nome: Yup.string().required('Nome obrigatório'),
-            cidade: Yup.mixed().test('match', 'Cidade obrigatória', () => {
-              return data.cidade !== 'Selecione uma cidade';
+            name: Yup.string().required('Nome obrigatório'),
+            city_id: Yup.mixed().test('match', 'Cidade obrigatória', () => {
+              return data.city_id !== 'Selecione uma cidade';
             }),
           });
         }
@@ -104,39 +102,32 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
           abortEarly: false,
         });
 
-        let auxInitDate = initDate;
+        let auxInitialDate = initDate;
         let auxEndDate = endDate;
 
         if (isNewDate) {
-          auxInitDate = data.init;
-          auxEndDate = data.end;
+          auxInitialDate = data.initial_date;
+          auxEndDate = data.end_date;
         } else if (!isNewDate) {
-          auxInitDate = holiday.init ? holiday.init : '';
-          auxEndDate = holiday.end ? holiday.end : '';
+          auxInitialDate = holiday.initial_date ? holiday.initial_date : '';
+          auxEndDate = holiday.end_date ? holiday.end_date : '';
         }
 
         const holidayData: HolidayOperationsData = {
-          nome: data.nome,
-          national: type === 'Nacional',
-          init: auxInitDate,
-          end: auxEndDate,
+          name: data.name,
+          initial_date: auxInitialDate,
+          end_date: auxEndDate,
         };
 
         if (type === 'Específico') {
-          Object.assign(holidayData, { cidade: data.cidade });
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { id, city_id, createdAt, updatedAt, ...auxHoliday } = holiday;
-
-        if (!isEqual(holidayData, auxHoliday)) {
-          await updateHoliday(id, holidayData).then(() => {
-            handleRefreshHolidays();
+          Object.assign(holidayData, {
+            city_id: cities.find(city => city.name === data.city_id)?.id,
           });
-        } else {
-          setLoadingPartial(false);
-          setHolidayUpdatingPopupActive(false);
         }
+
+        await updateHoliday(holiday.id, holidayData).then(() => {
+          handleRefreshHolidays();
+        });
       } catch (err) {
         setLoadingPartial(false);
 
@@ -148,12 +139,12 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
       }
     },
     [
+      cities,
       endDate,
       handleRefreshHolidays,
       holiday,
       initDate,
       isNewDate,
-      setHolidayUpdatingPopupActive,
       type,
       updateHoliday,
     ],
@@ -168,20 +159,16 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getCities().then(() => {
+    await getCities('').then(() => {
       setLoadingPartial(false);
     });
   }, [getCities]);
 
   useEffect(() => {
-    setCitiesSelect(cities.map(city => city.nome));
-
     const foundCity = cities.find(city => city.id === holiday.city_id);
 
     if (foundCity) {
-      setDefaultSelectedCity(foundCity.nome);
-      // eslint-disable-next-line no-param-reassign
-      holiday.cidade = foundCity.nome;
+      setDefaultSelectedCity(foundCity.name);
     } else {
       setDefaultSelectedCity('Selecione cidade');
     }
@@ -217,7 +204,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
               <Form ref={formRef} onSubmit={handleUpdateHoliday}>
                 <div>
                   <strong>Nome</strong>
-                  <Input name="nome" type="text" defaultValue={holiday.nome} />
+                  <Input name="name" type="text" defaultValue={holiday.name} />
                 </div>
 
                 {type === 'Específico' && (
@@ -225,7 +212,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                     <strong>Cidade</strong>
                     <Select
                       value={String(defaultSelectedCity)}
-                      name="cidade"
+                      name="city_id"
                       onChange={e => setDefaultSelectedCity(e.target.value)}
                     >
                       <option value="Selecione cidade" disabled>
@@ -237,14 +224,14 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                       >
                         {defaultSelectedCity}
                       </option>
-                      {citiesSelect
-                        .filter(city => city !== defaultSelectedCity)
+                      {cities
+                        .filter(city => city.name !== defaultSelectedCity)
                         .map(differentCity => (
                           <option
-                            key={String(differentCity)}
-                            value={String(differentCity)}
+                            key={differentCity.id}
+                            value={differentCity.name}
                           >
-                            {differentCity}
+                            {differentCity.name}
                           </option>
                         ))}
                     </Select>
@@ -256,7 +243,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                   <>
                     <aside>
                       <Input
-                        name="init"
+                        name="initial_date"
                         type="text"
                         mask="99/99"
                         onChangeValue={setInitDate}
@@ -264,7 +251,7 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                       />
                       <img src={IconGo} alt="Go" />
                       <Input
-                        name="end"
+                        name="end_date"
                         type="text"
                         mask="99/99"
                         onChangeValue={setEndDate}
@@ -324,9 +311,9 @@ const HolidayUpdatingPopup: React.FC<Props> = ({
                         <h4>X</h4>
                       </button>
                       <h2>
-                        {holiday.init &&
-                          holiday.init.substring(0, 5).concat(' até ')}
-                        {holiday.end && holiday.end.substring(0, 5)}
+                        {holiday.initial_date &&
+                          holiday.initial_date.substring(0, 5).concat(' até ')}
+                        {holiday.end_date && holiday.end_date.substring(0, 5)}
                       </h2>
                     </nav>
                   </>

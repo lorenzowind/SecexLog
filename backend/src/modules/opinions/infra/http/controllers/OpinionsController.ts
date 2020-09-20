@@ -8,15 +8,10 @@ import DeleteOpinionService from '@modules/opinions/services/DeleteOpinionServic
 export default class OpinionsController {
   public async show(request: Request, response: Response): Promise<Response> {
     const user_id = request.user.id;
-    const { search = '', page = 1 } = request.query;
 
     const listOpinions = container.resolve(ListOpinionsService);
 
-    const opinions = await listOpinions.execute(
-      String(search),
-      Number(page),
-      user_id,
-    );
+    const opinions = await listOpinions.execute(user_id);
 
     return response.json(opinions);
   }

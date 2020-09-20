@@ -20,7 +20,6 @@ class ListHolidaysService {
 
   public async execute(
     search: string,
-    page: number,
     user_id: string | null,
   ): Promise<Holiday[]> {
     if (!user_id) {
@@ -28,36 +27,14 @@ class ListHolidaysService {
     }
 
     let holidays = !search
-      ? await this.cacheProvider.recover<Holiday[]>(
-          `holidays-list:${user_id}:page=${page}`,
-        )
+      ? await this.cacheProvider.recover<Holiday[]>(`holidays-list:${user_id}`)
       : null;
 
     if (!holidays) {
-      holidays = await this.holidaysRepository.findAllHolidays(
-        search,
-        page > 0 ? page : 1,
-      );
-
-      let holidaysPreviousPage;
+      holidays = await this.holidaysRepository.findAllHolidays(search);
 
       if (!search) {
-        holidaysPreviousPage = await this.cacheProvider.recover<Holiday[]>(
-          `holidays-list:${user_id}:page=${page - 1}`,
-        );
-      }
-
-      if (holidaysPreviousPage) {
-        holidays = holidaysPreviousPage.concat(holidays);
-      } else if (page > 1 && !search) {
-        return [];
-      }
-
-      if (!search) {
-        await this.cacheProvider.save(
-          `holidays-list:${user_id}:page=${page}`,
-          holidays,
-        );
+        await this.cacheProvider.save(`holidays-list:${user_id}`, holidays);
       }
     }
 

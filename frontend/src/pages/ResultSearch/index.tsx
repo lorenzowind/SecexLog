@@ -132,8 +132,8 @@ const ResultSearch: React.FC = () => {
                             <strong>
                               {`${path.selectedPeriod.selectedInitTime}, ${path.selectedPeriod.selectedInitWeekDay}`}
                             </strong>
-                            <h2>{path.initCidade}</h2>
-                            <h2>{path.modal}</h2>
+                            <h2>{path.origin_city_id}</h2>
+                            <h2>{path.destination_city_id}</h2>
                           </div>
                           <div>
                             <h2>{path.duration}</h2>
@@ -143,8 +143,8 @@ const ResultSearch: React.FC = () => {
                             <strong>
                               {`${path.selectedPeriod.selectedFinalTime}, ${path.selectedPeriod.selectedFinalWeekDay}`}
                             </strong>
-                            <h2>{path.endCidade}</h2>
-                            <h2>{path.modal}</h2>
+                            <h2>{path.destination_city_id}</h2>
+                            <h2>{path.modal_id}</h2>
                           </div>
                         </aside>
                       ))}

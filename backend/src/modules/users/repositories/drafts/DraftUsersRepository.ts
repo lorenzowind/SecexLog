@@ -9,12 +9,12 @@ import User from '@modules/users/infra/typeorm/entities/User';
 export default class DraftUsersRepository implements IUsersRepository {
   private users: User[] = [];
 
-  public async findAllUsers(search: string, page: number): Promise<User[]> {
+  public async findAllUsers(search: string): Promise<User[]> {
     const users = search
       ? this.users.filter(findUser => findUser.name.includes(search))
       : this.users;
 
-    return users.slice((page - 1) * 10, page * 10);
+    return users;
   }
 
   public async findById(id: string): Promise<User | undefined> {

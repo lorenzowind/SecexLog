@@ -1,24 +1,16 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
+
 import api from '../services/api';
 
-interface SignInCredentials {
+import { UserOperationsData } from './modules/user';
+
+export interface SignInCredentials {
   login: string;
-  senha: string;
+  password: string;
 }
 
-export interface UserResponse {
-  id: number;
-  login: string;
-  nome: string;
-  email: string;
-  cargo: string;
-  iat: number;
-  exp: number;
-  token: string;
-}
-
-interface AuthState {
-  user: UserResponse;
+export interface AuthState {
+  user: UserOperationsData;
   token: string;
 }
 
@@ -31,34 +23,33 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>(() => {
-    const token = localStorage.getItem('@SecexLog:token');
     const user = localStorage.getItem('@SecexLog:user');
+    const token = localStorage.getItem('@SecexLog:token');
 
     if (token && user) {
-      return { token, user: JSON.parse(user) };
+      return { user: JSON.parse(user), token };
     }
 
     return {} as AuthState;
   });
 
-  const signIn = useCallback(async ({ login, senha }) => {
-    const response = await api.post<UserResponse>('login', {
+  const signIn = useCallback(async ({ login, password }) => {
+    const response = await api.post<AuthState>('sessions', {
       login,
-      senha,
+      password,
     });
 
-    const user = response.data;
-    const { token } = response.data;
+    const { user, token } = response.data;
 
     localStorage.setItem('@SecexLog:user', JSON.stringify(user));
     localStorage.setItem('@SecexLog:token', token);
 
-    setData({ token, user });
+    setData({ user, token });
   }, []);
 
   const signOut = useCallback(() => {
-    localStorage.removeItem('@SecexLog:token');
     localStorage.removeItem('@SecexLog:user');
+    localStorage.removeItem('@SecexLog:token');
 
     setData({} as AuthState);
   }, []);

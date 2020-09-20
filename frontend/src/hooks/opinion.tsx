@@ -6,19 +6,21 @@ import { useAuth } from './auth';
 import { useToast } from './toast';
 
 export interface OpinionOperationsData {
-  titulo: string;
-  desc: string;
+  title: string;
+  description: string;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface OpinionState extends OpinionOperationsData {
-  id: number;
+  id: string;
 }
 
 interface OpinionContextData {
   opinions: OpinionState[];
   getOpinions(): Promise<void>;
   sendOpinion(opinion: OpinionOperationsData): Promise<void>;
-  removeOpinion(id: number): Promise<void>;
+  removeOpinion(id: string): Promise<void>;
 }
 
 const OpinionContext = createContext<OpinionContextData>(
@@ -28,12 +30,12 @@ const OpinionContext = createContext<OpinionContextData>(
 const OpinionProvider: React.FC = ({ children }) => {
   const [opinions, setOpinions] = useState<OpinionState[]>([]);
 
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const { addToast } = useToast();
 
   const getOpinions = useCallback(async () => {
     try {
-      const response = await api.get('opinions', {
+      const response = await api.get('opinions/all', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -54,11 +56,7 @@ const OpinionProvider: React.FC = ({ children }) => {
   const sendOpinion = useCallback(
     async (opinion: OpinionOperationsData) => {
       try {
-        const response = await api.post('opinions', opinion, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await api.post('opinions', opinion);
 
         if (response) {
           addToast({
@@ -74,15 +72,16 @@ const OpinionProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast],
   );
 
   const removeOpinion = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         const response = await api.delete(`opinions/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
+            user_position: user ? user.position : '',
           },
         });
 
@@ -100,7 +99,7 @@ const OpinionProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   return (

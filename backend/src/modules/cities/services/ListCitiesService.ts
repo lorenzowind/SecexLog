@@ -18,42 +18,21 @@ class ListCitiesService {
 
   public async execute(
     search: string,
-    page: number,
     user_id: string | null,
   ): Promise<City[]> {
     let cities;
 
-    if (!search && user_id) {
-      cities = await this.cacheProvider.recover<City[]>(
-        `cities-list:${user_id}:page=${page}`,
-      );
+    if (user_id) {
+      cities = !search
+        ? await this.cacheProvider.recover<City[]>(`cities-list:${user_id}`)
+        : null;
     }
 
     if (!cities) {
-      cities = await this.citiesRepository.findAllCities(
-        search,
-        page > 0 ? page : 1,
-      );
+      cities = await this.citiesRepository.findAllCities(search);
 
-      let citiesPreviousPage;
-
-      if (!search && user_id) {
-        citiesPreviousPage = await this.cacheProvider.recover<City[]>(
-          `cities-list:${user_id}:page=${page - 1}`,
-        );
-      }
-
-      if (citiesPreviousPage) {
-        cities = citiesPreviousPage.concat(cities);
-      } else if (page > 1 && !search) {
-        return [];
-      }
-
-      if (!search && user_id) {
-        await this.cacheProvider.save(
-          `cities-list:${user_id}:page=${page}`,
-          cities,
-        );
+      if (user_id && !search) {
+        await this.cacheProvider.save(`cities-list:${user_id}`, cities);
       }
     }
 

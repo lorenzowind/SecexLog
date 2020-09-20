@@ -19,6 +19,7 @@ import iconModal8 from '../assets/icon-modal-8.png';
 export interface ModalImageState {
   url: string;
   isSelected: boolean;
+  name: string;
 }
 
 export interface ModalIconState {
@@ -34,34 +35,42 @@ export function getArrayModalImages(): ModalImageState[] {
     {
       url: imageModal,
       isSelected: false,
+      name: 'Carro',
     },
     {
       url: imageModal2,
       isSelected: false,
+      name: 'Ônibus',
     },
     {
       url: imageModal3,
       isSelected: false,
+      name: 'Avião',
     },
     {
       url: imageModal4,
       isSelected: false,
+      name: 'Barco',
     },
     {
       url: imageModal5,
       isSelected: false,
+      name: 'Taxi Aéreo',
     },
     {
       url: imageModal6,
       isSelected: false,
+      name: 'Voadeira',
     },
     {
       url: imageModal7,
       isSelected: false,
+      name: 'Rabeta',
     },
     {
       url: imageModal8,
       isSelected: false,
+      name: 'Lancha a jato',
     },
   ];
 }

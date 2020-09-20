@@ -49,6 +49,7 @@ const ModalForm: React.FC = () => {
         newArray.push({
           isSelected: curIndex === index ? !modalImage.isSelected : false,
           url: modalImage.url,
+          name: modalImage.name,
         });
         return newArray;
       }, []),
@@ -76,17 +77,17 @@ const ModalForm: React.FC = () => {
           modalImage => modalImage.isSelected,
         );
 
-        const ModalData: ModalOperationsData = {
+        const modalData: ModalOperationsData = {
           name: data.name,
-          safety: safeModal === 'Sim',
-          cost: cheapModal === 'Sim',
-          fast: fastModal === 'Sim',
-          imgUrl: auxModalImage ? auxModalImage.url : '',
+          is_safe: safeModal === 'Sim',
+          is_cheap: cheapModal === 'Sim',
+          is_fast: fastModal === 'Sim',
+          image: auxModalImage ? auxModalImage.name : '',
         };
 
         setLoadingPage(true);
 
-        await insertModal(ModalData).then(() => {
+        await insertModal(modalData).then(() => {
           setLoadingPage(false);
         });
 
@@ -161,7 +162,7 @@ const ModalForm: React.FC = () => {
                 <strong>Esse modal é seguro?</strong>
                 <section>
                   <RadioInput
-                    name="safety"
+                    name="is_safe"
                     options={['Sim', 'Não']}
                     onChangeValue={setSafeModal}
                   />
@@ -171,7 +172,7 @@ const ModalForm: React.FC = () => {
                 <strong>Esse modal é de baixo custo?</strong>
                 <section>
                   <RadioInput
-                    name="cost"
+                    name="is_cheap"
                     options={['Sim', 'Não']}
                     onChangeValue={setCheapModal}
                   />
@@ -181,7 +182,7 @@ const ModalForm: React.FC = () => {
                 <strong>Esse modal é rápido?</strong>
                 <section>
                   <RadioInput
-                    name="speed"
+                    name="is_fast"
                     options={['Sim', 'Não']}
                     onChangeValue={setFastModal}
                   />

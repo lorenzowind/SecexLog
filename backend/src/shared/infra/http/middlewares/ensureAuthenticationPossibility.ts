@@ -9,11 +9,11 @@ export default function ensureAuthenticationPossibility(
 ): void {
   if (request.headers.authorization) {
     ensureAuthenticated(request, response, next);
+  } else {
+    request.user = {
+      id: null,
+    };
+
+    return next();
   }
-
-  request.user = {
-    id: null,
-  };
-
-  return next();
 }

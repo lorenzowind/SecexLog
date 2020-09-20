@@ -6,81 +6,111 @@ import { useAuth } from '../auth';
 import { useToast } from '../toast';
 
 export interface CityOperationsData {
-  nome: string;
-  relations?: string;
-  cBase: boolean;
-  cAuditada: boolean;
-  initDataCheia?: string;
-  endDataCheia?: string;
-  obsInterdicao?: string;
-  obsCidade?: string;
-  latitute?: string;
-  longitude?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  name: string;
+  is_base?: boolean;
+  is_auditated?: boolean;
+  related_cities?: {
+    related_city_id: string;
+  }[];
+  latitude?: number | null;
+  longitude?: number | null;
+  initial_flood_date?: string;
+  end_flood_date?: string;
+  interdiction_observation?: string;
+  city_observation?: string;
+  created_at?: Date;
+  updated_at?: Date;
 }
 
 export interface CityState extends CityOperationsData {
-  id: number;
+  id: string;
+}
+
+export interface RelatedCityState {
+  related_city_id: string;
 }
 
 interface CityContextData {
   cities: CityState[];
-  setSearchCities(searchCity: string): void;
-  getCities(): Promise<void>;
+  relatedCities: RelatedCityState[];
+  getCities(search: string): Promise<void>;
+  getRelatedCities(city_id: string): Promise<void>;
   insertCity(city: CityOperationsData): Promise<void>;
-  updateCity(id: number, city: CityOperationsData): Promise<void>;
-  removeCity(id: number): Promise<void>;
+  updateCity(id: string, city: CityOperationsData): Promise<void>;
+  removeCity(id: string): Promise<void>;
 }
 
 const CityContext = createContext<CityContextData>({} as CityContextData);
 
 const CityProvider: React.FC = ({ children }) => {
   const [cities, setCities] = useState<CityState[]>([]);
-  const [search, setSearch] = useState('');
+  const [relatedCities, setRelatedCities] = useState<RelatedCityState[]>([]);
 
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const { addToast } = useToast();
 
-  const setSearchCities = useCallback(searchCity => {
-    setSearch(searchCity);
-  }, []);
+  const getCities = useCallback(
+    async (search: string) => {
+      try {
+        const query = `cities/all?search=${search}`;
 
-  const getCities = useCallback(async () => {
-    try {
-      const query = search ? `cities/${search}` : 'cities';
+        const response = await api.get(query, {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        });
 
-      const response = await api.get(query, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        if (response) {
+          setCities(response.data);
 
-      if (response) {
-        setCities(response.data);
-
-        if (search && response.data.length === 0) {
-          addToast({
-            type: 'info',
-            title: 'Nenhuma cidade encontrada',
-          });
+          if (search && response.data.length === 0) {
+            addToast({
+              type: 'info',
+              title: 'Nenhuma cidade encontrada',
+            });
+          }
         }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na listagem',
+          description: 'Ocorreu um erro na listagem das cidades.',
+        });
       }
-    } catch (err) {
-      addToast({
-        type: 'error',
-        title: 'Erro na listagem',
-        description: 'Ocorreu um erro na listagem das cidades.',
-      });
-    }
-  }, [addToast, search, token]);
+    },
+    [addToast, token],
+  );
+
+  const getRelatedCities = useCallback(
+    async (city_id: string) => {
+      try {
+        const response = await api.get(`cities/related/${city_id}`, {
+          headers: {
+            Authorization: user ? `Bearer ${token}` : '',
+          },
+        });
+
+        if (response) {
+          setRelatedCities(response.data);
+        }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na listagem',
+          description: 'Ocorreu um erro na listagem de cidades relacionadas.',
+        });
+      }
+    },
+    [addToast, token, user],
+  );
 
   const insertCity = useCallback(
     async (city: CityOperationsData) => {
       try {
         const response = await api.post('cities', city, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token ? `Bearer ${token}` : '',
+            user_position: user ? user.position : '',
           },
         });
 
@@ -98,15 +128,16 @@ const CityProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const updateCity = useCallback(
-    async (id: number, city: CityOperationsData) => {
+    async (id: string, city: CityOperationsData) => {
       try {
         const response = await api.put(`cities/${id}`, city, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token ? `Bearer ${token}` : '',
+            user_position: user ? user.position : '',
           },
         });
 
@@ -124,15 +155,16 @@ const CityProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   const removeCity = useCallback(
-    async (id: number) => {
+    async (id: string) => {
       try {
         const response = await api.delete(`cities/${id}`, {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: token ? `Bearer ${token}` : '',
+            user_position: user ? user.position : '',
           },
         });
 
@@ -150,15 +182,16 @@ const CityProvider: React.FC = ({ children }) => {
         });
       }
     },
-    [addToast, token],
+    [addToast, token, user],
   );
 
   return (
     <CityContext.Provider
       value={{
         cities,
-        setSearchCities,
+        relatedCities,
         getCities,
+        getRelatedCities,
         insertCity,
         removeCity,
         updateCity,

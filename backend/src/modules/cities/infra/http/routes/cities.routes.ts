@@ -27,10 +27,10 @@ citiesRouter.post(
     {
       [Segments.BODY]: {
         name: Joi.string().required(),
-        latitude: Joi.number().precision(6),
-        longitude: Joi.number().precision(6),
-        initial_flood_date: Joi.string().max(6),
-        end_flood_date: Joi.string().max(6),
+        latitude: Joi.number().precision(6).allow(null),
+        longitude: Joi.number().precision(6).allow(null),
+        initial_flood_date: Joi.string().max(6).allow(''),
+        end_flood_date: Joi.string().max(6).allow(''),
       },
     },
     {
@@ -48,10 +48,10 @@ citiesRouter.put(
     {
       [Segments.BODY]: {
         name: Joi.string().required(),
-        latitude: Joi.number().precision(6),
-        longitude: Joi.number().precision(6),
-        initial_flood_date: Joi.string().max(6),
-        end_flood_date: Joi.string().max(6),
+        latitude: Joi.number().precision(6).allow(null),
+        longitude: Joi.number().precision(6).allow(null),
+        initial_flood_date: Joi.string().max(6).allow(''),
+        end_flood_date: Joi.string().max(6).allow(''),
       },
     },
     {

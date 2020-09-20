@@ -35,7 +35,7 @@ describe('SendForgotPasswordEmail', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 
@@ -61,7 +61,7 @@ describe('SendForgotPasswordEmail', () => {
       name: 'John Doe',
       login: 'john doe',
       email: 'johndoe@example.com',
-      position: 'admin',
+      position: 'Administrador',
       password: '123456',
     });
 

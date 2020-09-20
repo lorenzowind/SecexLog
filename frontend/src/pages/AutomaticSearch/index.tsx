@@ -36,7 +36,6 @@ const AutomaticSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
 
-  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
   const [initialDate, setInitialDate] = useState<Date>(new Date());
   const [finalDate, setFinalDate] = useState<Date>(new Date());
   const [pathsControl, setPathsControl] = useState([1]);
@@ -52,14 +51,10 @@ const AutomaticSearch: React.FC = () => {
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getCities().then(() => {
+    await getCities('').then(() => {
       setLoadingPartial(false);
     });
   }, [getCities]);
-
-  useEffect(() => {
-    setCitiesSelect(cities.map(city => city.nome));
-  }, [cities]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -147,9 +142,10 @@ const AutomaticSearch: React.FC = () => {
                   <option value="Selecione a cidade de ida" disabled>
                     Selecione a cidade de ida
                   </option>
-                  {citiesSelect.map((city, index) => (
-                    <option key={`go-${String(index)}`} value={String(city)}>
-                      {city}
+
+                  {cities.map(city => (
+                    <option key={city.id} value={city.id}>
+                      {city.name}
                     </option>
                   ))}
                 </Select>
@@ -164,12 +160,10 @@ const AutomaticSearch: React.FC = () => {
                     <option value="Selecione a cidade para auditoria" disabled>
                       Selecione a cidade para auditoria
                     </option>
-                    {citiesSelect.map((city, index) => (
-                      <option
-                        key={`back-${String(index)}`}
-                        value={String(city)}
-                      >
-                        {city}
+
+                    {cities.map(city => (
+                      <option key={city.id} value={city.id}>
+                        {city.name}
                       </option>
                     ))}
                   </Select>

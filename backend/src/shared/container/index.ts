@@ -21,6 +21,15 @@ import HolidaysRepository from '@modules/holidays/infra/typeorm/repositories/Hol
 import IOpinionsRepository from '@modules/opinions/repositories/IOpinionsRepository';
 import OpinionsRepository from '@modules/opinions/infra/typeorm/repositories/OpinionsRepository';
 
+import IModalsRepository from '@modules/modals/repositories/IModalsRepository';
+import ModalsRepository from '@modules/modals/infra/typeorm/repositories/ModalsRepository';
+
+import IProvidersRepository from '@modules/providers/repositories/IProvidersRepository';
+import ProvidersRepository from '@modules/providers/infra/typeorm/repositories/ProvidersRepository';
+
+import IPathsRepository from '@modules/paths/repositories/IPathsRepository';
+import PathsRepository from '@modules/paths/infra/typeorm/repositories/PathsRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -49,4 +58,19 @@ container.registerSingleton<IHolidaysRepository>(
 container.registerSingleton<IOpinionsRepository>(
   'OpinionsRepository',
   OpinionsRepository,
+);
+
+container.registerSingleton<IModalsRepository>(
+  'ModalsRepository',
+  ModalsRepository,
+);
+
+container.registerSingleton<IProvidersRepository>(
+  'ProvidersRepository',
+  ProvidersRepository,
+);
+
+container.registerSingleton<IPathsRepository>(
+  'PathsRepository',
+  PathsRepository,
 );

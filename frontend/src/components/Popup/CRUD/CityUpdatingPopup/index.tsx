@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -34,8 +33,8 @@ interface Props extends CityUpdatingPopupProps {
 }
 
 interface FilteredHoliday {
-  init: string;
-  nome: string;
+  initial_date: string;
+  name: string;
 }
 
 const CityUpdatingPopup: React.FC<Props> = ({
@@ -44,27 +43,16 @@ const CityUpdatingPopup: React.FC<Props> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
 
-  const [isNewFlood, setIsNewFlood] = useState(!city.initDataCheia);
+  const [isNewFlood, setIsNewFlood] = useState(!city.initial_flood_date);
   const [positionateFlood, setPositionateFlood] = useState(false);
-  const [initFlood, setInitFlood] = useState('');
-  const [endFlood, setEndFlood] = useState('');
-  const [isBaseCity, setIsBaseCity] = useState(city.cBase);
-  const [isAuditatedCity, setIsAuditatedCity] = useState(city.cAuditada);
-  const [isInterdicted, setIsInterdicted] = useState(!!city.obsInterdicao);
+  const [initialFloodDate, setInitialFloodDate] = useState('');
+  const [endFloodDate, setEndFloodDate] = useState('');
+  const [isBaseCity, setIsBaseCity] = useState(city.is_base);
+  const [isAuditatedCity, setIsAuditatedCity] = useState(city.is_auditated);
+  const [isInterdicted, setIsInterdicted] = useState(!!city.city_observation);
   const [selectedRelatedCities, setSelectedRelatedCities] = useState<Option[]>(
-    () => {
-      if (city.relations) {
-        return city.relations.split(',').map(relatedCity => {
-          return {
-            value: relatedCity.trim(),
-            label: relatedCity.trim(),
-          };
-        });
-      }
-      return [];
-    },
+    [],
   );
-
   const [citiesSelect, setCitiesSelect] = useState<Option[]>([]);
   const [filteredHolidays, setFilteredHolidays] = useState<FilteredHoliday[]>(
     [],
@@ -73,11 +61,18 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const { cities, updateCity, removeCity, getCities } = useCity();
+  const {
+    cities,
+    relatedCities,
+    updateCity,
+    removeCity,
+    getCities,
+    getRelatedCities,
+  } = useCity();
   const { holidays, getHolidays } = useHoliday();
 
   const handleRefreshCities = useCallback(async () => {
-    await getCities().then(() => {
+    await getCities('').then(() => {
       setLoadingPartial(false);
       setCityUpdatingPopupActive(false);
     });
@@ -91,51 +86,50 @@ const CityUpdatingPopup: React.FC<Props> = ({
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome obrigatório'),
+          name: Yup.string().required('Nome obrigatório'),
         });
 
         await schema.validate(data, {
           abortEarly: false,
         });
 
-        let auxInitFlood = initFlood;
-        let auxEndFlood = endFlood;
+        let auxInitialFloodDate = initialFloodDate;
+        let auxEndFloodDate = endFloodDate;
 
         if (isNewFlood && !positionateFlood) {
-          auxInitFlood = '';
-          auxEndFlood = '';
+          auxInitialFloodDate = '';
+          auxEndFloodDate = '';
         } else if (!isNewFlood) {
-          auxInitFlood = city.initDataCheia ? city.initDataCheia : '';
-          auxEndFlood = city.endDataCheia ? city.endDataCheia : '';
+          auxInitialFloodDate = city.initial_flood_date
+            ? city.initial_flood_date
+            : '';
+          auxEndFloodDate = city.end_flood_date ? city.end_flood_date : '';
         }
 
         const cityData: CityOperationsData = {
-          cAuditada: isAuditatedCity,
-          cBase: isBaseCity,
-          nome: data.nome,
-          latitute: data.latitute,
-          longitude: data.longitude,
-          relations: selectedRelatedCities
-            ? selectedRelatedCities
-                .map(relatedCity => relatedCity.value)
-                .join(', ')
+          name: data.name,
+          is_auditated: isAuditatedCity,
+          is_base: isBaseCity,
+          city_observation: data.city_observation,
+          interdiction_observation: isInterdicted
+            ? data.interdiction_observation
             : '',
-          initDataCheia: auxInitFlood,
-          endDataCheia: auxEndFlood,
-          obsInterdicao: !isInterdicted ? '' : data.obsInterdicao,
-          obsCidade: data.obsCidade,
+          initial_flood_date: auxInitialFloodDate,
+          end_flood_date: auxEndFloodDate,
+          latitude: data.latitude || null,
+          longitude: data.longitude || null,
+          related_cities: selectedRelatedCities
+            ? selectedRelatedCities.map(relatedCity => {
+                return {
+                  related_city_id: relatedCity.value,
+                };
+              })
+            : undefined,
         };
 
-        const { id, ...auxCity } = city;
-
-        if (!isEqual(cityData, auxCity)) {
-          await updateCity(id, cityData).then(() => {
-            handleRefreshCities();
-          });
-        } else {
-          setLoadingPartial(false);
-          setCityUpdatingPopupActive(false);
-        }
+        await updateCity(city.id, cityData).then(() => {
+          handleRefreshCities();
+        });
       } catch (err) {
         setLoadingPartial(false);
 
@@ -148,16 +142,15 @@ const CityUpdatingPopup: React.FC<Props> = ({
     },
     [
       city,
-      endFlood,
+      endFloodDate,
       handleRefreshCities,
-      initFlood,
+      initialFloodDate,
       isAuditatedCity,
       isBaseCity,
       isInterdicted,
       isNewFlood,
       positionateFlood,
       selectedRelatedCities,
-      setCityUpdatingPopupActive,
       updateCity,
     ],
   );
@@ -171,10 +164,14 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const handleGetData = useCallback(async () => {
     setLoadingPartial(true);
 
-    await Promise.all([getHolidays(), getCities()]).then(() => {
+    await Promise.all([
+      getHolidays(''),
+      getCities(''),
+      getRelatedCities(city.id),
+    ]).then(() => {
       setLoadingPartial(false);
     });
-  }, [getCities, getHolidays]);
+  }, [city.id, getCities, getHolidays, getRelatedCities]);
 
   useEffect(() => {
     setFilteredHolidays(
@@ -182,8 +179,8 @@ const CityUpdatingPopup: React.FC<Props> = ({
         .filter(holiday => holiday.city_id === city.id)
         .map(cityHoliday => {
           return {
-            init: cityHoliday.init,
-            nome: cityHoliday.nome,
+            initial_date: cityHoliday.initial_date,
+            name: cityHoliday.name,
           };
         }),
     );
@@ -192,15 +189,36 @@ const CityUpdatingPopup: React.FC<Props> = ({
   useEffect(() => {
     setCitiesSelect(
       cities
-        .filter(generalCity => generalCity.nome !== city.nome)
+        .filter(generalCity => generalCity.name !== city.name)
         .map(differentCity => {
           return {
-            value: differentCity.nome,
-            label: differentCity.nome,
+            value: differentCity.id,
+            label: differentCity.name,
           };
         }),
     );
-  }, [cities, city.nome]);
+  }, [cities, city.name]);
+
+  useEffect(() => {
+    setSelectedRelatedCities(
+      relatedCities.reduce(
+        (newSelectedRelatedCities: Option[], relatedCityId) => {
+          const relatedCity = cities.find(
+            findCity => findCity.id === relatedCityId.related_city_id,
+          );
+
+          if (relatedCity) {
+            newSelectedRelatedCities.push({
+              value: relatedCity.id,
+              label: relatedCity.name,
+            });
+          }
+          return newSelectedRelatedCities;
+        },
+        [],
+      ),
+    );
+  }, [cities, relatedCities]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -229,21 +247,21 @@ const CityUpdatingPopup: React.FC<Props> = ({
               <Form ref={formRef} onSubmit={handleUpdateCity}>
                 <div>
                   <strong>Nome</strong>
-                  <Input name="nome" type="text" defaultValue={city.nome} />
+                  <Input name="name" type="text" defaultValue={city.name} />
                 </div>
 
                 <section>
                   <aside>
                     <strong>Cidade base</strong>
                     <SwitchInput
-                      isChecked={isBaseCity}
+                      isChecked={!!isBaseCity}
                       setIsChecked={setIsBaseCity}
                     />
                   </aside>
                   <aside>
                     <strong>Cidade auditada</strong>
                     <SwitchInput
-                      isChecked={isAuditatedCity}
+                      isChecked={!!isAuditatedCity}
                       setIsChecked={setIsAuditatedCity}
                     />
                   </aside>
@@ -263,9 +281,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   <nav>
                     <strong>Latitude</strong>
                     <Input
-                      name="latitute"
+                      name="latitude"
                       type="number"
-                      defaultValue={city.latitute}
+                      defaultValue={city.latitude || ''}
                     />
                   </nav>
 
@@ -274,7 +292,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
                     <Input
                       name="longitude"
                       type="number"
-                      defaultValue={city.longitude}
+                      defaultValue={city.longitude || ''}
                     />
                   </nav>
                 </section>
@@ -284,25 +302,25 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   <>
                     <aside>
                       <Input
-                        name="initDataCheia"
+                        name="initial_flood_date"
                         type="text"
                         mask="99/99"
-                        onChangeValue={setInitFlood}
+                        onChangeValue={setInitialFloodDate}
                         placeholder="Início"
                       />
                       <img src={IconGo} alt="Go" />
                       <Input
-                        name="endDataCheia"
+                        name="end_flood_date"
                         type="text"
                         mask="99/99"
-                        onChangeValue={setEndFlood}
+                        onChangeValue={setEndFloodDate}
                         placeholder="Fim"
                       />
 
                       <button
                         type="button"
                         onClick={() => {
-                          if (initFlood && endFlood) {
+                          if (initialFloodDate && endFloodDate) {
                             setPositionateFlood(true);
                           }
                         }}
@@ -319,8 +337,8 @@ const CityUpdatingPopup: React.FC<Props> = ({
                           <h4>X</h4>
                         </button>
                         <h2>
-                          {initFlood.substring(0, 5).concat(' até ')}
-                          {endFlood.substring(0, 5)}
+                          {initialFloodDate.substring(0, 5).concat(' até ')}
+                          {endFloodDate.substring(0, 5)}
                         </h2>
                       </nav>
                     )}
@@ -329,7 +347,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   <>
                     <aside>
                       <Input
-                        name="initDataCheia"
+                        name="initialFloodDate"
                         type="text"
                         disabled
                         isDisabled
@@ -337,7 +355,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
                       />
                       <img src={IconGo} alt="Go" />
                       <Input
-                        name="endDataCheia"
+                        name="endFloodDate"
                         type="text"
                         disabled
                         isDisabled
@@ -352,9 +370,12 @@ const CityUpdatingPopup: React.FC<Props> = ({
                         <h4>X</h4>
                       </button>
                       <h2>
-                        {city.initDataCheia &&
-                          city.initDataCheia.substring(0, 5).concat(' até ')}
-                        {city.endDataCheia && city.endDataCheia.substring(0, 5)}
+                        {city.initial_flood_date &&
+                          city.initial_flood_date
+                            .substring(0, 5)
+                            .concat(' até ')}
+                        {city.end_flood_date &&
+                          city.end_flood_date.substring(0, 5)}
                       </h2>
                     </nav>
                   </>
@@ -372,16 +393,16 @@ const CityUpdatingPopup: React.FC<Props> = ({
                 <div>
                   {!isInterdicted ? (
                     <Input
-                      name="obsInterdicao"
+                      name="interdiction_observation"
                       type="text"
                       disabled
                       isDisabled
                     />
                   ) : (
                     <Input
-                      name="obsInterdicao"
+                      name="interdiction_observation"
                       type="text"
-                      defaultValue={city.obsInterdicao}
+                      defaultValue={city.interdiction_observation}
                     />
                   )}
                 </div>
@@ -389,9 +410,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
                 <div>
                   <strong>Observação da cidade</strong>
                   <Input
-                    name="obsCidade"
+                    name="city_observation"
                     type="text"
-                    defaultValue={city.obsCidade}
+                    defaultValue={city.city_observation}
                   />
                 </div>
 
@@ -400,9 +421,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
                     <section>
                       <strong>Feriados específicos</strong>
                       {filteredHolidays.map(holiday => (
-                        <h2 key={holiday.nome}>
-                          {holiday.init.substring(0, 5).concat(' - ')}
-                          {holiday.nome}
+                        <h2 key={holiday.name}>
+                          {holiday.initial_date.substring(0, 5).concat(' - ')}
+                          {holiday.name}
                         </h2>
                       ))}
                     </section>

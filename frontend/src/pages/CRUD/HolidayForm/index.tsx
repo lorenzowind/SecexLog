@@ -41,8 +41,6 @@ const HolidayForm: React.FC = () => {
 
   const [citySelected, setCitySelected] = useState('Selecione cidade');
 
-  const [citiesSelect, setCitiesSelect] = useState<String[]>([]);
-
   const [loadingPartial, setLoadingPartial] = useState(false);
   const [loadingPage, setLoadingPage] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -53,14 +51,10 @@ const HolidayForm: React.FC = () => {
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getCities().then(() => {
+    await getCities('').then(() => {
       setLoadingPartial(false);
     });
   }, [getCities]);
-
-  useEffect(() => {
-    setCitiesSelect(cities.map(city => city.nome));
-  }, [cities]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -78,18 +72,18 @@ const HolidayForm: React.FC = () => {
 
         if (!isNational) {
           schema = Yup.object().shape({
-            nome: Yup.string().required('Nome de feriado obrigatório'),
-            cidade: Yup.mixed().test(
+            name: Yup.string().required('Nome de feriado obrigatório'),
+            city_id: Yup.mixed().test(
               'match',
               'Nome da cidade obrigatório',
               () => {
-                return data.cidade !== 'Selecione cidade';
+                return data.city_id !== 'Selecione cidade';
               },
             ),
           });
         } else {
           schema = Yup.object().shape({
-            nome: Yup.string().required('Nome de feriado obrigatório'),
+            name: Yup.string().required('Nome de feriado obrigatório'),
           });
         }
 
@@ -104,14 +98,13 @@ const HolidayForm: React.FC = () => {
         }
 
         const holidayData: HolidayOperationsData = {
-          nome: data.nome,
-          cidade: !isNational ? data.cidade : '',
-          national: isNational,
-          init: auxRangeHoliday.from
-            ? auxRangeHoliday.from.toLocaleDateString('pt-BR')
+          name: data.name,
+          city_id: !isNational ? data.city_id : null,
+          initial_date: auxRangeHoliday.from
+            ? auxRangeHoliday.from.toLocaleDateString('pt-BR').substring(0, 5)
             : '',
-          end: auxRangeHoliday.to
-            ? auxRangeHoliday.to.toLocaleDateString('pt-BR')
+          end_date: auxRangeHoliday.to
+            ? auxRangeHoliday.to.toLocaleDateString('pt-BR').substring(0, 5)
             : '',
         };
 
@@ -154,28 +147,28 @@ const HolidayForm: React.FC = () => {
             <Form ref={formRef} onSubmit={handleCreate}>
               <section>
                 <strong>Nome do Feriado</strong>
-                <Input name="nome" type="text" />
+                <Input name="name" type="text" />
 
                 <strong>Nome da Cidade</strong>
                 <div>
                   {!isNational ? (
                     <Select
-                      name="cidade"
+                      name="city_id"
                       value={citySelected}
                       onChange={e => setCitySelected(e.target.value)}
                     >
                       <option value="Selecione cidade" disabled>
                         Selecione cidade
                       </option>
-                      {citiesSelect.map((city, index) => (
-                        <option key={String(index)} value={String(city)}>
-                          {city}
+                      {cities.map(city => (
+                        <option key={city.id} value={city.id}>
+                          {city.name}
                         </option>
                       ))}
                     </Select>
                   ) : (
                     <Select
-                      name="cidade"
+                      name="city_id"
                       value={citySelected}
                       onChange={e => setCitySelected(e.target.value)}
                       disabled
@@ -183,9 +176,9 @@ const HolidayForm: React.FC = () => {
                       <option value="Selecione cidade" disabled>
                         Selecione cidade
                       </option>
-                      {citiesSelect.map((city, index) => (
-                        <option key={String(index)} value={String(city)}>
-                          {city}
+                      {cities.map(city => (
+                        <option key={city.id} value={city.id}>
+                          {city.name}
                         </option>
                       ))}
                     </Select>

@@ -2,7 +2,6 @@ import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
-import { isEqual } from 'lodash';
 
 import getValidationErrors from '../../../../utils/getValidationErrors';
 
@@ -37,7 +36,6 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
 }) => {
   const formRef = useRef<FormHandles>(null);
 
-  const [modalsSelect, setModalsSelect] = useState<String[]>([]);
   const [defaultSelectedModal, setDefaultSelectedModal] = useState('');
 
   const [loadingPartial, setLoadingPartial] = useState(false);
@@ -47,7 +45,7 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
   const { modals, getModals } = useModal();
 
   const handleRefreshProviders = useCallback(async () => {
-    await getProviders().then(() => {
+    await getProviders('').then(() => {
       setLoadingPartial(false);
       setProviderUpdatingPopupActive(false);
     });
@@ -61,12 +59,16 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
         formRef.current?.setErrors({});
 
         const schema = Yup.object().shape({
-          nome: Yup.string().required('Nome da cidade obrigatório'),
+          name: Yup.string().required('Nome da cidade obrigatório'),
           email: Yup.string().required('Email obrigatório'),
-          telefone: Yup.string().required('Telefone obrigatório'),
-          modal: Yup.mixed().test('match', 'Nome do modal obrigatório', () => {
-            return data.modal !== 'Selecione modal';
-          }),
+          phone_number: Yup.string().required('Telefone obrigatório'),
+          modal_id: Yup.mixed().test(
+            'match',
+            'Nome do modal obrigatório',
+            () => {
+              return data.modal_id !== 'Selecione modal';
+            },
+          ),
         });
 
         await schema.validate(data, {
@@ -74,25 +76,17 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
         });
 
         const providerData: ProviderOperationsData = {
-          nome: data.nome,
+          name: data.name,
           email: data.email,
-          modal: data.modal,
-          telefone: data.telefone,
-          preferenceTxt: provider.preferenceTxt,
+          modal_id: data.modal_id,
+          phone_number: data.phone_number,
+          preference_data: provider.preference_data,
           preference: provider.preference,
         };
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { id, createdAt, updatedAt, ...auxProvider } = provider;
-
-        if (!isEqual(providerData, auxProvider)) {
-          await updateProvider(id, providerData).then(() => {
-            handleRefreshProviders();
-          });
-        } else {
-          setLoadingPartial(false);
-          setProviderUpdatingPopupActive(false);
-        }
+        await updateProvider(provider.id, providerData).then(() => {
+          handleRefreshProviders();
+        });
       } catch (err) {
         setLoadingPartial(false);
 
@@ -103,12 +97,7 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
         }
       }
     },
-    [
-      handleRefreshProviders,
-      provider,
-      setProviderUpdatingPopupActive,
-      updateProvider,
-    ],
+    [handleRefreshProviders, provider, updateProvider],
   );
 
   const handleDeleteProvider = useCallback(async () => {
@@ -120,22 +109,20 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
   const handleGetModals = useCallback(async () => {
     setLoadingPartial(true);
 
-    await getModals().then(() => {
+    await getModals('').then(() => {
       setLoadingPartial(false);
     });
   }, [getModals]);
 
   useEffect(() => {
-    setModalsSelect(modals.map(modal => modal.name));
-
-    const foundModal = modals.find(modal => modal.name === provider.modal);
+    const foundModal = modals.find(modal => modal.id === provider.modal_id);
 
     if (foundModal) {
-      setDefaultSelectedModal(foundModal.name);
+      setDefaultSelectedModal(foundModal.id);
     } else {
-      setDefaultSelectedModal('Selecione cidade');
+      setDefaultSelectedModal('Selecione modal');
     }
-  }, [modals, provider.modal]);
+  }, [modals, provider.modal_id]);
 
   useEffect(() => {
     if (!isLoaded) {
@@ -163,14 +150,14 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
 
               <Form ref={formRef} onSubmit={handleUpdateProvider}>
                 <strong>Nome do Prestador</strong>
-                <Input name="nome" type="text" defaultValue={provider.nome} />
+                <Input name="name" type="text" defaultValue={provider.name} />
 
                 <strong>Telefone</strong>
                 <Input
-                  name="telefone"
+                  name="phone_number"
                   type="text"
                   mask="(999)99999-9999"
-                  defaultValue={provider.telefone}
+                  defaultValue={provider.phone_number}
                 />
 
                 <strong>Email</strong>
@@ -182,29 +169,18 @@ const ProviderUpdatingPopup: React.FC<Props> = ({
 
                 <strong>Modal</strong>
                 <Select
-                  value={String(defaultSelectedModal)}
-                  name="modal"
+                  value={defaultSelectedModal}
+                  name="modal_id"
                   onChange={e => setDefaultSelectedModal(e.target.value)}
                 >
                   <option value="Selecione modal" disabled>
                     Selecione modal
                   </option>
-                  <option
-                    key={String(defaultSelectedModal)}
-                    value={String(defaultSelectedModal)}
-                  >
-                    {defaultSelectedModal}
-                  </option>
-                  {modalsSelect
-                    .filter(modal => modal !== defaultSelectedModal)
-                    .map(differentModal => (
-                      <option
-                        key={String(differentModal)}
-                        value={String(differentModal)}
-                      >
-                        {differentModal}
-                      </option>
-                    ))}
+                  {modals.map(differentModal => (
+                    <option key={differentModal.id} value={differentModal.id}>
+                      {differentModal.name}
+                    </option>
+                  ))}
                 </Select>
 
                 <section>
