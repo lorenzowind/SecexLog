@@ -17,7 +17,6 @@ class ListFilteredPathsService {
 
   public async execute(
     city_name: string,
-    page: number,
     attribute: 'origin_city' | 'destination_city',
   ): Promise<Path[]> {
     let paths: Path[] = [];
@@ -33,7 +32,6 @@ class ListFilteredPathsService {
 
       paths = await this.pathsRepository.findAllByOriginCity(
         checkOriginCityNameExists.id,
-        page > 0 ? page : 1,
       );
     }
 
@@ -48,7 +46,6 @@ class ListFilteredPathsService {
 
       paths = await this.pathsRepository.findAllByDestinationCity(
         checkDestinationCityNameExists.id,
-        page > 0 ? page : 1,
       );
     }
 

@@ -18,14 +18,9 @@ class PathsRepository implements IPathsRepository {
     return this.ormRepository.find();
   }
 
-  public async findAllByOriginCity(
-    origin_city_id: string,
-    page: number,
-  ): Promise<Path[]> {
+  public async findAllByOriginCity(origin_city_id: string): Promise<Path[]> {
     const paths = await this.ormRepository.find({
       where: { origin_city_id },
-      skip: (page - 1) * 10,
-      take: 10,
     });
 
     return paths;
@@ -33,12 +28,20 @@ class PathsRepository implements IPathsRepository {
 
   public async findAllByDestinationCity(
     destination_city_id: string,
-    page: number,
   ): Promise<Path[]> {
     const paths = await this.ormRepository.find({
       where: { destination_city_id },
-      skip: (page - 1) * 10,
-      take: 10,
+    });
+
+    return paths;
+  }
+
+  public async findAllByOriginAndDestinationCity(
+    origin_city_id: string,
+    destination_city_id: string,
+  ): Promise<Path[]> {
+    const paths = await this.ormRepository.find({
+      where: { origin_city_id, destination_city_id },
     });
 
     return paths;

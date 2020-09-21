@@ -1,4 +1,5 @@
 import { v4 } from 'uuid';
+import moment from 'moment';
 
 import IHolidaysRepository from '@modules/holidays/repositories/IHolidaysRepository';
 
@@ -23,6 +24,51 @@ export default class DraftHolidaysRepository implements IHolidaysRepository {
     );
 
     return filteredHolidays;
+  }
+
+  public async findSpecificByDate(
+    city_id: string,
+    date: string,
+  ): Promise<Holiday[] | undefined> {
+    const holiday = this.holidays.filter(findHoliday => {
+      const initialHolidayDate = new Date(
+        moment(findHoliday.initial_date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      );
+      const endHolidayDate = new Date(
+        moment(findHoliday.end_date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      );
+      const auxDate = new Date(moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+
+      if (
+        findHoliday.city_id === city_id &&
+        initialHolidayDate <= auxDate &&
+        auxDate <= endHolidayDate
+      ) {
+        return findHoliday;
+      }
+    });
+
+    return holiday;
+  }
+
+  public async findNationalByDate(
+    date: string,
+  ): Promise<Holiday[] | undefined> {
+    const holiday = this.holidays.filter(findHoliday => {
+      const initialHolidayDate = new Date(
+        moment(findHoliday.initial_date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      );
+      const endHolidayDate = new Date(
+        moment(findHoliday.end_date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      );
+      const auxDate = new Date(moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+
+      if (initialHolidayDate <= auxDate && auxDate <= endHolidayDate) {
+        return findHoliday;
+      }
+    });
+
+    return holiday;
   }
 
   public async findByName(name: string): Promise<Holiday | undefined> {

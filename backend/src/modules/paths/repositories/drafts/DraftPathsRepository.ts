@@ -13,26 +13,35 @@ export default class DraftPathsRepository implements IPathsRepository {
     return this.paths;
   }
 
-  public async findAllByOriginCity(
-    origin_city_id: string,
-    page: number,
-  ): Promise<Path[]> {
+  public async findAllByOriginCity(origin_city_id: string): Promise<Path[]> {
     const paths = this.paths.filter(findPath =>
       findPath.origin_city_id.includes(origin_city_id),
     );
 
-    return paths.slice((page - 1) * 10, page * 10);
+    return paths;
   }
 
   public async findAllByDestinationCity(
     destination_city_id: string,
-    page: number,
   ): Promise<Path[]> {
     const paths = this.paths.filter(findPath =>
       findPath.destination_city_id.includes(destination_city_id),
     );
 
-    return paths.slice((page - 1) * 10, page * 10);
+    return paths;
+  }
+
+  public async findAllByOriginAndDestinationCity(
+    origin_city_id: string,
+    destination_city_id: string,
+  ): Promise<Path[]> {
+    const paths = this.paths.filter(
+      findPath =>
+        findPath.origin_city_id.includes(origin_city_id) &&
+        findPath.destination_city_id.includes(destination_city_id),
+    );
+
+    return paths;
   }
 
   public async findById(id: string): Promise<Path | undefined> {

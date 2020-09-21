@@ -26,6 +26,7 @@
       "consistent-return": "off",
       "no-await-in-loop":"off",
       "no-useless-constructor": "off",
+      "no-param-reassign": "off",
       "import/no-unresolved": "off",
       "import/no-extraneous-dependencies": "off",
       "@typescript-eslint/no-unused-vars": "off",

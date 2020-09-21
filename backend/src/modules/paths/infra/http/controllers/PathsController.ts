@@ -19,13 +19,12 @@ export default class PathsController {
   }
 
   public async origin(request: Request, response: Response): Promise<Response> {
-    const { origin_city_name = '', page = 1 } = request.query;
+    const { origin_city_name = '' } = request.query;
 
     const listPaths = container.resolve(ListFilteredPathsService);
 
     const paths = await listPaths.execute(
       String(origin_city_name),
-      Number(page),
       'origin_city',
     );
 
@@ -36,13 +35,12 @@ export default class PathsController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    const { destination_city_name = '', page = 1 } = request.query;
+    const { destination_city_name = '' } = request.query;
 
     const listPaths = container.resolve(ListFilteredPathsService);
 
     const paths = await listPaths.execute(
       String(destination_city_name),
-      Number(page),
       'destination_city',
     );
 

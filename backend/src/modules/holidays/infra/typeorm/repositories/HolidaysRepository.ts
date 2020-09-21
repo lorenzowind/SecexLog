@@ -1,5 +1,6 @@
 import { getRepository, Repository, Like } from 'typeorm';
 import { v4 } from 'uuid';
+import moment from 'moment';
 
 import IHolidaysRepository from '@modules/holidays/repositories/IHolidaysRepository';
 
@@ -33,6 +34,43 @@ class HolidaysRepository implements IHolidaysRepository {
     });
 
     return filteredHolidays;
+  }
+
+  private findByDate(holidays: Holiday[], date: string): Holiday[] {
+    const findHolidays = holidays.filter(holiday => {
+      const initialHolidayDate = new Date(
+        moment(holiday.initial_date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      );
+      const endHolidayDate = new Date(
+        moment(holiday.end_date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+      );
+      const auxDate = new Date(moment(date, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+
+      if (initialHolidayDate <= auxDate && auxDate <= endHolidayDate) {
+        return holiday;
+      }
+    });
+
+    return findHolidays;
+  }
+
+  public async findSpecificByDate(
+    city_id: string,
+    date: string,
+  ): Promise<Holiday[]> {
+    const findHolidays = await this.ormRepository.find({
+      where: { city_id },
+    });
+
+    return this.findByDate(findHolidays, date);
+  }
+
+  public async findNationalByDate(date: string): Promise<Holiday[]> {
+    const findHolidays = await this.ormRepository.find({
+      where: { city_id: '' },
+    });
+
+    return this.findByDate(findHolidays, date);
   }
 
   public async findByName(name: string): Promise<Holiday | undefined> {

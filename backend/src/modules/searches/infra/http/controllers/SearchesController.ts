@@ -9,10 +9,10 @@ export default class SearchesController {
 
     const manualSearch = container.resolve(ManualSearchService);
 
-    const results = await manualSearch.execute({
+    const result = await manualSearch.execute({
       data,
     });
 
-    return response.json(results);
+    return response.json(result);
   }
 }
