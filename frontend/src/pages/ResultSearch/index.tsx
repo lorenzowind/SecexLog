@@ -34,7 +34,7 @@ const ResultSearch: React.FC = () => {
   const { searchResult, setPathsCard } = useSearchResult();
 
   useEffect(() => {
-    if (!searchResult.generalInfo) {
+    if (!searchResult.result) {
       history.goBack();
     }
   }, [history, searchResult]);
@@ -47,7 +47,7 @@ const ResultSearch: React.FC = () => {
 
       <Menu isAuthenticated={false} />
 
-      {searchResult.generalInfo && (
+      {searchResult.result && (
         <Container>
           <Content>
             <Top>
@@ -99,30 +99,36 @@ const ResultSearch: React.FC = () => {
                   />
                 </button>
               </nav>
-              <strong>{searchResult.generalInfo.initialCity}</strong>
-              <strong>{searchResult.generalInfo.finalCity.join(', ')}</strong>
+              <strong>
+                {searchResult.result.general_info.origin_city_name}
+              </strong>
+              <strong>
+                {searchResult.result.general_info.destination_cities_names.join(
+                  ', ',
+                )}
+              </strong>
               <strong>
                 {`${
-                  searchResult.generalInfo.initialDate
+                  searchResult.result.general_info.initial_date
                     .toLocaleString()
                     .split(' ')[0]
                 } -
                 ${
-                  searchResult.generalInfo.finalDate
+                  searchResult.result.general_info.final_date
                     .toLocaleString()
                     .split(' ')[0]
                 }`}
               </strong>
             </FilterSection>
 
-            {searchResult.pathsResult ? (
-              searchResult.pathsResult.map(pathCard => (
+            {searchResult.result.paths_result ? (
+              searchResult.result.paths_result.map(pathCard => (
                 <section>
-                  <ModalsImages>
-                    {pathCard.modalsImages.map(modalImage => (
-                      <img src={modalImage} alt="Modal" />
+                  {/* <ModalsImages>
+                    {pathCard.paths.map(path => (
+                      <img src={path.path_data.modal_image} alt="Modal" />
                     ))}
-                  </ModalsImages>
+                  </ModalsImages> */}
 
                   <PathCard>
                     <section>
@@ -130,37 +136,33 @@ const ResultSearch: React.FC = () => {
                         <aside>
                           <div>
                             <strong>
-                              {`${path.selectedPeriod.selectedInitTime}, ${path.selectedPeriod.selectedInitWeekDay}`}
+                              {`${path.selected_period.selected_initial_time}, ${path.selected_period.selected_initial_week_day}`}
                             </strong>
-                            <h2>{path.origin_city_id}</h2>
-                            <h2>{path.destination_city_id}</h2>
+                            <h2>{path.path_data.origin_city_name}</h2>
+                            <h2>{path.path_data.destination_city_name}</h2>
                           </div>
                           <div>
-                            <h2>{path.duration}</h2>
+                            <h2>{String(path.path_data.duration)}</h2>
                             <img src={pathRepresentation} alt="Path" />
                           </div>
                           <div>
                             <strong>
-                              {`${path.selectedPeriod.selectedFinalTime}, ${path.selectedPeriod.selectedFinalWeekDay}`}
+                              {`${path.selected_period.selected_final_time}, ${path.selected_period.selected_final_week_day}`}
                             </strong>
-                            <h2>{path.destination_city_id}</h2>
-                            <h2>{path.modal_id}</h2>
+                            <h2>{path.path_data.destination_city_name}</h2>
+                            <h2>{path.path_data.modal_name}</h2>
                           </div>
                         </aside>
                       ))}
 
                       <h3>
-                        {`Saída: ${
-                          pathCard.initialDate.toLocaleString().split(' ')[0]
-                        } - Retorno: ${
-                          pathCard.finalDate.toLocaleString().split(' ')[0]
-                        }`}
+                        {`Saída: ${pathCard.initial_date} - Retorno: ${pathCard.final_date}`}
                       </h3>
                     </section>
 
                     <PathSelectionContainer>
                       <strong>{`R$ ${pathCard.price}`}</strong>
-                      <h1>{`${pathCard.utilDays} dias utéis`}</h1>
+                      <h1>{`${pathCard.util_days} dias utéis`}</h1>
 
                       <Button
                         type="button"

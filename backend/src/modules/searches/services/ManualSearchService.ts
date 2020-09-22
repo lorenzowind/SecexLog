@@ -261,7 +261,7 @@ class ManualSearchService {
           if (dataIndex === 0) {
             result.result = {
               general_info: {
-                origin_city_name: checkOriginCityExists.id,
+                origin_city_name: checkOriginCityExists.name,
                 destination_cities_names: [],
                 initial_date: data[dataIndex].date,
                 final_date: data[dataIndex].date,
@@ -269,7 +269,7 @@ class ManualSearchService {
               paths_result: [],
             };
 
-            multipleIndexFound.map(indexFound => {
+            multipleIndexFound.map((_indexFound, index) => {
               result.result.paths_result.push({
                 distance: paths[pathIndex].mileage,
                 initial_date: data[dataIndex].date,
@@ -277,7 +277,7 @@ class ManualSearchService {
                 observations,
                 price: paths[pathIndex].cost,
                 util_days: 0,
-                paths: [auxPaths[indexFound]],
+                paths: [auxPaths[index]],
               });
             });
           } else {
@@ -300,19 +300,21 @@ class ManualSearchService {
             result.result.paths_result = [];
 
             auxPathsResult.map(auxPathResult => {
-              multipleIndexFound.map(indexFound => {
-                const date2 = moment(auxPathResult.final_date, 'DD/MM/YYYY');
-                auxPathResult.util_days += date1.diff(date2, 'days');
+              const date2 = moment(auxPathResult.final_date, 'DD/MM/YYYY');
 
+              multipleIndexFound.map((_indexFound, index) => {
                 result.result.paths_result.push({
-                  distance: auxPathResult.distance + paths[pathIndex].mileage,
+                  distance:
+                    Number(auxPathResult.distance) +
+                    Number(paths[pathIndex].mileage),
                   initial_date: auxPathResult.initial_date,
                   final_date: data[dataIndex].date,
-                  observations: [{ observation: '' }],
-                  price: auxPathResult.price + paths[pathIndex].cost,
+                  observations,
+                  price:
+                    Number(auxPathResult.price) + Number(paths[pathIndex].cost),
                   util_days:
                     auxPathResult.util_days + date1.diff(date2, 'days'),
-                  paths: [...auxPathResult.paths, auxPaths[indexFound]],
+                  paths: [...auxPathResult.paths, auxPaths[index]],
                 });
               });
             });

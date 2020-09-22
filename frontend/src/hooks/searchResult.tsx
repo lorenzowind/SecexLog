@@ -1,18 +1,14 @@
 import React, { createContext, useCallback, useState, useContext } from 'react';
-// import api from '../services/api';
 
-import iconModal5 from '../assets/icon-modal-5.png';
-import iconModal4 from '../assets/icon-modal-4.png';
-import iconModal3 from '../assets/icon-modal-3.png';
-import iconModal2 from '../assets/icon-modal-2.png';
+import api from '../services/api';
 
-import { PathState } from './modules/path';
+import { useToast } from './toast';
 
 export interface ManualSearchData {
-  paths: {
-    goCity: string;
-    backCity: string;
-    date: Date;
+  data: {
+    origin_city_id: string;
+    destination_city_id: string;
+    date: string;
   }[];
 }
 
@@ -23,48 +19,65 @@ export interface AutomaticSearchData {
   finalDate: Date;
 }
 
-interface PathResult extends PathState {
-  selectedPeriod: {
-    selectedDate: Date;
-    selectedInitTime: string;
-    selectedFinalTime: string;
-    selectedInitWeekDay: string;
-    selectedFinalWeekDay: string;
+export interface PathData {
+  selected_period: {
+    selected_date: string;
+    selected_initial_time: string;
+    selected_final_time: string;
+    selected_initial_week_day: string;
+    selected_final_week_day: string;
   };
-  modalImage: string;
-  citiesLocation: {
-    goCityLatitude: string;
-    goCityLongitude: string;
-    backCityLatitude: string;
-    backCityLongitude: string;
+  cities_location: {
+    origin_city_latitude: number;
+    origin_city_longitude: number;
+    destination_city_latitude: number;
+    destination_city_longitude: number;
+  };
+  path_data: {
+    origin_city_name: string;
+    destination_city_name: string;
+    modal_name: string;
+    modal_image: string;
+    provider_name: string;
+    duration: number;
+    mileage: number;
+    cost: number;
+    boarding_place: string;
+    departure_place: string;
   };
 }
 
 interface PathsCard {
   price: number;
-  utilDays: number;
+  util_days: number;
   distance: number;
-  initialDate: Date;
-  finalDate: Date;
-  modalsImages: string[];
-  paths: PathResult[];
+  initial_date: string;
+  final_date: string;
+  observations: {
+    observation: string;
+  }[];
+  paths: PathData[];
 }
 
 interface SearchResult {
-  generalInfo: {
-    initialCity: string;
-    finalCity: string[];
-    initialDate: Date;
-    finalDate: Date;
+  result: {
+    general_info: {
+      origin_city_name: string;
+      destination_cities_names: {
+        destination_city_name: string;
+      }[];
+      initial_date: string;
+      final_date: string;
+    };
+    paths_result: PathsCard[];
   };
-  pathsResult: PathsCard[] | undefined;
 }
 
 interface SearchResultContextData {
   searchResult: SearchResult;
   pathsCardSelected: PathsCard;
   setPathsCard(pathsCard: PathsCard): void;
-  getManualSearchResult(manualSearchData: ManualSearchData): void;
+  getManualSearchResult(manualSearchData: ManualSearchData): Promise<void>;
   getAutomaticSearchResult(automaticSearchData: AutomaticSearchData): void;
 }
 
@@ -73,6 +86,8 @@ const SearchResultContext = createContext<SearchResultContextData>(
 );
 
 const SearchResultProvider: React.FC = ({ children }) => {
+  const { addToast } = useToast();
+
   const [searchResult, setSearchResult] = useState<SearchResult>(
     {} as SearchResult,
   );
@@ -85,276 +100,57 @@ const SearchResultProvider: React.FC = ({ children }) => {
   }, []);
 
   const getManualSearchResult = useCallback(
-    (manualSearchData: ManualSearchData) => {
-      const formattedBackCities = manualSearchData.paths
-        .map(path => path.backCity)
-        .filter((backCity, index, array) => array.indexOf(backCity) === index);
+    async (manualSearchData: ManualSearchData) => {
+      try {
+        const response = await api.post('searches/manual', manualSearchData);
 
-      const goCityIndex = formattedBackCities.indexOf(
-        manualSearchData.paths[0].goCity,
-      );
+        if (response) {
+          setSearchResult(response.data);
 
-      if (goCityIndex !== -1) {
-        formattedBackCities.splice(goCityIndex, 1);
+          if (response.data.length === 0) {
+            addToast({
+              type: 'info',
+              title: 'Nenhuma trajeto encontrado',
+            });
+          }
+        }
+      } catch (err) {
+        addToast({
+          type: 'error',
+          title: 'Erro na consulta',
+          description: 'Ocorreu um erro na consulta dos trajetos.',
+        });
       }
-
-      setSearchResult({
-        generalInfo: {
-          initialCity: manualSearchData.paths[0].goCity,
-          finalCity: formattedBackCities,
-          initialDate: manualSearchData.paths[0].date,
-          finalDate:
-            manualSearchData.paths[manualSearchData.paths.length - 1].date,
-        },
-        pathsResult: manualSearchData.paths.reduce(
-          (pathsCard: PathsCard[], path) => {
-            pathsCard.push(
-              {
-                distance: 200,
-                price: 800,
-                utilDays: 5,
-                modalsImages: [iconModal5, iconModal4],
-                initialDate: path.date,
-                finalDate: path.date,
-                paths: [
-                  {
-                    origin_city_id: 'Manaus',
-                    destination_city_id: 'Itacoatiara',
-                    modal_id: 'Taxi aéreo',
-                    modalImage: iconModal5,
-                    boarding_days: '10:00',
-                    boarding_times: 'quinta-feira',
-                    boarding_place: '',
-                    departure_place: '',
-                    provider_id: 'Amazonenses',
-                    duration: 30,
-                    id: '1',
-                    is_hired: true,
-                    mileage: 100,
-                    cost: 400,
-                    selectedPeriod: {
-                      selectedDate: path.date,
-                      selectedInitTime: '10:00',
-                      selectedFinalTime: '10:30',
-                      selectedInitWeekDay: 'qui',
-                      selectedFinalWeekDay: 'qui',
-                    },
-                    citiesLocation: {
-                      goCityLatitude: '',
-                      goCityLongitude: '',
-                      backCityLatitude: '',
-                      backCityLongitude: '',
-                    },
-                  },
-                  {
-                    origin_city_id: 'Itacoatiara',
-                    destination_city_id: 'Manaus',
-                    modal_id: 'Taxi aéreo',
-                    modalImage: iconModal5,
-                    boarding_days: '07:00',
-                    boarding_times: 'sexta-feira',
-                    boarding_place: '',
-                    departure_place: '',
-                    provider_id: 'Amazonenses',
-                    duration: 30,
-                    id: '1',
-                    is_hired: true,
-                    mileage: 100,
-                    cost: 400,
-                    selectedPeriod: {
-                      selectedDate: path.date,
-                      selectedInitTime: '07:00',
-                      selectedFinalTime: '07:30',
-                      selectedInitWeekDay: 'sex',
-                      selectedFinalWeekDay: 'sex',
-                    },
-                    citiesLocation: {
-                      goCityLatitude: '',
-                      goCityLongitude: '',
-                      backCityLatitude: '',
-                      backCityLongitude: '',
-                    },
-                  },
-                ],
-              },
-              // {
-              //   distance: 200,
-              //   price: 800,
-              //   utilDays: 5,
-              //   modalsImages: [iconModal5],
-              //   initialDate: path.date,
-              //   finalDate: path.date,
-              //   paths: [
-              //     {
-              //       initCidade: 'Manaus',
-              //       endCidade: 'Itacoatiara',
-              //       modal: 'Taxi aéreo',
-              //       modalImage: iconModal5,
-              //       dia: ['10:00'],
-              //       hora: ['quinta-feira'],
-              //       arrival: '',
-              //       departure: '',
-              //       prestNome: '',
-              //       duration: '00:30',
-              //       id: 1,
-              //       contratado: true,
-              //       linha: false,
-              //       mileage: 100,
-              //       cost: 400,
-              //       selectedPeriod: {
-              //         selectedDate: path.date,
-              //         selectedInitTime: '10:00',
-              //         selectedFinalTime: '10:30',
-              //         selectedInitWeekDay: 'qui',
-              //         selectedFinalWeekDay: 'qui',
-              //       },
-              //       citiesLocation: {
-              //         goCityLatitude: '',
-              //         goCityLongitude: '',
-              //         backCityLatitude: '',
-              //         backCityLongitude: '',
-              //       },
-              //     },
-              //   ],
-              // },
-              // {
-              //   distance: 200,
-              //   price: 800,
-              //   utilDays: 5,
-              //   modalsImages: [iconModal5, iconModal3, iconModal2],
-              //   initialDate: path.date,
-              //   finalDate: path.date,
-              //   paths: [
-              //     {
-              //       initCidade: 'Manaus',
-              //       endCidade: 'Itacoatiara',
-              //       modal: 'Taxi aéreo',
-              //       modalImage: iconModal5,
-              //       dia: ['10:00'],
-              //       hora: ['quinta-feira'],
-              //       arrival: '',
-              //       departure: '',
-              //       prestNome: 'Amazonenses',
-              //       duration: '00:30',
-              //       id: 1,
-              //       contratado: true,
-              //       linha: false,
-              //       mileage: 100,
-              //       cost: 400,
-              //       selectedPeriod: {
-              //         selectedDate: path.date,
-              //         selectedInitTime: '10:00',
-              //         selectedFinalTime: '10:30',
-              //         selectedInitWeekDay: 'qui',
-              //         selectedFinalWeekDay: 'qui',
-              //       },
-              //       citiesLocation: {
-              //         goCityLatitude: '',
-              //         goCityLongitude: '',
-              //         backCityLatitude: '',
-              //         backCityLongitude: '',
-              //       },
-              //     },
-              //     {
-              //       initCidade: 'Manaus',
-              //       endCidade: 'Itacoatiara',
-              //       modal: 'Taxi aéreo',
-              //       modalImage: iconModal5,
-              //       dia: ['10:00'],
-              //       hora: ['quinta-feira'],
-              //       arrival: '',
-              //       departure: '',
-              //       prestNome: 'Amazonenses',
-              //       duration: '00:30',
-              //       id: 1,
-              //       contratado: true,
-              //       linha: false,
-              //       mileage: 100,
-              //       cost: 400,
-              //       selectedPeriod: {
-              //         selectedDate: path.date,
-              //         selectedInitTime: '10:00',
-              //         selectedFinalTime: '10:30',
-              //         selectedInitWeekDay: 'qui',
-              //         selectedFinalWeekDay: 'qui',
-              //       },
-              //       citiesLocation: {
-              //         goCityLatitude: '',
-              //         goCityLongitude: '',
-              //         backCityLatitude: '',
-              //         backCityLongitude: '',
-              //       },
-              //     },
-              //     {
-              //       initCidade: 'Manaus',
-              //       endCidade: 'Itacoatiara',
-              //       modal: 'Taxi aéreo',
-              //       modalImage: iconModal5,
-              //       dia: ['10:00'],
-              //       hora: ['quinta-feira'],
-              //       arrival: '',
-              //       departure: '',
-              //       prestNome: 'Amazonenses',
-              //       duration: '00:30',
-              //       id: 1,
-              //       contratado: true,
-              //       linha: false,
-              //       mileage: 100,
-              //       cost: 400,
-              //       selectedPeriod: {
-              //         selectedDate: path.date,
-              //         selectedInitTime: '10:00',
-              //         selectedFinalTime: '10:30',
-              //         selectedInitWeekDay: 'qui',
-              //         selectedFinalWeekDay: 'qui',
-              //       },
-              //       citiesLocation: {
-              //         goCityLatitude: '',
-              //         goCityLongitude: '',
-              //         backCityLatitude: '',
-              //         backCityLongitude: '',
-              //       },
-              //     },
-              //   ],
-              // },
-            );
-
-            return pathsCard;
-          },
-          [],
-        ),
-      });
     },
-    [],
+    [addToast],
   );
 
   const getAutomaticSearchResult = useCallback(
     (automaticSearchData: AutomaticSearchData) => {
-      setSearchResult({
-        generalInfo: {
-          initialCity: automaticSearchData.initialCity,
-          finalCity: automaticSearchData.auditatedCities,
-          initialDate: automaticSearchData.initialDate,
-          finalDate: automaticSearchData.finalDate,
-        },
-        pathsResult: undefined,
-        // pathsResult: automaticSearchData.auditatedCities.reduce(
-        //   (pathsCard: PathsCard[], _auditatedCity) => {
-        //     pathsCard.push({
-        //       distance: 0,
-        //       price: 0,
-        //       utilDays: 0,
-        //       initialDate: automaticSearchData.initialDate,
-        //       finalDate: automaticSearchData.finalDate,
-        //       modalsImages: [''],
-        //       paths: [{} as PathResult],
-        //     });
-
-        //     return pathsCard;
-        //   },
-        //   [],
-        // ),
-      });
+      // setSearchResult({
+      //   generalInfo: {
+      //     initialCity: automaticSearchData.initialCity,
+      //     finalCity: automaticSearchData.auditatedCities,
+      //     initialDate: automaticSearchData.initialDate,
+      //     finalDate: automaticSearchData.finalDate,
+      //   },
+      //   pathsResult: undefined,
+      //   // pathsResult: automaticSearchData.auditatedCities.reduce(
+      //   //   (pathsCard: PathsCard[], _auditatedCity) => {
+      //   //     pathsCard.push({
+      //   //       distance: 0,
+      //   //       price: 0,
+      //   //       utilDays: 0,
+      //   //       initialDate: automaticSearchData.initialDate,
+      //   //       finalDate: automaticSearchData.finalDate,
+      //   //       modalsImages: [''],
+      //   //       paths: [{} as PathResult],
+      //   //     });
+      //   //     return pathsCard;
+      //   //   },
+      //   //   [],
+      //   // ),
+      // });
     },
     [],
   );

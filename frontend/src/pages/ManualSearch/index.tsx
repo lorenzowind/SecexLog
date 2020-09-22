@@ -86,31 +86,32 @@ const ManualSearch: React.FC = () => {
     async (data: Object) => {
       try {
         const manualSearchData: ManualSearchData = {
-          paths: [],
+          data: [],
         };
 
         Object.entries(data).forEach((entry, index) => {
           const value = entry[1];
 
           if (!index) {
-            manualSearchData.paths.push({
-              goCity: value,
-              backCity: '',
-              date: pathsDate[index],
+            manualSearchData.data.push({
+              origin_city_id: value,
+              destination_city_id: '',
+              date: new Date(pathsDate[index]).toLocaleDateString(),
             });
           } else {
-            const currentLength = manualSearchData.paths.length;
+            const currentLength = manualSearchData.data.length;
 
             index % 2 === 0
-              ? manualSearchData.paths.push({
-                  goCity: value,
-                  backCity: '',
-                  date: pathsDate[currentLength],
+              ? manualSearchData.data.push({
+                  origin_city_id: value,
+                  destination_city_id: '',
+                  date: new Date(pathsDate[currentLength]).toLocaleDateString(),
                 })
-              : (manualSearchData.paths[currentLength - 1] = {
-                  goCity: manualSearchData.paths[currentLength - 1].goCity,
-                  backCity: value,
-                  date: manualSearchData.paths[currentLength - 1].date,
+              : (manualSearchData.data[currentLength - 1] = {
+                  origin_city_id:
+                    manualSearchData.data[currentLength - 1].origin_city_id,
+                  destination_city_id: value,
+                  date: manualSearchData.data[currentLength - 1].date,
                 });
           }
 
@@ -122,13 +123,9 @@ const ManualSearch: React.FC = () => {
           }
         });
 
-        // setLoadingPage(true);
+        setLoadingPage(true);
 
-        // await getManualSearchResult(manualSearchData).then(() => {
-        //   setLoadingPage(false);
-        // });
-
-        getManualSearchResult(manualSearchData);
+        await getManualSearchResult(manualSearchData);
 
         history.push('/result-search');
       } catch (err) {
@@ -136,6 +133,8 @@ const ManualSearch: React.FC = () => {
           type: 'error',
           title: 'Selecione todos os campos',
         });
+      } finally {
+        setLoadingPage(false);
       }
     },
     [addToast, getManualSearchResult, history, pathsDate],

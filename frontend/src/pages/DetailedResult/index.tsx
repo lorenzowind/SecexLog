@@ -78,15 +78,13 @@ const DetailedResult: React.FC = () => {
                   <strong>Ida</strong>
                   <b>
                     {
-                      pathsCardSelected.initialDate
+                      pathsCardSelected.initial_date
                         .toLocaleString()
                         .split(' ')[0]
                     }
                   </b>
                   <strong>- Volta</strong>
-                  <b>
-                    {pathsCardSelected.finalDate.toLocaleString().split(' ')[0]}
-                  </b>
+                  <b>{pathsCardSelected.final_date}</b>
                 </PeriodContainer>
 
                 <PathsContainer>
@@ -104,31 +102,26 @@ const DetailedResult: React.FC = () => {
 
                       <PathInfoContainer>
                         <CitiesContainer>
-                          <img src={path.modalImage} alt="Modal" />
-                          <strong>{`${path.origin_city_id} - ${path.destination_city_id}`}</strong>
+                          <img src={path.path_data.modal_image} alt="Modal" />
+                          <strong>{`${path.path_data.origin_city_name} - ${path.path_data.destination_city_name}`}</strong>
                         </CitiesContainer>
                         <ModalInfoContainer>
                           <strong>
-                            <b>{path.modal_id}</b>
-                            {` - ${path.provider_id}`}
+                            <b>{path.path_data.modal_name}</b>
+                            {` - ${path.path_data.provider_name}`}
                           </strong>
                         </ModalInfoContainer>
                         <TimeInfoContainer>
-                          <strong>
-                            {path.selectedPeriod.selectedDate
-                              .toLocaleString()
-                              .split(' ')[0]
-                              .substring(0, 5)}
-                          </strong>
+                          <strong>{path.selected_period.selected_date}</strong>
                           <section>
-                            <h2>{`Saída ${path.selectedPeriod.selectedInitTime}`}</h2>
-                            <h2>{`Chegada ${path.selectedPeriod.selectedFinalTime}`}</h2>
+                            <h2>{`Saída ${path.selected_period.selected_initial_time}`}</h2>
+                            <h2>{`Chegada ${path.selected_period.selected_final_time}`}</h2>
                           </section>
                         </TimeInfoContainer>
                       </PathInfoContainer>
 
                       <article>
-                        <h3>{path.duration}</h3>
+                        <h3>{String(path.path_data.duration)}</h3>
                       </article>
                     </UniquePathContainer>
                   ))}
