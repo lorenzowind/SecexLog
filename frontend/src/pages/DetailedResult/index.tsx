@@ -19,6 +19,7 @@ import {
   CitiesContainer,
   ModalInfoContainer,
   TimeInfoContainer,
+  ObservationsContainer,
   OptionsContainer,
   PathDetailedClosed,
 } from './styles';
@@ -145,6 +146,16 @@ const DetailedResult: React.FC = () => {
                     </UniquePathContainer>
                   ))}
                 </PathsContainer>
+
+                <ObservationsContainer>
+                  {pathsCardSelected.observations.map(
+                    (pathObservation, index2) => (
+                      <h4 key={`Obs-${index2}`}>
+                        {`*${pathObservation.observation}`}
+                      </h4>
+                    ),
+                  )}
+                </ObservationsContainer>
 
                 <OptionsContainer>
                   <button type="button">

@@ -77,7 +77,7 @@ interface SearchResultContextData {
   searchResult: SearchResult;
   pathsCardSelected: PathsCard;
   setPathsCard(pathsCard: PathsCard): void;
-  getManualSearchResult(manualSearchData: ManualSearchData): Promise<void>;
+  getManualSearchResult(manualSearchData: ManualSearchData): Promise<boolean>;
   getAutomaticSearchResult(automaticSearchData: AutomaticSearchData): void;
 }
 
@@ -117,6 +117,8 @@ const SearchResultProvider: React.FC = ({ children }) => {
             });
           }
         }
+
+        return false;
       } catch (err) {
         setSearchResult({} as SearchResult);
 
@@ -125,6 +127,8 @@ const SearchResultProvider: React.FC = ({ children }) => {
           title: 'Erro na consulta',
           description: 'Ocorreu um erro na consulta dos trajetos.',
         });
+
+        return true;
       }
     },
     [addToast],

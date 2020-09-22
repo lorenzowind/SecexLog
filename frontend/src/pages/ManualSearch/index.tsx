@@ -92,7 +92,17 @@ const ManualSearch: React.FC = () => {
         Object.entries(data).forEach((entry, index) => {
           const value = entry[1];
 
+          const dateNow = new Date();
+
           if (!index) {
+            const auxPathDate = new Date(pathsDate[index]);
+
+            auxPathDate.setDate(auxPathDate.getDate() + 1);
+
+            if (auxPathDate < dateNow) {
+              throw new Error();
+            }
+
             manualSearchData.data.push({
               origin_city_id: value,
               destination_city_id: '',
@@ -100,6 +110,14 @@ const ManualSearch: React.FC = () => {
             });
           } else {
             const currentLength = manualSearchData.data.length;
+
+            const auxPathDate = new Date(pathsDate[currentLength]);
+
+            auxPathDate.setDate(auxPathDate.getDate() + 1);
+
+            if (auxPathDate < dateNow) {
+              throw new Error();
+            }
 
             index % 2 === 0
               ? manualSearchData.data.push({
@@ -125,13 +143,15 @@ const ManualSearch: React.FC = () => {
 
         setLoadingPage(true);
 
-        await getManualSearchResult(manualSearchData);
+        const hasError = await getManualSearchResult(manualSearchData);
 
-        history.push('/result-search');
+        if (!hasError) {
+          history.push('/result-search');
+        }
       } catch (err) {
         addToast({
           type: 'error',
-          title: 'Selecione todos os campos',
+          title: 'Dados inválidos',
         });
       } finally {
         setLoadingPage(false);

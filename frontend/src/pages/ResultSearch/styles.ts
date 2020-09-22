@@ -215,10 +215,21 @@ export const PathCard = styled.div`
 
     > h3 {
       margin: 0;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       font-weight: 300;
       font-size: 16px;
       color: #818181;
+    }
+
+    > h4 {
+      margin: 0;
+      font-weight: 300;
+      font-size: 16px;
+      color: #fc0e0e;
+
+      & + h4 {
+        margin-bottom: 10px;
+      }
     }
   }
 

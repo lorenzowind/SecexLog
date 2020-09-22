@@ -179,6 +179,12 @@ const ResultSearch: React.FC = () => {
                       <h3>
                         {`Saída: ${pathCard.initial_date} - Retorno: ${pathCard.final_date}`}
                       </h3>
+
+                      {pathCard.observations.map((pathObservation, index2) => (
+                        <h4 key={`Obs-${index2}`}>
+                          {`*${pathObservation.observation}`}
+                        </h4>
+                      ))}
                     </section>
 
                     <PathSelectionContainer>

@@ -23,6 +23,24 @@ export const PathDetailed = styled.div`
   background-color: #fff;
 
   padding: 20px 20px 20px 120px;
+
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
 `;
 
 export const PathDetailedClosed = styled.div`
@@ -259,6 +277,19 @@ export const TimeInfoContainer = styled.div`
       margin: 0;
       font-size: 18px;
       font-weight: 500;
+    }
+  }
+`;
+
+export const ObservationsContainer = styled.div`
+  > h4 {
+    margin: 0;
+    font-weight: 300;
+    font-size: 16px;
+    color: #fc0e0e;
+
+    & + h4 {
+      margin-bottom: 10px;
     }
   }
 `;
