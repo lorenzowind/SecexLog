@@ -115,10 +115,10 @@ class ManualSearchService {
   }: IManualSearchRequestDTO): Promise<ISearchResponseDTO> {
     const result: ISearchResponseDTO = {} as ISearchResponseDTO;
 
-    let lastPathTimeArray: string[];
+    let lastPathTimeArray: [string, string][];
 
     for (let dataIndex = 0; dataIndex < data.length; dataIndex += 1) {
-      const currentPathTimeArray: string[] = [];
+      const currentPathTimeArray: [string, string][] = [];
 
       const checkOriginCityExists = await this.citiesRepository.findById(
         data[dataIndex].origin_city_id,
@@ -243,7 +243,7 @@ class ManualSearchService {
           const auxPaths: PathData[] = [];
 
           multipleIndexFound.map(indexFound => {
-            currentPathTimeArray.push(pathTimeArray[indexFound]);
+            currentPathTimeArray.push([weekDay[1], pathTimeArray[indexFound]]);
 
             auxPaths.push({
               selected_period: {
@@ -305,10 +305,13 @@ class ManualSearchService {
                 paths: [auxPaths[index]],
               });
 
-              currentPathTimeArray[index] = this.calculateResultTime(
-                currentPathTimeArray[index],
-                paths[pathIndex].duration,
-              );
+              currentPathTimeArray[index] = [
+                currentPathTimeArray[index][0],
+                this.calculateResultTime(
+                  currentPathTimeArray[index][1],
+                  paths[pathIndex].duration,
+                ),
+              ];
             });
           } else {
             result.result.general_info.final_date = data[dataIndex].date;
@@ -335,9 +338,11 @@ class ManualSearchService {
               multipleIndexFound.map((_indexFound, index) => {
                 if (
                   this.compareTime(
-                    lastPathTimeArray[auxPathsIndex],
-                    currentPathTimeArray[index],
-                  ) === -1
+                    lastPathTimeArray[auxPathsIndex][1],
+                    currentPathTimeArray[index][1],
+                  ) === -1 ||
+                  lastPathTimeArray[auxPathsIndex][0] !==
+                    currentPathTimeArray[index][0]
                 ) {
                   result.result.paths_result.push({
                     distance:
@@ -355,10 +360,13 @@ class ManualSearchService {
                   });
                 }
 
-                currentPathTimeArray[index] = this.calculateResultTime(
-                  currentPathTimeArray[index],
-                  paths[pathIndex].duration,
-                );
+                currentPathTimeArray[index] = [
+                  currentPathTimeArray[index][0],
+                  this.calculateResultTime(
+                    currentPathTimeArray[index][1],
+                    paths[pathIndex].duration,
+                  ),
+                ];
               });
             });
           }

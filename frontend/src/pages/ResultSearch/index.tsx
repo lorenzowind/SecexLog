@@ -205,7 +205,11 @@ const ResultSearch: React.FC = () => {
                       <strong>
                         {`${convertToLocalCurrency(pathCard.price)}`}
                       </strong>
-                      <h1>{`${pathCard.util_days} dias utéis`}</h1>
+                      <h1>
+                        {pathCard.util_days !== 1
+                          ? `${pathCard.util_days} dias utéis`
+                          : `${pathCard.util_days} dia útil`}
+                      </h1>
 
                       <Button
                         type="button"
