@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useSearchResult } from '../../hooks/searchResult';
@@ -42,6 +42,20 @@ const ResultSearch: React.FC = () => {
       history.goBack();
     }
   }, [history, searchResult]);
+
+  const convertToTime = useCallback((minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const newMinutes = minutes % 60;
+
+    return `${String(hours)}h ${newMinutes}min`;
+  }, []);
+
+  const convertToLocalCurrency = useCallback((price: number) => {
+    return Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(price);
+  }, []);
 
   return (
     <>
@@ -163,7 +177,7 @@ const ResultSearch: React.FC = () => {
                             <h2>{path.path_data.modal_name}</h2>
                           </div>
                           <div>
-                            <h2>{String(path.path_data.duration)}</h2>
+                            <h2>{convertToTime(path.path_data.duration)}</h2>
                             <img src={pathRepresentation} alt="Path" />
                           </div>
                           <div>
@@ -188,7 +202,9 @@ const ResultSearch: React.FC = () => {
                     </section>
 
                     <PathSelectionContainer>
-                      <strong>{`R$ ${pathCard.price}`}</strong>
+                      <strong>
+                        {`${convertToLocalCurrency(pathCard.price)}`}
+                      </strong>
                       <h1>{`${pathCard.util_days} dias utéis`}</h1>
 
                       <Button

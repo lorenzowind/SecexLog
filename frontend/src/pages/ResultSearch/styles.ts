@@ -227,7 +227,7 @@ export const PathCard = styled.div`
       font-size: 16px;
       color: #fc0e0e;
 
-      & + h4 {
+      &:last-child {
         margin-bottom: 10px;
       }
     }
