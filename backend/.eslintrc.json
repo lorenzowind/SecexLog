@@ -25,6 +25,7 @@
       "class-methods-use-this": "off",
       "consistent-return": "off",
       "no-await-in-loop":"off",
+      "no-loop-func": "off",
       "no-useless-constructor": "off",
       "no-param-reassign": "off",
       "import/no-unresolved": "off",
