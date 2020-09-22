@@ -60,6 +60,13 @@ const DetailedResult: React.FC = () => {
     [arrayModalIcons],
   );
 
+  const convertToTime = useCallback((minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const newMinutes = minutes % 60;
+
+    return `${String(hours)}h${newMinutes}m`;
+  }, []);
+
   return (
     <>
       <Menu isAuthenticated={false} />
@@ -141,7 +148,7 @@ const DetailedResult: React.FC = () => {
                       </PathInfoContainer>
 
                       <article>
-                        <h3>{String(path.path_data.duration)}</h3>
+                        <h3>{convertToTime(path.path_data.duration)}</h3>
                       </article>
                     </UniquePathContainer>
                   ))}

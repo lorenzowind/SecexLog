@@ -47,7 +47,7 @@ const ResultSearch: React.FC = () => {
     const hours = Math.floor(minutes / 60);
     const newMinutes = minutes % 60;
 
-    return `${String(hours)}h ${newMinutes}min`;
+    return `${String(hours)}h${newMinutes}m`;
   }, []);
 
   const convertToLocalCurrency = useCallback((price: number) => {
