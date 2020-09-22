@@ -125,7 +125,7 @@ const ResultSearch: React.FC = () => {
               </strong>
             </FilterSection>
 
-            {searchResult.result.paths_result ? (
+            {searchResult.result.paths_result.length ? (
               searchResult.result.paths_result.map((pathCard, index) => (
                 <section key={index}>
                   <ModalsImages>

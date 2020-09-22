@@ -102,12 +102,15 @@ const SearchResultProvider: React.FC = ({ children }) => {
   const getManualSearchResult = useCallback(
     async (manualSearchData: ManualSearchData) => {
       try {
-        const response = await api.post('searches/manual', manualSearchData);
+        const response = await api.post<SearchResult>(
+          'searches/manual',
+          manualSearchData,
+        );
 
         if (response) {
           setSearchResult(response.data);
 
-          if (!response.data) {
+          if (!response.data.result.paths_result.length) {
             addToast({
               type: 'info',
               title: 'Nenhum trajeto encontrado',
