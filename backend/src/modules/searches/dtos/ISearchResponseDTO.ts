@@ -26,26 +26,28 @@ export interface PathData {
   };
 }
 
+export interface PathResultsSection {
+  price: number;
+  util_days: number;
+  distance: number;
+  initial_date: string;
+  final_date: string;
+  observations: {
+    observation: string;
+  }[];
+  paths: PathData[];
+}
+
 export default interface ISearchResponseDTO {
   result: {
     general_info: {
-      origin_city_name: string;
-      destination_cities_names: {
+      origin_city_name?: string;
+      destination_cities_names?: {
         destination_city_name: string;
       }[];
-      initial_date: string;
-      final_date: string;
+      initial_date?: string;
+      final_date?: string;
     };
-    paths_result: {
-      price: number;
-      util_days: number;
-      distance: number;
-      initial_date: string;
-      final_date: string;
-      observations: {
-        observation: string;
-      }[];
-      paths: PathData[];
-    }[];
+    paths_result: PathResultsSection[];
   };
 }

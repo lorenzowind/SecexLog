@@ -34,25 +34,25 @@ class ManualSearchService {
   private getTransformedDay(day: number) {
     switch (day) {
       case 0: {
-        return ['Domingo', 'dom'];
-      }
-      case 1: {
         return ['Segunda-feira', 'seg'];
       }
-      case 2: {
+      case 1: {
         return ['Terça-feira', 'ter'];
       }
-      case 3: {
+      case 2: {
         return ['Quarta-feira', 'qua'];
       }
-      case 4: {
+      case 3: {
         return ['Quinta-feira', 'qui'];
       }
-      case 5: {
+      case 4: {
         return ['Sexta-feira', 'sex'];
       }
-      case 6: {
+      case 5: {
         return ['Sábado', 'sab'];
+      }
+      case 6: {
+        return ['Domingo', 'dom'];
       }
       default: {
         return ['', ''];
@@ -84,7 +84,15 @@ class ManualSearchService {
       newMinutes %= 60;
     }
 
-    return `${String(newHours)}:${String(newMinutes)}`;
+    const newHoursString =
+      String(newHours).length === 1 ? `${String(newHours)}0` : String(newHours);
+
+    const newMinutesString =
+      String(newMinutes).length === 1
+        ? `${String(newMinutes)}0`
+        : String(newMinutes);
+
+    return `${String(newHoursString)}:${newMinutesString}`;
   }
 
   public async execute({
@@ -92,22 +100,17 @@ class ManualSearchService {
   }: IManualSearchRequestDTO): Promise<ISearchResponseDTO> {
     const result: ISearchResponseDTO = {} as ISearchResponseDTO;
 
-    for (let i = 0; i < data.length; i += 1) {
+    for (let dataIndex = 0; dataIndex < data.length; dataIndex += 1) {
       const checkOriginCityExists = await this.citiesRepository.findById(
-        data[i].origin_city_id,
+        data[dataIndex].origin_city_id,
       );
 
       if (!checkOriginCityExists) {
         throw new AppError('Origin city not found.');
       }
 
-      if (i === 0) {
-        result.result.general_info.origin_city_name =
-          checkOriginCityExists.name;
-      }
-
       const checkDestinationCityExists = await this.citiesRepository.findById(
-        data[i].destination_city_id,
+        data[dataIndex].destination_city_id,
       );
 
       if (!checkDestinationCityExists) {
@@ -115,29 +118,23 @@ class ManualSearchService {
       }
 
       if (
-        i !== 0 &&
-        !result.result.general_info.destination_cities_names.includes({
-          destination_city_name: checkDestinationCityExists.name,
-        })
+        data[dataIndex].origin_city_id === data[dataIndex].destination_city_id
       ) {
-        result.result.general_info.destination_cities_names.push({
-          destination_city_name: checkDestinationCityExists.name,
-        });
-      }
-
-      if (data[i].origin_city_id === data[i].destination_city_id) {
         throw new AppError('Origin and destination city can not be the same');
       }
 
-      const date1 = moment(data[i].date, 'DD/MM/YYYY');
+      const date1 = moment(data[dataIndex].date, 'DD/MM/YYYY');
 
-      if (i < data.length - 1) {
-        if (data[i].destination_city_id !== data[i + 1].origin_city_id) {
+      if (dataIndex < data.length - 1) {
+        if (
+          data[dataIndex].destination_city_id !==
+          data[dataIndex + 1].origin_city_id
+        ) {
           throw new AppError('Paths flow is not valid.');
         }
 
         const date2 = new Date(
-          moment(data[i + 1].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+          moment(data[dataIndex + 1].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
         );
 
         if (new Date(date1.format('YYYY-MM-DD')) > date2) {
@@ -146,19 +143,17 @@ class ManualSearchService {
       }
 
       const paths = await this.pathsRepository.findAllByOriginAndDestinationCity(
-        data[i].origin_city_id,
-        data[i].destination_city_id,
+        data[dataIndex].origin_city_id,
+        data[dataIndex].destination_city_id,
       );
 
-      paths.map(async path => {
+      for (let pathIndex = 0; pathIndex < paths.length; pathIndex += 1) {
         const weekDay = this.getTransformedDay(
           new Date(date1.format('YYYY-MM-DD')).getDay(),
         );
 
-        // this.holidaysRepository.findNationalByDate();
-
-        const pathWeekDayArray = path.boarding_days.split(', ');
-        const pathTimeArray = path.boarding_times.split(', ');
+        const pathWeekDayArray = paths[pathIndex].boarding_days.split(', ');
+        const pathTimeArray = paths[pathIndex].boarding_times.split(', ');
 
         const multipleIndexFound = this.findMultipleIndex(
           pathWeekDayArray,
@@ -166,24 +161,78 @@ class ManualSearchService {
         );
 
         if (multipleIndexFound) {
-          const pathModal = await this.modalsRepository.findById(path.modal_id);
+          const pathModal = await this.modalsRepository.findById(
+            paths[pathIndex].modal_id,
+          );
 
           const pathProvider = await this.providersRepository.findById(
-            path.provider_id,
+            paths[pathIndex].provider_id,
           );
+
+          const observations: { observation: string }[] = [];
+
+          const nationalHolidays = await this.holidaysRepository.findNationalByDate(
+            data[dataIndex].date,
+          );
+
+          if (nationalHolidays) {
+            observations.push({
+              observation: `Feriado nacional em ${data[dataIndex].date}`,
+            });
+          }
+
+          const specificHolidays = await this.holidaysRepository.findSpecificByDate(
+            data[dataIndex].destination_city_id,
+            data[dataIndex].date,
+          );
+
+          if (specificHolidays) {
+            observations.push({
+              observation: `Feriado local em ${data[dataIndex].date}`,
+            });
+          }
+
+          if (
+            checkDestinationCityExists.initial_flood_date &&
+            checkDestinationCityExists.end_flood_date
+          ) {
+            const initialFloodDate = `${checkDestinationCityExists.initial_flood_date}/2020`;
+            const endFloodDate = `${checkDestinationCityExists.end_flood_date}/2020`;
+
+            const initialFormattedFloodDate = new Date(
+              moment(initialFloodDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+            );
+
+            const endFormattedFloodDate = new Date(
+              moment(endFloodDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+            );
+
+            const auxDate = new Date(
+              moment(data[dataIndex].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+            );
+
+            if (
+              initialFormattedFloodDate <= auxDate &&
+              auxDate <= endFormattedFloodDate
+            ) {
+              observations.push({
+                observation: `Período de cheias em ${data[dataIndex].date}`,
+              });
+            }
+          }
 
           const auxPaths: PathData[] = [];
 
           multipleIndexFound.map(indexFound => {
             auxPaths.push({
               selected_period: {
-                selected_date: data[i].date,
+                selected_date: data[dataIndex].date,
                 selected_initial_week_day: weekDay[1],
                 selected_initial_time: pathTimeArray[indexFound],
                 selected_final_week_day: weekDay[1],
                 selected_final_time: this.calculateResultTime(
                   pathTimeArray[indexFound],
-                  path.duration,
+                  paths[pathIndex].duration,
                 ),
               },
               cities_location: {
@@ -195,13 +244,13 @@ class ManualSearchService {
                   checkDestinationCityExists.longitude || 0,
               },
               path_data: {
-                boarding_place: path.boarding_place,
-                departure_place: path.departure_place,
-                cost: path.cost,
-                duration: path.duration,
+                boarding_place: paths[pathIndex].boarding_place,
+                departure_place: paths[pathIndex].departure_place,
+                cost: paths[pathIndex].cost,
+                duration: paths[pathIndex].duration,
                 origin_city_name: checkOriginCityExists.name,
                 destination_city_name: checkDestinationCityExists.name,
-                mileage: path.mileage,
+                mileage: paths[pathIndex].mileage,
                 modal_name: pathModal ? pathModal.name : '',
                 modal_image: pathModal ? pathModal.image : '',
                 provider_name: pathProvider ? pathProvider.name : '',
@@ -209,42 +258,61 @@ class ManualSearchService {
             });
           });
 
-          if (i === 0) {
-            result.result.general_info.initial_date = data[i].date;
-            result.result.general_info.final_date = data[i].date;
+          if (dataIndex === 0) {
+            result.result = {
+              general_info: {
+                origin_city_name: checkOriginCityExists.id,
+                destination_cities_names: [],
+                initial_date: data[dataIndex].date,
+                final_date: data[dataIndex].date,
+              },
+              paths_result: [],
+            };
 
-            multipleIndexFound.map(_indexFound => {
+            multipleIndexFound.map(indexFound => {
               result.result.paths_result.push({
-                distance: path.mileage,
-                initial_date: data[i].date,
-                final_date: data[i].date,
-                observations: [{ observation: '' }],
-                price: path.cost,
+                distance: paths[pathIndex].mileage,
+                initial_date: data[dataIndex].date,
+                final_date: data[dataIndex].date,
+                observations,
+                price: paths[pathIndex].cost,
                 util_days: 0,
-                paths: auxPaths,
+                paths: [auxPaths[indexFound]],
               });
             });
           } else {
-            result.result.general_info.final_date = data[i].date;
+            result.result.general_info.final_date = data[dataIndex].date;
+
+            if (result.result.general_info.destination_cities_names) {
+              if (
+                !result.result.general_info.destination_cities_names.includes({
+                  destination_city_name: checkDestinationCityExists.name,
+                })
+              ) {
+                result.result.general_info.destination_cities_names.push({
+                  destination_city_name: checkDestinationCityExists.name,
+                });
+              }
+            }
 
             const auxPathsResult = result.result.paths_result;
 
             result.result.paths_result = [];
 
             auxPathsResult.map(auxPathResult => {
-              multipleIndexFound.map(_indexFound => {
+              multipleIndexFound.map(indexFound => {
                 const date2 = moment(auxPathResult.final_date, 'DD/MM/YYYY');
                 auxPathResult.util_days += date1.diff(date2, 'days');
 
                 result.result.paths_result.push({
-                  distance: auxPathResult.distance + path.mileage,
+                  distance: auxPathResult.distance + paths[pathIndex].mileage,
                   initial_date: auxPathResult.initial_date,
-                  final_date: data[i].date,
+                  final_date: data[dataIndex].date,
                   observations: [{ observation: '' }],
-                  price: auxPathResult.price + path.cost,
+                  price: auxPathResult.price + paths[pathIndex].cost,
                   util_days:
                     auxPathResult.util_days + date1.diff(date2, 'days'),
-                  paths: auxPaths,
+                  paths: [...auxPathResult.paths, auxPaths[indexFound]],
                 });
               });
             });
@@ -252,7 +320,7 @@ class ManualSearchService {
         } else {
           return {} as ISearchResponseDTO;
         }
-      });
+      }
     }
 
     return result;
