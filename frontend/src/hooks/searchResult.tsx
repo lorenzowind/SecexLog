@@ -107,14 +107,16 @@ const SearchResultProvider: React.FC = ({ children }) => {
         if (response) {
           setSearchResult(response.data);
 
-          if (response.data.length === 0) {
+          if (!response.data) {
             addToast({
               type: 'info',
-              title: 'Nenhuma trajeto encontrado',
+              title: 'Nenhum trajeto encontrado',
             });
           }
         }
       } catch (err) {
+        setSearchResult({} as SearchResult);
+
         addToast({
           type: 'error',
           title: 'Erro na consulta',

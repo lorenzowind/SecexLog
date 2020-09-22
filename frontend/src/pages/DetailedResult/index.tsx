@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { useSearchResult } from '../../hooks/searchResult';
+
+import { getArrayModalIcons } from '../../utils/getArrayModalFiles';
 
 import { Menu } from '../../components';
 
@@ -34,6 +36,8 @@ const DetailedResult: React.FC = () => {
 
   const [mapIsFull, setMapIsFull] = useState(false);
 
+  const [arrayModalIcons] = useState(getArrayModalIcons);
+
   const { pathsCardSelected } = useSearchResult();
 
   useEffect(() => {
@@ -41,6 +45,19 @@ const DetailedResult: React.FC = () => {
       history.goBack();
     }
   }, [history, pathsCardSelected]);
+
+  const getRelatedModalIcon = useCallback(
+    pathModalIcon => {
+      const modal = arrayModalIcons.find(
+        modalIcon => modalIcon.name === pathModalIcon,
+      );
+
+      if (modal) {
+        return <img src={modal.url} alt="Modal" />;
+      }
+    },
+    [arrayModalIcons],
+  );
 
   return (
     <>
@@ -89,7 +106,9 @@ const DetailedResult: React.FC = () => {
 
                 <PathsContainer>
                   {pathsCardSelected.paths.map((path, index) => (
-                    <UniquePathContainer>
+                    <UniquePathContainer
+                      key={`${path.path_data.origin_city_name}-${path.path_data.destination_city_name}`}
+                    >
                       {index === 0 ||
                       index === pathsCardSelected.paths.length - 1 ? (
                         <nav />
@@ -102,7 +121,7 @@ const DetailedResult: React.FC = () => {
 
                       <PathInfoContainer>
                         <CitiesContainer>
-                          <img src={path.path_data.modal_image} alt="Modal" />
+                          {getRelatedModalIcon(path.path_data.modal_image)}
                           <strong>{`${path.path_data.origin_city_name} - ${path.path_data.destination_city_name}`}</strong>
                         </CitiesContainer>
                         <ModalInfoContainer>

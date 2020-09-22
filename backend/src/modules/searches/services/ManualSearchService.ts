@@ -147,181 +147,204 @@ class ManualSearchService {
         data[dataIndex].destination_city_id,
       );
 
-      for (let pathIndex = 0; pathIndex < paths.length; pathIndex += 1) {
-        const weekDay = this.getTransformedDay(
-          new Date(date1.format('YYYY-MM-DD')).getDay(),
-        );
-
-        const pathWeekDayArray = paths[pathIndex].boarding_days.split(', ');
-        const pathTimeArray = paths[pathIndex].boarding_times.split(', ');
-
-        const multipleIndexFound = this.findMultipleIndex(
-          pathWeekDayArray,
-          weekDay[0],
-        );
-
-        if (multipleIndexFound) {
-          const pathModal = await this.modalsRepository.findById(
-            paths[pathIndex].modal_id,
+      if (paths.length) {
+        for (let pathIndex = 0; pathIndex < paths.length; pathIndex += 1) {
+          const weekDay = this.getTransformedDay(
+            new Date(date1.format('YYYY-MM-DD')).getDay(),
           );
 
-          const pathProvider = await this.providersRepository.findById(
-            paths[pathIndex].provider_id,
+          const pathWeekDayArray = paths[pathIndex].boarding_days.split(', ');
+          const pathTimeArray = paths[pathIndex].boarding_times.split(', ');
+
+          const multipleIndexFound = this.findMultipleIndex(
+            pathWeekDayArray,
+            weekDay[0],
           );
 
-          const observations: { observation: string }[] = [];
-
-          const nationalHolidays = await this.holidaysRepository.findNationalByDate(
-            data[dataIndex].date,
-          );
-
-          if (nationalHolidays) {
-            observations.push({
-              observation: `Feriado nacional em ${data[dataIndex].date}`,
-            });
-          }
-
-          const specificHolidays = await this.holidaysRepository.findSpecificByDate(
-            data[dataIndex].destination_city_id,
-            data[dataIndex].date,
-          );
-
-          if (specificHolidays) {
-            observations.push({
-              observation: `Feriado local em ${data[dataIndex].date}`,
-            });
-          }
-
-          if (
-            checkDestinationCityExists.initial_flood_date &&
-            checkDestinationCityExists.end_flood_date
-          ) {
-            const initialFloodDate = `${checkDestinationCityExists.initial_flood_date}/2020`;
-            const endFloodDate = `${checkDestinationCityExists.end_flood_date}/2020`;
-
-            const initialFormattedFloodDate = new Date(
-              moment(initialFloodDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+          if (multipleIndexFound) {
+            const pathModal = await this.modalsRepository.findById(
+              paths[pathIndex].modal_id,
             );
 
-            const endFormattedFloodDate = new Date(
-              moment(endFloodDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+            const pathProvider = await this.providersRepository.findById(
+              paths[pathIndex].provider_id,
             );
 
-            const auxDate = new Date(
-              moment(data[dataIndex].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+            const observations: { observation: string }[] = [];
+
+            const nationalHolidays = await this.holidaysRepository.findNationalByDate(
+              data[dataIndex].date,
             );
 
-            if (
-              initialFormattedFloodDate <= auxDate &&
-              auxDate <= endFormattedFloodDate
-            ) {
+            if (nationalHolidays) {
               observations.push({
-                observation: `Período de cheias em ${data[dataIndex].date}`,
+                observation: `Feriado nacional em ${data[dataIndex].date}`,
               });
             }
-          }
 
-          const auxPaths: PathData[] = [];
+            const specificHolidays = await this.holidaysRepository.findSpecificByDate(
+              data[dataIndex].destination_city_id,
+              data[dataIndex].date,
+            );
 
-          multipleIndexFound.map(indexFound => {
-            auxPaths.push({
-              selected_period: {
-                selected_date: data[dataIndex].date,
-                selected_initial_week_day: weekDay[1],
-                selected_initial_time: pathTimeArray[indexFound],
-                selected_final_week_day: weekDay[1],
-                selected_final_time: this.calculateResultTime(
-                  pathTimeArray[indexFound],
-                  paths[pathIndex].duration,
-                ),
-              },
-              cities_location: {
-                origin_city_latitude: checkOriginCityExists.latitude || 0,
-                origin_city_longitude: checkOriginCityExists.longitude || 0,
-                destination_city_latitude:
-                  checkDestinationCityExists.latitude || 0,
-                destination_city_longitude:
-                  checkDestinationCityExists.longitude || 0,
-              },
-              path_data: {
-                boarding_place: paths[pathIndex].boarding_place,
-                departure_place: paths[pathIndex].departure_place,
-                cost: paths[pathIndex].cost,
-                duration: paths[pathIndex].duration,
-                origin_city_name: checkOriginCityExists.name,
-                destination_city_name: checkDestinationCityExists.name,
-                mileage: paths[pathIndex].mileage,
-                modal_name: pathModal ? pathModal.name : '',
-                modal_image: pathModal ? pathModal.image : '',
-                provider_name: pathProvider ? pathProvider.name : '',
-              },
-            });
-          });
-
-          if (dataIndex === 0) {
-            result.result = {
-              general_info: {
-                origin_city_name: checkOriginCityExists.name,
-                destination_cities_names: [],
-                initial_date: data[dataIndex].date,
-                final_date: data[dataIndex].date,
-              },
-              paths_result: [],
-            };
-
-            multipleIndexFound.map((_indexFound, index) => {
-              result.result.paths_result.push({
-                distance: paths[pathIndex].mileage,
-                initial_date: data[dataIndex].date,
-                final_date: data[dataIndex].date,
-                observations,
-                price: paths[pathIndex].cost,
-                util_days: 0,
-                paths: [auxPaths[index]],
+            if (specificHolidays) {
+              observations.push({
+                observation: `Feriado local em ${data[dataIndex].date}`,
               });
-            });
-          } else {
-            result.result.general_info.final_date = data[dataIndex].date;
+            }
 
-            if (result.result.general_info.destination_cities_names) {
+            if (
+              checkDestinationCityExists.initial_flood_date &&
+              checkDestinationCityExists.end_flood_date
+            ) {
+              const initialFloodDate = `${checkDestinationCityExists.initial_flood_date}/2020`;
+              const endFloodDate = `${checkDestinationCityExists.end_flood_date}/2020`;
+
+              const initialFormattedFloodDate = new Date(
+                moment(initialFloodDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              );
+
+              const endFormattedFloodDate = new Date(
+                moment(endFloodDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              );
+
+              const auxDate = new Date(
+                moment(data[dataIndex].date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+              );
+
               if (
-                !result.result.general_info.destination_cities_names.includes({
-                  destination_city_name: checkDestinationCityExists.name,
-                })
+                initialFormattedFloodDate <= auxDate &&
+                auxDate <= endFormattedFloodDate
               ) {
-                result.result.general_info.destination_cities_names.push({
-                  destination_city_name: checkDestinationCityExists.name,
+                observations.push({
+                  observation: `Período de cheias em ${data[dataIndex].date}`,
                 });
               }
             }
 
-            const auxPathsResult = result.result.paths_result;
+            const auxPaths: PathData[] = [];
 
-            result.result.paths_result = [];
+            multipleIndexFound.map(indexFound => {
+              auxPaths.push({
+                selected_period: {
+                  selected_date: data[dataIndex].date,
+                  selected_initial_week_day: weekDay[1],
+                  selected_initial_time: pathTimeArray[indexFound],
+                  selected_final_week_day: weekDay[1],
+                  selected_final_time: this.calculateResultTime(
+                    pathTimeArray[indexFound],
+                    paths[pathIndex].duration,
+                  ),
+                },
+                cities_location: {
+                  origin_city_latitude: checkOriginCityExists.latitude || 0,
+                  origin_city_longitude: checkOriginCityExists.longitude || 0,
+                  destination_city_latitude:
+                    checkDestinationCityExists.latitude || 0,
+                  destination_city_longitude:
+                    checkDestinationCityExists.longitude || 0,
+                },
+                path_data: {
+                  boarding_place: paths[pathIndex].boarding_place,
+                  departure_place: paths[pathIndex].departure_place,
+                  cost: paths[pathIndex].cost,
+                  duration: paths[pathIndex].duration,
+                  origin_city_name: checkOriginCityExists.name,
+                  destination_city_name: checkDestinationCityExists.name,
+                  mileage: paths[pathIndex].mileage,
+                  modal_name: pathModal ? pathModal.name : '',
+                  modal_image: pathModal ? pathModal.image : '',
+                  provider_name: pathProvider ? pathProvider.name : '',
+                },
+              });
+            });
 
-            auxPathsResult.map(auxPathResult => {
-              const date2 = moment(auxPathResult.final_date, 'DD/MM/YYYY');
+            if (dataIndex === 0) {
+              result.result = {
+                general_info: {
+                  origin_city_name: checkOriginCityExists.name,
+                  destination_cities_names: [
+                    {
+                      destination_city_name: checkDestinationCityExists.name,
+                    },
+                  ],
+                  initial_date: data[dataIndex].date,
+                  final_date: data[dataIndex].date,
+                },
+                paths_result: [],
+              };
 
               multipleIndexFound.map((_indexFound, index) => {
                 result.result.paths_result.push({
-                  distance:
-                    Number(auxPathResult.distance) +
-                    Number(paths[pathIndex].mileage),
-                  initial_date: auxPathResult.initial_date,
+                  distance: paths[pathIndex].mileage,
+                  initial_date: data[dataIndex].date,
                   final_date: data[dataIndex].date,
                   observations,
-                  price:
-                    Number(auxPathResult.price) + Number(paths[pathIndex].cost),
-                  util_days:
-                    auxPathResult.util_days + date1.diff(date2, 'days'),
-                  paths: [...auxPathResult.paths, auxPaths[index]],
+                  price: paths[pathIndex].cost,
+                  util_days: 0,
+                  paths: [auxPaths[index]],
                 });
               });
-            });
+            } else {
+              result.result.general_info.final_date = data[dataIndex].date;
+
+              if (result.result.general_info.destination_cities_names) {
+                if (
+                  !result.result.general_info.destination_cities_names.includes(
+                    {
+                      destination_city_name: checkDestinationCityExists.name,
+                    },
+                  )
+                ) {
+                  result.result.general_info.destination_cities_names.push({
+                    destination_city_name: checkDestinationCityExists.name,
+                  });
+                }
+              }
+
+              const auxPathsResult = result.result.paths_result;
+
+              result.result.paths_result = [];
+
+              auxPathsResult.map(auxPathResult => {
+                const date2 = moment(auxPathResult.final_date, 'DD/MM/YYYY');
+
+                multipleIndexFound.map((_indexFound, index) => {
+                  result.result.paths_result.push({
+                    distance:
+                      Number(auxPathResult.distance) +
+                      Number(paths[pathIndex].mileage),
+                    initial_date: auxPathResult.initial_date,
+                    final_date: data[dataIndex].date,
+                    observations,
+                    price:
+                      Number(auxPathResult.price) +
+                      Number(paths[pathIndex].cost),
+                    util_days:
+                      auxPathResult.util_days + date1.diff(date2, 'days'),
+                    paths: [...auxPathResult.paths, auxPaths[index]],
+                  });
+                });
+              });
+            }
+          } else {
+            return {} as ISearchResponseDTO;
           }
-        } else {
-          return {} as ISearchResponseDTO;
         }
+      } else {
+        result.result = {
+          general_info: {
+            origin_city_name: checkOriginCityExists.name,
+            destination_cities_names: [
+              {
+                destination_city_name: checkDestinationCityExists.name,
+              },
+            ],
+            initial_date: data[dataIndex].date,
+            final_date: data[dataIndex].date,
+          },
+          paths_result: [],
+        };
       }
     }
 

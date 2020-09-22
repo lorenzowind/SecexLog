@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import { useSearchResult } from '../../hooks/searchResult';
 
+import { getArrayModalIcons } from '../../utils/getArrayModalFiles';
+
 import {
   Header,
   Container,
@@ -30,6 +32,8 @@ const ResultSearch: React.FC = () => {
   const [fastFilterSelected, setFastFilterSelected] = useState(false);
   const [costFilterSelected, setCostFilterSelected] = useState(false);
   const [safetyFilterSelected, setSafetyFilterSelected] = useState(false);
+
+  const [arrayModalIcons] = useState(getArrayModalIcons);
 
   const { searchResult, setPathsCard } = useSearchResult();
 
@@ -103,9 +107,9 @@ const ResultSearch: React.FC = () => {
                 {searchResult.result.general_info.origin_city_name}
               </strong>
               <strong>
-                {searchResult.result.general_info.destination_cities_names.join(
-                  ', ',
-                )}
+                {searchResult.result.general_info.destination_cities_names
+                  .map(destinationCity => destinationCity.destination_city_name)
+                  .join(', ')}
               </strong>
               <strong>
                 {`${
@@ -122,24 +126,41 @@ const ResultSearch: React.FC = () => {
             </FilterSection>
 
             {searchResult.result.paths_result ? (
-              searchResult.result.paths_result.map(pathCard => (
-                <section>
-                  {/* <ModalsImages>
-                    {pathCard.paths.map(path => (
-                      <img src={path.path_data.modal_image} alt="Modal" />
-                    ))}
-                  </ModalsImages> */}
+              searchResult.result.paths_result.map((pathCard, index) => (
+                <section key={index}>
+                  <ModalsImages>
+                    {pathCard.paths.map((path, index2) => {
+                      const modal = arrayModalIcons.find(
+                        modalIcon =>
+                          modalIcon.name === path.path_data.modal_image,
+                      );
+
+                      if (modal) {
+                        return (
+                          <img
+                            key={`${path.path_data.modal_name}-${index2}`}
+                            src={modal.url}
+                            alt="Modal"
+                          />
+                        );
+                      }
+
+                      return null;
+                    })}
+                  </ModalsImages>
 
                   <PathCard>
                     <section>
                       {pathCard.paths.map(path => (
-                        <aside>
+                        <aside
+                          key={`${path.path_data.origin_city_name}-${path.path_data.destination_city_name}`}
+                        >
                           <div>
                             <strong>
                               {`${path.selected_period.selected_initial_time}, ${path.selected_period.selected_initial_week_day}`}
                             </strong>
                             <h2>{path.path_data.origin_city_name}</h2>
-                            <h2>{path.path_data.destination_city_name}</h2>
+                            <h2>{path.path_data.modal_name}</h2>
                           </div>
                           <div>
                             <h2>{String(path.path_data.duration)}</h2>
