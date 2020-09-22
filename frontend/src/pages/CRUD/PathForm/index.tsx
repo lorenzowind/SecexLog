@@ -67,7 +67,7 @@ const PathForm: React.FC = () => {
   const { addToast } = useToast();
 
   const handleInsertArrivalPair = useCallback(() => {
-    if (arrivalWeekDay && arrivalTime) {
+    if (arrivalWeekDay && arrivalTime && arrivalWeekDay !== 'Selecione dia') {
       setArrivalWeekDayArray([...arrivalWeekDayArray, arrivalWeekDay]);
       setArrivalTimeArray([...arrivalTimeArray, arrivalTime]);
     }

@@ -144,29 +144,33 @@ const Dashboard: React.FC = () => {
           <FeedbacksContainer>
             <h1>Feedback</h1>
             <hr />
-            {arrayFeedbacks.map(feedbacks => (
-              <Feedbacks key={feedbacks.title} color={feedbacks.titleColor}>
-                {feedbacks.messages.length ? (
-                  <>
-                    <h2>{feedbacks.title}</h2>
-                    {feedbacks.messages.map(feedback => (
-                      <section key={feedback.message}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            setAnswerId(feedback.id);
-                            setRequestPopupActive(true);
-                          }}
-                        >
-                          <h3>X</h3>
-                        </button>
-                        <strong>{feedback.message}</strong>
-                      </section>
-                    ))}
-                  </>
-                ) : null}
-              </Feedbacks>
-            ))}
+            {opinions.length ? (
+              arrayFeedbacks.map(feedbacks => (
+                <Feedbacks key={feedbacks.title} color={feedbacks.titleColor}>
+                  {feedbacks.messages.length ? (
+                    <>
+                      <h2>{feedbacks.title}</h2>
+                      {feedbacks.messages.map(feedback => (
+                        <section key={feedback.message}>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setAnswerId(feedback.id);
+                              setRequestPopupActive(true);
+                            }}
+                          >
+                            <h3>X</h3>
+                          </button>
+                          <strong>{feedback.message}</strong>
+                        </section>
+                      ))}
+                    </>
+                  ) : null}
+                </Feedbacks>
+              ))
+            ) : (
+              <h2>Nenhum feedback no momento</h2>
+            )}
           </FeedbacksContainer>
 
           <ProgressBarsContainer>
