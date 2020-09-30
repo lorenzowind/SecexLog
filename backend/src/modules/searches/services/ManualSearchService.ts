@@ -81,12 +81,16 @@ class ManualSearchService {
       newMinutes %= 60;
     }
 
+    if (newHours > 24) {
+      newHours %= 24;
+    }
+
     const newHoursString =
-      String(newHours).length === 1 ? `${String(newHours)}0` : String(newHours);
+      String(newHours).length === 1 ? `0${String(newHours)}` : String(newHours);
 
     const newMinutesString =
       String(newMinutes).length === 1
-        ? `${String(newMinutes)}0`
+        ? `0${String(newMinutes)}`
         : String(newMinutes);
 
     return `${String(newHoursString)}:${newMinutesString}`;
@@ -115,7 +119,7 @@ class ManualSearchService {
   }: IManualSearchRequestDTO): Promise<ISearchResponseDTO> {
     const result: ISearchResponseDTO = {} as ISearchResponseDTO;
 
-    let lastPathTimeArray: [string, string][];
+    let lastPathTimeArray: [string, string][] = [];
 
     for (let dataIndex = 0; dataIndex < data.length; dataIndex += 1) {
       const currentPathTimeArray: [string, string][] = [];
@@ -280,19 +284,21 @@ class ManualSearchService {
           });
 
           if (dataIndex === 0) {
-            result.result = {
-              general_info: {
-                origin_city_name: checkOriginCityExists.name,
-                destination_cities_names: [
-                  {
-                    destination_city_name: checkDestinationCityExists.name,
-                  },
-                ],
-                initial_date: data[dataIndex].date,
-                final_date: data[dataIndex].date,
-              },
-              paths_result: [],
-            };
+            if (pathIndex === 0) {
+              result.result = {
+                general_info: {
+                  origin_city_name: checkOriginCityExists.name,
+                  destination_cities_names: [
+                    {
+                      destination_city_name: checkDestinationCityExists.name,
+                    },
+                  ],
+                  initial_date: data[dataIndex].date,
+                  final_date: data[dataIndex].date,
+                },
+                paths_result: [],
+              };
+            }
 
             multipleIndexFound.map((_indexFound, index) => {
               result.result.paths_result.push({
@@ -336,14 +342,25 @@ class ManualSearchService {
               const date2 = moment(auxPathResult.final_date, 'DD/MM/YYYY');
 
               multipleIndexFound.map((_indexFound, index) => {
+                let is_possible = false;
+
                 if (
-                  this.compareTime(
-                    lastPathTimeArray[auxPathsIndex][1],
-                    currentPathTimeArray[index][1],
-                  ) === -1 ||
-                  lastPathTimeArray[auxPathsIndex][0] !==
-                    currentPathTimeArray[index][0]
+                  lastPathTimeArray[auxPathsIndex][0] ===
+                  currentPathTimeArray[index][0]
                 ) {
+                  if (
+                    this.compareTime(
+                      lastPathTimeArray[auxPathsIndex][1],
+                      currentPathTimeArray[index][1],
+                    ) === -1
+                  ) {
+                    is_possible = true;
+                  }
+                } else {
+                  is_possible = true;
+                }
+
+                if (is_possible) {
                   result.result.paths_result.push({
                     distance:
                       Number(auxPathResult.distance) +
@@ -358,15 +375,15 @@ class ManualSearchService {
                       auxPathResult.util_days + date1.diff(date2, 'days'),
                     paths: [...auxPathResult.paths, auxPaths[index]],
                   });
-                }
 
-                currentPathTimeArray[index] = [
-                  currentPathTimeArray[index][0],
-                  this.calculateResultTime(
-                    currentPathTimeArray[index][1],
-                    paths[pathIndex].duration,
-                  ),
-                ];
+                  currentPathTimeArray.push([
+                    currentPathTimeArray[index][0],
+                    this.calculateResultTime(
+                      currentPathTimeArray[index][1],
+                      paths[pathIndex].duration,
+                    ),
+                  ]);
+                }
               });
             });
           }

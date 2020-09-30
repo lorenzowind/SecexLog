@@ -709,8 +709,8 @@ describe('ManualSearch', () => {
       destination_city_id: intermediateCity.id,
       modal_id: firstModal.id,
       provider_id: firstProvider.id,
-      boarding_days: 'Sexta-feira',
-      boarding_times: '10:00',
+      boarding_days: 'Segunda-feira, Segunda-feira, Segunda-feira',
+      boarding_times: '10:00, 12:00, 14:00',
       duration: 120,
       mileage: 60,
       cost: 120,
@@ -724,8 +724,8 @@ describe('ManualSearch', () => {
       destination_city_id: destinationCity.id,
       modal_id: secondModal.id,
       provider_id: secondProvider.id,
-      boarding_days: 'Sábado',
-      boarding_times: '10:00',
+      boarding_days: 'Segunda-feira, Segunda-feira',
+      boarding_times: '13:00, 18:00',
       duration: 120,
       mileage: 60,
       cost: 120,
@@ -739,8 +739,8 @@ describe('ManualSearch', () => {
       destination_city_id: intermediateCity.id,
       modal_id: thirdModal.id,
       provider_id: thirdProvider.id,
-      boarding_days: 'Quarta-feira',
-      boarding_times: '10:00',
+      boarding_days: 'Sexta-feira, Sexta-feira',
+      boarding_times: '10:00, 12:00',
       duration: 120,
       mileage: 60,
       cost: 120,
@@ -754,8 +754,8 @@ describe('ManualSearch', () => {
       destination_city_id: originCity.id,
       modal_id: secondModal.id,
       provider_id: secondProvider.id,
-      boarding_days: 'Quinta-feira',
-      boarding_times: '10:00',
+      boarding_days: 'Sexta-feira, Sexta-feira',
+      boarding_times: '10:00, 15:00',
       duration: 120,
       mileage: 60,
       cost: 120,
@@ -769,27 +769,27 @@ describe('ManualSearch', () => {
         {
           origin_city_id: originCity.id,
           destination_city_id: intermediateCity.id,
-          date: '25/09/2020',
+          date: '05/10/2020',
         },
         {
           origin_city_id: intermediateCity.id,
           destination_city_id: destinationCity.id,
-          date: '26/09/2020',
+          date: '05/10/2020',
         },
         {
           origin_city_id: destinationCity.id,
           destination_city_id: intermediateCity.id,
-          date: '30/09/2020',
+          date: '09/10/2020',
         },
         {
           origin_city_id: intermediateCity.id,
           destination_city_id: originCity.id,
-          date: '01/10/2020',
+          date: '09/10/2020',
         },
       ],
     });
 
-    expect(response.result.general_info.initial_date).toBe('25/09/2020');
-    expect(response.result.general_info.final_date).toBe('01/10/2020');
+    expect(response.result.general_info.initial_date).toBe('05/10/2020');
+    expect(response.result.general_info.final_date).toBe('09/10/2020');
   });
 });
