@@ -16,7 +16,7 @@ export const Container = styled.div`
   height: 100%;
   background: #fcfcff;
 
-  animation: ${appearWithFade} 0.5s;
+  // animation: ${appearWithFade} 0.5s;
 `;
 
 export const Content = styled.div`

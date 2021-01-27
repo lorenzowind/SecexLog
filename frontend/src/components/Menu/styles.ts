@@ -27,7 +27,7 @@ export const ContainerClosed = styled.div`
   border: solid 1px #707070;
   background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
 
-  animation: ${appearFromRight} 1s;
+  // animation: ${appearFromRight} 1s;
 `;
 
 export const ContainerOpened = styled.div`
@@ -39,7 +39,7 @@ export const ContainerOpened = styled.div`
   border: solid 1px #707070;
   background-image: linear-gradient(to bottom, #292eec, #6ae8e5);
 
-  animation: ${appearFromLeft} 1s;
+  // animation: ${appearFromLeft} 1s;
 `;
 
 export const Content = styled.div`

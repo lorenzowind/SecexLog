@@ -27,7 +27,7 @@ export const Container = styled.div`
 
   padding-top: 100px;
 
-  animation: ${appearFromTop} 1s;
+  // animation: ${appearFromTop} 1s;
 `;
 
 export const ModalIconsContainer = styled.div`

@@ -20,7 +20,7 @@ export const Header = styled.div`
   position: absolute;
   padding: 20px 70px 0 0;
 
-  animation: ${appearFromTop} 1s;
+  // animation: ${appearFromTop} 1s;
 `;
 
 export const Container = styled.div`
@@ -29,7 +29,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
 
-  animation: ${appearFromTop} 1s;
+  // animation: ${appearFromTop} 1s;
 
   padding-top: 100px;
   padding-bottom: 100px;

@@ -25,7 +25,7 @@ export const Container = styled.div`
   align-items: stretch;
   overflow: hidden;
 
-  animation: ${appearFromLeft} 1s;
+  // animation: ${appearFromLeft} 1s;
 `;
 
 export const Content = styled.div`
@@ -82,7 +82,7 @@ export const InputsContainer = styled.div`
       height: 57px;
       margin: 15px 0;
       width: max-content;
-      animation: ${handleAppearSection} 1s;
+      // animation: ${handleAppearSection} 1s;
 
       select {
         width: 280px;
@@ -107,7 +107,7 @@ export const InputsContainer = styled.div`
     div {
       height: 57px;
       margin: 0 15px;
-      animation: ${handleAppearSection} 1s;
+      // animation: ${handleAppearSection} 1s;
     }
   }
 `;

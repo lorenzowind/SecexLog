@@ -20,7 +20,7 @@ export const Container = styled.div`
   height: 100%;
   background: #f1f1f1;
 
-  animation: ${appearWithFade} 0.5s;
+  // animation: ${appearWithFade} 0.5s;
 
   > img {
     margin-bottom: 60px;

@@ -25,7 +25,7 @@ export const Container = styled.div`
   align-items: stretch;
   overflow: hidden;
 
-  animation: ${appearFromLeft} 1s;
+  // animation: ${appearFromLeft} 1s;
 `;
 
 export const Content = styled.div`
@@ -81,7 +81,7 @@ export const InputsContainer = styled.div`
     flex-wrap: wrap;
     margin: 25px 0;
 
-    animation: ${handleAppearSection} 1s;
+    // animation: ${handleAppearSection} 1s;
 
     strong {
       margin: 0 20px;

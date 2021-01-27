@@ -20,7 +20,7 @@ export const Container = styled.div`
   position: absolute;
   padding: 20px 70px 0 0;
 
-  animation: ${appearFromTop} 1s;
+  // animation: ${appearFromTop} 1s;
 
   a {
     text-decoration: none;

@@ -10,7 +10,7 @@ const appearFromRight = keyframes`
 `;
 
 export const Container = styled.div`
-  animation: ${appearFromRight} 1s;
+  // animation: ${appearFromRight} 1s;
   flex-direction: row;
   height: 100vh;
 `;

@@ -15,7 +15,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
 
-  animation: ${appearFromTop} 1s;
+  // animation: ${appearFromTop} 1s;
 
   padding-top: 100px;
   padding-bottom: 100px;

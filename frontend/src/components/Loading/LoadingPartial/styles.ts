@@ -20,7 +20,7 @@ export const Container = styled.div<Props>`
   height: 100%;
   background-color: rgba(255, 255, 255, 0.2);
 
-  animation: ${appearWithFade} 0.5s;
+  // animation: ${appearWithFade} 0.5s;
 
   display: flex;
   justify-content: center;
