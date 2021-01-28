@@ -79,7 +79,9 @@ const ManualSearch: React.FC = () => {
   };
 
   const handleIncreasePathNumber = () => {
-    setPathsDate([...pathsDate, new Date()]);
+    if (pathsDate.length < 4) {
+      setPathsDate([...pathsDate, new Date()]);
+    }
   };
 
   const handleSearch = useCallback(
@@ -235,12 +237,14 @@ const ManualSearch: React.FC = () => {
                     </button>
                   </li>
                 )}
-                <li>
-                  <button type="button" onClick={handleIncreasePathNumber}>
-                    <b>+</b>
-                    Mais cidades para auditar
-                  </button>
-                </li>
+                {pathsDate.length < 4 && (
+                  <li>
+                    <button type="button" onClick={handleIncreasePathNumber}>
+                      <b>+</b>
+                      Mais cidades para auditar
+                    </button>
+                  </li>
+                )}
               </ul>
             </OptionsContainer>
 

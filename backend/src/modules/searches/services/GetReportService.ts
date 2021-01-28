@@ -39,7 +39,7 @@ class GetReportService {
   ) {}
 
   public async execute(data: PathResultsSection): Promise<any> {
-    const pdfDocument = new PDFDocument();
+    const pdfDocument = new PDFDocument({ compress: false });
 
     const fileHash = crypto.randomBytes(10).toString('hex');
 
