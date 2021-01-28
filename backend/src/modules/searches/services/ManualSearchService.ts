@@ -131,12 +131,12 @@ class ManualSearchService {
     data,
   }: IManualSearchRequestDTO): Promise<ISearchResponseDTO> {
     const result: ISearchResponseDTO = {} as ISearchResponseDTO;
+    const currentRootPathResults: PathResultsSection[][] = [];
 
     let lastPathTimeArray: [string, string][] = [];
 
     for (let dataIndex = 0; dataIndex < data.length; dataIndex += 1) {
       let currentPathTimeAccArray: [string, string][] = [];
-      let currentRootPathResults: PathResultsSection[] = [];
 
       const checkOriginCityExists = await this.citiesRepository.findById(
         data[dataIndex].origin_city_id,
@@ -186,7 +186,15 @@ class ManualSearchService {
 
       if (paths.length) {
         if (dataIndex !== 0 && result.result) {
-          currentRootPathResults = result.result.paths_result;
+          currentRootPathResults.push(
+            result.result.paths_result.filter(
+              path => path.paths.length === dataIndex,
+            ),
+          );
+          // console.log(
+          //   currentRootPathResults[currentRootPathResults.length - 1].length,
+          //   result.result.paths_result.length,
+          // );
         }
 
         for (let pathIndex = 0; pathIndex < paths.length; pathIndex += 1) {
@@ -370,7 +378,18 @@ class ManualSearchService {
 
               const auxPathResults: PathResultsSection[] = [];
 
-              currentRootPathResults.map(
+              // console.log(
+              //   dataIndex,
+              //   pathIndex,
+              //   currentRootPathResults[currentRootPathResults.length - 1]
+              //     .length,
+              //   result.result.paths_result.length,
+              //   multipleIndexFound.length,
+              //   currentPathTimeArray.length,
+              //   lastPathTimeArray.length,
+              // );
+
+              currentRootPathResults[currentRootPathResults.length - 1].map(
                 (currentRootPathResult, currentRootPathIndex) => {
                   const date2 = moment(
                     currentRootPathResult.final_date,
@@ -431,7 +450,9 @@ class ManualSearchService {
                 },
               );
 
-              result.result.paths_result = auxPathResults;
+              result.result.paths_result = result.result.paths_result.concat(
+                auxPathResults,
+              );
 
               currentPathTimeAccArray = currentPathTimeAccArray.concat(
                 currentPathTimeArray.slice(
@@ -475,7 +496,19 @@ class ManualSearchService {
       }
     }
 
-    return result;
+    // console.log(
+    //   currentRootPathResults.length,
+    //   result.result.paths_result.length,
+    // );
+
+    return {
+      result: {
+        general_info: result.result.general_info,
+        paths_result: result.result.paths_result.filter(
+          path => path.paths.length === data.length,
+        ),
+      },
+    };
   }
 }
 
