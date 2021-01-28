@@ -2,6 +2,8 @@ import React, { createContext, useCallback, useState, useContext } from 'react';
 
 import api from '../services/api';
 
+import sortManualPaths from '../utils/sortManualPaths';
+
 import { useToast } from './toast';
 
 export interface ManualSearchData {
@@ -19,7 +21,7 @@ export interface AutomaticSearchData {
   finalDate: Date;
 }
 
-export interface PathData {
+interface PathData {
   selected_period: {
     selected_date: string;
     selected_initial_time: string;
@@ -38,6 +40,9 @@ export interface PathData {
     destination_city_name: string;
     modal_name: string;
     modal_image: string;
+    modal_is_cheap: boolean;
+    modal_is_fast: boolean;
+    modal_is_safe: boolean;
     provider_name: string;
     duration: number;
     mileage: number;
@@ -47,9 +52,10 @@ export interface PathData {
   };
 }
 
-interface PathsCard {
+export interface PathsCard {
   price: number;
   util_days: number;
+  modal_safety_factor: number;
   distance: number;
   initial_date: string;
   final_date: string;
@@ -79,6 +85,7 @@ interface SearchResultContextData {
   setPathsCard(pathsCard: PathsCard): void;
   getManualSearchResult(manualSearchData: ManualSearchData): Promise<boolean>;
   getAutomaticSearchResult(automaticSearchData: AutomaticSearchData): void;
+  sortByFilter(operation: 'cost' | 'fast' | 'safety' | ''): void;
 }
 
 const SearchResultContext = createContext<SearchResultContextData>(
@@ -91,6 +98,7 @@ const SearchResultProvider: React.FC = ({ children }) => {
   const [searchResult, setSearchResult] = useState<SearchResult>(
     {} as SearchResult,
   );
+
   const [pathsCardSelected, setPathsCardSelected] = useState<PathsCard>(
     {} as PathsCard,
   );
@@ -135,6 +143,7 @@ const SearchResultProvider: React.FC = ({ children }) => {
   );
 
   const getAutomaticSearchResult = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (automaticSearchData: AutomaticSearchData) => {
       // setSearchResult({
       //   generalInfo: {
@@ -164,6 +173,25 @@ const SearchResultProvider: React.FC = ({ children }) => {
     [],
   );
 
+  const sortByFilter = useCallback(
+    (operation: 'cost' | 'fast' | 'safety') => {
+      if (searchResult.result.paths_result.length && operation) {
+        setSearchResult(state => {
+          return {
+            result: {
+              general_info: state.result.general_info,
+              paths_result: sortManualPaths({
+                operation,
+                paths: searchResult.result.paths_result,
+              }),
+            },
+          };
+        });
+      }
+    },
+    [searchResult],
+  );
+
   return (
     <SearchResultContext.Provider
       value={{
@@ -172,6 +200,7 @@ const SearchResultProvider: React.FC = ({ children }) => {
         setPathsCard,
         getManualSearchResult,
         getAutomaticSearchResult,
+        sortByFilter,
       }}
     >
       {children}

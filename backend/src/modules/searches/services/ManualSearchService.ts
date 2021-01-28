@@ -10,7 +10,10 @@ import IModalsRepository from '@modules/modals/repositories/IModalsRepository';
 import IProvidersRepository from '@modules/providers/repositories/IProvidersRepository';
 
 import IManualSearchRequestDTO from '../dtos/IManualSearchRequestDTO';
-import ISearchResponseDTO, { PathData } from '../dtos/ISearchResponseDTO';
+import ISearchResponseDTO, {
+  PathData,
+  PathResultsSection,
+} from '../dtos/ISearchResponseDTO';
 
 @injectable()
 class ManualSearchService {
@@ -114,6 +117,16 @@ class ManualSearchService {
     return -1;
   }
 
+  private getSafetyFactor(paths: PathData[]) {
+    let modal_safety_factor = 0;
+
+    paths.map(path => {
+      modal_safety_factor += path.path_data.modal_is_safe ? 1 : 0;
+    });
+
+    return modal_safety_factor;
+  }
+
   public async execute({
     data,
   }: IManualSearchRequestDTO): Promise<ISearchResponseDTO> {
@@ -122,7 +135,8 @@ class ManualSearchService {
     let lastPathTimeArray: [string, string][] = [];
 
     for (let dataIndex = 0; dataIndex < data.length; dataIndex += 1) {
-      const currentPathTimeArray: [string, string][] = [];
+      let currentPathTimeAccArray: [string, string][] = [];
+      let currentRootPathResults: PathResultsSection[] = [];
 
       const checkOriginCityExists = await this.citiesRepository.findById(
         data[dataIndex].origin_city_id,
@@ -171,7 +185,13 @@ class ManualSearchService {
       );
 
       if (paths.length) {
+        if (dataIndex !== 0 && result.result) {
+          currentRootPathResults = result.result.paths_result;
+        }
+
         for (let pathIndex = 0; pathIndex < paths.length; pathIndex += 1) {
+          const currentPathTimeArray: [string, string][] = [];
+
           const weekDay = this.getTransformedDay(
             new Date(date1.format('YYYY-MM-DD')).getDay(),
           );
@@ -198,7 +218,7 @@ class ManualSearchService {
             data[dataIndex].date,
           );
 
-          if (nationalHolidays) {
+          if (nationalHolidays && nationalHolidays.length) {
             observations.push({
               observation: `Feriado nacional em ${data[dataIndex].date}`,
             });
@@ -209,7 +229,7 @@ class ManualSearchService {
             data[dataIndex].date,
           );
 
-          if (specificHolidays) {
+          if (specificHolidays && specificHolidays.length) {
             observations.push({
               observation: `Feriado local em ${data[dataIndex].date}`,
             });
@@ -247,7 +267,10 @@ class ManualSearchService {
           const auxPaths: PathData[] = [];
 
           multipleIndexFound.map(indexFound => {
-            currentPathTimeArray.push([weekDay[1], pathTimeArray[indexFound]]);
+            currentPathTimeArray.push([
+              data[dataIndex].date,
+              pathTimeArray[indexFound],
+            ]);
 
             auxPaths.push({
               selected_period: {
@@ -278,118 +301,163 @@ class ManualSearchService {
                 mileage: paths[pathIndex].mileage,
                 modal_name: pathModal ? pathModal.name : '',
                 modal_image: pathModal ? pathModal.image : '',
+                modal_is_cheap: pathModal ? pathModal.is_cheap : false,
+                modal_is_fast: pathModal ? pathModal.is_fast : false,
+                modal_is_safe: pathModal ? pathModal.is_safe : false,
                 provider_name: pathProvider ? pathProvider.name : '',
               },
             });
           });
 
-          if (dataIndex === 0) {
-            if (pathIndex === 0) {
-              result.result = {
-                general_info: {
-                  origin_city_name: checkOriginCityExists.name,
-                  destination_cities_names: [
-                    {
-                      destination_city_name: checkDestinationCityExists.name,
-                    },
-                  ],
-                  initial_date: data[dataIndex].date,
-                  final_date: data[dataIndex].date,
-                },
-                paths_result: [],
-              };
-            }
-
-            multipleIndexFound.map((_indexFound, index) => {
-              result.result.paths_result.push({
-                distance: paths[pathIndex].mileage,
-                initial_date: data[dataIndex].date,
-                final_date: data[dataIndex].date,
-                observations,
-                price: paths[pathIndex].cost,
-                util_days: 0,
-                paths: [auxPaths[index]],
-              });
-
-              currentPathTimeArray[index] = [
-                currentPathTimeArray[index][0],
-                this.calculateResultTime(
-                  currentPathTimeArray[index][1],
-                  paths[pathIndex].duration,
-                ),
-              ];
-            });
-          } else {
-            result.result.general_info.final_date = data[dataIndex].date;
-
-            if (result.result.general_info.destination_cities_names) {
-              if (
-                !result.result.general_info.destination_cities_names.includes({
-                  destination_city_name: checkDestinationCityExists.name,
-                })
-              ) {
-                result.result.general_info.destination_cities_names.push({
-                  destination_city_name: checkDestinationCityExists.name,
-                });
+          if (auxPaths.length) {
+            if (dataIndex === 0) {
+              if (pathIndex === 0) {
+                result.result = {
+                  general_info: {
+                    origin_city_name: checkOriginCityExists.name,
+                    destination_cities_names: [
+                      {
+                        destination_city_name: checkDestinationCityExists.name,
+                      },
+                    ],
+                    initial_date: data[dataIndex].date,
+                    final_date: data[dataIndex].date,
+                  },
+                  paths_result: [],
+                };
               }
-            }
-
-            const auxPathsResult = result.result.paths_result;
-
-            result.result.paths_result = [];
-
-            auxPathsResult.map((auxPathResult, auxPathsIndex) => {
-              const date2 = moment(auxPathResult.final_date, 'DD/MM/YYYY');
 
               multipleIndexFound.map((_indexFound, index) => {
-                let is_possible = false;
+                result.result.paths_result.push({
+                  distance: paths[pathIndex].mileage,
+                  initial_date: data[dataIndex].date,
+                  final_date: data[dataIndex].date,
+                  observations,
+                  price: paths[pathIndex].cost,
+                  util_days: 0,
+                  modal_safety_factor: 0,
+                  paths: [auxPaths[index]],
+                });
 
-                if (
-                  lastPathTimeArray[auxPathsIndex][0] ===
-                  currentPathTimeArray[index][0]
-                ) {
-                  if (
-                    this.compareTime(
-                      lastPathTimeArray[auxPathsIndex][1],
-                      currentPathTimeArray[index][1],
-                    ) === -1
-                  ) {
-                    is_possible = true;
-                  }
-                } else {
-                  is_possible = true;
-                }
-
-                if (is_possible) {
-                  result.result.paths_result.push({
-                    distance:
-                      Number(auxPathResult.distance) +
-                      Number(paths[pathIndex].mileage),
-                    initial_date: auxPathResult.initial_date,
-                    final_date: data[dataIndex].date,
-                    observations,
-                    price:
-                      Number(auxPathResult.price) +
-                      Number(paths[pathIndex].cost),
-                    util_days:
-                      auxPathResult.util_days + date1.diff(date2, 'days'),
-                    paths: [...auxPathResult.paths, auxPaths[index]],
-                  });
-
-                  currentPathTimeArray.push([
-                    currentPathTimeArray[index][0],
-                    this.calculateResultTime(
-                      currentPathTimeArray[index][1],
-                      paths[pathIndex].duration,
-                    ),
-                  ]);
-                }
+                currentPathTimeArray[index] = [
+                  currentPathTimeArray[index][0],
+                  this.calculateResultTime(
+                    currentPathTimeArray[index][1],
+                    paths[pathIndex].duration,
+                  ),
+                ];
               });
-            });
-          }
 
-          lastPathTimeArray = currentPathTimeArray;
+              currentPathTimeAccArray = currentPathTimeAccArray.concat(
+                currentPathTimeArray,
+              );
+            } else {
+              result.result.general_info.final_date = data[dataIndex].date;
+
+              if (result.result.general_info.destination_cities_names) {
+                const cityExists = result.result.general_info.destination_cities_names.find(
+                  destinationCity =>
+                    destinationCity.destination_city_name ===
+                    checkDestinationCityExists.name,
+                );
+
+                if (!cityExists) {
+                  result.result.general_info.destination_cities_names.push({
+                    destination_city_name: checkDestinationCityExists.name,
+                  });
+                }
+              }
+
+              const auxPathResults: PathResultsSection[] = [];
+
+              currentRootPathResults.map(
+                (currentRootPathResult, currentRootPathIndex) => {
+                  const date2 = moment(
+                    currentRootPathResult.final_date,
+                    'DD/MM/YYYY',
+                  );
+
+                  multipleIndexFound.map((_indexFound, index) => {
+                    let is_possible = false;
+
+                    if (
+                      lastPathTimeArray[currentRootPathIndex][0] ===
+                      currentPathTimeArray[index][0]
+                    ) {
+                      if (
+                        this.compareTime(
+                          lastPathTimeArray[currentRootPathIndex][1],
+                          currentPathTimeArray[index][1],
+                        ) === -1
+                      ) {
+                        is_possible = true;
+                      }
+                    } else {
+                      is_possible = true;
+                    }
+
+                    if (is_possible) {
+                      auxPathResults.push({
+                        distance:
+                          Number(currentRootPathResult.distance) +
+                          Number(paths[pathIndex].mileage),
+                        initial_date: currentRootPathResult.initial_date,
+                        final_date: data[dataIndex].date,
+                        observations,
+                        price:
+                          Number(currentRootPathResult.price) +
+                          Number(paths[pathIndex].cost),
+                        util_days:
+                          currentRootPathResult.util_days +
+                          date1.diff(date2, 'days'),
+                        modal_safety_factor: this.getSafetyFactor(
+                          currentRootPathResult.paths,
+                        ),
+                        paths: [
+                          ...currentRootPathResult.paths,
+                          auxPaths[index],
+                        ],
+                      });
+
+                      currentPathTimeArray.push([
+                        currentPathTimeArray[index][0],
+                        this.calculateResultTime(
+                          currentPathTimeArray[index][1],
+                          paths[pathIndex].duration,
+                        ),
+                      ]);
+                    }
+                  });
+                },
+              );
+
+              result.result.paths_result = auxPathResults;
+
+              currentPathTimeAccArray = currentPathTimeAccArray.concat(
+                currentPathTimeArray.slice(
+                  multipleIndexFound.length,
+                  currentPathTimeArray.length,
+                ),
+              );
+            }
+          } else {
+            result.result = {
+              general_info: {
+                origin_city_name: checkOriginCityExists.name,
+                destination_cities_names: [
+                  {
+                    destination_city_name: checkDestinationCityExists.name,
+                  },
+                ],
+                initial_date: data[dataIndex].date,
+                final_date: data[dataIndex].date,
+              },
+              paths_result: [],
+            };
+          }
         }
+
+        lastPathTimeArray = currentPathTimeAccArray;
       } else {
         result.result = {
           general_info: {

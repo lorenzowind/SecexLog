@@ -29,13 +29,15 @@ import pathRepresentation from '../../assets/path-representation.png';
 const ResultSearch: React.FC = () => {
   const history = useHistory();
 
-  const [fastFilterSelected, setFastFilterSelected] = useState(false);
-  const [costFilterSelected, setCostFilterSelected] = useState(false);
-  const [safetyFilterSelected, setSafetyFilterSelected] = useState(false);
+  const [filterSelected, setFilterSelected] = useState<{
+    operation: 'fast' | 'cost' | 'safety' | '';
+  }>({
+    operation: '',
+  });
 
   const [arrayModalIcons] = useState(getArrayModalIcons);
 
-  const { searchResult, setPathsCard } = useSearchResult();
+  const { searchResult, setPathsCard, sortByFilter } = useSearchResult();
 
   useEffect(() => {
     if (!searchResult.result) {
@@ -56,6 +58,25 @@ const ResultSearch: React.FC = () => {
       currency: 'BRL',
     }).format(price);
   }, []);
+
+  const handleClickFilter = useCallback(
+    (operation: 'fast' | 'cost' | 'safety') => {
+      if (filterSelected.operation === operation) {
+        setFilterSelected({
+          operation: '',
+        });
+
+        sortByFilter('');
+      } else {
+        setFilterSelected({
+          operation,
+        });
+
+        sortByFilter(operation);
+      }
+    },
+    [filterSelected.operation, sortByFilter],
+  );
 
   return (
     <>
@@ -86,34 +107,28 @@ const ResultSearch: React.FC = () => {
 
             <FilterSection>
               <nav>
-                <button
-                  type="button"
-                  onClick={() => setFastFilterSelected(!fastFilterSelected)}
-                >
+                <button type="button" onClick={() => handleClickFilter('fast')}>
                   <ImageModal
                     imageSize={60}
                     imageModal={fastFilter}
-                    isSelected={fastFilterSelected}
+                    isSelected={filterSelected.operation === 'fast'}
                   />
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setCostFilterSelected(!costFilterSelected)}
-                >
+                <button type="button" onClick={() => handleClickFilter('cost')}>
                   <ImageModal
                     imageSize={60}
                     imageModal={costFilter}
-                    isSelected={costFilterSelected}
+                    isSelected={filterSelected.operation === 'cost'}
                   />
                 </button>
                 <button
                   type="button"
-                  onClick={() => setSafetyFilterSelected(!safetyFilterSelected)}
+                  onClick={() => handleClickFilter('safety')}
                 >
                   <ImageModal
                     imageSize={60}
                     imageModal={safetyFilter}
-                    isSelected={safetyFilterSelected}
+                    isSelected={filterSelected.operation === 'safety'}
                   />
                 </button>
               </nav>

@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FiArrowRight } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
 import { useCity } from '../../hooks/modules/city';
 import { useToast } from '../../hooks/toast';
-import { useSearchResult, AutomaticSearchData } from '../../hooks/searchResult';
+import { AutomaticSearchData } from '../../hooks/searchResult';
 
 import {
   Container,
@@ -24,6 +24,7 @@ import {
   DateInput,
   LoadingPartial,
   LoadingPage,
+  NotReadyPopup,
 } from '../../components';
 
 import logoSecex from '../../assets/logo-secex.png';
@@ -34,19 +35,20 @@ import iconCalendar from '../../assets/icon-calendar.png';
 
 const AutomaticSearch: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
-  const history = useHistory();
+  // const history = useHistory();
 
   const [initialDate, setInitialDate] = useState<Date>(new Date());
   const [finalDate, setFinalDate] = useState<Date>(new Date());
   const [pathsControl, setPathsControl] = useState([1]);
 
+  const [notReadyPopupActive, setNotReadyPopupActive] = useState(false);
   const [loadingPartial, setLoadingPartial] = useState(false);
-  const [loadingPage, setLoadingPage] = useState(false);
+  const [loadingPage /* , setLoadingPage */] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const { cities, getCities } = useCity();
   const { addToast } = useToast();
-  const { getAutomaticSearchResult } = useSearchResult();
+  // const { getAutomaticSearchResult } = useSearchResult();
 
   const handleGetCities = useCallback(async () => {
     setLoadingPartial(true);
@@ -104,9 +106,9 @@ const AutomaticSearch: React.FC = () => {
         //   setLoadingPage(false);
         // });
 
-        getAutomaticSearchResult(automaticSearchData);
+        // history.push('/result-search');
 
-        history.push('/result-search');
+        setNotReadyPopupActive(true);
       } catch (err) {
         addToast({
           type: 'error',
@@ -114,7 +116,7 @@ const AutomaticSearch: React.FC = () => {
         });
       }
     },
-    [addToast, finalDate, getAutomaticSearchResult, history, initialDate],
+    [addToast, finalDate, initialDate],
   );
 
   return (
@@ -122,6 +124,10 @@ const AutomaticSearch: React.FC = () => {
       {loadingPage && <LoadingPage />}
 
       {loadingPartial && <LoadingPartial zIndex={1} />}
+
+      {notReadyPopupActive && (
+        <NotReadyPopup setNotReadyPopupActive={setNotReadyPopupActive} />
+      )}
 
       <Container>
         <Header isAuthenticated={false} />

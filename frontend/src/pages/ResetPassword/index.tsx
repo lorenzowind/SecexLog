@@ -60,6 +60,11 @@ const ResetPassword: React.FC = () => {
           token,
         });
 
+        addToast({
+          type: 'success',
+          title: 'Senha resetada com sucesso',
+        });
+
         history.push('/');
       } catch (err) {
         if (err instanceof Yup.ValidationError) {

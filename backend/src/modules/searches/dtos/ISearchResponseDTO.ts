@@ -17,6 +17,9 @@ export interface PathData {
     destination_city_name: string;
     modal_name: string;
     modal_image: string;
+    modal_is_cheap: boolean;
+    modal_is_fast: boolean;
+    modal_is_safe: boolean;
     provider_name: string;
     duration: number;
     mileage: number;
@@ -29,6 +32,7 @@ export interface PathData {
 export interface PathResultsSection {
   price: number;
   util_days: number;
+  modal_safety_factor: number;
   distance: number;
   initial_date: string;
   final_date: string;

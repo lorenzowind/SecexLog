@@ -792,4 +792,249 @@ describe('ManualSearch', () => {
     expect(response.result.general_info.initial_date).toBe('05/10/2020');
     expect(response.result.general_info.final_date).toBe('09/10/2020');
   });
+
+  it('should be able to search for 3 paths with different providers', async () => {
+    const originCity = await draftCitiesRepository.create({
+      name: 'City 1',
+      city_observation: 'city observation',
+      initial_flood_date: '20/09',
+      end_flood_date: '20/10',
+      interdiction_observation: 'interdiction observation',
+      is_auditated: true,
+      is_base: false,
+      latitude: 1.35235235,
+      longitude: -1.12467552,
+    });
+
+    const intermediateCity = await draftCitiesRepository.create({
+      name: 'City 2',
+      city_observation: 'city observation',
+      initial_flood_date: '22/09',
+      end_flood_date: '22/10',
+      interdiction_observation: 'interdiction observation',
+      is_auditated: true,
+      is_base: false,
+      latitude: 1.35235235,
+      longitude: -1.12467552,
+    });
+
+    const destinationCity = await draftCitiesRepository.create({
+      name: 'City 3',
+      city_observation: 'city observation',
+      initial_flood_date: '24/09',
+      end_flood_date: '24/10',
+      interdiction_observation: 'interdiction observation',
+      is_auditated: true,
+      is_base: false,
+      latitude: 1.35235235,
+      longitude: -1.12467552,
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 1',
+      city_id: intermediateCity.id,
+      initial_date: '22/09',
+      end_date: '23/09',
+    });
+
+    await draftHolidaysRepository.create({
+      name: 'Holiday 2',
+      city_id: destinationCity.id,
+      initial_date: '24/09',
+      end_date: '25/09',
+    });
+
+    const firstModal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const secondModal = await draftModalsRepository.create({
+      name: 'Modal 1',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const thirdModal = await draftModalsRepository.create({
+      name: 'Modal 3',
+      image: 'Modal image URL',
+      is_safe: true,
+      is_cheap: true,
+      is_fast: true,
+    });
+
+    const firstProvider = await draftProvidersRepository.create({
+      name: 'Provider Name',
+      modal_id: firstModal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data',
+    });
+
+    const secondProvider = await draftProvidersRepository.create({
+      name: 'Provider Name 2',
+      modal_id: secondModal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data 2',
+    });
+
+    const thirdProvider = await draftProvidersRepository.create({
+      name: 'Provider Name 3',
+      modal_id: thirdModal.id,
+      preference: 'CPF',
+      preference_data: 'Preference data 3',
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: originCity.id,
+      destination_city_id: intermediateCity.id,
+      modal_id: firstModal.id,
+      provider_id: firstProvider.id,
+      boarding_days: 'Segunda-feira, Segunda-feira, Segunda-feira',
+      boarding_times: '10:00, 12:00, 14:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: originCity.id,
+      destination_city_id: intermediateCity.id,
+      modal_id: secondModal.id,
+      provider_id: secondProvider.id,
+      boarding_days: 'Segunda-feira, Segunda-feira, Segunda-feira',
+      boarding_times: '11:00, 13:00, 15:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: intermediateCity.id,
+      destination_city_id: destinationCity.id,
+      modal_id: secondModal.id,
+      provider_id: secondProvider.id,
+      boarding_days: 'Segunda-feira, Segunda-feira',
+      boarding_times: '13:00, 18:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: intermediateCity.id,
+      destination_city_id: destinationCity.id,
+      modal_id: firstModal.id,
+      provider_id: firstProvider.id,
+      boarding_days: 'Segunda-feira, Segunda-feira',
+      boarding_times: '14:00, 19:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: destinationCity.id,
+      destination_city_id: intermediateCity.id,
+      modal_id: thirdModal.id,
+      provider_id: thirdProvider.id,
+      boarding_days: 'Sexta-feira, Sexta-feira',
+      boarding_times: '10:00, 12:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: destinationCity.id,
+      destination_city_id: intermediateCity.id,
+      modal_id: secondModal.id,
+      provider_id: secondProvider.id,
+      boarding_days: 'Sexta-feira, Sexta-feira',
+      boarding_times: '11:00, 13:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: intermediateCity.id,
+      destination_city_id: originCity.id,
+      modal_id: secondModal.id,
+      provider_id: secondProvider.id,
+      boarding_days: 'Sexta-feira, Sexta-feira',
+      boarding_times: '10:00, 15:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    await draftPathsRepository.create({
+      origin_city_id: intermediateCity.id,
+      destination_city_id: originCity.id,
+      modal_id: thirdModal.id,
+      provider_id: thirdProvider.id,
+      boarding_days: 'Sexta-feira, Sexta-feira',
+      boarding_times: '11:00, 16:00',
+      duration: 120,
+      mileage: 60,
+      cost: 120,
+      boarding_place: 'Boarding place',
+      departure_place: 'Departure place',
+      is_hired: true,
+    });
+
+    const response = await manualSearch.execute({
+      data: [
+        {
+          origin_city_id: originCity.id,
+          destination_city_id: intermediateCity.id,
+          date: '05/10/2020',
+        },
+        {
+          origin_city_id: intermediateCity.id,
+          destination_city_id: destinationCity.id,
+          date: '05/10/2020',
+        },
+        {
+          origin_city_id: destinationCity.id,
+          destination_city_id: intermediateCity.id,
+          date: '09/10/2020',
+        },
+        {
+          origin_city_id: intermediateCity.id,
+          destination_city_id: originCity.id,
+          date: '09/10/2020',
+        },
+      ],
+    });
+
+    expect(response.result.general_info.initial_date).toBe('05/10/2020');
+    expect(response.result.general_info.final_date).toBe('09/10/2020');
+  });
 });
