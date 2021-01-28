@@ -13,13 +13,17 @@ export default function sortManualPaths({
 }: SortManualPathsParams): PathsCard[] {
   const auxPaths = paths;
 
-  for (let i = 0; i < auxPaths.length; i += 1) {
-    for (let j = 0; j < auxPaths.length; j += 1) {
+  for (let i = 1; i < auxPaths.length; i += 1) {
+    for (let j = 0; j < auxPaths.length - 1; j += 1) {
       let auxPath: PathsCard | null = null;
 
       switch (operation) {
         case 'cost': {
-          if (auxPaths[j].price > auxPaths[i].price) {
+          if (auxPaths[i].paths.length > 1) {
+            if (auxPaths[i].price < auxPaths[j].price) {
+              auxPath = auxPaths[j];
+            }
+          } else if (auxPaths[i].price > auxPaths[j].price) {
             auxPath = auxPaths[j];
           }
 
@@ -45,6 +49,7 @@ export default function sortManualPaths({
           ) {
             auxPath = auxPaths[j];
           }
+
           break;
         }
         default: {

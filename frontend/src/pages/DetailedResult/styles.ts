@@ -161,9 +161,9 @@ export const PathsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
-  padding: 40px 20px 20px 20px;
+  padding: 40px 20px 20px 40px;
 `;
 
 export const UniquePathContainer = styled.div`
@@ -232,7 +232,7 @@ export const CitiesContainer = styled.div`
   align-items: center;
 
   img {
-    height: 50px;
+    width: 50px;
     margin-right: 20px;
   }
 

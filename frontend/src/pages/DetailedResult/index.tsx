@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import api from '../../services/api';
+
 import { useSearchResult } from '../../hooks/searchResult';
+import { useToast } from '../../hooks/toast';
 
 import { getArrayModalIcons } from '../../utils/getArrayModalFiles';
 
-import { Menu } from '../../components';
+import { Menu, LoadingPartial } from '../../components';
 
 import {
   Container,
@@ -36,10 +39,12 @@ const DetailedResult: React.FC = () => {
   const history = useHistory();
 
   const [mapIsFull, setMapIsFull] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [arrayModalIcons] = useState(getArrayModalIcons);
 
   const { pathsCardSelected } = useSearchResult();
+  const { addToast } = useToast();
 
   useEffect(() => {
     if (!pathsCardSelected.paths) {
@@ -67,8 +72,31 @@ const DetailedResult: React.FC = () => {
     return `${String(hours)}h${newMinutes}m`;
   }, []);
 
+  const handleDownloadSearchReport = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      await api
+        .post('searches/report', {
+          data: pathsCardSelected,
+        })
+        .then(response => {
+          window.open(response.data, '_blank');
+        });
+    } catch (err) {
+      addToast({
+        type: 'error',
+        title: 'Erro ao fazer download do relatório da viagem',
+      });
+    } finally {
+      setLoading(false);
+    }
+  }, [addToast, pathsCardSelected]);
+
   return (
     <>
+      {loading && <LoadingPartial zIndex={1} />}
+
       <Menu isAuthenticated={false} />
 
       <Container>
@@ -169,7 +197,7 @@ const DetailedResult: React.FC = () => {
                     <img src={iconMail} alt="Mail" />
                   </button>
 
-                  <button type="button">
+                  <button type="button" onClick={handleDownloadSearchReport}>
                     <img src={iconPrint} alt="Print" />
                   </button>
                 </OptionsContainer>
