@@ -8,7 +8,7 @@ import { useToast } from '../../hooks/toast';
 
 import { getArrayModalIcons } from '../../utils/getArrayModalFiles';
 
-import { Menu, LoadingPartial } from '../../components';
+import { Menu, LoadingPartial, SendReportPopup } from '../../components';
 
 import {
   Container,
@@ -37,6 +37,8 @@ import iconPrint from '../../assets/icon-print.png';
 
 const DetailedResult: React.FC = () => {
   const history = useHistory();
+
+  const [sendReportPopupActive, setSendReportPopupActive] = useState(false);
 
   const [mapIsFull, setMapIsFull] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -96,6 +98,10 @@ const DetailedResult: React.FC = () => {
   return (
     <>
       {loading && <LoadingPartial zIndex={1} />}
+
+      {sendReportPopupActive && (
+        <SendReportPopup setSendReportPopupActive={setSendReportPopupActive} />
+      )}
 
       <Menu isAuthenticated={false} />
 
@@ -193,7 +199,10 @@ const DetailedResult: React.FC = () => {
                 </ObservationsContainer>
 
                 <OptionsContainer>
-                  <button type="button">
+                  <button
+                    type="button"
+                    onClick={() => setSendReportPopupActive(true)}
+                  >
                     <img src={iconMail} alt="Mail" />
                   </button>
 

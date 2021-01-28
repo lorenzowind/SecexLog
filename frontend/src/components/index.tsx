@@ -25,6 +25,7 @@ export { default as ProviderUpdatingPopup } from './Popup/CRUD/ProviderUpdatingP
 export { default as UserOperationsPopup } from './Popup/CRUD/UserOperationsPopup';
 
 export { default as ForgotPasswordPopup } from './Popup/ForgotPasswordPopup';
+export { default as SendReportPopup } from './Popup/SendReportPopup';
 export { default as NotReadyPopup } from './Popup/NotReadyPopup';
 export { default as OpinionPopup } from './Popup/OpinionPopup';
 export { default as RequestPopup } from './Popup/RequestPopup';
