@@ -48,7 +48,7 @@ This system must be able to perform the logistical functions from Manaus to one,
 - Pedro Henrique Souza (Front-end developer)
 
 ## How to install?
-1. To run the backend, follow these steps:
+1. To run the back-end, follow these steps:
 - Navigate to the backend folder and install the dependencies:
 ```bash
 // Navigate to the backend folder
@@ -88,7 +88,7 @@ $ docker update --restart=unless-stopped ID_DA_IMAGEM
 // Start the server
 $ yarn dev:server
 ```
-2. To run the frontend, follow these steps:
+2. To run the front-end, follow these steps:
 - Navigate to the frontend folder and install the dependencies:
 ```bash
 // Navigate to the frontend folder
@@ -97,6 +97,7 @@ $ cd frontend
 // Install application dependencies
 $ yarn
 ```
+- Create a file called .env based on .env.example and enter the API URL;
 - Start the application using the command:
 ```bash
 // Start the application
