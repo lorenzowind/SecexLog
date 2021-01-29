@@ -143,7 +143,11 @@ class GetReportService {
           continued: true,
         })
         .font('Helvetica')
-        .text(`${data.observations.join(', ')}`);
+        .text(
+          `${data.observations
+            .map(observation => observation.observation)
+            .join(', ')}`,
+        );
     }
 
     pdfDocument.end();

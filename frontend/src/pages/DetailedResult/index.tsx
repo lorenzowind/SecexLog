@@ -123,9 +123,9 @@ const DetailedResult: React.FC = () => {
                 <img src={progressBar} alt="Progress Bar" />
               </div>
 
-              <button type="button" onClick={() => setMapIsFull(!mapIsFull)}>
+              {/* <button type="button" onClick={() => setMapIsFull(!mapIsFull)}>
                 <h1>Mapa</h1>
-              </button>
+              </button> */}
             </Top>
 
             {pathsCardSelected.paths && (

@@ -220,27 +220,38 @@ class ManualSearchService {
             paths[pathIndex].provider_id,
           );
 
-          const observations: { observation: string }[] = [];
+          const currentObservations: { observation: string }[] = [];
 
           const nationalHolidays = await this.holidaysRepository.findNationalByDate(
             data[dataIndex].date,
           );
 
           if (nationalHolidays && nationalHolidays.length) {
-            observations.push({
-              observation: `Feriado nacional em ${data[dataIndex].date}`,
+            currentObservations.push({
+              observation: `Feriado nacional dia ${data[dataIndex].date}`,
             });
           }
 
-          const specificHolidays = await this.holidaysRepository.findSpecificByDate(
-            data[dataIndex].destination_city_id,
+          let specificHolidays = await this.holidaysRepository.findSpecificByDate(
+            data[dataIndex].origin_city_id,
             data[dataIndex].date,
           );
 
           if (specificHolidays && specificHolidays.length) {
-            observations.push({
-              observation: `Feriado local em ${data[dataIndex].date}`,
+            currentObservations.push({
+              observation: `Feriado local em ${checkOriginCityExists.name} dia ${data[dataIndex].date}`,
             });
+          } else {
+            specificHolidays = await this.holidaysRepository.findSpecificByDate(
+              data[dataIndex].destination_city_id,
+              data[dataIndex].date,
+            );
+
+            if (specificHolidays && specificHolidays.length) {
+              currentObservations.push({
+                observation: `Feriado local em ${checkDestinationCityExists.name} dia ${data[dataIndex].date}`,
+              });
+            }
           }
 
           if (
@@ -266,7 +277,7 @@ class ManualSearchService {
               initialFormattedFloodDate <= auxDate &&
               auxDate <= endFormattedFloodDate
             ) {
-              observations.push({
+              currentObservations.push({
                 observation: `Período de cheias em ${data[dataIndex].date}`,
               });
             }
@@ -340,10 +351,12 @@ class ManualSearchService {
                   distance: paths[pathIndex].mileage,
                   initial_date: data[dataIndex].date,
                   final_date: data[dataIndex].date,
-                  observations,
+                  observations: currentObservations,
                   price: paths[pathIndex].cost,
                   util_days: 0,
-                  modal_safety_factor: 0,
+                  modal_safety_factor: auxPaths[index].path_data.modal_is_safe
+                    ? 1
+                    : 0,
                   paths: [auxPaths[index]],
                 });
 
@@ -422,7 +435,9 @@ class ManualSearchService {
                           Number(paths[pathIndex].mileage),
                         initial_date: currentRootPathResult.initial_date,
                         final_date: data[dataIndex].date,
-                        observations,
+                        observations: currentRootPathResult.observations.concat(
+                          currentObservations,
+                        ),
                         price:
                           Number(currentRootPathResult.price) +
                           Number(paths[pathIndex].cost),

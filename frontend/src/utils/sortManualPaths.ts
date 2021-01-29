@@ -12,19 +12,16 @@ export default function sortManualPaths({
   paths,
 }: SortManualPathsParams): PathsCard[] {
   const auxPaths = paths;
+  let auxPath: PathsCard;
 
   for (let i = 1; i < auxPaths.length; i += 1) {
-    for (let j = 0; j < auxPaths.length - 1; j += 1) {
-      let auxPath: PathsCard | null = null;
-
+    for (let j = 0; j < auxPaths.length - i; j += 1) {
       switch (operation) {
         case 'cost': {
-          if (auxPaths[i].paths.length > 1) {
-            if (auxPaths[i].price < auxPaths[j].price) {
-              auxPath = auxPaths[j];
-            }
-          } else if (auxPaths[i].price > auxPaths[j].price) {
+          if (Number(auxPaths[j].price) > Number(auxPaths[j + 1].price)) {
             auxPath = auxPaths[j];
+            auxPaths[j] = auxPaths[j + 1];
+            auxPaths[j + 1] = auxPath;
           }
 
           break;
@@ -32,22 +29,27 @@ export default function sortManualPaths({
         case 'fast': {
           if (
             compareTime(
-              auxPaths[i].paths[auxPaths[j].paths.length - 1].selected_period
+              auxPaths[j].paths[auxPaths[j].paths.length - 1].selected_period
                 .selected_final_time,
-              auxPaths[j].paths[auxPaths[i].paths.length - 1].selected_period
-                .selected_final_time,
-            ) === -1
+              auxPaths[j + 1].paths[auxPaths[j + 1].paths.length - 1]
+                .selected_period.selected_final_time,
+            ) === 1
           ) {
             auxPath = auxPaths[j];
+            auxPaths[j] = auxPaths[j + 1];
+            auxPaths[j + 1] = auxPath;
           }
 
           break;
         }
         case 'safety': {
           if (
-            auxPaths[j].modal_safety_factor < auxPaths[i].modal_safety_factor
+            auxPaths[j].modal_safety_factor <
+            auxPaths[j + 1].modal_safety_factor
           ) {
             auxPath = auxPaths[j];
+            auxPaths[j] = auxPaths[j + 1];
+            auxPaths[j + 1] = auxPath;
           }
 
           break;
@@ -55,11 +57,6 @@ export default function sortManualPaths({
         default: {
           break;
         }
-      }
-
-      if (auxPath) {
-        auxPaths[j] = auxPaths[i];
-        auxPaths[i] = auxPath;
       }
     }
   }
