@@ -2433,6 +2433,9 @@ paths:
                             util_days:
                               type: number
                               example: 5
+                            modal_safety_factor:
+                              type: number
+                              example: 0
                             distance:
                               type: number
                               example: 100
@@ -2503,6 +2506,15 @@ paths:
                                       modal_image:
                                         type: string
                                         example: Modal image name
+                                      modal_is_cheap:
+                                        type: boolean
+                                        example: true
+                                      modal_is_fast:
+                                        type: boolean
+                                        example: true
+                                      modal_is_safe:
+                                        type: boolean
+                                        example: false
                                       provider_name:
                                         type: string
                                         example: "Provider Name"
@@ -2521,3 +2533,261 @@ paths:
                                       departure_place:
                                         type: string
                                         example: "Departure Place"
+  /searches/report:
+    post:
+      summary: Get a link to visualize the search result report.
+      tags:
+        - searches
+      requestBody:
+        required: true
+        content:
+          application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      price:
+                        type: number
+                        example: 800
+                      util_days:
+                        type: number
+                        example: 5
+                      modal_safety_factor:
+                        type: number
+                        example: 0
+                      distance:
+                        type: number
+                        example: 100
+                      initial_date:
+                        type: string
+                        example: "17/09/2020"
+                      final_date:
+                        type: string
+                        example: "17/09/2020"
+                      observations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            obeservation:
+                              type: string
+                              example: "City observation"
+                      paths:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            selected_period:
+                              type: object
+                              properties:
+                                selected_date:
+                                  type: string
+                                  example: "17/09/2020"
+                                selected_initial_time:
+                                  type: string
+                                  example: "10:00"
+                                selected_final_time:
+                                  type: string
+                                  example: "10:30"
+                                selected_initial_week_day:
+                                  type: string
+                                  example: "qui"
+                                selected_final_week_day:
+                                  type: string
+                                  example: "qui"
+                            cities_location:
+                              type: object
+                              properties:
+                                origin_city_latitude:
+                                    type: number
+                                    example: 1.325235
+                                origin_city_longitude:
+                                    type: number
+                                    example: 1.325235
+                                destination_city_latitude:
+                                    type: number
+                                    example: 1.325235
+                                destination_city_longitude:
+                                    type: number
+                                    example: 1.325235
+                            path_data:
+                              type: object
+                              properties:
+                                origin_city_name:
+                                  type: string
+                                  example: "Origin City Name"
+                                destination_city_name:
+                                  type: string
+                                  example: "Destination City Name"
+                                modal_name:
+                                  type: string
+                                  example: "Modal Name"
+                                modal_image:
+                                  type: string
+                                  example: Modal image name
+                                modal_is_cheap:
+                                  type: boolean
+                                  example: true
+                                modal_is_fast:
+                                  type: boolean
+                                  example: true
+                                modal_is_safe:
+                                  type: boolean
+                                  example: false
+                                provider_name:
+                                  type: string
+                                  example: "Provider Name"
+                                duration:
+                                  type: number
+                                  example: 120
+                                mileage:
+                                  type: number
+                                  example: 60
+                                cost:
+                                  type: number
+                                  example: 99.99
+                                boarding_place:
+                                  type: string
+                                  example: "Boarding Place"
+                                departure_place:
+                                  type: string
+                                  example: "Departure Place"
+      responses:
+        '200':
+          description: Returns a string containing the file link.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: "https://provider/file.pdf"
+
+  /searches/send-report:
+    post:
+      summary: Sends an email containing the link to the search result report.
+      tags:
+        - searches
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@email.com"
+                data:
+                    type: object
+                    properties:
+                      price:
+                        type: number
+                        example: 800
+                      util_days:
+                        type: number
+                        example: 5
+                      modal_safety_factor:
+                        type: number
+                        example: 0
+                      distance:
+                        type: number
+                        example: 100
+                      initial_date:
+                        type: string
+                        example: "17/09/2020"
+                      final_date:
+                        type: string
+                        example: "17/09/2020"
+                      observations:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            obeservation:
+                              type: string
+                              example: "City observation"
+                      paths:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            selected_period:
+                              type: object
+                              properties:
+                                selected_date:
+                                  type: string
+                                  example: "17/09/2020"
+                                selected_initial_time:
+                                  type: string
+                                  example: "10:00"
+                                selected_final_time:
+                                  type: string
+                                  example: "10:30"
+                                selected_initial_week_day:
+                                  type: string
+                                  example: "qui"
+                                selected_final_week_day:
+                                  type: string
+                                  example: "qui"
+                            cities_location:
+                              type: object
+                              properties:
+                                origin_city_latitude:
+                                    type: number
+                                    example: 1.325235
+                                origin_city_longitude:
+                                    type: number
+                                    example: 1.325235
+                                destination_city_latitude:
+                                    type: number
+                                    example: 1.325235
+                                destination_city_longitude:
+                                    type: number
+                                    example: 1.325235
+                            path_data:
+                              type: object
+                              properties:
+                                origin_city_name:
+                                  type: string
+                                  example: "Origin City Name"
+                                destination_city_name:
+                                  type: string
+                                  example: "Destination City Name"
+                                modal_name:
+                                  type: string
+                                  example: "Modal Name"
+                                modal_image:
+                                  type: string
+                                  example: Modal image name
+                                modal_is_cheap:
+                                  type: boolean
+                                  example: true
+                                modal_is_fast:
+                                  type: boolean
+                                  example: true
+                                modal_is_safe:
+                                  type: boolean
+                                  example: false
+                                provider_name:
+                                  type: string
+                                  example: "Provider Name"
+                                duration:
+                                  type: number
+                                  example: 120
+                                mileage:
+                                  type: number
+                                  example: 60
+                                cost:
+                                  type: number
+                                  example: 99.99
+                                boarding_place:
+                                  type: string
+                                  example: "Boarding Place"
+                                departure_place:
+                                  type: string
+                                  example: "Departure Place"
+      responses:
+        '204':
+          description: Confirmation of link sent to email successfully.
