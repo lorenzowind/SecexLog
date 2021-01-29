@@ -105,11 +105,12 @@ $ yarn start
 ```
 
 ## Built With
-* Framework for platform frontend: [React.js](https://reactjs.org/)
-* Backend Framework: [Node.js](https://nodejs.org)
+* Frontend framework: [React.js](https://reactjs.org/)
+* Back-end framework: [Node.js](https://nodejs.org)
+* Back-end data processing technology: [TypeORM](https://typeorm.io)
 * Database technology: [MySQL](https://www.mysql.com/), [MongoDB](https://www.mongodb.com/), and [Redis](https://redis.io/)
-* Backend data processing technology: [TypeORM](https://typeorm.io)
 * Technology for testing implementation: [Jest](https://jestjs.io/)
+* Environment creation tool: [Docker](https://www.docker.com/)
 * API documentation tool: [SwaggerHUB](https://swagger.io/tools/swaggerhub/)
 * Prototyping tool: [Adobe XD](https://www.adobe.com/br/products/xd/features.html)
 
