@@ -28,7 +28,7 @@ providersRouter.post(
       phone_number: Joi.string().max(16).required(),
       email: Joi.string().required(),
       modal_id: Joi.string().required(),
-      preference: Joi.string().valid('CPF', 'CPNJ'),
+      preference: Joi.string().valid('CPF', 'CNPJ'),
       preference_data: Joi.string().required(),
     },
   }),

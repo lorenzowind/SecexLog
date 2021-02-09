@@ -46,7 +46,7 @@ export default class CreateProviders1599613435625
           },
           {
             name: 'preference_data',
-            type: 'varchar(16)',
+            type: 'varchar(20)',
             isUnique: true,
           },
           {
