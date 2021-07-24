@@ -1,0 +1,172 @@
+version: 2.1
+
+commands:
+  create-env-file:
+    description: Create the .env file
+    steps:
+      - run:
+          name: Add env vars to .env file
+          command: |
+            echo "APP_SECRET=${APP_SECRET}" >> backend/.env
+            echo "APP_API_URL=${APP_API_URL}" >> backend/.env
+            echo "APP_WEB_URL=${APP_WEB_URL}" >> backend/.env
+            echo "SERVICES_HOST=${SERVICES_HOST}" >> backend/.env
+            echo "APP_MODE=${APP_MODE}" >> backend/.env
+            echo "AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" >> backend/.env
+            echo "AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" >> backend/.env
+            echo "AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}" >> backend/.env
+            echo "MAIL_DRIVER=${MAIL_DRIVER}" >> backend/.env
+            echo "STORAGE_DRIVER=${STORAGE_DRIVER}" >> backend/.env
+            echo "AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME}" >> backend/.env
+            echo "MYSQL_USER=${MYSQL_USER}" >> backend/.env
+            echo "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}" >> backend/.env
+            echo "MYSQL_PASSWORD=${MYSQL_PASSWORD}" >> backend/.env
+            echo "MYSQL_DATABASE=${MYSQL_DATABASE}" >> backend/.env
+            echo "REDIS_HOST=${REDIS_HOST}" >> backend/.env
+            echo "REDIS_PORT=${REDIS_PORT}" >> backend/.env
+            echo "REDIS_PASSWORD=${REDIS_PASSWORD}" >> backend/.env
+            echo "COMPOSE_TLS_VERSION=${COMPOSE_TLS_VERSION}" >> backend/.env
+
+jobs:
+  up-back-end:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "backend/yarn.lock" }}
+            - v1-deps-
+      - run:
+          name: Add the back-end dependencies
+          command: cd backend && yarn up
+      - save_cache:
+          key: v1-deps-{{ checksum "backend/yarn.lock" }}
+          paths:
+            - backend/node_modules
+
+  test-back-end:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "backend/yarn.lock" }}
+            - v1-deps-
+      - run:
+          name: Add the back-end dependencies
+          command: cd backend && yarn up
+      - save_cache:
+          key: v1-deps-{{ checksum "backend/yarn.lock" }}
+          paths:
+            - backend/node_modules
+      - run:
+          name: Test the back-end
+          command: cd backend && yarn test
+
+  lint-back-end:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "backend/yarn.lock" }}
+            - v1-deps-
+      - run:
+          name: Add the backend dependencies
+          command: cd backe-nd && yarn up
+      - save_cache:
+          key: v1-deps-{{ checksum "backend/yarn.lock" }}
+          paths:
+            - backend/node_modules
+      - run:
+          name: Lint the back-end
+          command: cd backend && yarn lint
+
+  audit-back-end:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "backend/yarn.lock" }}
+            - v1-deps-
+      - run:
+          name: Add the back-end dependencies
+          command: cd backend && yarn up
+      - save_cache:
+          key: v1-deps-{{ checksum "backend/yarn.lock" }}
+          paths:
+            - backend/node_modules
+      - run:
+          name: Audit the back-end
+          command: cd backend && yarn audit-deps
+
+  build-back-end:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-deps-{{ checksum "backend/yarn.lock" }}
+            - v1-deps-
+      - run:
+          name: Add the back-end dependencies
+          command: cd backend && yarn up
+      - save_cache:
+          key: v1-deps-{{ checksum "backend/yarn.lock" }}
+          paths:
+            - backend/node_modules
+      - run:
+          name: Build the back-end
+          command: cd backend && yarn build
+
+  compose-back-end:
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - create-env-file
+      - setup_remote_docker:
+          version: 19.03.13
+      - run:
+          name: Install dependencies
+          command: |
+            apk add --no-cache py-pip=9.0.0-r1
+            pip install docker-compose==1.15.0
+      - run:
+          name: Compose the back-end
+          command: |
+            cd backend
+            docker build -t secexlog/back-end .
+            docker-compose up -d
+          
+workflows:
+  default:
+    jobs:
+      - up-back-end:
+          context: SecexLog
+      - test-back-end:
+          context: SecexLog
+          requires:
+            - up-back-end
+      - lint-back-end:
+          context: SecexLog
+          requires:
+            - test-back-end
+      - audit-back-end:
+          context: SecexLog
+          requires:
+            - lint-back-end
+      - build-back-end:
+          context: SecexLog
+          requires:
+            - audit-back-end
+      - compose-back-end:
+          context: SecexLog
+          requires:
+            - build-back-end
