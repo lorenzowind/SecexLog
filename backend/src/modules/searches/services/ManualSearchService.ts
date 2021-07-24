@@ -179,10 +179,11 @@ class ManualSearchService {
         }
       }
 
-      const paths = await this.pathsRepository.findAllByOriginAndDestinationCity(
-        data[dataIndex].origin_city_id,
-        data[dataIndex].destination_city_id,
-      );
+      const paths =
+        await this.pathsRepository.findAllByOriginAndDestinationCity(
+          data[dataIndex].origin_city_id,
+          data[dataIndex].destination_city_id,
+        );
 
       if (paths.length) {
         if (dataIndex !== 0 && result.result) {
@@ -222,9 +223,10 @@ class ManualSearchService {
 
           const currentObservations: { observation: string }[] = [];
 
-          const nationalHolidays = await this.holidaysRepository.findNationalByDate(
-            data[dataIndex].date,
-          );
+          const nationalHolidays =
+            await this.holidaysRepository.findNationalByDate(
+              data[dataIndex].date,
+            );
 
           if (nationalHolidays && nationalHolidays.length) {
             currentObservations.push({
@@ -232,10 +234,11 @@ class ManualSearchService {
             });
           }
 
-          let specificHolidays = await this.holidaysRepository.findSpecificByDate(
-            data[dataIndex].origin_city_id,
-            data[dataIndex].date,
-          );
+          let specificHolidays =
+            await this.holidaysRepository.findSpecificByDate(
+              data[dataIndex].origin_city_id,
+              data[dataIndex].date,
+            );
 
           if (specificHolidays && specificHolidays.length) {
             currentObservations.push({
@@ -369,18 +372,18 @@ class ManualSearchService {
                 ];
               });
 
-              currentPathTimeAccArray = currentPathTimeAccArray.concat(
-                currentPathTimeArray,
-              );
+              currentPathTimeAccArray =
+                currentPathTimeAccArray.concat(currentPathTimeArray);
             } else {
               result.result.general_info.final_date = data[dataIndex].date;
 
               if (result.result.general_info.destination_cities_names) {
-                const cityExists = result.result.general_info.destination_cities_names.find(
-                  destinationCity =>
-                    destinationCity.destination_city_name ===
-                    checkDestinationCityExists.name,
-                );
+                const cityExists =
+                  result.result.general_info.destination_cities_names.find(
+                    destinationCity =>
+                      destinationCity.destination_city_name ===
+                      checkDestinationCityExists.name,
+                  );
 
                 if (!cityExists) {
                   result.result.general_info.destination_cities_names.push({
@@ -435,9 +438,10 @@ class ManualSearchService {
                           Number(paths[pathIndex].mileage),
                         initial_date: currentRootPathResult.initial_date,
                         final_date: data[dataIndex].date,
-                        observations: currentRootPathResult.observations.concat(
-                          currentObservations,
-                        ),
+                        observations:
+                          currentRootPathResult.observations.concat(
+                            currentObservations,
+                          ),
                         price:
                           Number(currentRootPathResult.price) +
                           Number(paths[pathIndex].cost),
@@ -465,9 +469,8 @@ class ManualSearchService {
                 },
               );
 
-              result.result.paths_result = result.result.paths_result.concat(
-                auxPathResults,
-              );
+              result.result.paths_result =
+                result.result.paths_result.concat(auxPathResults);
 
               currentPathTimeAccArray = currentPathTimeAccArray.concat(
                 currentPathTimeArray.slice(

@@ -7,18 +7,16 @@ WORKDIR /usr/src/app
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
 COPY package*.json ./
+COPY .env .
 
-RUN npm install
+RUN yarn up
 # If you are building your code for production
 # RUN npm ci --only=production
 
 # Bundle app source
 COPY . .
 
-RUN npm run build
-# COPY ormconfig.json ./dist/ # use host.docker.internal as localhost
-# COPY .env ./dist/
-WORKDIR ./dist
+RUN yarn build
 
 EXPOSE 3333
-CMD node src/shared/infra/http/server.js
+CMD yarn start

@@ -41,9 +41,8 @@ class CreateProviderService {
     }
 
     if (email) {
-      const checkProviderEmailExists = await this.providersRepository.findByEmail(
-        email,
-      );
+      const checkProviderEmailExists =
+        await this.providersRepository.findByEmail(email);
 
       if (checkProviderEmailExists) {
         throw new AppError('Provider email already used.');
@@ -51,18 +50,16 @@ class CreateProviderService {
     }
 
     if (phone_number) {
-      const checkProviderPhoneNumberExists = await this.providersRepository.findByPhoneNumber(
-        phone_number,
-      );
+      const checkProviderPhoneNumberExists =
+        await this.providersRepository.findByPhoneNumber(phone_number);
 
       if (checkProviderPhoneNumberExists) {
         throw new AppError('Provider phone number already used.');
       }
     }
 
-    const checkProviderPreferenceDataExists = await this.providersRepository.findByPreferenceData(
-      preference_data,
-    );
+    const checkProviderPreferenceDataExists =
+      await this.providersRepository.findByPreferenceData(preference_data);
 
     if (checkProviderPreferenceDataExists) {
       throw new AppError('Provider preference data already used.');

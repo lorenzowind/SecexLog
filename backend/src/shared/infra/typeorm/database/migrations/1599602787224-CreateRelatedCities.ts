@@ -7,7 +7,8 @@ import {
 } from 'typeorm';
 
 export default class CreateRelatedCities1599602787224
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.dropColumn('cities', 'related_cities');
 

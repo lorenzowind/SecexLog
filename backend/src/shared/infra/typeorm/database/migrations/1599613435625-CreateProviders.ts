@@ -6,7 +6,8 @@ import {
 } from 'typeorm';
 
 export default class CreateProviders1599613435625
-  implements MigrationInterface {
+  implements MigrationInterface
+{
   public async up(queryRunner: QueryRunner): Promise<any> {
     await queryRunner.createTable(
       new Table({

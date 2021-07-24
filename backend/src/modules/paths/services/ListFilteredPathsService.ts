@@ -36,9 +36,8 @@ class ListFilteredPathsService {
     }
 
     if (attribute === 'destination_city') {
-      const checkDestinationCityNameExists = await this.citiesRepository.findByName(
-        city_name,
-      );
+      const checkDestinationCityNameExists =
+        await this.citiesRepository.findByName(city_name);
 
       if (!checkDestinationCityNameExists) {
         return [];

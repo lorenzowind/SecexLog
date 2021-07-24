@@ -5,7 +5,7 @@ build/
 temp/
 .env
 coverage
-ormconfig.json
+dist
 
 *.rdb
 

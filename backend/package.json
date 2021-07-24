@@ -4,11 +4,17 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
     "dev:server": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore node_modules src/shared/infra/http/server.ts",
-    "start": "ts-node src/shared/infra/http/server.ts",
-    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
-    "test": "jest"
+    "typeorm": "ts-node-dev -r tsconfig-paths/register ./node_modules/typeorm/cli.js --config src/shared/infra/typeorm/database/ormconfig.ts",
+    "test": "jest -w 1",
+    "compose": "docker build -t secexlog/back-end . && docker-compose up -d && yarn typeorm migration:run",
+    "build": "babel src --extensions \".js,.ts\" --out-dir dist --copy-files",
+    "lint": "./node_modules/.bin/eslint ./src",
+    "lint-fix": "./node_modules/.bin/eslint ./src --fix",
+    "up": "yarn install --network-timeout 100000",
+    "upgrade": "yarn upgrade",
+    "audit-deps": "yarn audit --groups dependencies",
+    "start": "node dist/shared/infra/http/server.js"
   },
   "dependencies": {
     "aws-sdk": "^2.736.0",
@@ -62,7 +68,7 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-import-resolver-typescript": "^2.2.1",
-    "eslint-plugin-import": "2.21.2",
+    "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.1.4",
     "jest": "^26.4.0",
     "prettier": "^2.0.5",

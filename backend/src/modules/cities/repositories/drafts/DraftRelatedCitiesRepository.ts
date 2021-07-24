@@ -5,7 +5,8 @@ import IRelatedCitiesRepository from '@modules/cities/repositories/IRelatedCitie
 import RelatedCity from '@modules/cities/infra/typeorm/entities/RelatedCity';
 
 export default class DraftRelatedCitiesRepository
-  implements IRelatedCitiesRepository {
+  implements IRelatedCitiesRepository
+{
   private relatedCities: RelatedCity[] = [];
 
   public async findAllByCityId(city_id: string): Promise<RelatedCity[]> {

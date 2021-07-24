@@ -5,7 +5,8 @@ import IUserTokensRepository from '@modules/users/repositories/IUserTokensReposi
 import UserToken from '@modules/users/infra/typeorm/entities/UserToken';
 
 export default class DraftUserTokensRepository
-  implements IUserTokensRepository {
+  implements IUserTokensRepository
+{
   private userTokens: UserToken[] = [];
 
   public async generate(user_id: string): Promise<UserToken> {

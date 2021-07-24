@@ -33,14 +33,8 @@ export default class ProvidersController {
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
-    const {
-      name,
-      phone_number,
-      email,
-      modal_id,
-      preference,
-      preference_data,
-    } = request.body;
+    const { name, phone_number, email, modal_id, preference, preference_data } =
+      request.body;
 
     const createProvider = container.resolve(CreateProviderService);
 
@@ -58,14 +52,8 @@ export default class ProvidersController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const {
-      name,
-      phone_number,
-      email,
-      modal_id,
-      preference,
-      preference_data,
-    } = request.body;
+    const { name, phone_number, email, modal_id, preference, preference_data } =
+      request.body;
 
     const updateProvider = container.resolve(UpdateProviderService);
 
