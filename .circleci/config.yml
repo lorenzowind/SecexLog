@@ -76,7 +76,7 @@ jobs:
             - v1-deps-
       - run:
           name: Add the backend dependencies
-          command: cd backe-nd && yarn up
+          command: cd backend && yarn up
       - save_cache:
           key: v1-deps-{{ checksum "backend/yarn.lock" }}
           paths:
