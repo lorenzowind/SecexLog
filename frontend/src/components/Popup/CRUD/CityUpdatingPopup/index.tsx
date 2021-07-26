@@ -49,7 +49,7 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const [endFloodDate, setEndFloodDate] = useState('');
   const [isBaseCity, setIsBaseCity] = useState(city.is_base);
   const [isAuditatedCity, setIsAuditatedCity] = useState(city.is_auditated);
-  const [isInterdicted, setIsInterdicted] = useState(!!city.city_observation);
+  const [isInterdicted, setIsInterdicted] = useState(!!city.interdiction_observation);
   const [selectedRelatedCities, setSelectedRelatedCities] = useState<Option[]>(
     [],
   );

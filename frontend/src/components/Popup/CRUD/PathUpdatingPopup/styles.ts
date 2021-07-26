@@ -78,7 +78,7 @@ export const Content = styled.div`
   form {
     > div {
       > section {
-        max-height: 100px;
+        max-height: 35px;
         overflow-y: auto;
         margin-bottom: 20px;
 
@@ -138,6 +138,7 @@ export const Content = styled.div`
       > button {
         border: 0;
         background: transparent;
+        margin: 10px 0 20px 0;
       }
 
       > div {

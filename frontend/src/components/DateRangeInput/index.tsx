@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import DayPicker, { DateUtils, RangeModifier } from 'react-day-picker';
+import DayPicker, { DateUtils, Modifiers, RangeModifier } from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 
 import { Container, Content } from './styles';
@@ -18,9 +18,11 @@ interface Props {
 }
 
 const DateRangeInput: React.FC<Props> = ({ rangeDays, setRangeDays }) => {
-  const modifiers = {
-    state: rangeDays.from,
-    end: rangeDays.to,
+  const modifiers: Modifiers = {
+    today: undefined,
+    outside: undefined,
+    state: rangeDays.from || undefined,
+    end: rangeDays.to || undefined,
   };
   const numberMonths = 2;
 
@@ -39,7 +41,7 @@ const DateRangeInput: React.FC<Props> = ({ rangeDays, setRangeDays }) => {
           className="Selectable"
           numberOfMonths={numberMonths}
           selectedDays={[
-            rangeDays.from,
+            rangeDays.from || undefined,
             { from: rangeDays.from, to: rangeDays.to },
           ]}
           modifiers={modifiers}
