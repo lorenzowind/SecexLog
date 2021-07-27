@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
+import { useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 
@@ -249,11 +248,6 @@ const ManualSearch: React.FC = () => {
             </OptionsContainer>
 
             <ButtonsContainer>
-              <Link to="automatic-search">
-                <FiArrowLeft size={24} />
-                Consulta Automatizada
-              </Link>
-
               <Button type="submit">Consultar</Button>
             </ButtonsContainer>
           </Form>

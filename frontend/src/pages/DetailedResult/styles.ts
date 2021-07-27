@@ -13,6 +13,7 @@ export const Container = styled.div`
   // animation: ${appearFromRight} 1s;
   flex-direction: row;
   height: 100vh;
+  overflow: hidden;
 `;
 
 export const PathDetailed = styled.div`
@@ -322,7 +323,7 @@ export const MapContainer = styled.div`
 
   section {
     img {
-      height: 900px;
+      height: 90vh;
     }
   }
 `;

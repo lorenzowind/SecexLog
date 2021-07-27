@@ -4,7 +4,6 @@ import { Switch } from 'react-router-dom';
 import Route from './Route';
 
 import ManualSearch from '../pages/ManualSearch';
-import AutomaticSearch from '../pages/AutomaticSearch';
 import ResultSearch from '../pages/ResultSearch';
 import DetailedResult from '../pages/DetailedResult';
 
@@ -24,7 +23,6 @@ import ProviderForm from '../pages/CRUD/ProviderForm';
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" exact component={ManualSearch} />
-    <Route path="/automatic-search" component={AutomaticSearch} />
     <Route path="/result-search" component={ResultSearch} />
     <Route path="/detailed-result" component={DetailedResult} />
 

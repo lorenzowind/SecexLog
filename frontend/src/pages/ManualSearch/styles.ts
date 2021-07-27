@@ -23,7 +23,7 @@ export const Container = styled.div`
 
   display: flex;
   align-items: stretch;
-  overflow: hidden;
+  overflow-x: hidden;
 
   // animation: ${appearFromLeft} 1s;
 `;
@@ -39,6 +39,11 @@ export const Content = styled.div`
 
   > img {
     margin-bottom: 50px;
+
+    &:first-child {
+      height: 100px;
+      margin-left: -55px;
+    }
   }
 
   form {
@@ -47,14 +52,12 @@ export const Content = styled.div`
     align-items: center;
     justify-content: center;
 
-    overflow-y: auto;
     width: 100%;
   }
 `;
 
 export const InputsContainer = styled.div`
-  margin-bottom: 50px;
-  overflow-y: auto;
+  margin-bottom: 25px;
 
   &::-webkit-scrollbar {
     width: 7px;
@@ -78,10 +81,12 @@ export const InputsContainer = styled.div`
     align-items: center;
     justify-content: center;
     width: 100%;
-    flex-wrap: wrap;
-    margin: 25px 0;
 
     // animation: ${handleAppearSection} 1s;
+
+    & + section {
+      margin-top: 15px;
+    }
 
     strong {
       margin: 0 20px;
@@ -127,7 +132,7 @@ export const CalendarInput = styled.div`
 `;
 
 export const OptionsContainer = styled.div`
-  margin-bottom: 70px;
+  margin-bottom: 25px;
   margin-left: 30%;
 
   ul {
@@ -161,23 +166,6 @@ export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  a {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    border: 0;
-    color: #707070;
-    text-decoration: none;
-    font-size: 20px;
-    white-space: nowrap;
-    margin-right: 30px;
-
-    svg {
-      margin-right: 8px;
-    }
-  }
 
   button {
     margin-left: 30px;
