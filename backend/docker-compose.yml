@@ -1,11 +1,11 @@
 version: '3'
 
 services:
-  secexlog_server:
-    image: secexlog/back-end
-    container_name: secexlog_server
-    ports:
-      - 3333:3333
+  # secexlog_server:
+  #   image: secexlog/back-end
+  #   container_name: secexlog_server
+  #   ports:
+  #     - 3333:3333
 
   secexlog_mysql:
     image: bitnami/mysql:latest

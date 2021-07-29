@@ -49,7 +49,9 @@ const CityUpdatingPopup: React.FC<Props> = ({
   const [endFloodDate, setEndFloodDate] = useState('');
   const [isBaseCity, setIsBaseCity] = useState(city.is_base);
   const [isAuditatedCity, setIsAuditatedCity] = useState(city.is_auditated);
-  const [isInterdicted, setIsInterdicted] = useState(!!city.interdiction_observation);
+  const [isInterdicted, setIsInterdicted] = useState(
+    !!city.interdiction_observation,
+  );
   const [selectedRelatedCities, setSelectedRelatedCities] = useState<Option[]>(
     [],
   );
@@ -247,7 +249,12 @@ const CityUpdatingPopup: React.FC<Props> = ({
               <Form ref={formRef} onSubmit={handleUpdateCity}>
                 <div>
                   <strong>Nome</strong>
-                  <Input name="name" type="text" defaultValue={city.name} />
+                  <Input
+                    name="name"
+                    type="text"
+                    defaultValue={city.name}
+                    disabled={city.id.includes('DC-')}
+                  />
                 </div>
 
                 <section>
@@ -430,11 +437,14 @@ const CityUpdatingPopup: React.FC<Props> = ({
                   </div>
                 ) : null}
 
-                <section>
+                {!city.id.includes('DC-') && (
                   <button type="button" onClick={handleDeleteCity}>
                     <img src={IconTrash} alt="Trash" />
                   </button>
+                )}
 
+                <section>
+                  <button />
                   <Button type="submit">Salvar</Button>
                 </section>
               </Form>

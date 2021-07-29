@@ -261,8 +261,10 @@ class ManualSearchService {
             checkDestinationCityExists.initial_flood_date &&
             checkDestinationCityExists.end_flood_date
           ) {
-            const initialFloodDate = `${checkDestinationCityExists.initial_flood_date}/2020`;
-            const endFloodDate = `${checkDestinationCityExists.end_flood_date}/2020`;
+            const currentYear = new Date().getFullYear();
+
+            const initialFloodDate = `${checkDestinationCityExists.initial_flood_date}/${currentYear}`;
+            const endFloodDate = `${checkDestinationCityExists.end_flood_date}/${currentYear}`;
 
             const initialFormattedFloodDate = new Date(
               moment(initialFloodDate, 'DD/MM/YYYY').format('YYYY-MM-DD'),

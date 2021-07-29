@@ -264,3 +264,21 @@ export const PathSelectionContainer = styled.div`
     margin-top: 10px;
   }
 `;
+
+export const LoadButtonContainer = styled.div`
+  width: 100%;
+  height: 53px;
+  margin-top: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  button {
+    background: none;
+    border: 0;
+    font-size: 28px;
+    font-weight: 600;
+    color: #707070;
+  }
+`;
