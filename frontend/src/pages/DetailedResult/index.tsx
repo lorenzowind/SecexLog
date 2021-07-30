@@ -25,6 +25,7 @@ import {
   ObservationsContainer,
   OptionsContainer,
   PathDetailedClosed,
+  CityPin,
 } from './styles';
 
 import iconBack from '../../assets/icon-back-3.png';
@@ -42,6 +43,9 @@ const DetailedResult: React.FC = () => {
 
   const [mapIsFull, setMapIsFull] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const [cities, setCities] = useState<string[]>([]);
 
   const [arrayModalIcons] = useState(getArrayModalIcons);
 
@@ -94,6 +98,35 @@ const DetailedResult: React.FC = () => {
       setLoading(false);
     }
   }, [addToast, pathsCardSelected]);
+
+  useEffect(() => {
+    if (!isLoaded && pathsCardSelected.paths) {
+      pathsCardSelected.paths.forEach((pathCard, index) => {
+        if (index === 0) {
+          setCities(state => [...state, pathCard.path_data.origin_city_name]);
+        }
+
+        setCities(state => [
+          ...state,
+          pathCard.path_data.destination_city_name,
+        ]);
+      });
+
+      setCities(state =>
+        state.reduce((newArray: string[], city) => {
+          const cityExists = newArray.find(cityFind => cityFind === city);
+
+          if (!cityExists) {
+            newArray.push(city);
+          }
+
+          return newArray;
+        }, []),
+      );
+
+      setIsLoaded(true);
+    }
+  }, [cities, isLoaded, pathsCardSelected.paths]);
 
   return (
     <>
@@ -149,7 +182,7 @@ const DetailedResult: React.FC = () => {
                 <PathsContainer>
                   {pathsCardSelected.paths.map((path, index) => (
                     <UniquePathContainer
-                      key={`${path.path_data.origin_city_name}-${path.path_data.destination_city_name}`}
+                      key={`${path.path_data.origin_city_name}-${path.path_data.destination_city_name}-${index}`}
                     >
                       {index === 0 ||
                       index === pathsCardSelected.paths.length - 1 ? (
@@ -222,7 +255,18 @@ const DetailedResult: React.FC = () => {
         )}
         <MapContainer>
           <section>
-            <img src={mapAmazon} alt="Amazon Map" />
+            <>
+              {cities.map((city, index) => (
+                <CityPin key={`${city}-${index}`} cityName={city}>
+                  {index === 0 || index === cities.length - 1 ? (
+                    <nav />
+                  ) : (
+                    <img src={iconPin} alt="Pin" />
+                  )}
+                </CityPin>
+              ))}
+              <img src={mapAmazon} alt="Amazon Map" />
+            </>
           </section>
         </MapContainer>
       </Container>

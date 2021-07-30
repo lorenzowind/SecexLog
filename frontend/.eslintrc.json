@@ -45,6 +45,7 @@
     "react/prop-types": "off",
     "react/no-array-index-key": "off",
     "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
